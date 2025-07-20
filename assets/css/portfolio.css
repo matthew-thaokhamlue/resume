@@ -1,0 +1,149 @@
+/* Portfolio Grid Styles */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.work-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.work-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.work-image {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.work-image .icon {
+    font-size: 2.5rem;
+    color: #ffffff;
+    opacity: 0.8;
+}
+
+.work-content h3 {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.work-type {
+    color: #9bf1ff;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.work-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.work-tags {
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    display: inline-block;
+    background: rgba(155, 241, 255, 0.1);
+    color: #9bf1ff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(155, 241, 255, 0.2);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 736px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .work-card {
+        padding: 1rem;
+    }
+    
+    .work-image .icon {
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .portfolio-grid {
+        gap: 1rem;
+    }
+    
+    .work-card {
+        padding: 0.75rem;
+    }
+}
+
+/* Portfolio navigation adjustments */
+#header nav ul li {
+    margin: 0 0.5rem;
+}
+
+@media screen and (max-width: 736px) {
+    #header nav ul li {
+        margin: 0 0.25rem;
+    }
+    
+    #header nav ul li a {
+        font-size: 0.9rem;
+    }
+}
+/* Close button styling - removed circular background and border */
+
+/* Article positioning for close button */
+#main > article {
+    position: relative;
+}
+
+/* Work detail article styling */
+#work1, #work2, #work3 {
+    max-width: none;
+}
+
+#work1 h3, #work2 h3, #work3 h3 {
+    color: #9bf1ff;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+#work1 ul, #work2 ul, #work3 ul {
+    margin-bottom: 2rem;
+}
+
+#work1 ul li, #work2 ul li, #work3 ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Navigation improvements for portfolio */
+#header nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media screen and (max-width: 480px) {
+    #header nav ul li a {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+
+}
