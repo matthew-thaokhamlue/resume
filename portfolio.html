@@ -14,11 +14,11 @@
     />
     <meta
       name="description"
-      content="Portfolio showcasing Matthew Thaokhamlue's product management and technical projects in AI, health analytics, and B2B SaaS platforms."
+      content="Portfolio showcasing Matthew Thaokhamlue's product management and technical projects in AI, MCP development, health analytics, and B2B SaaS platforms."
     />
     <meta
       name="keywords"
-      content="Portfolio, Product Management, AI Projects, B2B SaaS, Technical Leadership"
+      content="Portfolio, Product Management, AI Projects, MCP Development, B2B SaaS, Technical Leadership, Open Source"
     />
     <meta name="author" content="Matthew Thaokhamlue" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -39,13 +39,37 @@
           <h2 class="major">My Work</h2>
           <p>
             Here are some key projects that showcase my experience in technical
-            product management, API & 3 part integrations, and AI-powered
-            features development across different industries and technologies.
+            product management, API & 3rd party integrations, AI-powered
+            features development, and open source MCP development across different industries and technologies.
           </p>
 
           <!-- Work Cards Grid -->
           <div class="portfolio-grid">
-            <!-- Work Card 1: Revvity Signals Inventory Integration -->
+            <!-- Work Card 1: Fast Project Docs MCP Server -->
+            <div class="work-card" data-work="work0">
+              <div class="work-image">
+                <span class="icon fa-cogs"></span>
+              </div>
+              <div class="work-content">
+                <h3>Fast Project Docs MCP Server</h3>
+                <p class="work-type">
+                  Open Source • MCP Development • AI-Powered Documentation • Python
+                </p>
+                <p class="work-description">
+                  Built a Model Context Protocol (MCP) server that automates generation of professional project documentation (PRD, SPEC, DESIGN) with AI integration.
+                </p>
+                <div class="work-tags">
+                  <span class="tag">MCP Protocol</span>
+                  <span class="tag">Document Generation</span>
+                  <span class="tag">Python</span>
+                  <span class="tag">AI Integration</span>
+                  <span class="tag">Open Source</span>
+                </div>
+                <a href="#work0" class="button primary small">View Details</a>
+              </div>
+            </div>
+
+            <!-- Work Card 2: Revvity Signals Inventory Integration -->
             <div class="work-card" data-work="work1">
               <div class="work-image">
                 <span class="icon fa-file"></span>
@@ -70,7 +94,7 @@
               </div>
             </div>
 
-            <!-- Work Card 2: Thryve Health Data SDK -->
+            <!-- Work Card 3: Thryve Health Data SDK -->
             <div class="work-card" data-work="work2">
               <div class="work-image">
                 <span class="icon fa-folder"></span>
@@ -92,7 +116,7 @@
               </div>
             </div>
 
-            <!-- Work Card 3: Automation Tools -->
+            <!-- Work Card 4: Automation Tools -->
             <div class="work-card" data-work="work3">
               <div class="work-image">
                 <span class="icon fa-lightbulb"></span>
@@ -119,6 +143,79 @@
           </div>
         </article>
         <!-- Work Detail Modals -->
+
+        <!-- Work 0: Fast Project Docs MCP Server -->
+        <article id="work0">
+          <h2 class="major">Fast Project Docs MCP Server</h2>
+          <span class="image main"
+            ><img
+              src="images/pic01.png"
+              alt="Fast Project Docs MCP Server - Architecture and Document Generation"
+          /></span>
+
+          <h3>Project Overview</h3>
+          <p>
+            <strong>Type:</strong> Open Source Project<br />
+            <strong>Repository:</strong> <a href="https://github.com/matthew-thaokhamlue/fast-project-docs-mcp" target="_blank">GitHub - fast-project-docs-mcp</a><br />
+            <strong>License:</strong> MIT<br />
+          </p>
+
+          <h3>Challenge</h3>
+          <p>
+            Creating comprehensive project documentation (PRDs, technical specifications, and design documents) is time-consuming and often inconsistent. Product managers and developers spend hours writing documentation that could be automated while maintaining professional quality and structure.
+          </p>
+
+          <h3>Solution & Implementation</h3>
+          <p>
+            Built a Python-based Model Context Protocol (MCP) server that integrates with AI clients like Claude Desktop to automate the generation of professional project documentation. The system uses structured templates and intelligent prompts to create comprehensive documents from user input and reference materials.
+          </p>
+
+          <h3>Key Features Delivered</h3>
+          <ul>
+            <li>
+              <strong>Multi-Document Generation:</strong> Automated creation of PRD (Product Requirements Document), SPEC (Technical Specification), and DESIGN documents
+            </li>
+            <li>
+              <strong>Reference Resource Analysis:</strong> Processes multiple file formats (Markdown, JSON, YAML, PDF, images) to incorporate existing project materials
+            </li>
+            <li>
+              <strong>MCP Protocol Integration:</strong> Full Model Context Protocol support for seamless integration with AI clients
+            </li>
+            <li>
+              <strong>Template Customization:</strong> Flexible template system following industry best practices with customization options
+            </li>
+            <li>
+              <strong>Cross-Document References:</strong> Maintains consistency and relationships between related documents
+            </li>
+          </ul>
+
+          <h3>Technical Architecture</h3>
+          <p>
+            <strong>Core Technologies:</strong> Python 3.9+, MCP Framework, AsyncIO<br />
+            <strong>File Processing:</strong> PyPDF2, python-docx, Pillow, pytesseract (OCR)<br />
+            <strong>Data Processing:</strong> PyYAML, python-frontmatter, markdown<br />
+            <strong>Development Tools:</strong> pytest, black, mypy, flake8
+          </p>
+
+          <h3>Impact & Results</h3>
+          <ul>
+            <li><strong>2,000-4,000+ word documents</strong> generated automatically with professional structure</li>
+            <li><strong>Multi-format support</strong> for reference materials including PDFs and images with OCR</li>
+            <li><strong>Open source contribution</strong> to the MCP ecosystem with MIT license</li>
+            <li><strong>Comprehensive testing</strong> with unit and integration test coverage</li>
+            <li><strong>Production-ready</strong> with security scanning, code quality tools, and documentation</li>
+          </ul>
+
+          <h3>Documentation Generated</h3>
+          <p>
+            The system generates three types of professional documents:
+          </p>
+          <ul>
+            <li><strong>PRD:</strong> Product requirements with user stories, success criteria, and business constraints</li>
+            <li><strong>SPEC:</strong> Technical specifications with architecture, APIs, and implementation details</li>
+            <li><strong>DESIGN:</strong> Design documents with system architecture, data flows, and UI specifications</li>
+          </ul>
+        </article>
 
         <!-- Work 1: Revvity Signals Inventory Integration -->
         <article id="work1">
