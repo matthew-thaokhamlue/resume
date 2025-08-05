@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://matthew-thaokhamlue.github.io/sitemap.xml
+
+# Allow crawling of CSS and JS files for better rendering
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /images/
+
+# Disallow crawling of unnecessary files
+Disallow: /assets/sass/
+Disallow: /*.pdf$
