@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Professional Experience - John Doe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+    }
+    .material-symbols-outlined.fill {
+        font-variation-settings: 'FILL' 1;
+    }
+  </style>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#0da6f2",
+            "background-light": "#f5f7f8",
+            "background-dark": "#101c22",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="flex flex-1 justify-center py-5">
+<div class="flex flex-col md:flex-row max-w-[1280px] w-full px-4 md:px-8 lg:px-12 gap-8">
+<!-- Side Navigation -->
+<aside class="w-full md:w-64 lg:w-72 md:sticky top-5 h-min">
+<div class="flex flex-col gap-4 bg-background-light dark:bg-[#15232b] p-4 rounded-xl">
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Profile picture of John Doe" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCmJz8jfS110Hbu1Ca61BNlk6tHTCDMwsLhRdTb-x63nrVVlO6b2bHZ-M_fTvoUGw42auaNVyEA-CPyx9JxkeYeV283y0A331mPnhoeBQge9CScD8QqqHcv_z0YKX1MdUuPDFE_nJ-5zPc9cSXsbko-JRa-73VCfUx_ngYiEqyg-BqG9N5UahUKrflBBdgVeuQ8BmYlLitc52qxUNAWLgExeP9aOnFtYwwkJE93sUdT5mSWjPOIxSQ6hQaXOS984ZRhGz1MS8on_UY");'></div>
+<div class="flex flex-col">
+<h1 class="text-gray-900 dark:text-white text-lg font-bold">John Doe</h1>
+<p class="text-gray-500 dark:text-[#90b7cb] text-sm">Technical Product Manager</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#223c49]" href="#">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">person</span>
+<p class="text-sm font-medium">About</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary" href="#">
+<span class="material-symbols-outlined fill">work</span>
+<p class="text-sm font-medium">Experience</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#223c49]" href="#">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">folder</span>
+<p class="text-sm font-medium">Projects</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#223c49]" href="#">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">mail</span>
+<p class="text-sm font-medium">Contact</p>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 min-w-0">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between gap-3 p-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-gray-900 dark:text-white text-4xl font-black tracking-[-0.033em]">Professional Experience</p>
+<p class="text-gray-500 dark:text-[#90b7cb] text-base font-normal">A chronological overview of my career journey and key achievements in product management.</p>
+</div>
+</div>
+<!-- Timeline -->
+<div class="grid grid-cols-[auto_1fr] gap-x-4 md:gap-x-6 px-4 mt-8">
+<!-- Timeline Item 1 -->
+<div class="flex flex-col items-center gap-1.5 pt-1.5">
+<div class="grid place-content-center size-8 rounded-full bg-primary/10 dark:bg-primary/20">
+<span class="material-symbols-outlined text-primary text-xl">work</span>
+</div>
+<div class="w-[2px] bg-gray-200 dark:bg-[#315668] h-full"></div>
+</div>
+<div class="flex flex-1 flex-col pb-10">
+<p class="text-gray-900 dark:text-white text-lg font-semibold">Senior Technical Product Manager</p>
+<p class="text-gray-600 dark:text-[#90b7cb] text-sm font-medium">TechSolutions Inc. <span class="text-gray-400 dark:text-gray-500 font-normal">| Jan 2021 - Present</span></p>
+<p class="text-gray-800 dark:text-gray-300 text-base font-normal leading-relaxed pt-4 pb-3">
+                  Led a cross-functional team to launch a new enterprise-grade SaaS platform, resulting in a 25% increase in annual recurring revenue. Defined the product vision, strategy, and roadmap, ensuring alignment with market demands and company goals.
+                </p>
+<div class="flex gap-2 flex-wrap pt-2">
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">Roadmapping</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">Agile</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">SaaS</p>
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="flex flex-col items-center gap-1.5 pt-1.5">
+<div class="grid place-content-center size-8 rounded-full bg-primary/10 dark:bg-primary/20">
+<span class="material-symbols-outlined text-primary text-xl">work</span>
+</div>
+<div class="w-[2px] bg-gray-200 dark:bg-[#315668] h-full"></div>
+</div>
+<div class="flex flex-1 flex-col pb-10">
+<p class="text-gray-900 dark:text-white text-lg font-semibold">Product Manager</p>
+<p class="text-gray-600 dark:text-[#90b7cb] text-sm font-medium">Innovate Corp. <span class="text-gray-400 dark:text-gray-500 font-normal">| Jun 2018 - Dec 2020</span></p>
+<p class="text-gray-800 dark:text-gray-300 text-base font-normal leading-relaxed pt-4 pb-3">
+                  Managed the product lifecycle for a suite of B2B mobile applications. Conducted user research and data analysis to identify pain points and drive feature development, which boosted user retention by 15%.
+                </p>
+<div class="flex gap-2 flex-wrap pt-2">
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">JIRA</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">Data Analysis</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">Mobile Apps</p>
+</div>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="flex flex-col items-center gap-1.5 pt-1.5">
+<div class="grid place-content-center size-8 rounded-full bg-primary/10 dark:bg-primary/20">
+<span class="material-symbols-outlined text-primary text-xl">work</span>
+</div>
+<div class="w-[2px] bg-gray-200 dark:bg-[#315668] h-full"></div>
+</div>
+<div class="flex flex-1 flex-col pb-10">
+<p class="text-gray-900 dark:text-white text-lg font-semibold">Associate Product Manager</p>
+<p class="text-gray-600 dark:text-[#90b7cb] text-sm font-medium">DataWeavers <span class="text-gray-400 dark:text-gray-500 font-normal">| Jul 2016 - May 2018</span></p>
+<p class="text-gray-800 dark:text-gray-300 text-base font-normal leading-relaxed pt-4 pb-3">
+                  Collaborated with senior product managers to gather requirements and write specifications for new features on a high-traffic e-commerce platform. Coordinated with engineering and design teams to ensure timely delivery of product updates.
+                </p>
+<div class="flex gap-2 flex-wrap pt-2">
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">Requirements Gathering</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">AWS</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full bg-gray-200/50 dark:bg-[#223c49] px-3">
+<p class="text-gray-700 dark:text-white text-xs font-medium">E-commerce</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

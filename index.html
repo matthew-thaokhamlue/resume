@@ -1,612 +1,473 @@
 <!DOCTYPE html>
-<!--
-	Dimension by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang="en">
+<html class="dark" lang="en">
 
 <head>
-  <title>
-    Matthew Thaokhamlue - Technical Product Manager | AI & B2B SaaS Expert
-  </title>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Matthew Thaokhamlue - Technical Product Manager</title>
   <meta name="description"
-    content="Matthew Thaokhamlue - Technical Product Manager with 5+ years driving AI-powered innovation in health analytics and laboratory informatics B2B SaaS platforms. Expert in API integrations, cross-functional team leadership, and product strategy." />
-  <meta name="keywords"
-    content="Matthew Thaokhamlue, Technical Product Manager, AI Product Manager, B2B SaaS Product Manager, API Integration, Machine Learning, Product Management, Cross-functional Leadership, Health Analytics, Laboratory Informatics, Berlin Germany" />
-  <meta name="author" content="Matthew Thaokhamlue" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://matthew-thaokhamlue.github.io/" />
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://matthew-thaokhamlue.github.io/" />
-  <meta property="og:title" content="Matthew Thaokhamlue - Technical Product Manager | AI & B2B SaaS Expert" />
-  <meta property="og:description"
     content="Technical Product Manager with 5+ years driving AI-powered innovation in health analytics and laboratory informatics B2B SaaS platforms." />
-  <meta property="og:image" content="https://matthew-thaokhamlue.github.io/images/MT.jpg" />
-  <meta property="og:site_name" content="Matthew Thaokhamlue Portfolio" />
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://matthew-thaokhamlue.github.io/" />
-  <meta property="twitter:title" content="Matthew Thaokhamlue - Technical Product Manager | AI & B2B SaaS Expert" />
-  <meta property="twitter:description"
-    content="Technical Product Manager with 5+ years driving AI-powered innovation in health analytics and laboratory informatics B2B SaaS platforms." />
-  <meta property="twitter:image" content="https://matthew-thaokhamlue.github.io/images/MT.jpg" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-  <link rel="icon" type="image/png" href="images/web-icon.png" />
-  <link rel="apple-touch-icon" href="images/web-icon.png" />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Preload critical resources -->
-  <link rel="preload" href="assets/css/main.css" as="style" />
-  <link rel="preload" href="assets/js/main.js" as="script" />
-  <link rel="preload" href="images/MT.jpg" as="image" />
-
-  <link rel="stylesheet" href="assets/css/main.css" />
-  <noscript>
-    <link rel="stylesheet" href="assets/css/noscript.css" />
-  </noscript>
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Matthew Thaokhamlue",
-        "jobTitle": "Technical Product Manager",
-        "description": "Technical Product Manager with 5+ years of experience driving AI-powered innovation in health analytics and laboratory informatics B2B SaaS platforms",
-        "url": "https://matthew-thaokhamlue.github.io/",
-        "image": "https://matthew-thaokhamlue.github.io/images/MT.jpg",
-        "sameAs": [
-          "https://www.linkedin.com/in/matthewthaokhamlue",
-          "https://github.com/matthew-thaokhamlue"
-        ],
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dresden",
-          "addressCountry": "Germany"
-        },
-        "alumniOf": [
-          {
-            "@type": "EducationalOrganization",
-            "name": "Hochschule für Technik und Wirtschaft Berlin",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Berlin",
-              "addressCountry": "Germany"
-            }
+  <!-- Tailwind Config -->
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#0da6f2",
+            "primary-dark": "#0a8ccf",
+            "background-light": "#f5f7f8",
+            "background-dark": "#101c22",
+            "surface": "#1a262d",
+            "surface-hover": "#233038",
           },
-          {
-            "@type": "EducationalOrganization",
-            "name": "Chiang Mai University",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Chiang Mai",
-              "addressCountry": "Thailand"
-            }
-          }
-        ],
-        "worksFor": {
-          "@type": "Organization",
-          "name": "Labforward GmbH",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Berlin",
-            "addressCountry": "Germany"
-          }
+          fontFamily: {
+            "display": ["Space Grotesk", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
         },
-        "knowsAbout": [
-          "Technical Product Management",
-          "AI Product Development",
-          "B2B SaaS Platforms",
-          "API Integration",
-          "Cross-functional Team Leadership",
-          "Health Analytics",
-          "Laboratory Informatics",
-          "Machine Learning",
-          "Product Strategy"
-        ],
-        "hasOccupation": [
-          {
-            "@type": "Occupation",
-            "name": "Technical Product Manager",
-            "occupationLocation": {
-              "@type": "City",
-              "name": "Berlin, Germany"
-            },
-            "estimatedSalary": {
-              "@type": "MonetaryAmountDistribution",
-              "name": "Senior Technical Product Manager Salary"
-            },
-            "experienceRequirements": "5+ years",
-            "skills": [
-              "AI Product Development",
-              "B2B SaaS Platforms",
-              "API Integration",
-              "Cross-functional Team Leadership",
-              "Product Strategy",
-              "Health Analytics",
-              "Laboratory Informatics"
-            ]
-          }
-        ]
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #101c22;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #233038;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0da6f2;
+    }
+
+    .glass-nav {
+      background: rgba(16, 28, 34, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
       }
-    </script>
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Fix dialog display */
+    dialog:not([open]) {
+      display: none;
+    }
+
+    dialog[open] {
+      display: flex;
+    }
+  </style>
 </head>
 
-<body class="is-preload">
-  <!-- Wrapper -->
-  <div id="wrapper">
-    <!-- Header -->
-    <header id="header">
-      <div class="content">
-        <div class="inner">
-          <h1>Matthew Thaokhamlue</h1>
-          <p>
-            <strong>Technical Product Manager</strong><br />
-            Building the Future of AI-Powered B2B SaaS
-          </p>
-          <ul class="actions special">
-            <li>
-              <a href="portfolio.html" class="button primary">
-                View Portfolio
-              </a>
-            </li>
-            <li>
-              <a href="Matthew main CV.pdf" target="_blank" download class="button">
-                Download CV
-              </a>
-            </li>
-          </ul>
+<body class="bg-background-dark text-white font-display antialiased">
+  <div class="relative min-h-screen flex flex-col">
+    <!-- Background Blur Circles -->
+    <div class="absolute inset-0 overflow-hidden z-0">
+      <div
+        class="absolute top-[-200px] left-[-200px] size-[400px] rounded-full bg-primary/20 blur-3xl opacity-50 animate-pulse-slow">
+      </div>
+      <div
+        class="absolute bottom-[-200px] right-[-200px] size-[400px] rounded-full bg-primary/20 blur-3xl opacity-50 animate-pulse-slow delay-1000">
+      </div>
+      <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 text-primary/10">
+        <svg fill="none" height="800" viewBox="0 0 800 800" width="800" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="1144.52"
+              id="filter0_f_1_183" width="1144.52" x="-172.26" y="-172.26">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+              <feGaussianBlur in="BackgroundImage" stdDeviation="100"></feGaussianBlur>
+              <feComposite in2="SourceAlpha" operator="in" result="effect1_foregroundBlur_1_183"></feComposite>
+              <feBlend in="SourceGraphic" in2="effect1_foregroundBlur_1_183" mode="normal" result="shape"></feBlend>
+            </filter>
+          </defs>
+          <g filter="url(#filter0_f_1_183)">
+            <path
+              d="M589.699 400C589.699 504.629 504.629 589.7 400 589.7C295.371 589.7 210.301 504.629 210.301 400C210.301 295.371 295.371 210.301 400 210.301C504.629 210.301 589.699 295.371 589.699 400Z"
+              stroke="currentColor" stroke-width="20"></path>
+            <path
+              d="M518.3 400C518.3 465.345 465.345 518.3 400 518.3C334.655 518.3 281.7 465.345 281.7 400C281.7 334.655 334.655 281.7 400 281.7C465.345 281.7 518.3 334.655 518.3 400Z"
+              stroke="currentColor" stroke-width="20"></path>
+            <path
+              d="M400 447C425.957 447 447 425.957 447 400C447 374.043 425.957 353 400 353C374.043 353 353 374.043 353 400C353 425.957 374.043 447 400 447Z"
+              stroke="currentColor" stroke-width="20"></path>
+          </g>
+        </svg>
+      </div>
+    </div>
 
-          <!-- Audio Player -->
-          <div class="audio-player" style="margin-top: 2rem">
-            <h3 style="margin-bottom: 1rem; font-size: 1.1rem; color: #ffffff">
-              Listen to my Technical Product Manager role discussion:
-            </h3>
-            <audio controls style="
-                  width: 100%;
-                  max-width: 500px;
-                  margin: 0 auto;
-                  display: block;
-                ">
+    <!-- TopNavBar -->
+    <header class="sticky top-0 z-50 flex justify-center glass-nav">
+      <div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center gap-3">
+          <div class="size-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
+            <span class="font-bold text-xl">M</span>
+          </div>
+          <h2 class="text-white text-lg font-bold tracking-tight hidden sm:block">Matthew Thaokhamlue</h2>
+        </div>
+        <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
+          <div class="flex items-center gap-6">
+            <a class="text-primary text-sm font-medium" href="index.html">Home</a>
+            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
+              href="about.html">About</a>
+            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
+              href="experience.html">Experience</a>
+            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
+              href="portfolio.html">Portfolio</a>
+          </div>
+          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
+            <span class="truncate">Let's Connect</span>
+          </a>
+        </nav>
+        <button class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors" onclick="toggleMenu()">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+      class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+      <a class="text-2xl font-bold text-primary hover:text-primary transition-colors" href="index.html"
+        onclick="toggleMenu()">Home</a>
+      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="about.html"
+        onclick="toggleMenu()">About</a>
+      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="experience.html"
+        onclick="toggleMenu()">Experience</a>
+      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="portfolio.html"
+        onclick="toggleMenu()">Portfolio</a>
+      <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
+        <span class="material-symbols-outlined text-3xl">close</span>
+      </button>
+    </div>
+
+    <main
+      class="relative z-10 flex flex-1 flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-20 sm:gap-24">
+      <!-- Hero Section (Bento Grid Style) -->
+      <section class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 animate-fade-in">
+        <!-- Main Intro Card -->
+        <div
+          class="lg:col-span-2 flex flex-col justify-center gap-6 rounded-2xl bg-surface border border-white/5 p-8 sm:p-10 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
+            <span class="material-symbols-outlined text-9xl text-primary">rocket_launch</span>
+          </div>
+          <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue
+          </h1>
+          <p class="text-lg sm:text-xl text-primary font-medium tracking-tight">Technical Product Manager</p>
+          <p class="text-white/60 max-w-xl text-lg leading-relaxed">Crafting high-impact products at the intersection of
+            technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
+          <!-- Audio Player in Hero -->
+          <div class="mt-4 p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm max-w-md">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-sm">graphic_eq</span>
+              </div>
+              <p class="text-xs font-medium text-white/80">Listen to my role discussion</p>
+            </div>
+            <audio controls class="w-full h-8 opacity-80 hover:opacity-100 transition-opacity">
               <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav" type="audio/wav" />
               Your browser does not support the audio element.
             </audio>
           </div>
         </div>
-      </div>
-      <nav>
-        <ul>
-          <li>
-            <a href="#about" title="About Matthew Thaokhamlue - Technical Product Manager">About</a>
-          </li>
-          <li>
-            <a href="#experience" title="Professional Experience in AI and B2B SaaS">Experience</a>
-          </li>
-          <li>
-            <a href="#skills" title="Technical Skills and Certifications">Skills</a>
-          </li>
-          <li>
-            <a href="portfolio.html" title="Technical Product Management Portfolio Projects">Portfolio</a>
-          </li>
-          <li>
-            <a href="#colleagues" title="Professional Testimonials and Recommendations">Testimonials</a>
-          </li>
-          <!-- <li><a href="#hobbies">Hobbies</a></li>
-            <li><a href="#contact">Contact</a></li> -->
-        </ul>
-      </nav>
-    </header>
 
-    <!-- Main -->
-    <div id="main">
-      <!-- About -->
-      <article id="about">
-        <h2 class="major">About Matthew Thaokhamlue</h2>
-        <div class="profile-avatar">
-          <img src="images/MT.jpg" alt="Matthew Thaokhamlue - Technical Product Manager" class="avatar-profile" />
+        <!-- Right Column: Portfolio & Download CV Stacked -->
+        <div class="flex flex-col gap-6 sm:gap-8">
+          <!-- Portfolio Link Card -->
+          <a class="group flex flex-col justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-8 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
+            href="portfolio.html">
+            <div>
+              <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+                <span class="material-symbols-outlined text-2xl">grid_view</span>
+              </div>
+              <h3 class="text-2xl font-bold tracking-tight text-white">Selected Projects</h3>
+              <p class="text-white/60 mt-2">Explore my work in leading cross-functional teams.</p>
+            </div>
+            <div class="flex items-center gap-2 text-primary font-medium mt-4">
+              <span>View Portfolio</span>
+              <span
+                class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Download CV Card -->
+          <a class="group flex flex-col justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-8 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
+            href="/path/to/your/cv.pdf" download="Matthew_Thaokhamlue_CV.pdf">
+            <div>
+              <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+                <span class="material-symbols-outlined text-2xl">download</span>
+              </div>
+              <h3 class="text-2xl font-bold tracking-tight text-white">Download CV</h3>
+              <p class="text-white/60 mt-2">Get a copy of my resume and detailed work history.</p>
+            </div>
+            <div class="flex items-center gap-2 text-primary font-medium mt-4">
+              <span>Download PDF</span>
+              <span
+                class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_downward</span>
+            </div>
+          </a>
         </div>
-        <p>
-          I’m a <strong>Technical Product Manager</strong> who loves solving messy problems at the intersection of
-          <strong>technology, people, and business</strong>.
-        </p>
-        <p>
-          For the past 5+ years, I’ve been building and improving <strong>B2B SaaS products</strong> in health and lab
-          software, particularly working on integrations, data and BI tools, and user workflows that make complex
-          systems feel effortless.
-        </p>
-        <p>
-          I care deeply about collaboration, clarity, and delivering things that actually make users smile while using
-          it (or at least stop swearing at the software).
-        </p>
 
-        <h3>Educational Background</h3>
-        <p>
-          <strong>Master of International and Development Economics</strong><br />
-          University of Applied Science Berlin (via DAAD scholarship) | Berlin, Germany<br />
-          Thesis: "Technological Change and Human Capital Transformation in Banking Sector in Thailand"
-        </p>
-
-        <p>
-          <strong>Bachelor's Degree in Economics</strong><br />
-          Chiang Mai University | Chiang Mai, Thailand<br />
-          Specialization: Quantitative Economics
-        </p>
-      </article>
-
-      <!-- Experience -->
-      <article id="experience">
-        <h2 class="major">Professional Experience</h2>
-        <span class="image main"><img src="images/experience-professional.png"
-            alt="Matthew Thaokhamlue Professional Experience" /></span>
-
-        <h3>Product Manager | Labforward GmbH</h3>
-        <p><strong>Nov 2024 - Nov 2025 | Berlin, Germany</strong></p>
-        <ul>
-          <li>
-            Lead the product roadmap and end-to-end development cycle for core lab management products.
-          </li>
-          <li>
-            Rebuilt team collaboration practices — directly helping secure a <strong>$500K contract renewal</strong>.
-          </li>
-          <li>
-            Introduced rapid prototyping loops, shrinking testing time from days to hours.
-          </li>
-          <li>
-            Guided the BI team to automate reporting and data pipelines, turning ad-hoc insights into daily decisions.
-          </li>
-        </ul>
-
-        <h3>Technical Product Manager | LabTwin GmbH</h3>
-        <p><strong>Jan 2023 - Nov 2024 | Berlin, Germany</strong></p>
-        <ul>
-          <li>
-            Drove roadmap for voice and integration features supporting scientists in real lab environments.
-          </li>
-          <li>
-            Streamlined the release process with engineering, tripling deployment frequency (<strong>4 → 12 per
-              year</strong>).
-          </li>
-          <li>
-            Collaborated on retraining strategies for speech recognition, keeping scientific term accuracy at
-            <strong>95%</strong>.
-          </li>
-          <li>
-            Mentored a junior PM, encouraging autonomy and strong product intuition.
-          </li>
-        </ul>
-
-        <h3>Product Owner | Thryve GmbH</h3>
-        <p><strong>Oct 2019 - Dec 2022 | Berlin, Germany</strong></p>
-        <ul>
-          <li>
-            Built and managed APIs and SDKs powering <strong>1M+ users</strong> across 100+ B2B partners in digital
-            health.
-          </li>
-          <li>
-            Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and more).
-          </li>
-          <li>
-            Contributed to company growth from <strong>€0 → €1M ARR</strong> and from 7 → 35 people.
-          </li>
-          <li>
-            Created “Thryve Academy,” a learning program that onboarded and aligned new hires in record time.
-          </li>
-        </ul>
-
-        <h3>Senior Risk Consultant | Ernst & Young</h3>
-        <p><strong>Aug 2016 - Feb 2018 | Bangkok, Thailand</strong></p>
-        <ul>
-          <li>
-            Drove risk assessments and process improvement projects for Thailand’s largest corps, identifying critical
-            vulnerabilities and developing mitigation controls.
-          </li>
-          <li>
-            Developed risk management frameworks and control testing procedures for digital transformation initiatives.
-          </li>
-          <li>
-            Conducted market research on emerging technologies (RPA) and competitive risk practices.
-          </li>
-          <li>
-            Monitored project delivery KPIs and risk indicators across multiple engagements.
-          </li>
-        </ul>
-      </article>
-
-      <!-- Skills -->
-      <article id="skills">
-        <h2 class="major">Skills & Certifications</h2>
-        <span class="image main"><img src="images/pic03.png" alt="Matthew Thaokhamlue Skills" /></span>
-
-        <h3>Essential Skills</h3>
-        <ul>
-          <li>Product Roadmap</li>
-          <li>Product design and discovery</li>
-          <li>User Research</li>
-          <li>A/B Testing</li>
-          <li>Stakeholder Management</li>
-          <li>Automation (Python coding and n8n)</li>
-          <li>3rd party integration and AI Implementation</li>
-        </ul>
-
-        <h3>Certifications</h3>
-        <ul>
-          <li>Professional Product Owner</li>
-          <li>PMI Agile Certified Practitioner</li>
-          <li>Google UX design and Business Intelligence</li>
-          <li>Google Cybersecurity</li>
-          <li>Comptia Security+</li>
-          <li>AWS and Azure Solutions Architect</li>
-        </ul>
-
-        <h3>Languages</h3>
-        <ul>
-          <li>English (IELTS 7.5)</li>
-          <li>German (B1)</li>
-          <li>Thai (Native)</li>
-        </ul>
-      </article>
-
-      <!-- Hobbies -->
-      <!-- <article id="hobbies">
-          <h2 class="major">Hobbies</h2>
-          <span class="image main"
-            ><img src="images/pic04.png" alt="Cooking and Hobbies"
-          /></span>
-
-          <h3>Cooking</h3>
-          <p>
-            When I'm not building products or analyzing data, you'll find me in
-            the kitchen experimenting with flavors and techniques. I have a deep
-            passion for <strong>Thai cuisine</strong> - there's something
-            magical about balancing sweet, sour, salty, and spicy elements that
-            mirrors the complexity I love in product development.
-          </p>
-
-          <p>
-            Cooking is a way to connect with others and share experiences. I
-            believe some of the best conversations happen over a shared meals &
-            drinks and spending quality time with other.
-          </p>
-
-          <h3>Why cooking matters?</h3>
-          <p>Just like in product management, cooking requires:</p>
-          <ul>
-            <li>
-              <strong>Attention to Detail:</strong> Every ingredient and timing
-              matters
-            </li>
-            <li>
-              <strong>Iterative Improvement:</strong> Each dish is a chance to
-              refine and perfect
-            </li>
-            <li>
-              <strong>User Experience:</strong> Creating something that brings
-              joy to others
-            </li>
-            <li>
-              <strong>Cultural Understanding:</strong> Respecting traditions
-              while innovating
-            </li>
-          </ul>
-
-          <p>
-            Food, and rightly cooked, has the incredible power to give good UX
-            to people. Food can bring people together, break down barriers, and
-            create lasting memories, that make them want to come back for more.
-          </p>
-        </article> -->
-
-      <!-- Colleagues -->
-      <article id="colleagues">
-        <h2 class="major">Professional Testimonials</h2>
-        <div class="colleague-testimonial">
-          <div class="colleague-header">
-            <div class="colleague-avatar">
-              <img src="images/PB.jpeg" alt="Paul Burggraf" class="avatar-image" />
+        <!-- Resume Link Card -->
+        <a class="group flex flex-col justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-8 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
+          href="experience.html">
+          <div>
+            <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+              <span class="material-symbols-outlined text-2xl">description</span>
             </div>
-            <div class="colleague-info">
-              <h3>Paul Burggraf</h3>
-              <p class="colleague-title">Founder at Thryve</p>
-            </div>
+            <h3 class="text-2xl font-bold tracking-tight text-white">Experience & Skills</h3>
+            <p class="text-white/60 mt-2">A detailed overview of my professional journey, skills, and certifications.
+            </p>
           </div>
-          <blockquote class="colleague-quote">
-            <p>
-              "Matthew joined Thryve as the 7th employee. He has been pivotal
-              in building our quality assurance team, our customer operations
-              team and our product team. As a product owner, he has managed to
-              scale a complex and unique IT service in a highly regulated and
-              demanding field of health care from 1k end users to over 1
-              million end users.
-            </p>
-            <p>
-              Matthew has steered our agile development process as a scrum
-              master. He worked closely with the c-level, front end team, back
-              end team and quality assurance team to plan, execute and review
-              sprints and releases. In this role, he showed exceptional
-              dedication, hands-on attitude and a great technical
-              understanding.
-            </p>
-            <p>
-              Matthew massively contributed to Thryve's growth and
-              professionalization. The whole team is grateful to have worked
-              with him and sad to let him go. I am sure Matthew will continue
-              to manage big IT projects and scale complex operations
-              convincingly."
-            </p>
-          </blockquote>
-        </div>
-        <div class="colleague-testimonial">
-          <div class="colleague-header">
-            <div class="colleague-avatar">
-              <img src="images/mark-flores.png" alt="Mark Dominick Flores" class="avatar-image" />
-            </div>
-            <div class="colleague-info">
-              <h3>Mark Dominick Flores</h3>
-              <p class="colleague-title">Senior iOS Engineer at labtwin</p>
-            </div>
+          <div class="flex items-center gap-2 text-primary font-medium mt-4">
+            <span>View Experience</span>
+            <span
+              class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
           </div>
-          <blockquote class="colleague-quote">
-            <p>
-              I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of
-              features, and his contributions were critical to getting them shipped.
-            </p>
-            <p>
-              Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear,
-              actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to
-              speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact
-              with minimal overhead.
-            </p>
-            <p>
-              On a personal level, he's great to work with. He was always available to unblock us, help us navigate
-              dependencies, and make sure we had the context we needed to build things correctly the first time.
-            </p>
-            <p>
-              Matthew is a top-tier TPM, and I'd work with him again in a heartbeat. He's a huge asset to any product or
-              engineering team.
-            </p>
-          </blockquote>
-        </div>
-        <div class="colleague-testimonial">
-          <div class="colleague-header">
-            <div class="colleague-avatar">
-              <img src="images/jeroen-de-haas.png" alt="Jeroen de Haas" class="avatar-image" />
-            </div>
-            <div class="colleague-info">
-              <h3>Jeroen de Haas</h3>
-              <p class="colleague-title">Chief Product Officer (CPO) at Labforward</p>
-            </div>
-          </div>
-          <blockquote class="colleague-quote">
-            <p>
-              I’ve had the privilege of working closely with Matt as his manager and CPO, and watching his journey has
-              been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a
-              fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to
-              get to the heart of a problem.
-            </p>
-            <p>
-              What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation,
-              Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I’ve truly seen him
-              grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His
-              growth isn’t just in skills, but in the way he brings people together.
-            </p>
-            <p>
-              Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges
-              gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind
-              while never losing sight of the details that matter.
-            </p>
-            <p>
-              If you’re looking for someone who combines sharp product thinking with humility, grit, and genuine care
-              for the team, Matt is that person. I feel lucky to have worked with him and can’t wait to see where his
-              talents take him next.
-            </p>
-          </blockquote>
-        </div>
-        <div class="colleague-testimonial">
-          <div class="colleague-header">
-            <div class="avatar-placeholder">TT</div>
-            <div class="colleague-info">
-              <h3>Thuy Tran</h3>
-              <p class="colleague-title">Software Engineer at Doctorlib</p>
-            </div>
-          </div>
-          <blockquote class="colleague-quote">
-            <p>
-              I worked with Matthew for more than 3 years in a
-              cross-functional team where he was the Production Owner. I was
-              extremely impressed with his analytical mind and his ability to
-              dig deep and notice even the small details of a software
-              feature. With his attitude of can-do and let's get thing done,
-              as well as his ability to pick things up quickly, his
-              contribution to the team was highly significant and valuable. It
-              was always a pleasure to co-work with him, as he takes his
-              responsibility very seriously while maintaining a pleasant,
-              collaborative discussion. I could always count on him to
-              complete his tasks with full efforts and excellent output, and
-              his supportive nature towards our colleagues.
-            </p>
-          </blockquote>
-        </div>
-      </article>
+        </a>
 
-      <!-- Contact -->
-      <!-- <article id="contact">
-          <h2 class="major">Contact</h2>
-          <p>You can also reach out to me through the following channels:</p>
-          <ul class="icons">
-            <li>
-              <a
-                href="mailto:matthew.thaokhamlue@gmail.com?subject=Contact%20from%20Portfolio%20Website"
-                class="icon fa-envelope"
-                title="Send me an email"
-                ><span class="label">Email</span></a
-              >
-            </li>
-            <li>
-              <a
-                href="https://www.linkedin.com/in/matthewthaokhamlue"
-                class="icon brands fa-linkedin"
-                target="_blank"
-                rel="noopener"
-                ><span class="label">LinkedIn</span></a
-              >
-            </li>
-            <li>
-              <a
-                href="https://github.com/matthew-thaokhamlue"
-                class="icon brands fa-github"
-                target="_blank"
-                rel="noopener"
-                ><span class="label">GitHub</span></a
-              >
-            </li>
-          </ul>
-        </article> -->
-    </div>
+        <!-- Contact Card -->
+        <a class="group lg:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-2xl bg-primary/10 border border-primary/20 p-8 transition-all duration-300 hover:bg-primary/20 hover:-translate-y-1"
+          href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank">
+          <div class="flex-1">
+            <h3 class="text-2xl font-bold tracking-tight text-white">Let's Connect</h3>
+            <p class="text-white/70 mt-2">Have a project in mind or want to talk about product? I'd love to hear from
+              you.</p>
+          </div>
+          <button
+            class="flex shrink-0 items-center justify-center gap-2 h-12 px-6 bg-primary hover:bg-primary-dark text-white font-bold tracking-wide rounded-xl transition-colors shadow-lg shadow-primary/20">
+            <span>Get in Touch</span>
+            <span class="material-symbols-outlined">email</span>
+          </button>
+        </a>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section id="testimonials" class="w-full max-w-7xl flex flex-col gap-10">
+        <div class="flex flex-col gap-4 text-center items-center">
+          <div class="flex items-center gap-2 text-primary">
+            <span class="material-symbols-outlined">forum</span>
+            <h3 class="font-bold tracking-wide uppercase text-sm">Testimonials</h3>
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-bold">What Colleagues Say</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Testimonial 1 -->
+          <div onclick="openTestimonial(this)" data-name="Paul Burggraf" data-role="Founder at Thryve"
+            data-image="images/PB.jpeg"
+            data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve's growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly."
+            class="cursor-pointer flex flex-col gap-6 p-8 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+            <div class="flex items-center gap-4">
+              <img src="images/PB.jpeg" alt="Paul Burggraf"
+                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+              <div>
+                <h4 class="font-bold text-white">Paul Burggraf</h4>
+                <p class="text-primary text-sm">Founder at Thryve</p>
+              </div>
+            </div>
+            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew joined Thryve as the 7th employee...
+              As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and
+              demanding field of health care from 1k end users to over 1 million end users."</p>
+            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+          </div>
+
+          <!-- Testimonial 2 -->
+          <div onclick="openTestimonial(this)" data-name="Mark Dominick Flores"
+            data-role="Senior iOS Engineer at LabTwin" data-image="images/mark-flores.png"
+            data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he's great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I'd work with him again in a heartbeat. He's a huge asset to any product or engineering team."
+            class="cursor-pointer flex flex-col gap-6 p-8 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+            <div class="flex items-center gap-4">
+              <img src="images/mark-flores.png" alt="Mark Dominick Flores"
+                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+              <div>
+                <h4 class="font-bold text-white">Mark Dominick Flores</h4>
+                <p class="text-primary text-sm">Senior iOS Engineer at LabTwin</p>
+              </div>
+            </div>
+            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew has a remarkable ability to take
+              nebulous business requirements and translate them into a clear, actionable backlog... He's also an
+              incredibly fast learner. He quickly got up to speed on our complex systems."</p>
+            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+          </div>
+
+          <!-- Testimonial 3 -->
+          <div onclick="openTestimonial(this)" data-name="Jeroen de Haas" data-role="CPO at Labforward"
+            data-image="images/jeroen-de-haas.png"
+            data-text="I've had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn't just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you're looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can't wait to see where his talents take him next."
+            class="cursor-pointer flex flex-col gap-6 p-8 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+            <div class="flex items-center gap-4">
+              <img src="images/jeroen-de-haas.png" alt="Jeroen de Haas"
+                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+              <div>
+                <h4 class="font-bold text-white">Jeroen de Haas</h4>
+                <p class="text-primary text-sm">CPO at Labforward</p>
+              </div>
+            </div>
+            <p class="text-white/70 italic leading-relaxed line-clamp-3">"What I admire most is his genuine can-do
+              attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus...
+              I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads."</p>
+            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+          </div>
+
+          <!-- Testimonial 4 -->
+          <div onclick="openTestimonial(this)" data-name="Thuy Tran" data-role="Software Engineer at Doctorlib"
+            data-image=""
+            data-text="I worked with Matthew for more than 3 years in a cross-functional team where he was the Production Owner. I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let's get thing done, as well as his ability to pick things up quickly, his contribution to the team was highly significant and valuable. It was always a pleasure to co-work with him, as he takes his responsibility very seriously while maintaining a pleasant, collaborative discussion. I could always count on him to complete his tasks with full efforts and excellent output, and his supportive nature towards our colleagues."
+            class="cursor-pointer flex flex-col gap-6 p-8 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+            <div class="flex items-center gap-4">
+              <div
+                class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
+                TT</div>
+              <div>
+                <h4 class="font-bold text-white">Thuy Tran</h4>
+                <p class="text-primary text-sm">Software Engineer at Doctorlib</p>
+              </div>
+            </div>
+            <p class="text-white/70 italic leading-relaxed line-clamp-3">"I was extremely impressed with his analytical
+              mind and his ability to dig deep and notice even the small details of a software feature. With his
+              attitude of can-do and let's get thing done... his contribution to the team was highly significant."</p>
+            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <!-- Footer -->
-    <footer id="footer">
-      <p class="copyright">
-        &copy; 2025 Matthew Thaokhamlue - Technical Product Manager. Design:
-        <a href="https://html5up.net" rel="nofollow">HTML5 UP</a>.
-      </p>
-      <br />
-      <!-- social media -->
-      <ul class="icons">
-        <li>
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" class="icon brands fa-linkedin" target="_blank"
-            rel="noopener" title="Connect with Matthew Thaokhamlue on LinkedIn"><span class="label">LinkedIn
-              Profile</span></a>
-        </li>
-
-        <li>
-          <a href="https://github.com/matthew-thaokhamlue" class="icon brands fa-github" target="_blank" rel="noopener"
-            title="View Matthew Thaokhamlue's GitHub Projects"><span class="label">GitHub Profile</span></a>
-        </li>
-      </ul>
-
-      <!-- Additional SEO Links -->
-      <nav class="footer-nav">
-        <a href="portfolio.html" title="View Technical Product Management Portfolio">Portfolio</a>
-        |
-        <a href="sitemap.xml" title="XML Sitemap">Sitemap</a>
-      </nav>
+    <footer class="border-t border-white/10 bg-background-dark py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex flex-col gap-2 text-center md:text-left">
+          <p class="text-white/60 text-sm">&copy; 2025 Matthew Thaokhamlue. All rights reserved.</p>
+          <p class="text-white/40 text-xs">Technical Product Manager | Berlin, Germany</p>
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+            class="text-white/60 hover:text-primary transition-colors">
+            <i class="fab fa-linkedin text-2xl"></i>
+          </a>
+          <a href="https://github.com/matthew-thaokhamlue" target="_blank"
+            class="text-white/60 hover:text-white transition-colors">
+            <i class="fab fa-github text-2xl"></i>
+          </a>
+        </div>
+      </div>
     </footer>
   </div>
 
-  <!-- BG -->
-  <div id="bg"></div>
+  <!-- Testimonial Modal -->
+  <dialog id="testimonial-modal"
+    class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="closeTestimonial(event)">
+      <div
+        class="bg-surface border border-white/10 rounded-2xl max-w-2xl w-full p-8 shadow-2xl transform transition-all scale-100 relative"
+        onclick="event.stopPropagation()">
+        <button onclick="closeTestimonial()"
+          class="absolute top-4 right-4 text-white/50 hover:text-white transition-colors">
+          <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+        <div class="flex flex-col gap-6">
+          <span class="material-symbols-outlined text-6xl text-primary/20">format_quote</span>
+          <div class="flex items-center gap-4">
+            <img id="modal-image" src="" alt="" class="w-16 h-16 rounded-full object-cover border-2 border-primary/20">
+            <div id="modal-initials"
+              class="hidden w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-2xl">
+            </div>
+            <div>
+              <h4 id="modal-name" class="text-xl font-bold text-white"></h4>
+              <p id="modal-role" class="text-primary text-base"></p>
+            </div>
+          </div>
+          <div class="max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+            <p id="modal-text" class="text-white/80 text-lg leading-relaxed italic"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
 
-  <!-- Scripts -->
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/browser.min.js"></script>
-  <script src="assets/js/breakpoints.min.js"></script>
-  <script src="assets/js/util.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('translate-x-full');
+    }
+
+    function openTestimonial(element) {
+      const modal = document.getElementById('testimonial-modal');
+      const name = element.getAttribute('data-name');
+      const role = element.getAttribute('data-role');
+      const image = element.getAttribute('data-image');
+      const text = element.getAttribute('data-text');
+
+      document.getElementById('modal-name').textContent = name;
+      document.getElementById('modal-role').textContent = role;
+
+      const imgEl = document.getElementById('modal-image');
+      const initialsEl = document.getElementById('modal-initials');
+
+      if (image) {
+        imgEl.src = image;
+        imgEl.alt = name;
+        imgEl.classList.remove('hidden');
+        initialsEl.classList.add('hidden');
+      } else {
+        imgEl.classList.add('hidden');
+        initialsEl.classList.remove('hidden');
+        const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2);
+        initialsEl.textContent = initials;
+      }
+
+      document.getElementById('modal-text').textContent = text;
+      modal.showModal();
+    }
+
+    function closeTestimonial(event) {
+      if (event && event.target !== event.currentTarget) return;
+      const modal = document.getElementById('testimonial-modal');
+      modal.close();
+    }
+  </script>
 </body>
 
 </html>

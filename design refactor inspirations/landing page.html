@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>John Doe - Technical Product Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0da6f2",
+              "background-light": "#f5f7f8",
+              "background-dark": "#101c22",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="font-display bg-background-dark text-white">
+<div class="relative flex min-h-screen w-full flex-col">
+<div class="absolute inset-0 z-0 overflow-hidden">
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+<svg class="h-[800px] w-[800px] text-primary/10" fill="none" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="1144.52" id="filter0_f_1_183" width="1144.52" x="-172.26" y="-172.26">
+<feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+<feGaussianBlur in="BackgroundImage" stdDeviation="100"></feGaussianBlur>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_foregroundBlur_1_183"></feComposite>
+<feBlend in="SourceGraphic" in2="effect1_foregroundBlur_1_183" mode="normal" result="shape"></feBlend>
+</filter>
+</defs>
+<g filter="url(#filter0_f_1_183)">
+<path d="M589.699 400C589.699 504.629 504.629 589.7 400 589.7C295.371 589.7 210.301 504.629 210.301 400C210.301 295.371 295.371 210.301 400 210.301C504.629 210.301 589.699 295.371 589.699 400Z" stroke="currentColor" stroke-width="20"></path>
+<path d="M518.3 400C518.3 465.345 465.345 518.3 400 518.3C334.655 518.3 281.7 465.345 281.7 400C281.7 334.655 334.655 281.7 400 281.7C465.345 281.7 518.3 334.655 518.3 400Z" stroke="currentColor" stroke-width="20"></path>
+<path d="M400 447C425.957 447 447 425.957 447 400C447 374.043 425.957 353 400 353C374.043 353 353 374.043 353 400C353 425.957 374.043 447 400 447Z" stroke="currentColor" stroke-width="20"></path>
+</g>
+</svg>
+</div>
+</div>
+<header class="sticky top-0 z-50 flex justify-center border-b border-white/10 bg-background-dark/80 backdrop-blur-lg">
+<div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-3">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold tracking-tight">John Doe</h2>
+</div>
+<nav class="hidden md:flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-6">
+<a class="text-primary text-sm font-medium" href="#">Home</a>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="#">About</a>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="#">Portfolio</a>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="#">Resume</a>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="#">Contact</a>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-primary/90 text-white text-sm font-bold tracking-wide transition-colors">
+<span class="truncate">Let's Connect</span>
+</button>
+</nav>
+<button class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="relative z-10 flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8">
+<div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+<div class="lg:col-span-2 flex flex-col justify-center gap-4 rounded-xl bg-white/5 p-8 sm:p-10">
+<h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter">John Doe</h1>
+<p class="text-lg sm:text-xl text-primary font-medium tracking-tight">Technical Product Manager</p>
+<p class="text-white/60 max-w-xl mt-2">Crafting high-impact products at the intersection of technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
+</div>
+<a class="group flex flex-col justify-between gap-4 rounded-xl bg-white/5 p-8 transition-all duration-300 hover:bg-white/10 hover:-translate-y-1" href="#">
+<div>
+<h3 class="text-2xl font-bold tracking-tight text-white">Selected Projects</h3>
+<p class="text-white/60 mt-2">Explore my work in leading cross-functional teams to deliver innovative solutions.</p>
+</div>
+<div class="flex items-center gap-2 text-primary font-medium">
+<span>View Portfolio</span>
+<span class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+</div>
+</a>
+<a class="group flex flex-col justify-between gap-4 rounded-xl bg-white/5 p-8 transition-all duration-300 hover:bg-white/10 hover:-translate-y-1" href="#">
+<div>
+<h3 class="text-2xl font-bold tracking-tight text-white">My Resume</h3>
+<p class="text-white/60 mt-2">A detailed overview of my skills, experience, and professional journey.</p>
+</div>
+<div class="flex items-center gap-2 text-primary font-medium">
+<span>Download CV</span>
+<span class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">download</span>
+</div>
+</a>
+<a class="group lg:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-xl bg-primary/20 p-8 transition-all duration-300 hover:bg-primary/30 hover:-translate-y-1" href="#">
+<div class="flex-1">
+<h3 class="text-2xl font-bold tracking-tight text-white">Let's Connect</h3>
+<p class="text-white/60 mt-2">Have a project in mind or want to talk about product? I'd love to hear from you.</p>
+</div>
+<button class="flex shrink-0 items-center justify-center gap-2 h-12 px-6 bg-primary hover:bg-primary/90 text-white font-bold tracking-wide rounded-lg transition-colors">
+<span>Get in Touch</span>
+<span class="material-symbols-outlined">email</span>
+</button>
+</a>
+</div>
+</main>
+</div>
+
+</body></html>
