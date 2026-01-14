@@ -161,115 +161,147 @@
 
       <!-- Header -->
       <div class="w-full max-w-7xl flex flex-col gap-6 text-center">
-        <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Selected Projects</h1>
+        <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Curated Projects</h1>
         <p class="text-xl text-white/60 max-w-2xl mx-auto">
-          A collection of my work in AI/ML, SaaS, and Platform development, showcasing my ability to lead teams and
+          A selected collection of my professional and personal works in AI/ML, SaaS and platform development, showcasing my ability to lead teams and
           deliver impactful products.
         </p>
       </div>
-
-      <!-- Projects Grid -->
-      <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-
-        <!-- Project 1: Fast Project Docs MCP Server -->
-        <div onclick="openProject('mcp-server')"
-          class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div
-            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-            <span
-              class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">terminal</span>
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Fast Project Docs MCP Server</p>
-            <p class="text-white/60 text-sm line-clamp-2">Open source Model Context Protocol server for automated
-              project documentation generation with AI integration.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Open Source</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
-          </div>
+      <!-- Career Projects Section -->
+      <div class="w-full max-w-7xl flex flex-col gap-8">
+        <div class="flex items-center gap-4">
+          <span class="material-symbols-outlined text-3xl text-primary">work</span>
+          <h2 class="text-2xl sm:text-3xl font-bold">Career Portfolio</h2>
         </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            
+          <!-- Thryve Card -->
+          <a href="portfolio/thryve.html"
+            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
+              <img src="images/thryve-card.png" alt="Thryve" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </div>
+            <div class="flex flex-col gap-2 p-2">
+              <p class="text-white text-lg font-bold">Thryve GmbH</p>
+              <p class="text-white/60 text-sm line-clamp-2">Health Data Platform • Product Owner • Unified SDK for wearable data integration.</p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto p-2">
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">API product</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Health Tech</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Wearable devices</span>
+            </div>
+          </a>
 
-        <!-- Project 2: Revvity Signals Inventory Integration -->
-        <div onclick="openProject('inventory-integration')"
-          class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div
-            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-            <span
-              class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">science</span>
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Inventory System Integration</p>
-            <p class="text-white/60 text-sm line-clamp-2">Extended LabTwin voice assistant integration with Revvity
-              Signals for hands-free inventory management.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice Tech</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Product Mgmt</span>
-          </div>
+          <!-- LabTwin Card -->
+          <a href="portfolio/labtwin.html"
+            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
+              <img src="images/labtwin-card.png" alt="LabTwin" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </div>
+            <div class="flex flex-col gap-2 p-2">
+              <p class="text-white text-lg font-bold">LabTwin GmbH</p>
+              <p class="text-white/60 text-sm line-clamp-2">Voice AI for Labs • Technical Product Manager • Voice assistant integrations for laboratory workflows.</p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto p-2">
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Digital Lab</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice Tech</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI & ML</span>
+            </div>
+          </a>
+          <!-- Labforward Card -->
+          <a href="portfolio/labforward.html"
+            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
+              <img src="images/labforward-card.png" alt="Labforward" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </div>
+            <div class="flex flex-col gap-2 p-2">
+              <p class="text-white text-lg font-bold">Labforward GmbH</p>
+              <p class="text-white/60 text-sm line-clamp-2">Lab Management Platform • Senior PM • GenAI-powered experiment data retrieval.</p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto p-2">
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Digital Lab</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">IoT</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Gen AI</span>
+            </div>
+          </a>
+
         </div>
-
-        <!-- Project 3: Thryve Health Data SDK -->
-        <div onclick="openProject('thryve-sdk')"
-          class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div
-            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-            <span
-              class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">monitor_heart</span>
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Thryve Health Data API</p>
-            <p class="text-white/60 text-sm line-clamp-2">Unified SDK serving 1M+ users across 100+ health industry
-              customers, simplifying wearable data integration.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">API Platform</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Health Tech</span>
-          </div>
-        </div>
-
-        <!-- Project 4: Productivity Automation Tools -->
-        <div onclick="openProject('automation-tools')"
-          class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div
-            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-            <span
-              class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">auto_fix_high</span>
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">AI-Powered Automation Tools</p>
-            <p class="text-white/60 text-sm line-clamp-2">Self-built Python tools leveraging LLMs to automate release
-              notes, Jira tickets, and API testing workflows.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">GenAI</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Automation</span>
-          </div>
-        </div>
-
-        <!-- Project 5: RAG-Powered Meal Planner -->
-        <div onclick="openProject('rag-meal-planner')"
-          class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div
-            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-            <span
-              class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">restaurant_menu</span>
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">RAG-Powered Meal Planner</p>
-            <p class="text-white/60 text-sm line-clamp-2">CLI application suggesting personalized meal plans using RAG
-              and AI based on cooking history.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">RAG</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
-          </div>
-        </div>
-
       </div>
+      <!-- Personal Projects Section -->
+      <div class="w-full max-w-7xl flex flex-col gap-8">
+        <div class="flex items-center gap-4">
+          <span class="material-symbols-outlined text-3xl text-primary">code</span>
+          <h2 class="text-2xl sm:text-3xl font-bold">Personal Projects</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+
+          <!-- Project: Fast Project Docs MCP Server -->
+          <div onclick="openProject('mcp-server')"
+            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
+              <span
+                class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">terminal</span>
+            </div>
+            <div class="flex flex-col gap-2 p-2">
+              <p class="text-white text-lg font-bold">Fast Project Docs MCP Server</p>
+              <p class="text-white/60 text-sm line-clamp-2">Open source Model Context Protocol server for automated
+                project documentation generation with AI integration.</p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto p-2">
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Open Source</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
+            </div>
+          </div>
+
+          <!-- Project: AI-Powered Automation Tools -->
+          <div onclick="openProject('automation-tools')"
+            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
+              <span
+                class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">auto_fix_high</span>
+            </div>
+            <div class="flex flex-col gap-2 p-2">
+              <p class="text-white text-lg font-bold">AI-Powered Automation Tools</p>
+              <p class="text-white/60 text-sm line-clamp-2">Self-built Python tools leveraging LLMs to automate release
+                notes, Jira tickets, and API testing workflows.</p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto p-2">
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">GenAI</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Automation</span>
+            </div>
+          </div>
+
+          <!-- Project: RAG-Powered Meal Planner -->
+          <div onclick="openProject('rag-meal-planner')"
+            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
+              <span
+                class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">restaurant_menu</span>
+            </div>
+            <div class="flex flex-col gap-2 p-2">
+              <p class="text-white text-lg font-bold">RAG-Powered Meal Planner</p>
+              <p class="text-white/60 text-sm line-clamp-2">CLI application suggesting personalized meal plans using RAG
+                and AI based on cooking history.</p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto p-2">
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">RAG</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
+              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      
 
     </main>
 
@@ -315,6 +347,11 @@
 
         <!-- Modal Content -->
         <div class="overflow-y-auto custom-scrollbar p-6 sm:p-8 flex flex-col gap-8">
+
+          <!-- Project Image -->
+          <div id="modal-image-container" class="hidden">
+            <img id="modal-image" src="" alt="" class="w-full rounded-xl border border-white/10 object-cover max-h-80" />
+          </div>
 
           <!-- Links -->
           <div id="modal-links" class="flex gap-4"></div>
@@ -364,89 +401,34 @@
       'mcp-server': {
         title: "Fast Project Docs MCP Server",
         tags: ["Python", "Open Source", "MCP", "AI Integration"],
+        image: null,
         links: [{ text: "View on GitHub", url: "https://github.com/matthew-thaokhamlue/fast-project-docs-mcp" }],
-        overview: `
-                <p><strong>Type:</strong> Open Source Project</p>
-                <p><strong>License:</strong> MIT</p>
-            `,
+        overview: `<p><strong>Type:</strong> Open Source Project</p><p><strong>License:</strong> MIT</p>`,
         challenge: "Creating comprehensive project documentation (PRDs, technical specifications, and design documents) is time-consuming and often inconsistent. Product managers and developers spend hours writing documentation that could be automated while maintaining professional quality and structure.",
         solution: "Built a Python-based Model Context Protocol (MCP) server that integrates with AI clients like Claude Desktop to automate the generation of professional project documentation. Inspired by Kiro's spec-driven development methodology, the system uses structured templates and intelligent prompts to create comprehensive documents from user input and reference materials.",
-        impact: [
-          "2,000-4,000+ word documents generated automatically with professional structure",
-          "Multi-format support for reference materials including PDFs and images with OCR",
-          "Open source contribution to the MCP ecosystem with MIT license",
-          "Comprehensive testing with unit and integration test coverage"
-        ],
+        impact: ["2,000-4,000+ word documents generated automatically with professional structure", "Multi-format support for reference materials including PDFs and images with OCR", "Open source contribution to the MCP ecosystem with MIT license", "Comprehensive testing with unit and integration test coverage"],
         tech: "Python 3.9+, MCP Framework, AsyncIO, PyPDF2, python-docx, Pillow, pytesseract (OCR), PyYAML"
-      },
-      'inventory-integration': {
-        title: "Revvity Signals Inventory Integration",
-        tags: ["Product Management", "Voice Tech", "API Integration", "Inventory"],
-        links: [],
-        overview: `
-                <p><strong>Role:</strong> Technical Product Manager</p>
-                <p><strong>Company:</strong> LabTwin GmbH (acquired by Labforward)</p>
-            `,
-        challenge: "Scientists using Revvity Signals Notebook needed a seamless way to manage laboratory inventory without interrupting their experimental workflows. Traditional inventory management required manual data entry, disrupting sterile environments and taking focus away from critical research tasks.",
-        solution: "Extended the existing LabTwin voice assistant integration with Revvity Signals Notebook to include comprehensive inventory management capabilities. Built a unified API layer that synchronized voice commands with inventory database updates in real-time.",
-        impact: [
-          "Scan & Locate: Voice-activated item scanning with location tracking",
-          "Real-Time Voice Updates: Hands-free maintenance of accurate, cloud-connected inventory records",
-          "Unified Data Capture: Combined experimental data and inventory management in a single voice-driven workflow"
-        ],
-        tech: "Voice Recognition, API Integration, Cloud Connectivity, Mobile Development, Laboratory Information Systems"
-      },
-      'thryve-sdk': {
-        title: "Thryve Health Data API",
-        tags: ["Product Owner", "API Platform", "Health Tech", "SDK"],
-        links: [],
-        overview: `
-                <p><strong>Role:</strong> Product Owner</p>
-                <p><strong>Company:</strong> Thryve GmbH</p>
-            `,
-        challenge: "Health industry companies struggled with fragmented data sources and complex integrations when building health applications. Each wearable device required separate integration efforts, creating 3-6 months of development overhead per device.",
-        solution: "Built a unified SDK that provided seamless access to multiple health data sources through a single API. Developed standardized data schemas and handled device-specific complexities behind a clean, developer-friendly interface.",
-        impact: [
-          "1M+ users served across the platforms",
-          "€1M ARR contributed to company growth",
-          "100+ customers across insurance, digital health, and academic research",
-          "10 major integrations including Oura Ring, Whoop, Omron Wellness, Samsung Health"
-        ],
-        tech: "Data Normalization Engine, Real-Time Webhooks, Multi-Tenant Architecture, Device Integration Layer"
       },
       'automation-tools': {
         title: "AI-Powered Automation Tools",
         tags: ["Personal Project", "Python", "GenAI", "Automation"],
+        image: null,
         links: [],
-        overview: `
-                <p><strong>Type:</strong> Personal Side Projects</p>
-                <p><strong>Focus:</strong> LLM-Powered Workflow Automation</p>
-            `,
+        overview: `<p><strong>Type:</strong> Personal Side Projects</p><p><strong>Focus:</strong> LLM-Powered Workflow Automation</p>`,
         challenge: "Repetitive manual tasks in product management workflows consumed 8-12 hours weekly. Creating release notes, writing Jira tickets, and API testing required consistent formatting but offered minimal strategic value.",
         solution: "Built Python tools leveraging LLMs to automate workflows. 1) Release Notes Generator: Parses Git commits and Jira tickets to generate markdown notes. 2) Jira Ticket Creator: Converts natural language to structured tickets via API.",
-        impact: [
-          "12 hours/week time savings in routine tasks",
-          "90% reduction in manual formatting errors",
-          "100% consistency in documentation formatting",
-          "Reduced release note creation time from 4 hours to 15 minutes"
-        ],
+        impact: ["12 hours/week time savings in routine tasks", "90% reduction in manual formatting errors", "100% consistency in documentation formatting", "Reduced release note creation time from 4 hours to 15 minutes"],
         tech: "Python 3 (FastAPI, Streamlit), OpenAI API, Anthropic Claude, Google Gemini, Jira API"
       },
       'rag-meal-planner': {
         title: "RAG-Powered Meal Planner",
         tags: ["Personal Project", "RAG", "Python", "AI/ML"],
+        image: null,
         links: [{ text: "View on GitHub", url: "https://github.com/matthew-thaokhamlue/meal-planner-RAG" }],
-        overview: `
-                <p><strong>Type:</strong> Personal Project</p>
-                <p><strong>License:</strong> MIT</p>
-            `,
+        overview: `<p><strong>Type:</strong> Personal Project</p><p><strong>License:</strong> MIT</p>`,
         challenge: "Meal planning and grocery shopping are often disconnected processes, leading to forgotten items, repetitive meals, and manual tracking of preferences.",
         solution: "A CLI application that uses Retrieval-Augmented Generation (RAG) to offer personalized meal plans and smart shopping lists. The system leverages a FAISS vector database and sentence transformers to analyze the user's cooking history and preferences.",
-        impact: [
-          "Fully functional CLI application for personal meal and shopping management",
-          "Demonstrates practical application of RAG for personalization",
-          "Open-source and available for others to use and contribute"
-        ],
+        impact: ["Fully functional CLI application for personal meal and shopping management", "Demonstrates practical application of RAG for personalization", "Open-source and available for others to use and contribute"],
         tech: "Python, RAG, FAISS, Sentence Transformers, OpenRouter (Claude 3.5 Sonnet), Click/Rich CLI"
       }
     };
@@ -466,6 +448,18 @@
         span.textContent = tag;
         tagsContainer.appendChild(span);
       });
+
+      // Image - show if available, hide if not
+      const imageContainer = document.getElementById('modal-image-container');
+      const imageEl = document.getElementById('modal-image');
+      if (project.image) {
+        imageEl.src = project.image;
+        imageEl.alt = project.title;
+        imageContainer.classList.remove('hidden');
+      } else {
+        imageContainer.classList.add('hidden');
+        imageEl.src = '';
+      }
 
       // Links
       const linksContainer = document.getElementById('modal-links');
@@ -497,7 +491,7 @@
 
       const modal = document.getElementById('project-modal');
       modal.showModal();
-      modal.setAttribute('open', ''); // Ensure CSS styling applies
+      modal.setAttribute('open', '');
     }
 
     function closeProject(event) {
