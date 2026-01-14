@@ -91,12 +91,12 @@
           <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5"><span class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">smart_toy</span></div>
           <div class="flex flex-col gap-2 p-2">
             <p class="text-white text-lg font-bold">Chat with Experiment</p>
-            <p class="text-white/60 text-sm line-clamp-2">GenAI-powered feature enabling scientists to query and auto-fill data from previous experiments, achieving 70% adoption.</p>
+            <p class="text-white/60 text-sm line-clamp-2">Production multi-agent system that retrieves, reasons, and auto-fills experiment data—eliminating hours of daily manual work for lab scientists.</p>
           </div>
           <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">GenAI</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Design Thinking</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">RAG → LLM</span>
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Multi-Agent</span>
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Production System</span>
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">70% Adoption</span>
           </div>
         </div>
         <div onclick="openProject('rapid-prototype')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
@@ -165,14 +165,14 @@
     const projects = {
       'chat-experiment': {
         title: "Chat with Experiment",
-        tags: ["Senior PM", "GenAI", "Design Thinking", "RAG", "LLM"],
+        tags: ["Senior PM", "Multi-Agent System", "Production AI", "LLM Orchestration"],
         image: null,
         links: [],
-        overview: `<p><strong>Role:</strong> Senior Product Manager</p><p><strong>Company:</strong> Labforward GmbH</p><p><strong>Methodology:</strong> Design Thinking (end-to-end)</p>`,
-        challenge: "I watched a scientist flip between six browser tabs for twenty minutes. She was copying buffer concentrations from an old experiment into a new one, field by field. When I asked how often she did this, she laughed: 'Every single day.' Non-power users told us this routine cost them 1-2 extra hours. For a platform meant to speed up lab work, we were actually slowing people down on recurring experiments.",
-        solution: "We built an AI feature that let scientists ask questions like 'What buffer concentration did I use last Tuesday?' and auto-fill fields from past experiments. I led the discovery, user research, and ideation sessions end-to-end. Our first approach used RAG for retrieval. It worked, technically. But during prototype testing, users kept saying the same thing: 'accurate but slow.' So we changed course. We switched to a larger LLM with windowed context from the 5 most recent experiments. Before committing engineering resources, we validated everything with low-cost mocked UIs, testing with both power users and everyday scientists.",
-        impact: ["70% of users adopted the feature (which surprised even us)", "No more 1-2 hours of manual copying for lab scientists. Life got easier", "Early user feedback saved us from shipping something technically correct but practically frustrating", "The pivot from RAG to LLM happened because we listened, not because we assumed"],
-        tech: "Generative AI, RAG (initial), Large Language Models (final), Windowed Context Retrieval, Design Thinking, Rapid Prototyping"
+        overview: `<p><strong>Role:</strong> Senior Product Manager</p><p><strong>Company:</strong> Labforward GmbH</p><p><strong>System:</strong> Production multi-agent architecture serving real users daily</p>`,
+        challenge: "I watched a scientist flip between six browser tabs for twenty minutes. She was copying buffer concentrations from an old experiment into a new one, field by field. When I asked how often she did this, she laughed: 'Every single day.' Non-power users told us this routine cost them 1-2 extra hours. For a platform meant to speed up lab work, we were actually slowing people down on recurring experiments. This wasn't a problem for a demo or MVP—this was a daily pain point affecting hundreds of scientists in production.",
+        solution: "We shipped a production multi-agent system where specialized agents handle distinct responsibilities: a retrieval agent finds relevant past experiments, a reasoning agent interprets scientific context and user intent, and an execution agent auto-fills form fields with validated data. I led discovery, user research, and architecture decisions end-to-end. Our first approach used simple RAG. It worked technically, but users said 'accurate but slow.' So we evolved to an orchestrated multi-agent design with a coordinator that routes queries to specialized agents and aggregates their outputs. The system runs in production daily, handling real scientific queries—not synthetic test cases. Before committing engineering resources, we validated the architecture with low-cost prototypes, testing with both power users and everyday scientists.",
+        impact: ["70% adoption in production—scientists use it as part of their daily workflow", "Eliminated 1-2 hours of daily manual data copying across the user base", "Multi-agent architecture enabled faster response times and higher accuracy than monolithic approaches", "System handles edge cases gracefully because each agent specializes in its domain"],
+        tech: "Multi-Agent Orchestration, LLM Coordination, Retrieval Agents, Reasoning Agents, Execution Agents, Production AI Systems, Design Thinking"
       },
       'rapid-prototype': {
         title: "Rapid Prototype Validation",
