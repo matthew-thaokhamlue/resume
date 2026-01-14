@@ -156,6 +156,22 @@
           </div>
         </div>
 
+        <!-- Project: LLM Intent Recognition -->
+        <div onclick="openProject('llm-intent')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
+            <span class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">psychology</span>
+          </div>
+          <div class="flex flex-col gap-2 p-2">
+            <p class="text-white text-lg font-bold">LLM Intent Recognition</p>
+            <p class="text-white/60 text-sm line-clamp-2">Replaced regex-based intent recognition with GPT-3.5, dramatically reducing false negatives and improving voice UX.</p>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-auto p-2">
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">LLM</span>
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice UX</span>
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">First LLM Project</span>
+          </div>
+        </div>
+
       </div>
     </main>
 
@@ -222,6 +238,17 @@
         solution: "I partnered with the Engineering Lead to move from quarterly to monthly releases. The technical shift was straightforward. The harder part was alignment. QA worried they couldn't test fast enough, so we introduced automated regression tests and narrowed scope per release. Customer Success worried about onboarding users more often, so we created lighter release notes and a predictable schedule they could plan around. Sales and Marketing wanted to bundle features for announcements, so we agreed on quarterly 'theme' releases while still shipping monthly. Everyone had a concern. We addressed each one directly.",
         impact: ["Critical bug fixes reached customers in weeks, not months", "Smaller releases meant lower risk per deployment (less to break, easier to rollback)", "The team stopped crunching before arbitrary deadlines", "Customer Success, Sales, and Marketing gained predictability instead of chaos", "'When's the next release?' became a question with a clear answer"],
         tech: "Release Management, CI/CD Process, QA Automation, Cross-functional Coordination, Stakeholder Management"
+      },
+      'llm-intent': {
+        title: "LLM Intent Recognition",
+        tags: ["Technical PM", "LLM", "GPT-3.5", "Voice UX", "First LLM Project"],
+        image: null,
+        links: [],
+        overview: `<p><strong>Role:</strong> Technical Product Manager</p><p><strong>Company:</strong> LabTwin GmbH</p><p><strong>Scope:</strong> Company's first LLM implementation</p>`,
+        challenge: "I was digging through our backoffice data when I noticed a pattern. Scientists were saying things like 'I added around fifty milliliters of the buffer solution,' and our system was returning nothing. False negatives everywhere. Our intent recognition ran on regex, which meant it only understood commands that matched exact patterns. 'Add 50ml' worked. 'I just added about fifty' didn't. Scientists had to learn how to talk to our system instead of the system learning how they talk. That's backwards.",
+        solution: "I proposed replacing regex with GPT-3.5 for intent recognition. It was our first LLM project, so we started with a beta. I ran continuous evaluation and observation throughout, tracking false negative rates and edge cases. The results were clear: false negatives dropped significantly. We moved to production. The project took longer than expected because we were learning as we went. But the biggest lesson wasn't technical. It was operational. LLMs need guardrails. They need systematic evaluation, not manual spot-checks. If we wanted to scale this, we had to build the infrastructure to monitor quality continuously.",
+        impact: ["False negative rate dropped significantly after switching from regex to GPT-3.5", "Scientists could speak naturally without learning 'robot language'", "Voice UX improved because the system adapted to users, not the other way around", "Established LLM evaluation practices that we could reuse for future AI features", "Learned that LLM quality doesn't maintain itself. You need systematic monitoring, not just launch and hope."],
+        tech: "GPT-3.5, Intent Recognition, LLM Evaluation, Voice UX, Natural Language Understanding, Quality Monitoring"
       }
     };
 

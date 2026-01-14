@@ -111,6 +111,18 @@
             <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Culture</span>
           </div>
         </div>
+        <div onclick="openProject('workspace')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5"><span class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">dashboard_customize</span></div>
+          <div class="flex flex-col gap-2 p-2">
+            <p class="text-white text-lg font-bold">Unified Workspace</p>
+            <p class="text-white/60 text-sm line-clamp-2">Connected IoT control dashboard with lab execution system into one workspace, leading to €500K contract renewal.</p>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-auto p-2">
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">End-to-End PM</span>
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">60% Adoption</span>
+            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">€500K Renewal</span>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -159,7 +171,7 @@
         overview: `<p><strong>Role:</strong> Senior Product Manager</p><p><strong>Company:</strong> Labforward GmbH</p><p><strong>Methodology:</strong> Design Thinking (end-to-end)</p>`,
         challenge: "I watched a scientist flip between six browser tabs for twenty minutes. She was copying buffer concentrations from an old experiment into a new one, field by field. When I asked how often she did this, she laughed: 'Every single day.' Non-power users told us this routine cost them 1-2 extra hours. For a platform meant to speed up lab work, we were actually slowing people down on recurring experiments.",
         solution: "We built an AI feature that let scientists ask questions like 'What buffer concentration did I use last Tuesday?' and auto-fill fields from past experiments. I led the discovery, user research, and ideation sessions end-to-end. Our first approach used RAG for retrieval. It worked, technically. But during prototype testing, users kept saying the same thing: 'accurate but slow.' So we changed course. We switched to a larger LLM with windowed context from the 5 most recent experiments. Before committing engineering resources, we validated everything with low-cost mocked UIs, testing with both power users and everyday scientists.",
-        impact: ["70% of users adopted the feature (which surprised even us)", "No more 1-2 hours of manual copying for lab scientists. Life got easier.", "Early user feedback saved us from shipping something technically correct but practically frustrating", "The pivot from RAG to LLM happened because we listened, not because we assumed"],
+        impact: ["70% of users adopted the feature (which surprised even us)", "No more 1-2 hours of manual copying for lab scientists. Life got easier", "Early user feedback saved us from shipping something technically correct but practically frustrating", "The pivot from RAG to LLM happened because we listened, not because we assumed"],
         tech: "Generative AI, RAG (initial), Large Language Models (final), Windowed Context Retrieval, Design Thinking, Rapid Prototyping"
       },
       'rapid-prototype': {
@@ -172,6 +184,17 @@
         solution: "I chose not to mandate a new process from the top. Instead, I ran a pilot. When a customer requested 'better experiment search functionality,' I skipped the usual 2-week design phase. Using Cursor and v0.dev, I built a working prototype in 4 hours and showed it to the customer the next day. Their response surprised me: 'Not quite. We want to search by reagent, not just experiment name.' One day of work revealed what 2 weeks of mockups would have missed. We iterated the prototype, got their sign-off, and only then handed it to Design and Engineering to build properly. That single pilot created believers. I addressed each team's concerns directly, showing Design, Engineering, and Commercial how this made their jobs easier, not harder.",
         impact: ["Time-to-validation dropped from 8-12 weeks to 2-3 weeks (4x faster)", "Rework rate fell from 50% to 15%", "Feature adoption jumped from 40% to 75%", "The question shifted from 'Why do we keep building things no one uses?' to 'We validate before we build.'"],
         tech: "Cursor, v0.dev, Rapid Prototyping, Stakeholder Management, Change Management"
+      },
+      'workspace': {
+        title: "Unified Workspace",
+        tags: ["Senior PM", "End-to-End", "User Research", "€500K Renewal"],
+        image: null,
+        links: [],
+        overview: `<p><strong>Role:</strong> Senior Product Manager</p><p><strong>Company:</strong> Labforward GmbH</p><p><strong>Scope:</strong> End-to-end product development</p>`,
+        challenge: "A customer complaint landed on my desk, but I didn't want to just fix what they asked for. I wanted to understand why they were frustrated. So I scheduled deep interviews with about 10 users. What I heard surprised me. Our product had two separate systems: an IoT control dashboard for lab equipment and a lab execution system for running experiments. Scientists had to switch between tabs constantly, copying data from one place to another. One user put it bluntly: 'If I'm going to use your app, I want it to help me, not slow me down.' That line stuck with me. We weren't just missing a feature. We were breaking their mental model of how lab software should work.",
+        solution: "I led the entire project end-to-end: discovery, user research, mockup design, problem validation with users, solution ideation with engineers, designers, and sales, then clarifications during implementation, and final validation before launch. The solution was a unified 'workspace' that brought IoT controls and experiment execution into one view with a better data structure underneath. No more tab switching. No more copy-pasting between systems. The ideation sessions with cross-functional teams were key. Engineers understood the data structure challenges. Sales knew which customers would care most. Design pushed for simplicity. Everyone contributed to the solution.",
+        impact: ["60% adoption rate among users", "Led directly to a €500K contract renewal. The customer's project managers and super users became advocates for our product.", "One user told me: 'I can't wait to use this in my daily work. This is how scientific software should be.'", "Proved that listening deeply to complaints can turn frustrated customers into champions."],
+        tech: "Product Discovery, User Research, Cross-functional Collaboration, Data Architecture, IoT Integration, Lab Execution Systems"
       }
     };
     function openProject(projectId) {
