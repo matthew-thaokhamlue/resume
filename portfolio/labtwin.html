@@ -133,7 +133,7 @@
           </div>
           <div class="flex flex-col gap-2 p-2">
             <p class="text-white text-lg font-bold">Inventory System Integration</p>
-            <p class="text-white/60 text-sm line-clamp-2">Extended LabTwin voice assistant integration with Revvity Signals for hands-free inventory management.</p>
+            <p class="text-white/60 text-sm line-clamp-2">Drove LabTwin voice assistant integration with Revvity Signals, enabling hands-free inventory management for scientists.</p>
           </div>
           <div class="flex flex-wrap gap-2 mt-auto p-2">
             <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice Tech</span>
@@ -163,7 +163,7 @@
           </div>
           <div class="flex flex-col gap-2 p-2">
             <p class="text-white text-lg font-bold">LLM Intent Recognition</p>
-            <p class="text-white/60 text-sm line-clamp-2">Replaced regex-based intent recognition with GPT-3.5, dramatically reducing false negatives and improving voice UX.</p>
+            <p class="text-white/60 text-sm line-clamp-2">Championed the company's first LLM adoption, replacing regex with GPT-3.5 to dramatically reduce false negatives.</p>
           </div>
           <div class="flex flex-wrap gap-2 mt-auto p-2">
             <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">LLM</span>
@@ -224,7 +224,7 @@
         links: [],
         overview: `<p><strong>Role:</strong> Technical Product Manager</p><p><strong>Company:</strong> LabTwin GmbH (acquired by Labforward)</p>`,
         challenge: "I spent my first weeks at LabTwin shadowing scientists in actual labs. What I saw surprised me. Researchers in full protective gear, hands occupied with samples, stopping mid-experiment to type inventory updates into a computer. Every interruption was a contamination risk. Every context switch was a chance for error. They had a voice assistant for taking notes, but when it came to tracking what chemicals they used, what reagents were running low, they were back to keyboards and spreadsheets.",
-        solution: "I worked with our engineering team to extend LabTwin's voice assistant into inventory management. The idea was simple: if you can say 'I used 50ml of sodium chloride,' the system should update your inventory automatically. We built an API layer connecting voice commands to Revvity Signals' inventory database. Scientists could scan items, check stock levels, and log consumption without ever touching a keyboard. Their hands stayed sterile. Their focus stayed on the science.",
+        solution: "I led the cross-functional effort to extend LabTwin's voice assistant into inventory management. The idea was simple: if you can say 'I used 50ml of sodium chloride,' the system should update your inventory automatically. I coordinated between our engineering team and Revvity's API team to build the integration layer connecting voice commands to their inventory database. Scientists could scan items, check stock levels, and log consumption without ever touching a keyboard. Their hands stayed sterile. Their focus stayed on the science.",
         impact: ["Scientists could scan and locate items using just their voice, with real-time location tracking.", "Inventory records stayed accurate because updates happened in the moment, not hours later from memory.", "Experimental data and inventory management merged into one workflow. No more switching between systems."],
         tech: "Voice Recognition, API Integration, Cloud Connectivity, Mobile Development, Laboratory Information Systems"
       },
@@ -246,7 +246,7 @@
         links: [],
         overview: `<p><strong>Role:</strong> Technical Product Manager</p><p><strong>Company:</strong> LabTwin GmbH</p><p><strong>Scope:</strong> Company's first LLM implementation</p>`,
         challenge: "I was digging through our backoffice data when I noticed a pattern. Scientists were saying things like 'I added around fifty milliliters of the buffer solution,' and our system was returning nothing. False negatives everywhere. Our intent recognition ran on regex, which meant it only understood commands that matched exact patterns. 'Add 50ml' worked. 'I just added about fifty' didn't. Scientists had to learn how to talk to our system instead of the system learning how they talk. That's backwards.",
-        solution: "I proposed replacing regex with GPT-3.5 for intent recognition. It was our first LLM project, so we started with a beta. I ran continuous evaluation and observation throughout, tracking false negative rates and edge cases. The results were clear: false negatives dropped significantly. We moved to production. The project took longer than expected because we were learning as we went. But the biggest lesson wasn't technical. It was operational. LLMs need guardrails. They need systematic evaluation, not manual spot-checks. If we wanted to scale this, we had to build the infrastructure to monitor quality continuously.",
+        solution: "I championed replacing regex with GPT-3.5 for intent recognition, building the business case and securing stakeholder buy-in. It was our first LLM project, so we started with a beta. I ran continuous evaluation and observation throughout, tracking false negative rates and edge cases. The results were clear: false negatives dropped significantly. We moved to production. The project took longer than expected because we were learning as we went. But the biggest lesson wasn't technical. It was operational. LLMs need guardrails. They need systematic evaluation, not manual spot-checks. If we wanted to scale this, we had to build the infrastructure to monitor quality continuously.",
         impact: ["False negative rate dropped significantly after switching from regex to GPT-3.5", "Scientists could speak naturally without learning 'robot language'", "Voice UX improved because the system adapted to users, not the other way around", "Established LLM evaluation practices that we could reuse for future AI features", "Learned that LLM quality doesn't maintain itself. You need systematic monitoring, not just launch and hope."],
         tech: "GPT-3.5, Intent Recognition, LLM Evaluation, Voice UX, Natural Language Understanding, Quality Monitoring"
       }
