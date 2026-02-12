@@ -17,6 +17,25 @@ const PROFILE_CONTEXT = {
     '- RAG Meal Planner: Portfolio project demonstrating retrieval-augmented generation for contextual, user-specific planning flows.',
   ].join('\n'),
 };
+
+const ROLE_PRESETS = {
+  ai_platform_pm: {
+    label: 'AI Platform Product Manager',
+    focus:
+      'platform strategy, developer-facing APIs/SDKs, model lifecycle, and cross-team enablement',
+  },
+  zero_to_one_ai_pm: {
+    label: '0-to-1 AI Product Manager',
+    focus:
+      'early product discovery, rapid validation, experimentation loops, and adoption execution',
+  },
+  b2b_saas_ai_pm: {
+    label: 'B2B SaaS AI Product Manager',
+    focus:
+      'enterprise workflow integration, stakeholder alignment, adoption, and measurable business impact',
+  },
+};
+
 const PROMPT_VERSION = 'match-v1';
 
 function fillPromptTemplate(template, context) {
@@ -42,35 +61,47 @@ function trackAiMatchEvent(eventName, params = {}) {
   window.gtag('event', eventName, params);
 }
 
+function getRolePreset(presetId) {
+  if (!presetId) return null;
+  return ROLE_PRESETS[presetId] || null;
+}
+
 function buildAskInstruction(options = {}) {
   const jobDescription = (options.jobDescription || '').trim();
   const fallbackScope = (options.fallbackScope || '').trim();
+  const rolePreset = getRolePreset(options.targetRolePreset);
+  const rolePresetLine = rolePreset
+    ? `Target role profile: ${rolePreset.label}. Evaluation focus: ${rolePreset.focus}.`
+    : '';
 
   if (jobDescription) {
     return [
       'Assess whether this candidate is a good match for this Senior Product Manager job description.',
+      rolePresetLine,
       'Compare candidate strengths and risks directly against the JD requirements and responsibilities.',
       `Job description:\n${jobDescription}`,
       'Then provide the five most revealing interview questions to validate fit.',
-    ].join(' ');
+    ].filter(Boolean).join(' ');
   }
 
   if (fallbackScope === 'experience') {
     return [
       'No job description was provided.',
+      rolePresetLine,
       'Perform an experience-focused evaluation only: assess role progression, leadership scope, execution depth, and measurable outcomes.',
       'Do not run a role-fit verdict against a missing JD.',
       'Then provide five interview questions focused on validating core PM experience.',
-    ].join(' ');
+    ].filter(Boolean).join(' ');
   }
 
   if (fallbackScope === 'portfolio') {
     return [
       'No job description was provided.',
+      rolePresetLine,
       'Perform a portfolio deep-dive only: evaluate problem framing, product decisions, technical depth, and impact evidence across projects.',
       'Do not run a role-fit verdict against a missing JD.',
       'Then provide five interview questions focused on validating portfolio claims.',
-    ].join(' ');
+    ].filter(Boolean).join(' ');
   }
 
   return [
@@ -116,6 +147,12 @@ function setStatusMessage(statusElement, message) {
   statusElement.textContent = message;
 }
 
+function openProviderInNewTab(url, win = typeof window !== 'undefined' ? window : null) {
+  if (!win || typeof win.open !== 'function') return false;
+  win.open(url, '_blank', 'noopener,noreferrer');
+  return true;
+}
+
 function initAiMatchModal() {
   if (typeof document === 'undefined') return;
 
@@ -127,16 +164,27 @@ function initAiMatchModal() {
   const overlay = modal ? modal.querySelector('[data-ai-match-overlay]') : null;
   const providerButtons = modal ? modal.querySelectorAll('[data-ai-provider]') : [];
   const fallbackButtons = modal ? modal.querySelectorAll('[data-ai-fallback-scope]') : [];
+  const rolePresetButtons = modal ? modal.querySelectorAll('[data-ai-role-preset]') : [];
 
   if (!trigger || !modal || !closeButton || providerButtons.length === 0) return;
 
   let cachedTemplate = '';
   let selectedFallbackScope = '';
+  let selectedRolePreset = 'ai_platform_pm';
 
   const setFallbackScope = (scope) => {
     selectedFallbackScope = scope;
     fallbackButtons.forEach((btn) => {
       const isActive = btn.getAttribute('data-ai-fallback-scope') === scope;
+      btn.classList.toggle('border-primary/40', isActive);
+      btn.classList.toggle('bg-primary/15', isActive);
+    });
+  };
+
+  const setRolePreset = (presetId) => {
+    selectedRolePreset = presetId;
+    rolePresetButtons.forEach((btn) => {
+      const isActive = btn.getAttribute('data-ai-role-preset') === presetId;
       btn.classList.toggle('border-primary/40', isActive);
       btn.classList.toggle('bg-primary/15', isActive);
     });
@@ -168,6 +216,15 @@ function initAiMatchModal() {
     });
   }
 
+  rolePresetButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const presetId = button.getAttribute('data-ai-role-preset');
+      if (!presetId) return;
+      setRolePreset(presetId);
+      trackAiMatchEvent('ai_match_role_preset_selected', { role_preset: presetId });
+    });
+  });
+
   fallbackButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const scope = button.getAttribute('data-ai-fallback-scope');
@@ -177,6 +234,8 @@ function initAiMatchModal() {
       trackAiMatchEvent('ai_match_fallback_scope_selected', { scope });
     });
   });
+
+  setRolePreset(selectedRolePreset);
 
   providerButtons.forEach((button) => {
     button.addEventListener('click', async () => {
@@ -200,6 +259,7 @@ function initAiMatchModal() {
         const prompt = composePromptFromTemplate(cachedTemplate, {
           jobDescription,
           fallbackScope: selectedFallbackScope,
+          targetRolePreset: selectedRolePreset,
         });
         const likelyNoPrefill = provider === 'gemini' || provider === 'grok';
 
@@ -227,13 +287,11 @@ function initAiMatchModal() {
           prompt_length: prompt.length,
           has_job_description: Boolean(jobDescription),
           fallback_scope: selectedFallbackScope || 'none',
+          role_preset: selectedRolePreset || 'none',
         });
 
         const providerUrl = buildProviderUrl(provider, prompt);
-        const openedWindow = window.open(providerUrl, '_blank', 'noopener,noreferrer');
-        if (!openedWindow) {
-          window.location.href = providerUrl;
-        }
+        openProviderInNewTab(providerUrl);
       } catch (error) {
         setStatusMessage(statusElement, 'Unable to prepare prompt. Please try again.');
         trackAiMatchEvent('ai_match_prompt_error', {
@@ -253,9 +311,11 @@ if (typeof window !== 'undefined') {
     trackAiMatchEvent,
     composePromptFromTemplate,
     buildAskInstruction,
+    getRolePreset,
     shouldUseClipboardFallback,
     copyPromptToClipboard,
     fetchPromptTemplate,
+    openProviderInNewTab,
     initAiMatchModal,
   };
 
@@ -268,8 +328,10 @@ export {
   trackAiMatchEvent,
   composePromptFromTemplate,
   buildAskInstruction,
+  getRolePreset,
   shouldUseClipboardFallback,
   copyPromptToClipboard,
   fetchPromptTemplate,
+  openProviderInNewTab,
   initAiMatchModal,
 };

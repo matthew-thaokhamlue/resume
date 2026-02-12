@@ -278,6 +278,23 @@
           <p class="text-lg sm:text-xl text-primary font-medium tracking-tight">Senior Product Manager</p>
           <p class="text-white/60 max-w-xl text-lg leading-relaxed">Crafting high-impact products at the intersection of
             technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+            <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+              <p class="text-xs text-white/60 uppercase tracking-wide">Impact Proof</p>
+              <p class="text-lg font-semibold text-white mt-1">7+ years</p>
+              <p class="text-xs text-white/70 mt-1">Product leadership across AI/ML and SaaS.</p>
+            </div>
+            <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+              <p class="text-xs text-white/60 uppercase tracking-wide">Execution Depth</p>
+              <p class="text-lg font-semibold text-white mt-1">5 case studies</p>
+              <p class="text-xs text-white/70 mt-1">Portfolio projects with product + technical decisions.</p>
+            </div>
+            <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+              <p class="text-xs text-white/60 uppercase tracking-wide">Transferable Scope</p>
+              <p class="text-lg font-semibold text-white mt-1">AI-era workflows</p>
+              <p class="text-xs text-white/70 mt-1">Health analytics, lab informatics, B2B platform products.</p>
+            </div>
+          </div>
           <!-- Audio + AI Match Actions -->
           <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm w-full h-full">
@@ -296,7 +313,7 @@
               class="group w-full h-full p-4 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
               <span class="flex items-center gap-3">
                 <span class="material-symbols-outlined text-primary">smart_toy</span>
-                <span class="text-sm font-semibold text-white">Ask your AI if we can be a good match</span>
+                <span class="text-sm font-semibold text-white">Evaluate role fit with my evidence</span>
               </span>
             </button>
           </div>
@@ -605,6 +622,20 @@
           <div>
             <h3 class="text-2xl font-bold tracking-tight text-white">Ask Your AI</h3>
             <p class="text-white/70 mt-2">Paste a job description, then choose your AI for a real role-fit assessment.</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-medium text-white">Role Preset</label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <button type="button" data-ai-role-preset="ai_platform_pm"
+                class="h-10 px-3 rounded-md bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white text-xs font-medium">AI
+                Platform PM</button>
+              <button type="button" data-ai-role-preset="zero_to_one_ai_pm"
+                class="h-10 px-3 rounded-md bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white text-xs font-medium">0-to-1
+                AI PM</button>
+              <button type="button" data-ai-role-preset="b2b_saas_ai_pm"
+                class="h-10 px-3 rounded-md bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white text-xs font-medium">B2B
+                SaaS AI PM</button>
+            </div>
           </div>
           <div class="flex flex-col gap-2">
             <label for="ai-match-jd" class="text-sm font-medium text-white">Job Description (Required)</label>

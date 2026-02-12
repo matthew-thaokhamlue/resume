@@ -6,6 +6,7 @@ import {
   buildProviderUrl,
   composePromptFromTemplate,
   buildAskInstruction,
+  openProviderInNewTab,
   shouldUseClipboardFallback,
 } from '../assets/js/ai-match.js';
 
@@ -97,9 +98,41 @@ test('buildAskInstruction builds portfolio-only fallback ask when JD is missing'
   assert.match(ask, /portfolio deep-dive only/i);
 });
 
+test('buildAskInstruction includes selected role preset context for JD mode', () => {
+  const ask = buildAskInstruction({
+    jobDescription: 'Lead platform roadmap for AI capabilities.',
+    targetRolePreset: 'ai_platform_pm',
+  });
+
+  assert.match(ask, /target role profile/i);
+  assert.match(ask, /AI Platform Product Manager/i);
+  assert.match(ask, /platform roadmap/i);
+});
+
 test('shouldUseClipboardFallback enables fallback for every provider in v1', () => {
   assert.equal(shouldUseClipboardFallback('chatgpt'), true);
   assert.equal(shouldUseClipboardFallback('claude'), true);
   assert.equal(shouldUseClipboardFallback('gemini'), true);
   assert.equal(shouldUseClipboardFallback('grok'), true);
+});
+
+test('openProviderInNewTab only opens a new tab and never redirects current page', () => {
+  const openCalls = [];
+  const fakeWindow = {
+    open: (...args) => {
+      openCalls.push(args);
+      return null;
+    },
+    location: { href: 'https://example.com/resume' },
+  };
+
+  openProviderInNewTab('https://chatgpt.com/?q=test', fakeWindow);
+
+  assert.equal(openCalls.length, 1);
+  assert.deepEqual(openCalls[0], [
+    'https://chatgpt.com/?q=test',
+    '_blank',
+    'noopener,noreferrer',
+  ]);
+  assert.equal(fakeWindow.location.href, 'https://example.com/resume');
 });
