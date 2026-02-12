@@ -16,11 +16,6 @@ const PROFILE_CONTEXT = {
     '- Chat-with-Experiment: Portfolio project focused on conversational experience design for experimental and workflow-heavy domains.',
     '- RAG Meal Planner: Portfolio project demonstrating retrieval-augmented generation for contextual, user-specific planning flows.',
   ].join('\n'),
-  ASK: [
-    'Assess whether this candidate is a good match for a Senior Product Manager role.',
-    'Base your decision on strengths, risks, and portfolio evidence.',
-    'Then provide the five most revealing interview questions to validate fit.',
-  ].join(' '),
 };
 const PROMPT_VERSION = 'match-v1';
 
@@ -47,8 +42,49 @@ function trackAiMatchEvent(eventName, params = {}) {
   window.gtag('event', eventName, params);
 }
 
-function composePromptFromTemplate(template) {
-  return fillPromptTemplate(template, PROFILE_CONTEXT);
+function buildAskInstruction(options = {}) {
+  const jobDescription = (options.jobDescription || '').trim();
+  const fallbackScope = (options.fallbackScope || '').trim();
+
+  if (jobDescription) {
+    return [
+      'Assess whether this candidate is a good match for this Senior Product Manager job description.',
+      'Compare candidate strengths and risks directly against the JD requirements and responsibilities.',
+      `Job description:\n${jobDescription}`,
+      'Then provide the five most revealing interview questions to validate fit.',
+    ].join(' ');
+  }
+
+  if (fallbackScope === 'experience') {
+    return [
+      'No job description was provided.',
+      'Perform an experience-focused evaluation only: assess role progression, leadership scope, execution depth, and measurable outcomes.',
+      'Do not run a role-fit verdict against a missing JD.',
+      'Then provide five interview questions focused on validating core PM experience.',
+    ].join(' ');
+  }
+
+  if (fallbackScope === 'portfolio') {
+    return [
+      'No job description was provided.',
+      'Perform a portfolio deep-dive only: evaluate problem framing, product decisions, technical depth, and impact evidence across projects.',
+      'Do not run a role-fit verdict against a missing JD.',
+      'Then provide five interview questions focused on validating portfolio claims.',
+    ].join(' ');
+  }
+
+  return [
+    'No job description was provided.',
+    'Ask the user to either paste a JD or choose an analysis mode: experience or portfolio.',
+  ].join(' ');
+}
+
+function composePromptFromTemplate(template, options = {}) {
+  const context = {
+    ...PROFILE_CONTEXT,
+    ASK: buildAskInstruction(options),
+  };
+  return fillPromptTemplate(template, context);
 }
 
 function shouldUseClipboardFallback(provider) {
@@ -86,13 +122,25 @@ function initAiMatchModal() {
   const trigger = document.getElementById('ai-match-trigger');
   const modal = document.getElementById('ai-match-modal');
   const closeButton = document.getElementById('ai-match-close');
+  const jdInput = document.getElementById('ai-match-jd');
   const statusElement = document.getElementById('ai-match-status');
   const overlay = modal ? modal.querySelector('[data-ai-match-overlay]') : null;
   const providerButtons = modal ? modal.querySelectorAll('[data-ai-provider]') : [];
+  const fallbackButtons = modal ? modal.querySelectorAll('[data-ai-fallback-scope]') : [];
 
   if (!trigger || !modal || !closeButton || providerButtons.length === 0) return;
 
   let cachedTemplate = '';
+  let selectedFallbackScope = '';
+
+  const setFallbackScope = (scope) => {
+    selectedFallbackScope = scope;
+    fallbackButtons.forEach((btn) => {
+      const isActive = btn.getAttribute('data-ai-fallback-scope') === scope;
+      btn.classList.toggle('border-primary/40', isActive);
+      btn.classList.toggle('bg-primary/15', isActive);
+    });
+  };
 
   const closeModal = () => {
     if (typeof modal.close === 'function') {
@@ -120,12 +168,28 @@ function initAiMatchModal() {
     });
   }
 
+  fallbackButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const scope = button.getAttribute('data-ai-fallback-scope');
+      if (!scope) return;
+      setFallbackScope(scope);
+      setStatusMessage(statusElement, `Quick check selected: ${scope}.`);
+      trackAiMatchEvent('ai_match_fallback_scope_selected', { scope });
+    });
+  });
+
   providerButtons.forEach((button) => {
     button.addEventListener('click', async () => {
       const provider = button.getAttribute('data-ai-provider');
       if (!provider) return;
+      const jobDescription = jdInput ? jdInput.value.trim() : '';
 
       trackAiMatchEvent('ai_match_provider_selected', { provider });
+      if (!jobDescription && !selectedFallbackScope) {
+        setStatusMessage(statusElement, 'Paste a JD or choose Experience/Portfolio quick check.');
+        return;
+      }
+
       setStatusMessage(statusElement, 'Preparing your prompt...');
 
       try {
@@ -133,7 +197,10 @@ function initAiMatchModal() {
           cachedTemplate = await fetchPromptTemplate();
         }
 
-        const prompt = composePromptFromTemplate(cachedTemplate);
+        const prompt = composePromptFromTemplate(cachedTemplate, {
+          jobDescription,
+          fallbackScope: selectedFallbackScope,
+        });
         const likelyNoPrefill = provider === 'gemini' || provider === 'grok';
 
         if (shouldUseClipboardFallback(provider)) {
@@ -158,6 +225,8 @@ function initAiMatchModal() {
           provider,
           prompt_version: PROMPT_VERSION,
           prompt_length: prompt.length,
+          has_job_description: Boolean(jobDescription),
+          fallback_scope: selectedFallbackScope || 'none',
         });
 
         const providerUrl = buildProviderUrl(provider, prompt);
@@ -183,6 +252,7 @@ if (typeof window !== 'undefined') {
     buildProviderUrl,
     trackAiMatchEvent,
     composePromptFromTemplate,
+    buildAskInstruction,
     shouldUseClipboardFallback,
     copyPromptToClipboard,
     fetchPromptTemplate,
@@ -197,6 +267,7 @@ export {
   buildProviderUrl,
   trackAiMatchEvent,
   composePromptFromTemplate,
+  buildAskInstruction,
   shouldUseClipboardFallback,
   copyPromptToClipboard,
   fetchPromptTemplate,

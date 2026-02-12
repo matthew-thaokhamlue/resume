@@ -5,6 +5,7 @@ import {
   fillPromptTemplate,
   buildProviderUrl,
   composePromptFromTemplate,
+  buildAskInstruction,
   shouldUseClipboardFallback,
 } from '../assets/js/ai-match.js';
 
@@ -52,7 +53,7 @@ test('buildProviderUrl returns grok base URL as best-effort fallback', () => {
   assert.equal(buildProviderUrl('grok', prompt), 'https://grok.com/');
 });
 
-test('composePromptFromTemplate injects full context and ask block', () => {
+test('composePromptFromTemplate injects JD-aware ask block when JD is provided', () => {
   const template = [
     'Candidate: {{FULL_NAME}}',
     'Role: {{ROLE}}',
@@ -61,15 +62,39 @@ test('composePromptFromTemplate injects full context and ask block', () => {
     'Task: {{ASK}}',
   ].join('\n');
 
-  const result = composePromptFromTemplate(template);
+  const result = composePromptFromTemplate(template, {
+    jobDescription: 'Own product roadmap, partner with engineering, drive measurable outcomes.',
+  });
 
   assert.match(result, /Matthew Thaokhamlue/);
   assert.match(result, /Senior Product Manager/);
   assert.match(result, /Labforward/);
   assert.match(result, /LabTwin/);
   assert.match(result, /Thryve/);
-  assert.match(result, /good match/i);
+  assert.match(result, /job description/i);
+  assert.match(result, /Own product roadmap/i);
   assert.equal(result.includes('{{ASK}}'), false);
+});
+
+test('buildAskInstruction builds experience-only fallback ask when JD is missing', () => {
+  const ask = buildAskInstruction({
+    jobDescription: '',
+    fallbackScope: 'experience',
+  });
+
+  assert.match(ask, /no job description was provided/i);
+  assert.match(ask, /experience/i);
+  assert.doesNotMatch(ask, /portfolio deep-dive only/i);
+});
+
+test('buildAskInstruction builds portfolio-only fallback ask when JD is missing', () => {
+  const ask = buildAskInstruction({
+    jobDescription: '',
+    fallbackScope: 'portfolio',
+  });
+
+  assert.match(ask, /no job description was provided/i);
+  assert.match(ask, /portfolio deep-dive only/i);
 });
 
 test('shouldUseClipboardFallback enables fallback for every provider in v1', () => {

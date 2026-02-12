@@ -604,7 +604,22 @@
         <div class="flex flex-col gap-5">
           <div>
             <h3 class="text-2xl font-bold tracking-tight text-white">Ask Your AI</h3>
-            <p class="text-white/70 mt-2">Choose your AI. I will preload a fit-assessment prompt and copy it as backup.</p>
+            <p class="text-white/70 mt-2">Paste a job description, then choose your AI for a real role-fit assessment.</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="ai-match-jd" class="text-sm font-medium text-white">Job Description (Required)</label>
+            <textarea id="ai-match-jd" rows="5"
+              class="w-full rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/45 focus:border-primary/50 focus:ring-primary/20"
+              placeholder="Paste the full job description here..."></textarea>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs text-white/60">No JD yet? Quick check:</span>
+              <button type="button" data-ai-fallback-scope="experience"
+                class="h-9 px-3 rounded-md bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white text-xs font-medium">Use
+                Experience</button>
+              <button type="button" data-ai-fallback-scope="portfolio"
+                class="h-9 px-3 rounded-md bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white text-xs font-medium">Use
+                Portfolio</button>
+            </div>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <button type="button" data-ai-provider="chatgpt"
