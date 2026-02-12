@@ -134,14 +134,23 @@ function initAiMatchModal() {
         }
 
         const prompt = composePromptFromTemplate(cachedTemplate);
+        const likelyNoPrefill = provider === 'gemini' || provider === 'grok';
 
         if (shouldUseClipboardFallback(provider)) {
           const copied = await copyPromptToClipboard(prompt);
           if (copied) {
             trackAiMatchEvent('ai_match_clipboard_fallback_used', { provider });
-            setStatusMessage(statusElement, 'Prompt copied. Redirecting now...');
+            if (likelyNoPrefill) {
+              setStatusMessage(statusElement, 'Gemini/Grok may not auto-fill. Prompt copied. Redirecting now...');
+            } else {
+              setStatusMessage(statusElement, 'Prompt copied. Redirecting now...');
+            }
           } else {
-            setStatusMessage(statusElement, 'Redirecting. If no prefill appears, paste manually.');
+            if (likelyNoPrefill) {
+              setStatusMessage(statusElement, 'Gemini/Grok may not auto-fill. Redirecting; paste manually.');
+            } else {
+              setStatusMessage(statusElement, 'Redirecting. If no prefill appears, paste manually.');
+            }
           }
         }
 
