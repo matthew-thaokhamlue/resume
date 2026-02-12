@@ -278,18 +278,30 @@
           <p class="text-lg sm:text-xl text-primary font-medium tracking-tight">Senior Product Manager</p>
           <p class="text-white/60 max-w-xl text-lg leading-relaxed">Crafting high-impact products at the intersection of
             technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
-          <!-- Audio Player in Hero -->
-          <div class="mt-4 p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm max-w-md">
-            <div class="flex items-center gap-3 mb-2">
-              <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                <span class="material-symbols-outlined text-sm">graphic_eq</span>
+          <!-- Audio + AI Match Actions -->
+          <div class="mt-4 flex flex-col lg:flex-row lg:items-end gap-4">
+            <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm max-w-md w-full">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                  <span class="material-symbols-outlined text-sm">graphic_eq</span>
+                </div>
+                <p class="text-xs font-medium text-white/80">Listen to my role discussion</p>
               </div>
-              <p class="text-xs font-medium text-white/80">Listen to my role discussion</p>
+              <audio controls class="w-full h-8 opacity-80 hover:opacity-100 transition-opacity">
+                <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav" type="audio/wav" />
+                Your browser does not support the audio element.
+              </audio>
             </div>
-            <audio controls class="w-full h-8 opacity-80 hover:opacity-100 transition-opacity">
-              <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav" type="audio/wav" />
-              Your browser does not support the audio element.
-            </audio>
+            <button id="ai-match-trigger" type="button"
+              class="group w-full lg:w-auto min-h-[5.5rem] px-5 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
+              <span class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-primary mt-0.5">smart_toy</span>
+                <span class="flex flex-col">
+                  <span class="text-sm font-semibold text-white">Ask your AI if we can be a good match</span>
+                  <span class="text-xs text-white/70 mt-1">One-click prompt with my experience and portfolio.</span>
+                </span>
+              </span>
+            </button>
           </div>
         </div>
 
@@ -583,6 +595,37 @@
     </div>
   </dialog>
 
+  <!-- AI Match Modal -->
+  <dialog id="ai-match-modal"
+    class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" data-ai-match-overlay>
+      <div class="bg-surface border border-white/10 rounded-2xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative">
+        <button id="ai-match-close" type="button"
+          class="absolute top-4 right-4 text-white/50 hover:text-white transition-colors" aria-label="Close AI picker">
+          <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+        <div class="flex flex-col gap-5">
+          <div>
+            <h3 class="text-2xl font-bold tracking-tight text-white">Ask Your AI</h3>
+            <p class="text-white/70 mt-2">Choose your AI. I will preload a fit-assessment prompt and copy it as backup.</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button type="button" data-ai-provider="chatgpt"
+              class="h-12 rounded-lg bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white font-medium">ChatGPT</button>
+            <button type="button" data-ai-provider="claude"
+              class="h-12 rounded-lg bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white font-medium">Claude</button>
+            <button type="button" data-ai-provider="gemini"
+              class="h-12 rounded-lg bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white font-medium">Gemini</button>
+            <button type="button" data-ai-provider="grok"
+              class="h-12 rounded-lg bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white font-medium">Grok</button>
+          </div>
+          <p id="ai-match-status" class="text-sm text-white/70 min-h-6"></p>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="module" src="assets/js/ai-match.js"></script>
   <script>
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu');
