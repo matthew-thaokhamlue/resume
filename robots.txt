@@ -35,6 +35,9 @@ Allow: /
 User-agent: Meta-ExternalAgent
 Allow: /
 
+User-agent: BraveBot
+Allow: /
+
 # Allow crawling of CSS, JS, and images for better rendering
 Allow: /assets/css/
 Allow: /assets/js/
