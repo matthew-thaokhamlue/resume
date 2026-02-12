@@ -6,6 +6,7 @@ import {
   buildProviderUrl,
   composePromptFromTemplate,
   buildAskInstruction,
+  openBlankTab,
   openProviderInNewTab,
   shouldUseClipboardFallback,
 } from '../assets/js/ai-match.js';
@@ -126,13 +127,49 @@ test('openProviderInNewTab only opens a new tab and never redirects current page
     location: { href: 'https://example.com/resume' },
   };
 
-  openProviderInNewTab('https://chatgpt.com/?q=test', fakeWindow);
+  const ok = openProviderInNewTab('https://chatgpt.com/?q=test', fakeWindow);
 
+  assert.equal(ok, false);
   assert.equal(openCalls.length, 1);
   assert.deepEqual(openCalls[0], [
-    'https://chatgpt.com/?q=test',
+    'about:blank',
     '_blank',
     'noopener,noreferrer',
   ]);
   assert.equal(fakeWindow.location.href, 'https://example.com/resume');
+});
+
+test('openProviderInNewTab navigates a pre-opened tab and avoids extra open calls', () => {
+  const openCalls = [];
+  const preopenedTab = { location: { href: 'about:blank' } };
+  const fakeWindow = {
+    open: (...args) => {
+      openCalls.push(args);
+      return null;
+    },
+    location: { href: 'https://example.com/resume' },
+  };
+
+  const ok = openProviderInNewTab('https://claude.ai/new?q=test', fakeWindow, preopenedTab);
+
+  assert.equal(ok, true);
+  assert.equal(openCalls.length, 0);
+  assert.equal(preopenedTab.location.href, 'https://claude.ai/new?q=test');
+  assert.equal(fakeWindow.location.href, 'https://example.com/resume');
+});
+
+test('openBlankTab opens about:blank in a new tab', () => {
+  const openCalls = [];
+  const preopenedTab = { location: { href: 'about:blank' } };
+  const fakeWindow = {
+    open: (...args) => {
+      openCalls.push(args);
+      return preopenedTab;
+    },
+  };
+
+  const tab = openBlankTab(fakeWindow);
+
+  assert.equal(tab, preopenedTab);
+  assert.deepEqual(openCalls[0], ['about:blank', '_blank', 'noopener,noreferrer']);
 });

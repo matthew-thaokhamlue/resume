@@ -147,9 +147,15 @@ function setStatusMessage(statusElement, message) {
   statusElement.textContent = message;
 }
 
-function openProviderInNewTab(url, win = typeof window !== 'undefined' ? window : null) {
+function openBlankTab(win = typeof window !== 'undefined' ? window : null) {
   if (!win || typeof win.open !== 'function') return false;
-  win.open(url, '_blank', 'noopener,noreferrer');
+  return win.open('about:blank', '_blank', 'noopener,noreferrer');
+}
+
+function openProviderInNewTab(url, win = typeof window !== 'undefined' ? window : null, preopenedTab = null) {
+  const targetTab = preopenedTab || openBlankTab(win);
+  if (!targetTab || !targetTab.location) return false;
+  targetTab.location.href = url;
   return true;
 }
 
@@ -249,6 +255,12 @@ function initAiMatchModal() {
         return;
       }
 
+      const preopenedTab = openBlankTab(window);
+      if (!preopenedTab) {
+        setStatusMessage(statusElement, 'Popup blocked. Stay on this page and open your AI tool manually after copy.');
+        trackAiMatchEvent('ai_match_popup_blocked', { provider });
+      }
+
       setStatusMessage(statusElement, 'Preparing your prompt...');
 
       try {
@@ -291,7 +303,10 @@ function initAiMatchModal() {
         });
 
         const providerUrl = buildProviderUrl(provider, prompt);
-        openProviderInNewTab(providerUrl);
+        const opened = openProviderInNewTab(providerUrl, window, preopenedTab || null);
+        if (!opened) {
+          setStatusMessage(statusElement, 'Popup blocked. Prompt copied. Please open your AI tool manually.');
+        }
       } catch (error) {
         setStatusMessage(statusElement, 'Unable to prepare prompt. Please try again.');
         trackAiMatchEvent('ai_match_prompt_error', {
@@ -315,6 +330,7 @@ if (typeof window !== 'undefined') {
     shouldUseClipboardFallback,
     copyPromptToClipboard,
     fetchPromptTemplate,
+    openBlankTab,
     openProviderInNewTab,
     initAiMatchModal,
   };
@@ -332,6 +348,7 @@ export {
   shouldUseClipboardFallback,
   copyPromptToClipboard,
   fetchPromptTemplate,
+  openBlankTab,
   openProviderInNewTab,
   initAiMatchModal,
 };
