@@ -78,35 +78,21 @@ test('composePromptFromTemplate injects JD-aware ask block when JD is provided',
   assert.equal(result.includes('{{ASK}}'), false);
 });
 
-test('buildAskInstruction builds experience-only fallback ask when JD is missing', () => {
+test('buildAskInstruction asks for JD when missing', () => {
   const ask = buildAskInstruction({
     jobDescription: '',
-    fallbackScope: 'experience',
   });
 
   assert.match(ask, /no job description was provided/i);
-  assert.match(ask, /experience/i);
-  assert.doesNotMatch(ask, /portfolio deep-dive only/i);
+  assert.match(ask, /paste.*job description/i);
 });
 
-test('buildAskInstruction builds portfolio-only fallback ask when JD is missing', () => {
-  const ask = buildAskInstruction({
-    jobDescription: '',
-    fallbackScope: 'portfolio',
-  });
-
-  assert.match(ask, /no job description was provided/i);
-  assert.match(ask, /portfolio deep-dive only/i);
-});
-
-test('buildAskInstruction includes selected role preset context for JD mode', () => {
+test('buildAskInstruction does not include role preset context in JD mode', () => {
   const ask = buildAskInstruction({
     jobDescription: 'Lead platform roadmap for AI capabilities.',
-    targetRolePreset: 'ai_platform_pm',
   });
 
-  assert.match(ask, /target role profile/i);
-  assert.match(ask, /AI Platform Product Manager/i);
+  assert.doesNotMatch(ask, /target role profile/i);
   assert.match(ask, /platform roadmap/i);
 });
 
@@ -117,7 +103,7 @@ test('shouldUseClipboardFallback enables fallback for every provider in v1', () 
   assert.equal(shouldUseClipboardFallback('grok'), true);
 });
 
-test('openProviderInNewTab only opens a new tab and never redirects current page', () => {
+test('openProviderInNewTab opens provider url directly when no pre-opened tab exists', () => {
   const openCalls = [];
   const fakeWindow = {
     open: (...args) => {
@@ -132,7 +118,7 @@ test('openProviderInNewTab only opens a new tab and never redirects current page
   assert.equal(ok, false);
   assert.equal(openCalls.length, 1);
   assert.deepEqual(openCalls[0], [
-    'about:blank',
+    'https://chatgpt.com/?q=test',
     '_blank',
     'noopener,noreferrer',
   ]);
@@ -171,5 +157,5 @@ test('openBlankTab opens about:blank in a new tab', () => {
   const tab = openBlankTab(fakeWindow);
 
   assert.equal(tab, preopenedTab);
-  assert.deepEqual(openCalls[0], ['about:blank', '_blank', 'noopener,noreferrer']);
+  assert.deepEqual(openCalls[0], ['about:blank', '_blank']);
 });

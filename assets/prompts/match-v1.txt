@@ -17,7 +17,3 @@ Output format:
 3) Risks or gaps (3-5 bullets).
 4) Suggested interview focus areas (5 questions).
 5) Recommendation: proceed, maybe, or no-go, with confidence score (0-100) and rationale.
-
-If no job description is provided:
-- Replace section 1 with a readiness summary (no numeric match score).
-- Keep the rest focused on the selected quick-check mode.
