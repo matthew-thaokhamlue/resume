@@ -1,0 +1,32 @@
+# Matthew Thaokhamlue - Senior Product Manager
+
+> Matthew Thaokhamlue is a Senior Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
+
+## Key Information
+
+- **Current Role**: Senior Product Manager at Labforward GmbH (Nov 2024 - Nov 2025)
+- **Location**: Berlin, Germany
+- **Specializations**: AI/ML Product Management, B2B SaaS, Health Analytics, Laboratory Informatics, Voice AI, API/SDK Platforms
+- **Languages**: English (IELTS 7.5), German (B1), Thai (Native)
+- **Education**: Master of International and Development Economics (HTW Berlin, DAAD Scholar), Bachelor's in Economics (Chiang Mai University)
+
+## Pages
+
+- [Home](https://matthew-thaokhamlue.github.io/resume/index.html): Main landing page with overview and testimonials
+- [About](https://matthew-thaokhamlue.github.io/resume/about.html): Personal story, education, and background
+- [Experience](https://matthew-thaokhamlue.github.io/resume/experience.html): Full work history and skills
+- [Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio.html): Case studies and project showcases
+- [Certificates](https://matthew-thaokhamlue.github.io/resume/certificates.html): Professional certifications
+- [Full CV Content](https://matthew-thaokhamlue.github.io/resume/llms-full.txt): Complete machine-readable resume
+
+## Portfolio Case Studies
+
+- [Labforward Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/labforward.html): Lab management product leadership
+- [LabTwin Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/labtwin.html): Voice AI for laboratory environments
+- [Thryve Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/thryve.html): Health data API/SDK platform
+
+## Contact
+
+- [LinkedIn](https://www.linkedin.com/in/matthewthaokhamlue)
+- [GitHub](https://github.com/matthew-thaokhamlue)
+- Email: matthew.thaokhamlue@gmail.com

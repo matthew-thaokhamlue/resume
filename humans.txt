@@ -1,0 +1,16 @@
+/* TEAM */
+Name: Matthew Thaokhamlue
+Title: Senior Product Manager
+Location: Berlin, Germany
+Email: matthew.thaokhamlue@gmail.com
+LinkedIn: linkedin.com/in/matthewthaokhamlue
+GitHub: github.com/matthew-thaokhamlue
+
+/* SITE */
+Last update: 2026-02-12
+Language: English
+Doctype: HTML5
+Standards: HTML5, CSS3, Tailwind CSS
+Components: jQuery, Tailwind CSS CDN, Font Awesome, Google Fonts (Space Grotesk)
+Software: GitHub Pages
+Template: HTML5 UP Dimension (modified)

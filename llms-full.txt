@@ -1,0 +1,147 @@
+# Matthew Thaokhamlue - Senior Product Manager
+
+> Matthew Thaokhamlue is a Senior Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
+
+## Contact Information
+
+- **Full Name**: Matthew Thaokhamlue
+- **Title**: Senior Product Manager
+- **Location**: Berlin, Germany
+- **Email**: matthew.thaokhamlue@gmail.com
+- **LinkedIn**: https://www.linkedin.com/in/matthewthaokhamlue
+- **GitHub**: https://github.com/matthew-thaokhamlue
+- **Website**: https://matthew-thaokhamlue.github.io/resume/
+
+## Professional Summary
+
+Senior Product Manager with 7+ years of experience building and scaling B2B SaaS products at the intersection of AI, health analytics, and laboratory informatics. Proven track record of taking products from 0 to 1M+ users, driving revenue growth from €0 to €1M ARR, and leading cross-functional teams across engineering, design, data, and customer success. Deep technical fluency across cloud architectures (AWS, Azure), AI/ML systems, API platforms, and voice AI. Known for bridging technical complexity with human-centered design, rapid prototyping, and data-driven decision making.
+
+## Work Experience
+
+### Senior Product Manager — Labforward GmbH
+**Nov 2024 - Nov 2025 | Berlin, Germany**
+
+- Led the product roadmap and end-to-end development cycle for core lab management products.
+- Rebuilt team collaboration practices — directly helping secure a $500K contract renewal.
+- Championed rapid prototyping loops, shrinking testing time from days to hours.
+- Guided the BI team to automate reporting and data pipelines, turning ad-hoc insights into daily decisions.
+- Key skills: Product Roadmap, Rapid Prototyping, BI Automation
+
+### Technical Product Manager — LabTwin GmbH
+**Jan 2023 - Nov 2024 | Berlin, Germany**
+
+- Drove roadmap for voice and integration features supporting scientists in real lab environments.
+- Led the effort to streamline release processes with engineering, tripling deployment frequency (4 → 12 per year).
+- Spearheaded retraining strategies for speech recognition, keeping scientific term accuracy at 95%.
+- Mentored a junior PM, encouraging autonomy and strong product intuition.
+- Key skills: Voice AI, Release Management, Speech Recognition, ML Retraining
+
+### Product Owner — Thryve GmbH
+**Oct 2019 - Dec 2022 | Berlin, Germany**
+
+- Owned and scaled APIs and SDKs powering 1M+ users across 100+ B2B partners in digital health.
+- Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and more).
+- Contributed to company growth from €0 → €1M ARR and from 7 → 35 people.
+- Founded "Thryve Academy," a learning program that onboarded and aligned new hires in record time.
+- Key skills: API/SDK, Wearable Integrations, B2B Partnerships, Digital Health
+
+### Senior Risk Consultant — Ernst & Young
+**Aug 2016 - Feb 2018 | Bangkok, Thailand**
+
+- Drove risk assessments and process improvement projects for Thailand's largest corporations.
+- Developed risk management frameworks and control testing procedures for digital transformation initiatives.
+- Led market research on emerging technologies (RPA) and competitive risk practices.
+- Key skills: Risk Management, Process Improvement, Digital Transformation
+
+## Education
+
+### Master of International and Development Economics
+**University of Applied Science Berlin (HTW Berlin)**
+- DAAD Scholarship Recipient
+
+### Bachelor's Degree in Economics
+**Chiang Mai University**
+- Quantitative Economics
+
+## Skills
+
+### Essential Skills
+- Product Roadmap
+- Product Discovery
+- User Research
+- A/B Testing
+- Stakeholder Management
+- Automation (Python/n8n)
+- AI Implementation
+- Rapid Prototyping
+- Cross-functional Team Leadership
+- Data-driven Decision Making
+
+### Technical Skills
+- AI/ML Product Development
+- Voice AI / Speech Recognition
+- API/SDK Design and Scaling
+- Cloud Architecture (AWS, Azure)
+- Business Intelligence & Data Pipelines
+- Release Management & CI/CD Processes
+
+## Certifications
+
+### Product Management & Agile
+- **Professional Scrum Product Owner I** — Scrum.org
+- **PMI Agile Certified Practitioner (PMI-ACP)** — Project Management Institute
+- **Google UX Design Certificate** — Google via Coursera
+- **Google Business Intelligence Certificate** — Google
+
+### Cloud & Architecture
+- **Microsoft Azure Solutions Architect Expert** — Microsoft
+- **Microsoft Azure AI Engineer Associate** — Microsoft
+- **Microsoft Azure Administrator Associate** — Microsoft
+- **Microsoft Azure AI Fundamentals** — Microsoft
+- **Microsoft Azure Data Fundamentals** — Microsoft
+- **AWS Solutions Architect Associate** — Amazon Web Services
+- **AWS SysOps Administrator Associate** — Amazon Web Services
+- **AWS Cloud Practitioner** — Amazon Web Services
+
+### Cybersecurity
+- **Google Cybersecurity Professional Certificate** — Google
+- **CompTIA Security+ ce** — CompTIA
+
+## Languages
+
+- **English**: IELTS 7.5 (Professional proficiency)
+- **German**: B1 (Intermediate)
+- **Thai**: Native
+
+## Testimonials
+
+### Paul Burggraf — Founder at Thryve
+"Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve's growth and professionalization."
+
+### Jeroen de Haas — CPO at Labforward
+"From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity."
+
+### Robin Genolet — Director Innovation & AI at Medgate
+"Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
+
+### Ignatius Reza — CTO at Laboperator
+"Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use."
+
+### Mark Dominick Flores — Senior iOS Engineer at LabTwin
+"Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. Matthew is a top-tier TPM, and I'd work with him again in a heartbeat."
+
+### Sumner Price — Product Designer at Labforward
+"He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned."
+
+### Thuy Tran — Software Engineer at Doctorlib
+"I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let's get thing done, his contribution to the team was highly significant and valuable."
+
+## About
+
+Matthew's background spans economics, technology, and product management. He started with a degree in Economics from Chiang Mai University in Thailand, then received a DAAD scholarship to study International and Development Economics at HTW Berlin. His career journey took him from risk consulting at Ernst & Young in Bangkok to building digital health products at Thryve (employee #7), leading voice AI products at LabTwin, and managing lab management platforms at Labforward.
+
+He is known for bridging technical complexity with human needs, having helped scale products from a few thousand users to over 1 million, and growing companies from €0 to €1M ARR. His approach focuses on user-centric design, rapid iteration, and data-informed decision making.
+
+## Keywords
+
+Matthew Thaokhamlue, Senior Product Manager, Technical Product Manager, AI Product Manager, Product Owner, Berlin Germany, B2B SaaS, AI/ML, Voice AI, Health Analytics, Laboratory Informatics, Digital Health, Wearable Integrations, API Platform, SDK, Cloud Architecture, AWS, Azure, Scrum, Agile, Cross-functional Leadership, DAAD Scholar
