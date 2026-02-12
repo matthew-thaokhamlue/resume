@@ -151,7 +151,11 @@ function initAiMatchModal() {
           prompt_length: prompt.length,
         });
 
-        window.location.href = buildProviderUrl(provider, prompt);
+        const providerUrl = buildProviderUrl(provider, prompt);
+        const openedWindow = window.open(providerUrl, '_blank', 'noopener,noreferrer');
+        if (!openedWindow) {
+          window.location.href = providerUrl;
+        }
       } catch (error) {
         setStatusMessage(statusElement, 'Unable to prepare prompt. Please try again.');
         trackAiMatchEvent('ai_match_prompt_error', {
