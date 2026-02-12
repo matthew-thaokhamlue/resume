@@ -279,8 +279,8 @@
           <p class="text-white/60 max-w-xl text-lg leading-relaxed">Crafting high-impact products at the intersection of
             technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
           <!-- Audio + AI Match Actions -->
-          <div class="mt-4 flex flex-col lg:flex-row lg:items-end gap-4">
-            <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm max-w-md w-full">
+          <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm w-full h-full">
               <div class="flex items-center gap-3 mb-2">
                 <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                   <span class="material-symbols-outlined text-sm">graphic_eq</span>
@@ -293,13 +293,10 @@
               </audio>
             </div>
             <button id="ai-match-trigger" type="button"
-              class="group w-full lg:w-auto min-h-[5.5rem] px-5 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
-              <span class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary mt-0.5">smart_toy</span>
-                <span class="flex flex-col">
-                  <span class="text-sm font-semibold text-white">Ask your AI if we can be a good match</span>
-                  <span class="text-xs text-white/70 mt-1">One-click prompt with my experience and portfolio.</span>
-                </span>
+              class="group w-full h-full p-4 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
+              <span class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">smart_toy</span>
+                <span class="text-sm font-semibold text-white">Ask your AI if we can be a good match</span>
               </span>
             </button>
           </div>
