@@ -85,6 +85,12 @@ async function copyPromptToClipboard(prompt) {
   }
 }
 
+async function buildAndCopyPrompt(template, options = {}, copyFn = copyPromptToClipboard) {
+  const prompt = composePromptFromTemplate(template, options);
+  const copied = await copyFn(prompt);
+  return { prompt, copied };
+}
+
 async function fetchPromptTemplate() {
   const response = await fetch(`assets/prompts/${PROMPT_VERSION}.txt`);
   if (!response.ok) {
@@ -130,6 +136,7 @@ function initAiMatchModal() {
   const closeButton = document.getElementById('ai-match-close');
   const jdInput = document.getElementById('ai-match-jd');
   const statusElement = document.getElementById('ai-match-status');
+  const fallbackLink = document.getElementById('ai-chatgpt-fallback-link');
   const overlay = modal ? modal.querySelector('[data-ai-match-overlay]') : null;
   const providerButtons = modal ? modal.querySelectorAll('[data-ai-provider]') : [];
 
@@ -163,6 +170,54 @@ function initAiMatchModal() {
     });
   }
 
+  if (fallbackLink) {
+    fallbackLink.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      const fallbackUrl = fallbackLink.getAttribute('href') || 'https://chatgpt.com/';
+      const jobDescription = jdInput ? jdInput.value.trim() : '';
+      const preopenedTab = openBlankTab(window);
+
+      setStatusMessage(statusElement, 'Preparing your prompt...');
+
+      try {
+        if (!cachedTemplate) {
+          cachedTemplate = await fetchPromptTemplate();
+        }
+
+        const { copied } = await buildAndCopyPrompt(cachedTemplate, {
+          jobDescription,
+        });
+
+        if (copied) {
+          setStatusMessage(statusElement, 'Prompt copied. Opening ChatGPT...');
+          trackAiMatchEvent('ai_match_clipboard_fallback_used', { provider: 'chatgpt_fallback_link' });
+        } else {
+          setStatusMessage(statusElement, 'Opening ChatGPT. If needed, paste manually.');
+        }
+
+        const opened = openProviderInNewTab(fallbackUrl, window, preopenedTab || null);
+        if (!opened) {
+          closeTabSafely(preopenedTab);
+          window.location.href = fallbackUrl;
+        }
+
+        trackAiMatchEvent('ai_match_fallback_link_clicked', {
+          prompt_version: PROMPT_VERSION,
+          has_job_description: Boolean(jobDescription),
+        });
+      } catch (error) {
+        closeTabSafely(preopenedTab);
+        trackAiMatchEvent('ai_match_prompt_error', {
+          provider: 'chatgpt_fallback_link',
+          prompt_version: PROMPT_VERSION,
+          message: error instanceof Error ? error.message : 'unknown_error',
+        });
+        window.location.href = fallbackUrl;
+      }
+    });
+  }
+
   providerButtons.forEach((button) => {
     button.addEventListener('click', async () => {
       const provider = button.getAttribute('data-ai-provider');
@@ -188,13 +243,12 @@ function initAiMatchModal() {
           cachedTemplate = await fetchPromptTemplate();
         }
 
-        const prompt = composePromptFromTemplate(cachedTemplate, {
+        const { prompt, copied } = await buildAndCopyPrompt(cachedTemplate, {
           jobDescription,
         });
         const likelyNoPrefill = provider === 'gemini' || provider === 'grok';
 
         if (shouldUseClipboardFallback(provider)) {
-          const copied = await copyPromptToClipboard(prompt);
           if (copied) {
             trackAiMatchEvent('ai_match_clipboard_fallback_used', { provider });
             if (likelyNoPrefill) {
@@ -246,6 +300,7 @@ if (typeof window !== 'undefined') {
     buildAskInstruction,
     shouldUseClipboardFallback,
     copyPromptToClipboard,
+    buildAndCopyPrompt,
     fetchPromptTemplate,
     openBlankTab,
     openProviderInNewTab,
@@ -263,6 +318,7 @@ export {
   buildAskInstruction,
   shouldUseClipboardFallback,
   copyPromptToClipboard,
+  buildAndCopyPrompt,
   fetchPromptTemplate,
   openBlankTab,
   openProviderInNewTab,

@@ -630,6 +630,13 @@
             <textarea id="ai-match-jd" rows="5"
               class="w-full rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/45 focus:border-primary/50 focus:ring-primary/20"
               placeholder="Paste the full job description here..."></textarea>
+            <p class="rounded-lg border border-amber-300/30 bg-amber-500/10 px-3 py-2 text-xs leading-relaxed text-amber-100/90">
+              ChatGPT tip: If an error appears after you paste, your job description is usually fine. Try shortening your job description first, or open ChatGPT in a private/incognito window.
+              <a id="ai-chatgpt-fallback-link" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
+                class="ml-1 text-amber-100 underline hover:text-white">
+                Link doesn't work? Click here.
+              </a>
+            </p>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <button type="button" data-ai-provider="chatgpt"
@@ -643,7 +650,7 @@
     </div>
   </dialog>
 
-  <script type="module" src="assets/js/ai-match.js?v=20260212c"></script>
+  <script type="module" src="assets/js/ai-match.js?v=20260213a"></script>
   <script>
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu');

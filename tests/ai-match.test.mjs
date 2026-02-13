@@ -5,6 +5,7 @@ import {
   fillPromptTemplate,
   buildProviderUrl,
   composePromptFromTemplate,
+  buildAndCopyPrompt,
   buildAskInstruction,
   openBlankTab,
   openProviderInNewTab,
@@ -101,6 +102,31 @@ test('shouldUseClipboardFallback enables fallback for every provider in v1', () 
   assert.equal(shouldUseClipboardFallback('claude'), true);
   assert.equal(shouldUseClipboardFallback('gemini'), true);
   assert.equal(shouldUseClipboardFallback('grok'), true);
+});
+
+test('buildAndCopyPrompt composes prompt and copies it for clipboard-ready fallback', async () => {
+  const template = [
+    'Candidate: {{FULL_NAME}}',
+    'Role: {{ROLE}}',
+    'Task: {{ASK}}',
+  ].join('\n');
+  const copiedPayloads = [];
+  const fakeCopy = async (value) => {
+    copiedPayloads.push(value);
+    return true;
+  };
+
+  const { prompt, copied } = await buildAndCopyPrompt(
+    template,
+    { jobDescription: 'Lead AI roadmap and partner with engineering.' },
+    fakeCopy,
+  );
+
+  assert.equal(copied, true);
+  assert.equal(copiedPayloads.length, 1);
+  assert.equal(copiedPayloads[0], prompt);
+  assert.match(prompt, /Lead AI roadmap/i);
+  assert.match(prompt, /Matthew Thaokhamlue/i);
 });
 
 test('openProviderInNewTab opens provider url directly when no pre-opened tab exists', () => {
