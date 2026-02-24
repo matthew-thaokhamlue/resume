@@ -345,11 +345,13 @@
         </div>
         <div class="flex items-center gap-6">
           <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            class="text-white/60 hover:text-primary transition-colors">
+            class="text-white/60 hover:text-primary transition-colors"
+            onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'portfolio',link_position:'footer'})}">
             <i class="fab fa-linkedin text-2xl"></i>
           </a>
           <a href="https://github.com/matthew-thaokhamlue" target="_blank"
-            class="text-white/60 hover:text-white transition-colors">
+            class="text-white/60 hover:text-white transition-colors"
+            onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'portfolio',link_position:'footer'})}">
             <i class="fab fa-github text-2xl"></i>
           </a>
         </div>

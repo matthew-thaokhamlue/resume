@@ -1,41 +1,38 @@
-# Repository Guidelines
+# AGENTS.md
 
-## Project Structure & Module Organization
-This repository is a static GitHub Pages site (no backend/runtime services). Key paths:
-- `index.html`, `about.html`, `experience.html`, `certificates.html`, `portfolio.html`: top-level pages.
-- `portfolio/*.html`: detailed case-study pages.
-- `assets/js/`: client-side behavior (`main.js` for modal/article behavior, `portfolio.js` for portfolio routing).
-- `assets/css/` and `assets/sass/`: compiled CSS and SASS sources from the Dimension template.
-- `images/`: page and portfolio media assets.
-- `robots.txt`, `sitemap.xml`, `structured-data.json`, `humans.txt`: SEO/discovery metadata.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Build, Test, and Development Commands
-No build, package manager, or test runner is required.
-- `python3 -m http.server 8000`: run locally from repo root.
-- Open `http://localhost:8000/index.html`: verify the main page.
-- `open index.html` (macOS quick check): fast static preview without a server.
-- `git status` and `git diff --stat`: review scope before committing.
+## Project Overview
 
-## Coding Style & Naming Conventions
-- Match existing formatting per file type: HTML/JS commonly use 2-space indentation; keep style consistent within edited files.
-- Use lowercase, hyphenated filenames for new pages/assets (for example, `new-case-study.html`).
-- Preserve the current modal-article/hash navigation patterns when changing page structure.
-- Keep duplicated Tailwind config blocks consistent across top-level HTML pages when updating theme tokens.
-- Avoid editing vendored/minified files unless a dependency update is intentional.
+Static resume/portfolio website for Matthew Thaokhamlue, deployed to GitHub Pages. No build step, no bundler, no package manager — just static HTML/CSS/JS served directly.
 
-## Testing Guidelines
-There is no automated suite yet; use manual verification before opening a PR:
-- Check navigation and hash routes (`#about`, `#portfolio-grid`, `#work1`).
-- Validate responsive layouts on mobile and desktop.
-- Confirm contact and external links resolve correctly.
-- Verify SEO files still match page URLs after adding/removing pages.
+## Development
 
-## Commit & Pull Request Guidelines
-- Follow existing history style: short, imperative commit subjects (for example, `add certificates page`, `fix typo`).
-- Keep commits focused to one logical change.
-- PRs should include: purpose, affected pages/files, manual test notes, and screenshots/GIFs for UI changes.
-- Link related issues/tasks when available.
+Open `index.html` in a browser to test. No build or install commands needed. The site is deployed by pushing to the `main` branch (GitHub Pages serves from root).
 
-## Security & Configuration Tips
-- Do not commit secrets/tokens; this is a public static site.
-- When changing canonical URLs or page paths, update `sitemap.xml`, `robots.txt`, and structured metadata in the same PR.
+## Architecture
+
+**Pages:** Each top-level HTML file is a standalone page sharing a common structure:
+- `index.html` — Main landing page (about, experience, certificates, contact as modal articles)
+- `portfolio.html` — Portfolio page with work detail modals
+- `about.html`, `experience.html`, `certificates.html` — Dedicated full pages for each section
+- `portfolio/*.html` — Individual portfolio case study pages (labforward, labtwin, thryve)
+
+**Styling:** Dual CSS approach:
+- **Tailwind CSS** via CDN (`cdn.tailwindcss.com`) with inline config in each HTML `<head>` — used for layout and utility classes. Config defines custom colors (`primary: #0da6f2`, `background-dark: #101c22`, `surface: #1a262d`), font family (`Space Grotesk`), and border radius tokens.
+- **SASS/CSS** in `assets/sass/` and `assets/css/` — legacy styles from the HTML5 UP Dimension template. `main.css` and `portfolio.css` handle the modal article animation system.
+
+**JavaScript:**
+- `assets/js/main.js` — Dimension template's modal article system (hash-based routing, article show/hide animations, keyboard/click handlers). jQuery-based.
+- `assets/js/portfolio.js` — Portfolio-specific routing that extends the article system with work card clicks, hash-based navigation between portfolio grid and work detail modals, and escape/close behavior that redirects appropriately.
+- jQuery, browser detection, and breakpoint utilities are vendored in `assets/js/`.
+
+**Modal Article Pattern:** Both `index.html` and `portfolio.html` use a pattern where `<article>` elements inside `<div id="main">` act as modal overlays. Articles are shown/hidden via CSS classes (`active`, `is-article-visible`) with JS managing transitions. Hash fragments (`#about`, `#work1`) drive navigation.
+
+## Key Conventions
+
+- All external dependencies loaded via CDN (Tailwind, Font Awesome, Google Fonts, jQuery) — no `node_modules`
+- Tailwind config is duplicated in each HTML file's `<script id="tailwind-config">` block — keep them in sync when changing theme tokens
+- Google Analytics tag (G-D11HKMWFB4) is included in each page's `<head>`
+- SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
+- Images go in `images/` directory

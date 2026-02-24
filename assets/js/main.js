@@ -103,6 +103,11 @@
 							// Activate article.
 								$article.addClass('active');
 
+							// Track article open.
+								if (typeof gtag === 'function') {
+									gtag('event', 'modal_article_viewed', { article_id: id, action: 'open' });
+								}
+
 							// Unlock.
 								locked = false;
 
@@ -139,6 +144,11 @@
 									setTimeout(function() {
 
 										$article.addClass('active');
+
+										// Track article open.
+											if (typeof gtag === 'function') {
+												gtag('event', 'modal_article_viewed', { article_id: id, action: 'open' });
+											}
 
 										// Window stuff.
 											$window
@@ -179,6 +189,11 @@
 
 										$article.addClass('active');
 
+										// Track article open.
+											if (typeof gtag === 'function') {
+												gtag('event', 'modal_article_viewed', { article_id: id, action: 'open' });
+											}
+
 										// Window stuff.
 											$window
 												.scrollTop(0)
@@ -200,10 +215,16 @@
 			$main._hide = function(addState) {
 
 				var $article = $main_articles.filter('.active');
+				var _articleId = $article.attr('id');
 
 				// Article not visible? Bail.
 					if (!$body.hasClass('is-article-visible'))
 						return;
+
+				// Track article close.
+					if (typeof gtag === 'function') {
+						gtag('event', 'modal_article_viewed', { article_id: _articleId, action: 'close' });
+					}
 
 				// Add state?
 					if (typeof addState != 'undefined'
@@ -434,6 +455,9 @@
 				// Open email client
 				try {
 					window.location.href = mailtoLink;
+					if (typeof gtag === 'function') {
+						gtag('event', 'contact_intent_registered', { contact_method: 'mailto_client' });
+					}
 					showContactMessage('Your email client should open with the message ready to send. If it doesn\'t open automatically, please email matthew.thaokhamlue@gmail.com directly.', 'success');
 					
 					// Reset form after successful submission

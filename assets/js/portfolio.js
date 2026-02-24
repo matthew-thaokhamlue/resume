@@ -145,6 +145,12 @@
         e.preventDefault();
         window.location.hash = href;
         showArticle(target);
+        if (typeof gtag === 'function') {
+          gtag('event', 'navigation_clicked', {
+            destination: target,
+            menu_type: 'portfolio_nav'
+          });
+        }
       }
     });
 
@@ -155,6 +161,12 @@
         if (workId) {
           window.location.hash = "#" + workId;
           showArticle(workId);
+          if (typeof gtag === 'function') {
+            gtag('event', 'portfolio_project_opened', {
+              project_name: workId,
+              source_page: 'portfolio'
+            });
+          }
         }
       }
     });

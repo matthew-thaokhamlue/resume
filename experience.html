@@ -182,6 +182,7 @@
                     <p class="text-xl text-white/60">My professional track record and technical skills.</p>
                 </div>
                 <a href="Matthew main CV.pdf" target="_blank" download
+                    onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
                     class="flex items-center justify-center gap-2 h-12 px-6 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl font-bold transition-all hover:-translate-y-0.5">
                     Download PDF CV <span class="material-symbols-outlined text-sm">download</span>
                 </a>
@@ -455,11 +456,13 @@
                 </div>
                 <div class="flex items-center gap-6">
                     <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-                        class="text-white/60 hover:text-primary transition-colors">
+                        class="text-white/60 hover:text-primary transition-colors"
+                        onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'experience',link_position:'footer'})}">
                         <i class="fab fa-linkedin text-2xl"></i>
                     </a>
                     <a href="https://github.com/matthew-thaokhamlue" target="_blank"
-                        class="text-white/60 hover:text-white transition-colors">
+                        class="text-white/60 hover:text-white transition-colors"
+                        onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'experience',link_position:'footer'})}">
                         <i class="fab fa-github text-2xl"></i>
                     </a>
                 </div>
