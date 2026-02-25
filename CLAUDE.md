@@ -30,10 +30,28 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 **Modal Article Pattern:** Both `index.html` and `portfolio.html` use a pattern where `<article>` elements inside `<div id="main">` act as modal overlays. Articles are shown/hidden via CSS classes (`active`, `is-article-visible`) with JS managing transitions. Hash fragments (`#about`, `#work1`) drive navigation.
 
+## Scroll Stack Panel Pattern
+
+All three main pages use a Geist-style stacking scroll effect. Key CSS class `.stack-panel` is defined inline in each page's `<style>` block:
+
+```css
+.stack-panel { position: sticky; top: 0; z-index: var(--panel-z, 10); background: #101c22;
+  transform-origin: top center; transition: scale/filter/border-radius 0.55s; will-change: scale, filter; }
+.stack-panel + .stack-panel { border-radius: 1.5rem 1.5rem 0 0; box-shadow: 0 -8px 48px rgba(0,0,0,.55); }
+.stack-panel.is-covered { scale: 0.965; filter: brightness(0.58); border-radius: 1.5rem; }
+```
+
+A passive scroll IIFE toggles `is-covered` when the next panel's top crosses `vh * 0.88`. Each panel gets `style="--panel-z:N"` (10, 20, 30...).
+
+- **`index.html`**: hero (`--panel-z:10`) → testimonials (`--panel-z:20`, `h-screen overflow-hidden`) → my story (`--panel-z:30`)
+- **`portfolio.html`**: Career Portfolio section (`--panel-z:10`) → Personal Projects (`--panel-z:20`)
+- **`experience.html`**: experience wrapper is `relative` (not sticky) so content scrolls freely; `#certifications` is `stack-panel arriving-card` (`--panel-z:20`). Uses `.arriving-card` class (not the sibling CSS rule) because it's the only `.stack-panel` on the page.
+
 ## File Editing Gotchas
 
 - `index.html` and `assets/js/*.js` use CRLF line endings; all other HTML files (experience, about, certificates, portfolio, portfolio/*.html) use LF-only. The Edit tool silently fails to match strings in CRLF files — use Python with `open(path, 'rb')` / `.decode('utf-8')` / write back with `open(path, 'wb')` for reliable replacements.
 - Background subagents (`run_in_background: true`) cannot use Edit or Write tools — use them for research/reads only; apply all file edits in the main agent session.
+- Worktrees created by Claude land in `.claude/worktrees/` — clean up with `git worktree remove --force` after branches are merged.
 
 ## Key Conventions
 
