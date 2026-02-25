@@ -141,12 +141,6 @@
             border-radius: 1.5rem;
         }
 
-        /* Direct card-arrival styles for single arriving panels */
-        .arriving-card {
-            border-radius: 1.5rem 1.5rem 0 0;
-            box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.55);
-        }
-
         @media (max-width: 767px) {
             .stack-panel {
                 position: relative;
@@ -154,8 +148,7 @@
                 transition: none;
             }
 
-            .stack-panel+.stack-panel,
-            .arriving-card {
+            .stack-panel+.stack-panel {
                 border-radius: 0;
                 box-shadow: none;
             }
@@ -188,6 +181,8 @@
                         <a class="text-primary text-sm font-medium" href="experience.html">Experience</a>
                         <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
                             href="portfolio.html">Portfolio</a>
+                        <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
+                            href="certificates.html">Certifications</a>
                     </div>
                     <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
                         class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
@@ -210,6 +205,8 @@
                 onclick="toggleMenu()">Experience</a>
             <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="portfolio.html"
                 onclick="toggleMenu()">Portfolio</a>
+            <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="certificates.html"
+                onclick="toggleMenu()">Certifications</a>
             <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
                 <span class="material-symbols-outlined text-3xl">close</span>
             </button>
@@ -217,11 +214,10 @@
 
         <main class="relative z-10 flex flex-1 flex-col">
 
-            <!-- Sticky Experience Section -->
-            <div
-                class="relative z-10 w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16 animate-fade-in">
-
-                <!-- Header -->
+            <!-- Stack Panel 1: Header + Job 1 -->
+            <section
+                class="stack-panel w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[100vh] md:min-h-[110vh] gap-12 animate-fade-in"
+                style="--panel-z:10">
                 <div
                     class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
                     <div class="flex flex-col gap-4">
@@ -234,10 +230,7 @@
                         Download PDF CV <span class="material-symbols-outlined text-sm">download</span>
                     </a>
                 </div>
-
-                <!-- Experience List -->
-                <section class="w-full max-w-7xl grid grid-cols-1 gap-6">
-                    <!-- Job 1 -->
+                <div class="w-full max-w-7xl">
                     <div
                         class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
                         <div class="flex flex-col gap-2 md:w-1/3">
@@ -281,8 +274,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <!-- Job 2 -->
+            <!-- Stack Panel 2: Job 2 -->
+            <section
+                class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[100vh] md:min-h-[110vh] flex items-center"
+                style="--panel-z:20">
+                <div class="max-w-7xl mx-auto w-full">
                     <div
                         class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
                         <div class="flex flex-col gap-2 md:w-1/3">
@@ -324,8 +323,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <!-- Job 3 -->
+            <!-- Stack Panel 3: Job 3 -->
+            <section
+                class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[100vh] md:min-h-[110vh] flex items-center"
+                style="--panel-z:30">
+                <div class="max-w-7xl mx-auto w-full">
                     <div
                         class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
                         <div class="flex flex-col gap-2 md:w-1/3">
@@ -353,11 +358,9 @@
                                         users</strong>
                                     across 100+ B2B partners in digital health.</li>
                                 <li>Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and
-                                    more).
-                                </li>
+                                    more).</li>
                                 <li>Contributed to company growth from <strong class="text-white">€0 → €1M ARR</strong>
-                                    and
-                                    from 7 → 35 people.</li>
+                                    and from 7 → 35 people.</li>
                                 <li>Founded "Thryve Academy," a learning program that onboarded and aligned new hires in
                                     record time.</li>
                             </ul>
@@ -370,8 +373,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <!-- Job 4 -->
+            <!-- Stack Panel 4: Job 4 -->
+            <section
+                class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[100vh] md:min-h-[110vh] flex items-center"
+                style="--panel-z:40">
+                <div class="max-w-7xl mx-auto w-full">
                     <div
                         class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
                         <div class="flex flex-col gap-2 md:w-1/3">
@@ -389,8 +398,7 @@
                         <div class="flex flex-col gap-4 md:w-2/3">
                             <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
                                 <li>Drove risk assessments and process improvement projects for Thailand's largest
-                                    corps.
-                                </li>
+                                    corps.</li>
                                 <li>Developed risk management frameworks and control testing procedures for digital
                                     transformation initiatives.</li>
                                 <li>Led market research on emerging technologies (RPA) and competitive risk practices.
@@ -405,10 +413,14 @@
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <!-- Skills Section -->
-                <section class="w-full max-w-7xl flex flex-col gap-10">
+            <!-- Stack Panel 5: Skills & Education -->
+            <section
+                class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[110vh] md:min-h-[120vh] flex items-center"
+                style="--panel-z:50">
+                <div class="max-w-7xl mx-auto w-full flex flex-col gap-10">
                     <h2 class="text-3xl font-bold">Skills & Education</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Essential Skills -->
@@ -496,346 +508,6 @@
                             </div>
                         </div>
                     </div>
-                </section>
-
-            </div><!-- /sticky experience -->
-
-            <!-- Certifications Scroll-Over Section -->
-            <section id="certifications"
-                class="stack-panel arriving-card w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24" style="--panel-z:20">
-                <div class="max-w-7xl mx-auto flex flex-col gap-12">
-
-                    <!-- Section Header -->
-                    <div class="flex flex-col gap-4">
-                        <div class="flex items-center gap-2 text-primary">
-                            <span class="material-symbols-outlined">workspace_premium</span>
-                            <h3 class="font-bold tracking-wide uppercase text-sm">Professional Development</h3>
-                        </div>
-                        <h2 class="text-3xl sm:text-5xl font-bold tracking-tight">Certifications & Achievements</h2>
-                        <p class="text-lg text-white/60 max-w-2xl">
-                            A collection of professional certifications demonstrating expertise in product management,
-                            cybersecurity, cloud computing, and agile methodologies.
-                        </p>
-                    </div>
-
-                    <!-- Certificates Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                        <!-- ========== PRODUCT MANAGEMENT & BUSINESS ========== -->
-
-                        <!-- Professional Scrum Product Owner I -->
-                        <a href="https://www.scrum.org/certificates/508122"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'scrum.org',credential_name:'Professional Scrum Product Owner I'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">sprint</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Professional Scrum Product Owner I</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Scrum.org</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Supports backlog prioritization around
-                                    customer value, clear acceptance criteria, and explicit trade-off communication when
-                                    scope pressure increases.</p>
-                            </div>
-                        </a>
-
-                        <!-- PMI Agile Certified Practitioner -->
-                        <a href="https://www.credly.com/badges/4fd40df0-1b5b-4fe5-8988-82a753bb8134/linked_in_profile"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">sync</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">PMI Agile Certified Practitioner
-                                    (PMI-ACP)®</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Project Management Institute</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Strengthens iterative delivery through
-                                    smaller releases, faster feedback loops, and practical retrospectives that inform
-                                    roadmap decisions.</p>
-                            </div>
-                        </a>
-
-                        <!-- Google UX Design Certificate -->
-                        <a href="https://www.coursera.org/account/accomplishments/professional-cert/1W2QRQSDFBJW"
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">draw</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Google UX Design Certificate</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Google via Coursera</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Improves product-design collaboration
-                                    by grounding requirements in user flows, wireframes, and usability feedback before
-                                    engineering implementation.</p>
-                            </div>
-                        </a>
-
-                        <!-- Google Business Intelligence Certificate -->
-                        <a href="https://www.credly.com/badges/fb022abf-3c4d-4907-b61a-852dbe4bf094/linked_in_profile"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">bar_chart</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Google Business Intelligence Certificate
-                                </h3>
-                                <p class="text-primary text-sm font-medium mb-3">Google</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Provides practical BI fundamentals to
-                                    define meaningful metrics, interpret dashboards critically, and improve product
-                                    review discussions.</p>
-                            </div>
-                        </a>
-
-                        <!-- ========== CLOUD & ARCHITECTURE ========== -->
-
-                        <!-- Microsoft Azure Solutions Architect Expert -->
-                        <a href="https://learn.microsoft.com/en-us/users/matthewthaokhamlue/credentials/7ba4c4edb852a4b1"
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">architecture</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure Solutions Architect Expert
-                                </h3>
-                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Supports architecture discussions with
-                                    engineering and clarifies cost, scalability, and reliability trade-offs in product
-                                    decisions.</p>
-                            </div>
-                        </a>
-
-                        <!-- Microsoft Azure AI Engineer Associate -->
-                        <a href="https://learn.microsoft.com/en-us/users/matthewthaokhamlue/credentials/6fe6f4c3d438ec75"
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">smart_toy</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure AI Engineer Associate</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Builds understanding of AI system
-                                    design, evaluation, and deployment constraints to scope GenAI features more
-                                    realistically.</p>
-                            </div>
-                        </a>
-
-                        <!-- Microsoft Azure Administrator Associate -->
-                        <a href="https://www.credly.com/badges/7f8a7614-b5fd-4d2c-9c43-4a3b8368fb94/public_url"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">admin_panel_settings</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure Administrator Associate
-                                </h3>
-                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Improves reasoning about cloud
-                                    operations, permissions, and cost drivers when prioritizing platform and reliability
-                                    work.</p>
-                            </div>
-                        </a>
-
-                        <!-- Microsoft Azure AI Fundamentals -->
-                        <a href="https://www.credly.com/badges/45fb45cd-dc3d-4e35-80ce-d252dc3c4caa/public_url"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">psychology</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure AI Fundamentals</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Provides a practical baseline in AI and
-                                    ML concepts, helping separate feasible use cases from vendor hype during discovery.
-                                </p>
-                            </div>
-                        </a>
-
-                        <!-- Microsoft Azure Data Fundamentals -->
-                        <a href="https://www.credly.com/badges/270ccc53-14f1-4169-9464-e6eadac533aa/public_url"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">storage</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure Data Fundamentals</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Improves framing of data requirements
-                                    for analytics features, including data quality, storage choices, and reporting
-                                    needs.</p>
-                            </div>
-                        </a>
-
-                        <!-- AWS Solutions Architect Associate -->
-                        <a href="https://www.credly.com/badges/68185585-2952-49bb-89c8-412ec2c6efff/public_url"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">cloud</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">AWS Solutions Architect Associate</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Amazon Web Services</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Supports collaboration with engineering
-                                    on AWS architecture options and clarifies product impact of security, latency, and
-                                    cost decisions.</p>
-                            </div>
-                        </a>
-
-                        <!-- AWS SysOps Administrator -->
-                        <a href="https://www.credly.com/badges/da129c0a-a6e5-4dc8-a463-beffb5e5e042/public_url"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">settings</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">AWS SysOps Administrator Associate</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Amazon Web Services</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Improves understanding of monitoring
-                                    and incident workflows to support clear communication, impact prioritization, and
-                                    incident response.</p>
-                            </div>
-                        </a>
-
-                        <!-- AWS Cloud Practitioner -->
-                        <a href="https://www.credly.com/badges/4cb5c446-2efc-4dc3-814c-7599c11cf732/public_url"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">cloud_done</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">AWS Cloud Practitioner</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Amazon Web Services</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Builds baseline cloud vocabulary that
-                                    improves communication with engineering and technical planning conversations.</p>
-                            </div>
-                        </a>
-
-                        <!-- ========== CYBERSECURITY ========== -->
-
-                        <!-- Google Cybersecurity Professional Certificate -->
-                        <a href="https://www.credly.com/badges/04d750a0-4b93-4bd7-8ea9-7ee6ec444a82/public_url"
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">shield</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Google Cybersecurity Professional
-                                    Certificate</h3>
-                                <p class="text-primary text-sm font-medium mb-3">Google</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Reinforces secure-by-design thinking in
-                                    product requirements, including threat awareness, access controls, and incident
-                                    readiness.</p>
-                            </div>
-                        </a>
-
-                        <!-- CompTIA Security+ -->
-                        <a href="https://www.credly.com/badges/4eb66bf5-6312-4eb9-b573-3a97d7106600/public_url"
-                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
-                            target="_blank"
-                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
-                            <div class="flex items-start justify-between">
-                                <div
-                                    class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-2xl">security</span>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-2">CompTIA Security+ CE</h3>
-                                <p class="text-primary text-sm font-medium mb-3">CompTIA</p>
-                                <p class="text-white/60 text-sm leading-relaxed">Expands practical security foundations
-                                    across risk, network security, and controls so security requirements are included
-                                    earlier in planning.</p>
-                            </div>
-                        </a>
-
-                    </div>
                 </div>
             </section>
 
@@ -874,15 +546,42 @@
     </script>
     <script>
         (function () {
-            var panels = document.querySelectorAll('.stack-panel');
+            var panels = Array.prototype.slice.call(document.querySelectorAll('.stack-panel'));
             if (!panels.length) return;
+            var mobileQuery = window.matchMedia('(max-width: 767px)');
+            var isSnapping = false;
+            var snapUnlockTimer = null;
+            var activeSnapFrame = null;
+            var wheelDeltaBuffer = 0;
+            var WHEEL_THRESHOLD = 20;
+            var SNAP_LOCK_MS = 560;
+            var SNAP_DURATION_MS = 960;
+            var SNAP_EDGE_GUTTER_UP = 200;
+
+            // Cache stable flow offsets (offsetTop shifts when panels are sticky-stuck)
+            var flowOffsets = [];
+            function cacheFlowOffsets() {
+                flowOffsets = [];
+                var cumulative = 0;
+                panels.forEach(function (panel) {
+                    flowOffsets.push(cumulative);
+                    cumulative += panel.offsetHeight;
+                });
+            }
+            cacheFlowOffsets();
+
+            function clearCoveredState() {
+                panels.forEach(function (panel) {
+                    panel.classList.remove('is-covered');
+                });
+            }
+
             function update() {
-                if (window.matchMedia('(max-width: 767px)').matches) {
-                    panels.forEach(function (panel) {
-                        panel.classList.remove('is-covered');
-                    });
+                if (mobileQuery.matches) {
+                    clearCoveredState();
                     return;
                 }
+
                 var vh = window.innerHeight;
                 panels.forEach(function (panel, i) {
                     var next = panels[i + 1];
@@ -890,9 +589,122 @@
                     var nextTop = next.getBoundingClientRect().top;
                     panel.classList.toggle('is-covered', nextTop < vh * 0.88);
                 });
+                if (window.scrollY <= 1 && panels[0]) {
+                    panels[0].classList.remove('is-covered');
+                }
             }
+
+            function activePanelIndex() {
+                var y = window.scrollY + 1;
+                var active = 0;
+                for (var i = 0; i < flowOffsets.length; i++) {
+                    if (flowOffsets[i] <= y) active = i;
+                }
+                return active;
+            }
+
+            function targetScrollTop(index) {
+                var offset = flowOffsets[index];
+                var height = panels[index].offsetHeight;
+                var nextTop = offset + height / 2 - window.innerHeight / 2;
+                var maxTop = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+                return Math.min(Math.max(nextTop, 0), maxTop);
+            }
+
+            function unlockSnapAfterDelay() {
+                if (snapUnlockTimer) window.clearTimeout(snapUnlockTimer);
+                snapUnlockTimer = window.setTimeout(function () {
+                    isSnapping = false;
+                    wheelDeltaBuffer = 0;
+                    update();
+                }, SNAP_LOCK_MS);
+            }
+
+            function easeInOutSine(t) {
+                return -(Math.cos(Math.PI * t) - 1) / 2;
+            }
+
+            function animateScrollTo(targetTop) {
+                var startTop = window.scrollY;
+                var distance = targetTop - startTop;
+                if (Math.abs(distance) < 1) return false;
+
+                if (activeSnapFrame) {
+                    window.cancelAnimationFrame(activeSnapFrame);
+                    activeSnapFrame = null;
+                }
+
+                var startTime = null;
+                function step(timestamp) {
+                    if (startTime === null) startTime = timestamp;
+                    var progress = Math.min((timestamp - startTime) / SNAP_DURATION_MS, 1);
+                    var eased = easeInOutSine(progress);
+                    window.scrollTo(0, startTop + distance * eased);
+
+                    if (progress < 1) {
+                        activeSnapFrame = window.requestAnimationFrame(step);
+                        return;
+                    }
+
+                    activeSnapFrame = null;
+                    unlockSnapAfterDelay();
+                }
+
+                activeSnapFrame = window.requestAnimationFrame(step);
+                return true;
+            }
+
+            function snapToDirection(direction) {
+                var from = activePanelIndex();
+                var to = from + (direction > 0 ? 1 : -1);
+                if (to < 0 || to >= panels.length) return false;
+                // For upward snaps, only fire when near the top of the current panel
+                if (direction < 0 && window.scrollY > flowOffsets[from] + SNAP_EDGE_GUTTER_UP) {
+                    return false;
+                }
+                isSnapping = true;
+                if (!animateScrollTo(targetScrollTop(to))) {
+                    isSnapping = false;
+                    return false;
+                }
+                return true;
+            }
+
+            function shouldIgnoreWheel(target) {
+                if (!target || !target.closest) return false;
+                return Boolean(target.closest('dialog[open], .overflow-y-auto, textarea, input, select, [data-stack-snap-ignore]'));
+            }
+
+            function onWheel(event) {
+                if (mobileQuery.matches) return;
+                if (shouldIgnoreWheel(event.target)) return;
+                if (isSnapping) {
+                    event.preventDefault();
+                    return;
+                }
+
+                wheelDeltaBuffer += event.deltaY;
+                if (Math.abs(wheelDeltaBuffer) < WHEEL_THRESHOLD) return;
+
+                var snapped = snapToDirection(wheelDeltaBuffer);
+                wheelDeltaBuffer = 0;
+                if (snapped) event.preventDefault();
+            }
+
+            function onResize() {
+                wheelDeltaBuffer = 0;
+                if (activeSnapFrame) {
+                    window.cancelAnimationFrame(activeSnapFrame);
+                    activeSnapFrame = null;
+                }
+                isSnapping = false;
+                cacheFlowOffsets();
+                update();
+            }
+
+            window.addEventListener('wheel', onWheel, { passive: false });
             window.addEventListener('scroll', update, { passive: true });
-            window.addEventListener('resize', update);
+            window.addEventListener('resize', onResize);
             update();
         })();
     </script>

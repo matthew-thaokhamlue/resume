@@ -202,14 +202,14 @@
       z-index: var(--panel-z, 10);
       background: #101c22;
       transform-origin: top center;
-      transition: scale 0.55s cubic-bezier(0.4,0,0.2,1),
-                  filter 0.55s cubic-bezier(0.4,0,0.2,1),
-                  border-radius 0.55s cubic-bezier(0.4,0,0.2,1);
+      transition: scale 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+        filter 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+        border-radius 0.55s cubic-bezier(0.4, 0, 0.2, 1);
       will-change: scale, filter;
     }
 
     /* Incoming panels get a top-card edge */
-    .stack-panel + .stack-panel {
+    .stack-panel+.stack-panel {
       border-radius: 1.5rem 1.5rem 0 0;
       box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.55);
     }
@@ -228,7 +228,7 @@
         transition: none;
       }
 
-      .stack-panel + .stack-panel {
+      .stack-panel+.stack-panel {
         border-radius: 0;
         box-shadow: none;
       }
@@ -294,6 +294,8 @@
               href="experience.html">Experience</a>
             <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
               href="portfolio.html">Portfolio</a>
+            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
+              href="certificates.html">Certifications</a>
           </div>
           <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
             class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20"
@@ -316,6 +318,8 @@
         onclick="toggleMenu()">Experience</a>
       <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="portfolio.html"
         onclick="toggleMenu()">Portfolio</a>
+      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="certificates.html"
+        onclick="toggleMenu()">Certifications</a>
       <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
         <span class="material-symbols-outlined text-3xl">close</span>
       </button>
@@ -323,119 +327,126 @@
 
     <main class="relative z-10">
       <!-- Hero Section (Bento Grid Style) -->
-      <section class="stack-panel w-full min-h-screen md:h-screen flex items-start md:items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-0" style="--panel-z:10">
+      <section
+        class="stack-panel w-full min-h-screen md:h-screen flex items-start md:items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-0"
+        style="--panel-z:10">
         <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in py-6 sm:py-8">
-        <!-- Main Intro Card -->
-        <div
-          class="lg:col-span-2 flex flex-col justify-center gap-3 rounded-2xl bg-surface border border-white/5 p-5 sm:p-6 relative overflow-hidden group">
-          <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span class="material-symbols-outlined text-9xl text-primary">rocket_launch</span>
-          </div>
-          <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue
-          </h1>
-          <p class="text-base sm:text-lg text-primary font-medium tracking-tight">Senior Product Manager</p>
-          <p class="text-white/60 max-w-xl leading-relaxed">Crafting high-impact products at the intersection of
-            technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
-
-          <!-- Audio + AI Match Actions -->
-          <div class="mt-2 grid grid-cols-1 lg:grid-cols-2 gap-3">
-            <div class="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm w-full h-full">
-              <div class="flex items-center gap-3 mb-2">
-                <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                  <span class="material-symbols-outlined text-sm">graphic_eq</span>
-                </div>
-                <p class="text-xs font-medium text-white/80">Listen to my role discussion</p>
-              </div>
-              <audio controls class="w-full h-8 opacity-80 hover:opacity-100 transition-opacity"
-                onplay="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'play'})}"
-                onpause="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'pause'})}">
-                <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav" type="audio/wav" />
-                Your browser does not support the audio element.
-              </audio>
+          <!-- Main Intro Card -->
+          <div
+            class="lg:col-span-2 flex flex-col justify-center gap-3 rounded-2xl bg-surface border border-white/5 p-5 sm:p-6 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+              <span class="material-symbols-outlined text-9xl text-primary">rocket_launch</span>
             </div>
-            <button id="ai-match-trigger" type="button"
-              class="group w-full h-full p-3 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
-              <span class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-primary">smart_toy</span>
-                <span class="text-sm font-semibold text-white">Evaluate role fit with my evidence</span>
-              </span>
-            </button>
-          </div>
-        </div>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue
+            </h1>
+            <p class="text-base sm:text-lg text-primary font-medium tracking-tight">Senior Product Manager</p>
+            <p class="text-white/60 max-w-xl leading-relaxed">Crafting high-impact products at the intersection of
+              technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
 
-        <!-- Right Column: Portfolio & Download CV Stacked -->
-        <div class="flex flex-col gap-4 h-full">
-          <!-- Portfolio Link Card -->
-          <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
-            href="portfolio.html">
+            <!-- Audio + AI Match Actions -->
+            <div class="mt-2 grid grid-cols-1 lg:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm w-full h-full">
+                <div class="flex items-center gap-3 mb-2">
+                  <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-sm">graphic_eq</span>
+                  </div>
+                  <p class="text-xs font-medium text-white/80">Listen to my role discussion</p>
+                </div>
+                <audio controls class="w-full h-8 opacity-80 hover:opacity-100 transition-opacity"
+                  onplay="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'play'})}"
+                  onpause="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'pause'})}">
+                  <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav"
+                    type="audio/wav" />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+              <button id="ai-match-trigger" type="button"
+                class="group w-full h-full p-3 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
+                <span class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-primary">smart_toy</span>
+                  <span class="text-sm font-semibold text-white">Evaluate role fit with my evidence</span>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Portfolio & Download CV Stacked -->
+          <div class="flex flex-col gap-4 h-full">
+            <!-- Portfolio Link Card -->
+            <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
+              href="portfolio.html">
+              <div>
+                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+                  <span class="material-symbols-outlined text-xl">grid_view</span>
+                </div>
+                <h3 class="text-xl font-bold tracking-tight text-white">Matthew's Portfolio</h3>
+                <p class="text-white/60 mt-1 text-sm">Explore my work in leading cross-functional teams.</p>
+              </div>
+              <div class="flex items-center gap-2 text-primary font-medium mt-2">
+                <span class="text-sm">View Portfolio</span>
+                <span
+                  class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+              </div>
+            </a>
+
+            <!-- Download CV Card -->
+            <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
+              href="Matthew main CV.pdf" target="_blank" rel="noopener noreferrer"
+              onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'index'})}">
+              <div>
+                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+                  <span class="material-symbols-outlined text-xl">download</span>
+                </div>
+                <h3 class="text-xl font-bold tracking-tight text-white">Download CV</h3>
+                <p class="text-white/60 mt-1 text-sm">Get a copy of my resume and detailed work history.</p>
+              </div>
+              <div class="flex items-center gap-2 text-primary font-medium mt-2">
+                <span class="text-sm">Download PDF</span>
+                <span
+                  class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_downward</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Resume Link Card -->
+          <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
+            href="experience.html">
             <div>
               <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                <span class="material-symbols-outlined text-xl">grid_view</span>
+                <span class="material-symbols-outlined text-xl">description</span>
               </div>
-              <h3 class="text-xl font-bold tracking-tight text-white">Matthew's Portfolio</h3>
-              <p class="text-white/60 mt-1 text-sm">Explore my work in leading cross-functional teams.</p>
+              <h3 class="text-xl font-bold tracking-tight text-white">Experience & Skills</h3>
+              <p class="text-white/60 mt-1 text-sm">A detailed overview of my professional journey, skills, and
+                certifications.</p>
             </div>
             <div class="flex items-center gap-2 text-primary font-medium mt-2">
-              <span class="text-sm">View Portfolio</span>
+              <span class="text-sm">View Experience</span>
               <span
                 class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
             </div>
           </a>
 
-          <!-- Download CV Card -->
-          <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
-            href="Matthew main CV.pdf" target="_blank" rel="noopener noreferrer"
-            onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'index'})}">
-            <div>
-              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                <span class="material-symbols-outlined text-xl">download</span>
-              </div>
-              <h3 class="text-xl font-bold tracking-tight text-white">Download CV</h3>
-              <p class="text-white/60 mt-1 text-sm">Get a copy of my resume and detailed work history.</p>
+          <!-- Contact Card -->
+          <a class="group lg:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl bg-primary/10 border border-primary/20 p-5 transition-all duration-300 hover:bg-primary/20 hover:-translate-y-1"
+            href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'hero_section'})}">
+            <div class="flex-1">
+              <h3 class="text-xl font-bold tracking-tight text-white">Let's Connect</h3>
+              <p class="text-white/70 mt-1 text-sm">Have a project in mind or want to talk about product? I'd love to
+                hear from you.</p>
             </div>
-            <div class="flex items-center gap-2 text-primary font-medium mt-2">
-              <span class="text-sm">Download PDF</span>
-              <span
-                class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_downward</span>
-            </div>
+            <button
+              class="flex shrink-0 items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-dark text-white font-bold tracking-wide rounded-xl transition-colors shadow-lg shadow-primary/20">
+              <span class="text-sm">Get in Touch</span>
+              <span class="material-symbols-outlined text-sm">email</span>
+            </button>
           </a>
-        </div>
-
-        <!-- Resume Link Card -->
-        <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
-          href="experience.html">
-          <div>
-            <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-              <span class="material-symbols-outlined text-xl">description</span>
-            </div>
-            <h3 class="text-xl font-bold tracking-tight text-white">Experience & Skills</h3>
-            <p class="text-white/60 mt-1 text-sm">A detailed overview of my professional journey, skills, and certifications.</p>
-          </div>
-          <div class="flex items-center gap-2 text-primary font-medium mt-2">
-            <span class="text-sm">View Experience</span>
-            <span
-              class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-          </div>
-        </a>
-
-        <!-- Contact Card -->
-        <a class="group lg:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl bg-primary/10 border border-primary/20 p-5 transition-all duration-300 hover:bg-primary/20 hover:-translate-y-1"
-          href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'hero_section'})}">
-          <div class="flex-1">
-            <h3 class="text-xl font-bold tracking-tight text-white">Let's Connect</h3>
-            <p class="text-white/70 mt-1 text-sm">Have a project in mind or want to talk about product? I'd love to hear from you.</p>
-          </div>
-          <button
-            class="flex shrink-0 items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-dark text-white font-bold tracking-wide rounded-xl transition-colors shadow-lg shadow-primary/20">
-            <span class="text-sm">Get in Touch</span>
-            <span class="material-symbols-outlined text-sm">email</span>
-          </button>
-        </a>
       </section>
 
       <!-- Testimonials Section -->
-      <section id="testimonials" class="stack-panel w-full min-h-screen md:h-screen bg-background-dark px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 overflow-x-hidden" style="--panel-z:20">
+      <section id="testimonials"
+        class="stack-panel w-full min-h-screen md:h-screen bg-background-dark px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 overflow-x-hidden"
+        style="--panel-z:20">
         <div class="max-w-7xl mx-auto flex flex-col gap-12">
           <div class="flex flex-col gap-4 text-center items-center">
             <div class="flex items-center gap-2 text-primary">
@@ -749,7 +760,8 @@
       </section>
 
       <!-- My Story Section -->
-      <section id="my-story" class="stack-panel w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24" style="--panel-z:30">
+      <section id="my-story" class="stack-panel w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24"
+        style="--panel-z:30">
         <div class="max-w-7xl mx-auto flex flex-col gap-12">
 
           <!-- Header -->
@@ -787,7 +799,8 @@
             </div>
 
             <!-- Story Text -->
-            <div class="md:w-[70%] flex flex-col gap-6 text-white/80 leading-relaxed text-lg overflow-y-auto h-full pr-4 custom-scrollbar">
+            <div
+              class="md:w-[70%] flex flex-col gap-6 text-white/80 leading-relaxed text-lg overflow-y-auto h-full pr-4 custom-scrollbar">
               <p>
                 I still remember opening that letter. A DAAD scholarship to study in Berlin. I had to read it
                 three times to believe it was real. Me? Berlin? That moment taught me that taking a leap, even
@@ -895,28 +908,155 @@
 
   <!-- Stacking scroll effect -->
   <script>
-    (function () {
-      var panels = document.querySelectorAll('.stack-panel');
-      if (!panels.length) return;
-      function update() {
-        if (window.matchMedia('(max-width: 767px)').matches) {
+      (function () {
+        var panels = Array.prototype.slice.call(document.querySelectorAll('.stack-panel'));
+        if (!panels.length) return;
+        var mobileQuery = window.matchMedia('(max-width: 767px)');
+        var isSnapping = false;
+        var snapUnlockTimer = null;
+        var activeSnapFrame = null;
+        var wheelDeltaBuffer = 0;
+        var WHEEL_THRESHOLD = 20;
+        var SNAP_LOCK_MS = 560;
+        var SNAP_DURATION_MS = 960;
+
+        function clearCoveredState() {
           panels.forEach(function (panel) {
             panel.classList.remove('is-covered');
           });
-          return;
         }
-        var vh = window.innerHeight;
-        panels.forEach(function (panel, i) {
-          var next = panels[i + 1];
-          if (!next) return;
-          var nextTop = next.getBoundingClientRect().top;
-          panel.classList.toggle('is-covered', nextTop < vh * 0.88);
-        });
-      }
-      window.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update);
-      update();
-    })();
+
+        function update() {
+          if (mobileQuery.matches) {
+            clearCoveredState();
+            return;
+          }
+
+          var vh = window.innerHeight;
+          panels.forEach(function (panel, i) {
+            var next = panels[i + 1];
+            if (!next) return;
+            var nextTop = next.getBoundingClientRect().top;
+            panel.classList.toggle('is-covered', nextTop < vh * 0.88);
+          });
+          if (window.scrollY <= 1 && panels[0]) {
+            panels[0].classList.remove('is-covered');
+          }
+        }
+
+        function nearestPanelIndex() {
+          var viewportCenter = window.innerHeight / 2;
+          var bestIndex = 0;
+          var bestDistance = Number.POSITIVE_INFINITY;
+          panels.forEach(function (panel, index) {
+            var rect = panel.getBoundingClientRect();
+            var panelCenter = rect.top + rect.height / 2;
+            var distance = Math.abs(panelCenter - viewportCenter);
+            if (distance < bestDistance) {
+              bestDistance = distance;
+              bestIndex = index;
+            }
+          });
+          return bestIndex;
+        }
+
+        function targetScrollTop(panel) {
+          var rect = panel.getBoundingClientRect();
+          var nextTop = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2;
+          var maxTop = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+          return Math.min(Math.max(nextTop, 0), maxTop);
+        }
+
+        function unlockSnapAfterDelay() {
+          if (snapUnlockTimer) window.clearTimeout(snapUnlockTimer);
+          snapUnlockTimer = window.setTimeout(function () {
+            isSnapping = false;
+            update();
+          }, SNAP_LOCK_MS);
+        }
+
+        function easeInOutSine(t) {
+          return -(Math.cos(Math.PI * t) - 1) / 2;
+        }
+
+        function animateScrollTo(targetTop) {
+          var startTop = window.scrollY;
+          var distance = targetTop - startTop;
+          if (Math.abs(distance) < 1) return false;
+
+          if (activeSnapFrame) {
+            window.cancelAnimationFrame(activeSnapFrame);
+            activeSnapFrame = null;
+          }
+
+          var startTime = null;
+          function step(timestamp) {
+            if (startTime === null) startTime = timestamp;
+            var progress = Math.min((timestamp - startTime) / SNAP_DURATION_MS, 1);
+            var eased = easeInOutSine(progress);
+            window.scrollTo(0, startTop + distance * eased);
+
+            if (progress < 1) {
+              activeSnapFrame = window.requestAnimationFrame(step);
+              return;
+            }
+
+            activeSnapFrame = null;
+            unlockSnapAfterDelay();
+          }
+
+          activeSnapFrame = window.requestAnimationFrame(step);
+          return true;
+        }
+
+        function snapToDirection(direction) {
+          var from = nearestPanelIndex();
+          var to = from + (direction > 0 ? 1 : -1);
+          if (to < 0 || to >= panels.length) return false;
+          isSnapping = true;
+          if (!animateScrollTo(targetScrollTop(panels[to]))) {
+            isSnapping = false;
+            return false;
+          }
+          return true;
+        }
+
+        function shouldIgnoreWheel(target) {
+          if (!target || !target.closest) return false;
+          return Boolean(target.closest('dialog[open], .overflow-y-auto, textarea, input, select, [data-stack-snap-ignore]'));
+        }
+
+        function onWheel(event) {
+          if (mobileQuery.matches) return;
+          if (shouldIgnoreWheel(event.target)) return;
+          if (isSnapping) {
+            event.preventDefault();
+            return;
+          }
+
+          wheelDeltaBuffer += event.deltaY;
+          if (Math.abs(wheelDeltaBuffer) < WHEEL_THRESHOLD) return;
+
+          var snapped = snapToDirection(wheelDeltaBuffer);
+          wheelDeltaBuffer = 0;
+          if (snapped) event.preventDefault();
+        }
+
+        function onResize() {
+          wheelDeltaBuffer = 0;
+          if (activeSnapFrame) {
+            window.cancelAnimationFrame(activeSnapFrame);
+            activeSnapFrame = null;
+          }
+          isSnapping = false;
+          update();
+        }
+
+        window.addEventListener('wheel', onWheel, { passive: false });
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', onResize);
+        update();
+      })();
   </script>
 
   <!-- AI Match Modal -->

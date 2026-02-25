@@ -44,8 +44,8 @@ All three main pages use a Geist-style stacking scroll effect. Key CSS class `.s
 A passive scroll IIFE toggles `is-covered` when the next panel's top crosses `vh * 0.88`. Each panel gets `style="--panel-z:N"` (10, 20, 30...).
 
 - **`index.html`**: hero (`--panel-z:10`) → testimonials (`--panel-z:20`, `h-screen overflow-hidden`) → my story (`--panel-z:30`)
-- **`portfolio.html`**: Career Portfolio section (`--panel-z:10`) → Personal Projects (`--panel-z:20`)
-- **`experience.html`**: experience wrapper is `relative` (not sticky) so content scrolls freely; `#certifications` is `stack-panel arriving-card` (`--panel-z:20`). Uses `.arriving-card` class (not the sibling CSS rule) because it's the only `.stack-panel` on the page.
+- **`portfolio.html`**: no stack panels (scrolling removed)
+- **`experience.html`**: 5 stack panels (`--panel-z:10`–`50`), one per job role. Scroll IIFE uses cached `flowOffsets[]` (cumulative heights) to avoid sticky `offsetTop` distortion. `SNAP_EDGE_GUTTER_UP=200` gate allows natural scroll through each panel before an upward snap fires.
 
 ## File Editing Gotchas
 

@@ -117,46 +117,6 @@
       background-color: rgba(255, 255, 255, 0.08);
     }
 
-    /* ── Geist-style stacking scroll panels ── */
-    .stack-panel {
-      position: sticky;
-      top: 0;
-      z-index: var(--panel-z, 10);
-      background: #101c22;
-      transform-origin: top center;
-      transition: scale 0.55s cubic-bezier(0.4,0,0.2,1),
-                  filter 0.55s cubic-bezier(0.4,0,0.2,1),
-                  border-radius 0.55s cubic-bezier(0.4,0,0.2,1);
-      will-change: scale, filter;
-    }
-    .stack-panel + .stack-panel {
-      border-radius: 1.5rem 1.5rem 0 0;
-      box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.55);
-    }
-    .stack-panel.is-covered {
-      scale: 0.965;
-      filter: brightness(0.58);
-      border-radius: 1.5rem;
-    }
-
-    @media (max-width: 767px) {
-      .stack-panel {
-        position: relative;
-        top: auto;
-        transition: none;
-      }
-
-      .stack-panel + .stack-panel {
-        border-radius: 0;
-        box-shadow: none;
-      }
-
-      .stack-panel.is-covered {
-        scale: 1;
-        filter: none;
-        border-radius: 0;
-      }
-    }
   </style>
 </head>
 
@@ -178,6 +138,8 @@
             <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
               href="experience.html">Experience</a>
             <a class="text-primary text-sm font-medium" href="portfolio.html">Portfolio</a>
+            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
+              href="certificates.html">Certifications</a>
           </div>
           <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
             class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
@@ -199,185 +161,191 @@
         onclick="toggleMenu()">Experience</a>
       <a class="text-2xl font-bold text-primary hover:text-primary transition-colors" href="portfolio.html"
         onclick="toggleMenu()">Portfolio</a>
+      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="certificates.html"
+        onclick="toggleMenu()">Certifications</a>
       <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
         <span class="material-symbols-outlined text-3xl">close</span>
       </button>
     </div>
 
     <main class="relative z-10">
-      <section class="stack-panel w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 pt-12 pb-28 sm:pt-16 sm:pb-32 md:pt-20 md:pb-40 gap-16 animate-fade-in" style="--panel-z:10">
-      <!-- Header -->
-      <div class="w-full max-w-7xl flex flex-col gap-6 text-center">
-        <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Portfolio and Projects</h1>
-        <p class="text-xl text-white/60 max-w-2xl mx-auto">
-          A selected collection of my professional and personal works in AI/ML, SaaS, and platform development,
-          showcasing my ability to lead teams and
-          deliver impactful products.
-        </p>
-      </div>
-      <!-- Career Projects Section -->
-      <div class="w-full max-w-7xl flex flex-col gap-8">
-        <div class="flex items-center gap-4">
-          <span class="material-symbols-outlined text-3xl text-primary">work</span>
-          <h2 class="text-2xl sm:text-3xl font-bold">Career Portfolio</h2>
+      <section
+        class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 pt-14 pb-20 sm:pt-20 sm:pb-24 md:pt-24 md:pb-28 gap-16 animate-fade-in">
+        <!-- Header -->
+        <div class="w-full max-w-7xl flex flex-col gap-6 text-center">
+          <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Portfolio and Projects</h1>
+          <p class="text-xl text-white/60 max-w-2xl mx-auto">
+            A selected collection of my professional and personal works in AI/ML, SaaS, and platform development,
+            showcasing my ability to lead teams and
+            deliver impactful products.
+          </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <!-- Career Projects Section -->
+        <div class="w-full max-w-7xl flex flex-col gap-8">
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-3xl text-primary">work</span>
+            <h2 class="text-2xl sm:text-3xl font-bold">Career Portfolio</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
 
-          <!-- Thryve Card -->
-          <a href="portfolio/thryve.html"
-            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-            <div
-              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-              <img src="images/thryve-card.png" alt="Thryve"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-            </div>
-            <div class="flex flex-col gap-2 p-2">
-              <p class="text-white text-lg font-bold">Thryve GmbH</p>
-              <p class="text-white/60 text-sm line-clamp-2">Health Data Platform • Product Owner • Unified SDK for
-                wearable data integration.</p>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-auto p-2">
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">API Product</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Health Tech</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Wearable
-                Devices</span>
-            </div>
-          </a>
+            <!-- Thryve Card -->
+            <a href="portfolio/thryve.html"
+              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+              <div
+                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
+                <img src="images/thryve-card.png" alt="Thryve"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              </div>
+              <div class="flex flex-col gap-2 p-2">
+                <p class="text-white text-lg font-bold">Thryve GmbH</p>
+                <p class="text-white/60 text-sm line-clamp-2">Health Data Platform • Product Owner • Unified SDK for
+                  wearable data integration.</p>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-auto p-2">
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">API Product</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Health Tech</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Wearable
+                  Devices</span>
+              </div>
+            </a>
 
-          <!-- LabTwin Card -->
-          <a href="portfolio/labtwin.html"
-            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-            <div
-              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-              <img src="images/labtwin-card.png" alt="LabTwin"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-            </div>
-            <div class="flex flex-col gap-2 p-2">
-              <p class="text-white text-lg font-bold">LabTwin GmbH</p>
-              <p class="text-white/60 text-sm line-clamp-2">Voice AI for Labs • Technical Product Manager • Voice
-                assistant integrations for laboratory workflows.</p>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-auto p-2">
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Digital Lab</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice Tech</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
-            </div>
-          </a>
-          <!-- Labforward Card -->
-          <a href="portfolio/labforward.html"
-            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-            <div
-              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-              <img src="images/labforward-card.png" alt="Labforward"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-            </div>
-            <div class="flex flex-col gap-2 p-2">
-              <p class="text-white text-lg font-bold">Labforward GmbH</p>
-              <p class="text-white/60 text-sm line-clamp-2">Lab Management Platform • Senior PM • GenAI-powered
-                experiment data retrieval.</p>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-auto p-2">
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Digital Lab</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">IoT</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">GenAI</span>
-            </div>
-          </a>
+            <!-- LabTwin Card -->
+            <a href="portfolio/labtwin.html"
+              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+              <div
+                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
+                <img src="images/labtwin-card.png" alt="LabTwin"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              </div>
+              <div class="flex flex-col gap-2 p-2">
+                <p class="text-white text-lg font-bold">LabTwin GmbH</p>
+                <p class="text-white/60 text-sm line-clamp-2">Voice AI for Labs • Technical Product Manager • Voice
+                  assistant integrations for laboratory workflows.</p>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-auto p-2">
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Digital Lab</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice Tech</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
+              </div>
+            </a>
+            <!-- Labforward Card -->
+            <a href="portfolio/labforward.html"
+              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+              <div
+                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
+                <img src="images/labforward-card.png" alt="Labforward"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              </div>
+              <div class="flex flex-col gap-2 p-2">
+                <p class="text-white text-lg font-bold">Labforward GmbH</p>
+                <p class="text-white/60 text-sm line-clamp-2">Lab Management Platform • Senior PM • GenAI-powered
+                  experiment data retrieval.</p>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-auto p-2">
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Digital Lab</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">IoT</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">GenAI</span>
+              </div>
+            </a>
 
+          </div>
         </div>
-      </div>
       </section>
 
-      <section class="stack-panel w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16" style="--panel-z:20">
-      <!-- Personal Projects Section -->
-      <div class="w-full max-w-7xl flex flex-col gap-8">
-        <div class="flex items-center gap-4">
-          <span class="material-symbols-outlined text-3xl text-primary">code</span>
-          <h2 class="text-2xl sm:text-3xl font-bold">Personal Projects</h2>
+      <section class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16">
+        <!-- Personal Projects Section -->
+        <div class="w-full max-w-7xl flex flex-col gap-8">
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-3xl text-primary">code</span>
+            <h2 class="text-2xl sm:text-3xl font-bold">Personal Projects</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+
+            <!-- Project: Fast Project Docs MCP Server -->
+            <div onclick="openProject('mcp-server')"
+              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+              <div
+                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
+                <span
+                  class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">terminal</span>
+              </div>
+              <div class="flex flex-col gap-2 p-2">
+                <p class="text-white text-lg font-bold">Fast Project Docs MCP Server</p>
+                <p class="text-white/60 text-sm line-clamp-2">Open-source Model Context Protocol server for automated
+                  project documentation generation with AI integration.</p>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-auto p-2">
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Open Source</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">MCP</span>
+              </div>
+            </div>
+
+            <!-- Project: AI-Powered Automation Tools -->
+            <div onclick="openProject('automation-tools')"
+              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+              <div
+                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
+                <span
+                  class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">auto_fix_high</span>
+              </div>
+              <div class="flex flex-col gap-2 p-2">
+                <p class="text-white text-lg font-bold">AI-Powered Automation Tools</p>
+                <p class="text-white/60 text-sm line-clamp-2">Self-built Python tools leveraging LLMs to automate
+                  release
+                  notes, Jira tickets, and API testing workflows.</p>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-auto p-2">
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">GenAI</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Automation</span>
+              </div>
+            </div>
+
+            <!-- Project: RAG-Powered Meal Planner -->
+            <div onclick="openProject('rag-meal-planner')"
+              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+              <div
+                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
+                <span
+                  class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">restaurant_menu</span>
+              </div>
+              <div class="flex flex-col gap-2 p-2">
+                <p class="text-white text-lg font-bold">RAG-Powered Meal Planner</p>
+                <p class="text-white/60 text-sm line-clamp-2">CLI application suggesting personalized meal plans using
+                  RAG
+                  and AI based on cooking history.</p>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-auto p-2">
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">RAG</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
+              </div>
+            </div>
+
+            <!-- Project: Interview Prep -->
+            <div onclick="openProject('interview-prep')"
+              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
+              <div
+                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
+                <span
+                  class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">quiz</span>
+              </div>
+              <div class="flex flex-col gap-2 p-2">
+                <p class="text-white text-lg font-bold">Interview Prep</p>
+                <p class="text-white/60 text-sm line-clamp-2">Open-source repository with curated interview preparation
+                  notes, practice prompts, and structured study resources.</p>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-auto p-2">
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Open Source</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Career Growth</span>
+                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Knowledge
+                  Base</span>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-
-          <!-- Project: Fast Project Docs MCP Server -->
-          <div onclick="openProject('mcp-server')"
-            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-            <div
-              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-              <span
-                class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">terminal</span>
-            </div>
-            <div class="flex flex-col gap-2 p-2">
-              <p class="text-white text-lg font-bold">Fast Project Docs MCP Server</p>
-              <p class="text-white/60 text-sm line-clamp-2">Open-source Model Context Protocol server for automated
-                project documentation generation with AI integration.</p>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-auto p-2">
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Open Source</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">MCP</span>
-            </div>
-          </div>
-
-          <!-- Project: AI-Powered Automation Tools -->
-          <div onclick="openProject('automation-tools')"
-            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-            <div
-              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-              <span
-                class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">auto_fix_high</span>
-            </div>
-            <div class="flex flex-col gap-2 p-2">
-              <p class="text-white text-lg font-bold">AI-Powered Automation Tools</p>
-              <p class="text-white/60 text-sm line-clamp-2">Self-built Python tools leveraging LLMs to automate release
-                notes, Jira tickets, and API testing workflows.</p>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-auto p-2">
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">GenAI</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Automation</span>
-            </div>
-          </div>
-
-          <!-- Project: RAG-Powered Meal Planner -->
-          <div onclick="openProject('rag-meal-planner')"
-            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-            <div
-              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-              <span
-                class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">restaurant_menu</span>
-            </div>
-            <div class="flex flex-col gap-2 p-2">
-              <p class="text-white text-lg font-bold">RAG-Powered Meal Planner</p>
-              <p class="text-white/60 text-sm line-clamp-2">CLI application suggesting personalized meal plans using RAG
-                and AI based on cooking history.</p>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-auto p-2">
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">RAG</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
-            </div>
-          </div>
-
-          <!-- Project: Interview Prep -->
-          <div onclick="openProject('interview-prep')"
-            class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-            <div
-              class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-              <span
-                class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">quiz</span>
-            </div>
-            <div class="flex flex-col gap-2 p-2">
-              <p class="text-white text-lg font-bold">Interview Prep</p>
-              <p class="text-white/60 text-sm line-clamp-2">Open-source repository with curated interview preparation
-                notes, practice prompts, and structured study resources.</p>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-auto p-2">
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Open Source</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Career Growth</span>
-              <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Knowledge Base</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
       </section>
 
     </main>
@@ -405,30 +373,6 @@
 
   </div>
 
-  <script>
-    (function () {
-      var panels = document.querySelectorAll('.stack-panel');
-      if (!panels.length) return;
-      function update() {
-        if (window.matchMedia('(max-width: 767px)').matches) {
-          panels.forEach(function (panel) {
-            panel.classList.remove('is-covered');
-          });
-          return;
-        }
-        var vh = window.innerHeight;
-        panels.forEach(function (panel, i) {
-          var next = panels[i + 1];
-          if (!next) return;
-          var nextTop = next.getBoundingClientRect().top;
-          panel.classList.toggle('is-covered', nextTop < vh * 0.88);
-        });
-      }
-      window.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update);
-      update();
-    })();
-  </script>
 
   <!-- Project Modal -->
   <dialog id="project-modal"

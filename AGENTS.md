@@ -36,3 +36,7 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 - Google Analytics tag (G-D11HKMWFB4) is included in each page's `<head>`
 - SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
 - Images go in `images/` directory
+
+## Known Issues
+
+None at this time.
