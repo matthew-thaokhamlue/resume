@@ -138,6 +138,25 @@
       filter: brightness(0.58);
       border-radius: 1.5rem;
     }
+
+    @media (max-width: 767px) {
+      .stack-panel {
+        position: relative;
+        top: auto;
+        transition: none;
+      }
+
+      .stack-panel + .stack-panel {
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .stack-panel.is-covered {
+        scale: 1;
+        filter: none;
+        border-radius: 0;
+      }
+    }
   </style>
 </head>
 
@@ -186,7 +205,7 @@
     </div>
 
     <main class="relative z-10">
-      <section class="stack-panel w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16 animate-fade-in" style="--panel-z:10">
+      <section class="stack-panel w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 pt-12 pb-28 sm:pt-16 sm:pb-32 md:pt-20 md:pb-40 gap-16 animate-fade-in" style="--panel-z:10">
       <!-- Header -->
       <div class="w-full max-w-7xl flex flex-col gap-6 text-center">
         <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Portfolio and Projects</h1>
@@ -391,6 +410,12 @@
       var panels = document.querySelectorAll('.stack-panel');
       if (!panels.length) return;
       function update() {
+        if (window.matchMedia('(max-width: 767px)').matches) {
+          panels.forEach(function (panel) {
+            panel.classList.remove('is-covered');
+          });
+          return;
+        }
         var vh = window.innerHeight;
         panels.forEach(function (panel, i) {
           var next = panels[i + 1];
@@ -400,6 +425,7 @@
         });
       }
       window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
       update();
     })();
   </script>

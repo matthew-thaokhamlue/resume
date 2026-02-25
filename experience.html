@@ -146,6 +146,26 @@
             border-radius: 1.5rem 1.5rem 0 0;
             box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.55);
         }
+
+        @media (max-width: 767px) {
+            .stack-panel {
+                position: relative;
+                top: auto;
+                transition: none;
+            }
+
+            .stack-panel+.stack-panel,
+            .arriving-card {
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .stack-panel.is-covered {
+                scale: 1;
+                filter: none;
+                border-radius: 0;
+            }
+        }
     </style>
 </head>
 
@@ -857,6 +877,12 @@
             var panels = document.querySelectorAll('.stack-panel');
             if (!panels.length) return;
             function update() {
+                if (window.matchMedia('(max-width: 767px)').matches) {
+                    panels.forEach(function (panel) {
+                        panel.classList.remove('is-covered');
+                    });
+                    return;
+                }
                 var vh = window.innerHeight;
                 panels.forEach(function (panel, i) {
                     var next = panels[i + 1];
@@ -866,6 +892,7 @@
                 });
             }
             window.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update);
             update();
         })();
     </script>

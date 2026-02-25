@@ -28,7 +28,7 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 - `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt, opens ChatGPT or Claude.ai in a popup/tab. Contains all GA custom event tracking for the feature (`ai_match_*` events).
 - jQuery, browser detection, and breakpoint utilities are vendored in `assets/js/`.
 
-**Modal Article Pattern:** Both `index.html` and `portfolio.html` use a pattern where `<article>` elements inside `<div id="main">` act as modal overlays. Articles are shown/hidden via CSS classes (`active`, `is-article-visible`) with JS managing transitions. Hash fragments (`#about`, `#work1`) drive navigation.
+**Modal Article Pattern:** `index.html` uses a pattern where `<article>` elements inside `<div id="main">` act as modal overlays. Articles are shown/hidden via CSS classes (`active`, `is-article-visible`) with JS managing transitions. Hash fragments (`#about`) drive navigation.
 
 ## Scroll Stack Panel Pattern
 
@@ -36,7 +36,7 @@ All three main pages use a Geist-style stacking scroll effect. Key CSS class `.s
 
 ```css
 .stack-panel { position: sticky; top: 0; z-index: var(--panel-z, 10); background: #101c22;
-  transform-origin: top center; transition: scale/filter/border-radius 0.55s; will-change: scale, filter; }
+  transform-origin: top center; transition: scale 0.55s, filter 0.55s, border-radius 0.55s; will-change: scale, filter; }
 .stack-panel + .stack-panel { border-radius: 1.5rem 1.5rem 0 0; box-shadow: 0 -8px 48px rgba(0,0,0,.55); }
 .stack-panel.is-covered { scale: 0.965; filter: brightness(0.58); border-radius: 1.5rem; }
 ```
