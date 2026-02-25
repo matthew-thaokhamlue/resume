@@ -32,7 +32,7 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 ## Scroll Stack Panel Pattern
 
-All three main pages use a Geist-style stacking scroll effect. Key CSS class `.stack-panel` is defined inline in each page's `<style>` block:
+`index.html` and `experience.html` use a Geist-style stacking scroll effect. Key CSS class `.stack-panel` is defined inline in each page's `<style>` block:
 
 ```css
 .stack-panel { position: sticky; top: 0; z-index: var(--panel-z, 10); background: #101c22;
@@ -46,16 +46,25 @@ A passive scroll IIFE toggles `is-covered` when the next panel's top crosses `vh
 - **`index.html`**: hero (`--panel-z:10`) → testimonials (`--panel-z:20`, `h-screen overflow-hidden`) → my story (`--panel-z:30`)
 - **`portfolio.html`**: no stack panels (scrolling removed)
 - **`experience.html`**: 5 stack panels (`--panel-z:10`–`50`), one per job role. Scroll IIFE uses cached `flowOffsets[]` (cumulative heights) to avoid sticky `offsetTop` distortion. `SNAP_EDGE_GUTTER_UP=200` gate allows natural scroll through each panel before an upward snap fires.
+  - Panels 1–4 use an "Our Disciplines" 50/50 layout: organic SVG tree rings (left) + editorial text (right). Panel 5 is Skills/Education with a 3-column card grid.
+  - SVG tree ring counts = **accumulated career years**: Labforward=8, LabTwin=7, Thryve=5, EY=2. Preserve these when editing SVGs.
+  - Panel 5 requires `.card-hover` CSS in the page `<style>` block — don't remove it when editing other styles.
 
 ## File Editing Gotchas
 
-- `index.html` and `assets/js/*.js` use CRLF line endings; all other HTML files (experience, about, certificates, portfolio, portfolio/*.html) use LF-only. The Edit tool silently fails to match strings in CRLF files — use Python with `open(path, 'rb')` / `.decode('utf-8')` / write back with `open(path, 'wb')` for reliable replacements.
+- `index.html` and `assets/js/*.js` use CRLF line endings; all other HTML files use LF-only. The Edit tool silently fails to match strings in CRLF files. Use this Python pattern for reliable replacements:
+  ```python
+  with open('index.html', 'rb') as f: src = f.read().decode('utf-8')
+  src = src.replace('OLD', 'NEW')
+  with open('index.html', 'wb') as f: f.write(src.encode('utf-8'))
+  ```
 - Background subagents (`run_in_background: true`) cannot use Edit or Write tools — use them for research/reads only; apply all file edits in the main agent session.
 - Worktrees created by Claude land in `.claude/worktrees/` — clean up with `git worktree remove --force` after branches are merged.
 
 ## Key Conventions
 
 - All external dependencies loaded via CDN (Tailwind, Font Awesome, Google Fonts, jQuery) — no `node_modules`
+- Standard stack-panel content container: `w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` — matches nav width/padding exactly. Use this for all panel content.
 - Tailwind config is duplicated in each HTML file's `<script id="tailwind-config">` block — keep them in sync when changing theme tokens
 - Google Analytics tag (G-D11HKMWFB4) in each page `<head>`. GA4 custom events (`resume_downloaded`, `external_link_clicked`, `audio_played`, etc.) use inline `onclick="if(typeof gtag==='function'){gtag('event',...)}"` — never call `gtag()` without the guard.
 - `portfolio.html` career cards link directly to `portfolio/*.html`; personal project cards use an inline `openProject(id)` JS function with a `<dialog>` modal. `portfolio.js` and `data-work` attributes are legacy and not used.
