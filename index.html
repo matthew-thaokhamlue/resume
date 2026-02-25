@@ -305,114 +305,114 @@
     <main class="relative z-10">
       <!-- Hero Section (Bento Grid Style) -->
       <section class="stack-panel w-full h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8" style="--panel-z:10">
-        <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-3 gap-4 animate-fade-in py-16 h-full" style="grid-template-rows: 1fr auto;">
-
-          <!-- Row 1 Col 1-2: Main Intro Card -->
-          <div class="lg:col-span-2 flex flex-col justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-6 sm:p-8 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-              <span class="material-symbols-outlined text-8xl text-primary">rocket_launch</span>
-            </div>
-            <div class="flex flex-col gap-3">
-              <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue</h1>
-              <p class="text-lg text-primary font-medium tracking-tight">Senior Product Manager</p>
-              <p class="text-white/60 max-w-xl leading-relaxed">Crafting high-impact products at the intersection of technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
-            </div>
-            <!-- Slim Audio + AI Match strip -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/5">
-                <span class="material-symbols-outlined text-primary text-sm shrink-0">graphic_eq</span>
-                <audio controls class="w-full h-7 opacity-80 hover:opacity-100 transition-opacity"
-                  onplay="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'play'})}"
-                  onpause="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'pause'})}">
-                  <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav" type="audio/wav" />
-                </audio>
-              </div>
-              <button id="ai-match-trigger" type="button"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 transition-colors text-left">
-                <span class="material-symbols-outlined text-primary text-sm shrink-0">smart_toy</span>
-                <span class="text-sm font-semibold text-white">Evaluate role fit</span>
-              </button>
-            </div>
+        <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in py-6 sm:py-8">
+        <!-- Main Intro Card -->
+        <div
+          class="lg:col-span-2 flex flex-col justify-center gap-3 rounded-2xl bg-surface border border-white/5 p-5 sm:p-6 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+            <span class="material-symbols-outlined text-9xl text-primary">rocket_launch</span>
           </div>
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue
+          </h1>
+          <p class="text-base sm:text-lg text-primary font-medium tracking-tight">Senior Product Manager</p>
+          <p class="text-white/60 max-w-xl leading-relaxed">Crafting high-impact products at the intersection of
+            technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
 
-          <!-- Row 1 Col 3: Availability Sidebar -->
-          <div class="flex flex-col gap-3 rounded-2xl bg-surface border border-white/5 p-6">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-primary">location_on</span>
-              <div>
-                <p class="text-white font-medium text-sm">Berlin, Germany</p>
-                <p class="text-white/50 text-xs">Open to opportunities</p>
+          <!-- Audio + AI Match Actions -->
+          <div class="mt-2 grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm w-full h-full">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                  <span class="material-symbols-outlined text-sm">graphic_eq</span>
+                </div>
+                <p class="text-xs font-medium text-white/80">Listen to my role discussion</p>
               </div>
+              <audio controls class="w-full h-8 opacity-80 hover:opacity-100 transition-opacity"
+                onplay="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'play'})}"
+                onpause="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'pause'})}">
+                <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav" type="audio/wav" />
+                Your browser does not support the audio element.
+              </audio>
             </div>
-            <div class="h-px bg-white/5"></div>
-            <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-              class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group"
-              onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'sidebar',location:'hero_sidebar'})}">
-              <i class="fab fa-linkedin text-lg text-primary shrink-0"></i>
-              <span class="text-white/70 group-hover:text-white text-sm transition-colors">LinkedIn</span>
-              <span class="material-symbols-outlined text-xs text-white/30 ml-auto">open_in_new</span>
-            </a>
-            <a href="https://github.com/matthew-thaokhamlue" target="_blank"
-              class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group"
-              onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'github',link_type:'sidebar',location:'hero_sidebar'})}">
-              <i class="fab fa-github text-lg text-white/60 shrink-0"></i>
-              <span class="text-white/70 group-hover:text-white text-sm transition-colors">GitHub</span>
-              <span class="material-symbols-outlined text-xs text-white/30 ml-auto">open_in_new</span>
-            </a>
-            <div class="h-px bg-white/5"></div>
-            <a href="Matthew main CV.pdf" target="_blank" rel="noopener noreferrer"
-              class="flex items-center justify-center gap-2 mt-auto h-10 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-primary/20"
-              onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'index'})}">
-              <span class="material-symbols-outlined text-sm">download</span>
-              Download CV
-            </a>
+            <button id="ai-match-trigger" type="button"
+              class="group w-full h-full p-3 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
+              <span class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">smart_toy</span>
+                <span class="text-sm font-semibold text-white">Evaluate role fit with my evidence</span>
+              </span>
+            </button>
           </div>
-
-          <!-- Row 2: 3 compact action cards -->
-          <a class="group flex items-center justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
-            href="portfolio.html">
-            <div class="flex items-center gap-4">
-              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <span class="material-symbols-outlined">grid_view</span>
-              </div>
-              <div>
-                <h3 class="font-bold text-white">Portfolio</h3>
-                <p class="text-white/50 text-sm">Explore my work</p>
-              </div>
-            </div>
-            <span class="material-symbols-outlined text-primary transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-          </a>
-
-          <a class="group flex items-center justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
-            href="experience.html">
-            <div class="flex items-center gap-4">
-              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <span class="material-symbols-outlined">description</span>
-              </div>
-              <div>
-                <h3 class="font-bold text-white">Experience</h3>
-                <p class="text-white/50 text-sm">Skills &amp; certifications</p>
-              </div>
-            </div>
-            <span class="material-symbols-outlined text-primary transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-          </a>
-
-          <a class="group flex items-center justify-between gap-4 rounded-2xl bg-primary/10 border border-primary/20 p-5 transition-all duration-300 hover:bg-primary/20 hover:-translate-y-1"
-            href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'hero_section'})}">
-            <div class="flex items-center gap-4">
-              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <span class="material-symbols-outlined">person_add</span>
-              </div>
-              <div>
-                <h3 class="font-bold text-white">Let's Connect</h3>
-                <p class="text-white/50 text-sm">Get in touch</p>
-              </div>
-            </div>
-            <span class="material-symbols-outlined text-primary transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-          </a>
-
         </div>
+
+        <!-- Right Column: Portfolio & Download CV Stacked -->
+        <div class="flex flex-col gap-4 h-full">
+          <!-- Portfolio Link Card -->
+          <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
+            href="portfolio.html">
+            <div>
+              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+                <span class="material-symbols-outlined text-xl">grid_view</span>
+              </div>
+              <h3 class="text-xl font-bold tracking-tight text-white">Matthew's Portfolio</h3>
+              <p class="text-white/60 mt-1 text-sm">Explore my work in leading cross-functional teams.</p>
+            </div>
+            <div class="flex items-center gap-2 text-primary font-medium mt-2">
+              <span class="text-sm">View Portfolio</span>
+              <span
+                class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Download CV Card -->
+          <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
+            href="Matthew main CV.pdf" target="_blank" rel="noopener noreferrer"
+            onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'index'})}">
+            <div>
+              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+                <span class="material-symbols-outlined text-xl">download</span>
+              </div>
+              <h3 class="text-xl font-bold tracking-tight text-white">Download CV</h3>
+              <p class="text-white/60 mt-1 text-sm">Get a copy of my resume and detailed work history.</p>
+            </div>
+            <div class="flex items-center gap-2 text-primary font-medium mt-2">
+              <span class="text-sm">Download PDF</span>
+              <span
+                class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_downward</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Resume Link Card -->
+        <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
+          href="experience.html">
+          <div>
+            <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+              <span class="material-symbols-outlined text-xl">description</span>
+            </div>
+            <h3 class="text-xl font-bold tracking-tight text-white">Experience & Skills</h3>
+            <p class="text-white/60 mt-1 text-sm">A detailed overview of my professional journey, skills, and certifications.</p>
+          </div>
+          <div class="flex items-center gap-2 text-primary font-medium mt-2">
+            <span class="text-sm">View Experience</span>
+            <span
+              class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+          </div>
+        </a>
+
+        <!-- Contact Card -->
+        <a class="group lg:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl bg-primary/10 border border-primary/20 p-5 transition-all duration-300 hover:bg-primary/20 hover:-translate-y-1"
+          href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'hero_section'})}">
+          <div class="flex-1">
+            <h3 class="text-xl font-bold tracking-tight text-white">Let's Connect</h3>
+            <p class="text-white/70 mt-1 text-sm">Have a project in mind or want to talk about product? I'd love to hear from you.</p>
+          </div>
+          <button
+            class="flex shrink-0 items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-dark text-white font-bold tracking-wide rounded-xl transition-colors shadow-lg shadow-primary/20">
+            <span class="text-sm">Get in Touch</span>
+            <span class="material-symbols-outlined text-sm">email</span>
+          </button>
+        </a>
       </section>
 
       <!-- Testimonials Section -->
