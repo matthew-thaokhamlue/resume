@@ -214,209 +214,203 @@
 
         <main class="relative z-10 flex flex-1 flex-col">
 
-            <!-- Stack Panel 1: Header + Job 1 -->
-            <section
-                class="stack-panel w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[100vh] md:min-h-[110vh] gap-12 animate-fade-in"
-                style="--panel-z:10">
-                <div
-                    class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
-                    <div class="flex flex-col gap-4">
-                        <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Experience</h1>
-                        <p class="text-xl text-white/60">My professional track record and technical skills.</p>
-                    </div>
+            <!-- ── Panel 1: Labforward (8 rings accumulated) ── -->
+            <section class="stack-panel w-full min-h-screen flex flex-col animate-fade-in" style="--panel-z:10">
+                <!-- Top label bar — nav-aligned padding -->
+                <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 shrink-0 flex items-center justify-between">
+                    <span class="text-[10px] text-white/25 uppercase tracking-[0.3em]">Experience</span>
                     <a href="Matthew main CV.pdf" target="_blank" download
                         onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
-                        class="flex items-center justify-center gap-2 h-12 px-6 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl font-bold transition-all hover:-translate-y-0.5">
-                        Download PDF CV <span class="material-symbols-outlined text-sm">download</span>
-                    </a>
+                        class="text-[10px] text-white/25 hover:text-white/55 transition-colors uppercase tracking-[0.2em]">Download CV ↓</a>
                 </div>
-                <div class="w-full max-w-7xl">
-                    <div
-                        class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
-                        <div class="flex flex-col gap-2 md:w-1/3">
-                            <h3 class="text-xl font-bold text-white">Senior Product Manager</h3>
-                            <p class="text-primary font-medium">Labforward GmbH</p>
-                            <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
-                                <span class="material-symbols-outlined text-base">calendar_month</span>
-                                <span>Nov 2024 - Nov 2025</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-white/40 text-sm">
-                                <span class="material-symbols-outlined text-base">location_on</span>
-                                <span>Berlin, Germany</span>
-                            </div>
-                            <div class="mt-4">
-                                <a href="portfolio/labforward.html"
-                                    class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
-                                    <span>View Portfolio</span>
-                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                                </a>
-                            </div>
+                <!-- Split layout — nav-aligned container -->
+                <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center py-10 md:py-0 gap-8 md:gap-0">
+                    <!-- Left: 8 rings = 8 accumulated years -->
+                    <div class="flex items-center justify-center md:pr-6">
+                        <svg viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg"
+                            class="w-full max-w-[300px] sm:max-w-[380px] md:max-w-none" style="max-height:68vh">
+                            <!-- Center pith -->
+                            <circle cx="281" cy="280" r="4.5" fill="white" opacity="0.40"/>
+                            <!-- Radial cracks -->
+                            <line x1="281" y1="280" x2="493" y2="131" stroke="white" stroke-width="0.4" opacity="0.07"/>
+                            <line x1="281" y1="280" x2="81"  y2="447" stroke="white" stroke-width="0.35" opacity="0.05"/>
+                            <!-- 8 organic rings — irregular spacing, alternating major/minor -->
+                            <ellipse cx="281" cy="280" rx="28"  ry="27"  fill="none" stroke="white" stroke-width="1.30" opacity="0.82"/>
+                            <ellipse cx="279" cy="281" rx="58"  ry="56"  fill="none" stroke="white" stroke-width="0.65" opacity="0.48"/>
+                            <ellipse cx="282" cy="279" rx="90"  ry="88"  fill="none" stroke="white" stroke-width="1.30" opacity="0.80"/>
+                            <ellipse cx="278" cy="282" rx="118" ry="116" fill="none" stroke="white" stroke-width="0.65" opacity="0.48"/>
+                            <ellipse cx="281" cy="278" rx="153" ry="151" fill="none" stroke="white" stroke-width="1.30" opacity="0.80"/>
+                            <ellipse cx="279" cy="282" rx="185" ry="182" fill="none" stroke="white" stroke-width="0.65" opacity="0.50"/>
+                            <ellipse cx="282" cy="279" rx="222" ry="219" fill="none" stroke="white" stroke-width="1.30" opacity="0.78"/>
+                            <ellipse cx="280" cy="281" rx="250" ry="247" fill="none" stroke="white" stroke-width="0.68" opacity="0.52"/>
+                        </svg>
+                    </div>
+                    <!-- Right: content -->
+                    <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
+                        <div>
+                            <span class="text-[10px] text-white/25 uppercase tracking-[0.28em] block mb-3">01</span>
+                            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">Labforward</h2>
+                            <p class="text-primary font-medium mt-2">Senior Product Manager</p>
+                            <p class="text-sm text-white/40 mt-1">Berlin · Nov 2024 – Nov 2025</p>
                         </div>
-                        <div class="flex flex-col gap-4 md:w-2/3">
-                            <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
-                                <li>Lead the product roadmap and end-to-end development cycle for core lab management
-                                    products.</li>
-                                <li>Rebuilt team collaboration practices — directly helping secure a <strong
-                                        class="text-white">$500K contract renewal</strong>.</li>
-                                <li>Championed rapid prototyping loops, shrinking testing time from days to hours.</li>
-                                <li>Guided the BI team to automate reporting and data pipelines, turning ad-hoc insights
-                                    into daily decisions.</li>
-                            </ul>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span
-                                    class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Product
-                                    Roadmap</span>
-                                <span
-                                    class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Rapid
-                                    Prototyping</span>
-                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">BI
-                                    Automation</span>
-                            </div>
+                        <p class="text-base text-white/70 leading-relaxed max-w-[420px]">
+                            Led end-to-end product roadmap for core lab management tools. Rebuilt team collaboration practices — directly securing a <strong class="text-white">$500K contract renewal</strong>. Drove rapid prototyping loops that shrank testing from days to hours.
+                        </p>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-sm text-white/40">Product Roadmap</span>
+                            <span class="text-sm text-white/40">Rapid Prototyping</span>
+                            <span class="text-sm text-white/40">BI &amp; Data Pipelines</span>
+                            <span class="text-sm text-white/40">Stakeholder Management</span>
+                        </div>
+                        <a href="portfolio/labforward.html"
+                            class="inline-flex items-center gap-2 text-sm text-primary/70 hover:text-primary transition-colors group w-fit">
+                            View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Panel 2: LabTwin (7 rings accumulated) ── -->
+            <section class="stack-panel w-full min-h-screen flex flex-col" style="--panel-z:20">
+                <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 shrink-0 flex items-center justify-between">
+                    <span class="text-[10px] text-white/25 uppercase tracking-[0.3em]">Experience</span>
+                    <a href="Matthew main CV.pdf" target="_blank" download
+                        onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
+                        class="text-[10px] text-white/25 hover:text-white/55 transition-colors uppercase tracking-[0.2em]">Download CV ↓</a>
+                </div>
+                <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center py-10 md:py-0 gap-8 md:gap-0">
+                    <div class="flex items-center justify-center md:pr-6">
+                        <svg viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg"
+                            class="w-full max-w-[300px] sm:max-w-[380px] md:max-w-none" style="max-height:68vh">
+                            <!-- Center pith -->
+                            <circle cx="280" cy="281" r="4.5" fill="white" opacity="0.40"/>
+                            <!-- Radial cracks -->
+                            <line x1="280" y1="281" x2="518" y2="148" stroke="white" stroke-width="0.4" opacity="0.07"/>
+                            <line x1="280" y1="281" x2="62"  y2="440" stroke="white" stroke-width="0.35" opacity="0.05"/>
+                            <!-- 7 organic rings — irregular spacing, alternating major/minor -->
+                            <ellipse cx="281" cy="279" rx="32"  ry="31"  fill="none" stroke="white" stroke-width="1.30" opacity="0.82"/>
+                            <ellipse cx="278" cy="281" rx="66"  ry="64"  fill="none" stroke="white" stroke-width="0.65" opacity="0.48"/>
+                            <ellipse cx="282" cy="278" rx="102" ry="100" fill="none" stroke="white" stroke-width="1.30" opacity="0.80"/>
+                            <ellipse cx="279" cy="282" rx="134" ry="132" fill="none" stroke="white" stroke-width="0.65" opacity="0.48"/>
+                            <ellipse cx="281" cy="278" rx="172" ry="170" fill="none" stroke="white" stroke-width="1.30" opacity="0.80"/>
+                            <ellipse cx="278" cy="281" rx="208" ry="205" fill="none" stroke="white" stroke-width="0.65" opacity="0.50"/>
+                            <ellipse cx="280" cy="280" rx="250" ry="247" fill="none" stroke="white" stroke-width="1.30" opacity="0.78"/>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
+                        <div>
+                            <span class="text-[10px] text-white/25 uppercase tracking-[0.28em] block mb-3">02</span>
+                            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">LabTwin</h2>
+                            <p class="text-primary font-medium mt-2">Technical Product Manager</p>
+                            <p class="text-sm text-white/40 mt-1">Berlin · Jan 2023 – Nov 2024</p>
+                        </div>
+                        <p class="text-base text-white/70 leading-relaxed max-w-[420px]">
+                            Drove roadmap for voice and lab integration features. Tripled deployment frequency from <strong class="text-white">4 → 12 releases per year</strong>. Led speech recognition retraining to maintain <strong class="text-white">95% accuracy</strong> on scientific terms.
+                        </p>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-sm text-white/40">Voice AI &amp; NLP</span>
+                            <span class="text-sm text-white/40">Release Management</span>
+                            <span class="text-sm text-white/40">API &amp; Integration</span>
+                            <span class="text-sm text-white/40">Team Mentorship</span>
+                        </div>
+                        <a href="portfolio/labtwin.html"
+                            class="inline-flex items-center gap-2 text-sm text-primary/70 hover:text-primary transition-colors group w-fit">
+                            View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Panel 3: Thryve (5 rings accumulated) ── -->
+            <section class="stack-panel w-full min-h-screen flex flex-col" style="--panel-z:30">
+                <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 shrink-0 flex items-center justify-between">
+                    <span class="text-[10px] text-white/25 uppercase tracking-[0.3em]">Experience</span>
+                    <a href="Matthew main CV.pdf" target="_blank" download
+                        onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
+                        class="text-[10px] text-white/25 hover:text-white/55 transition-colors uppercase tracking-[0.2em]">Download CV ↓</a>
+                </div>
+                <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center py-10 md:py-0 gap-8 md:gap-0">
+                    <div class="flex items-center justify-center md:pr-6">
+                        <svg viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg"
+                            class="w-full max-w-[300px] sm:max-w-[380px] md:max-w-none" style="max-height:68vh">
+                            <!-- Center pith -->
+                            <circle cx="280" cy="281" r="4.5" fill="white" opacity="0.40"/>
+                            <!-- Radial crack -->
+                            <line x1="280" y1="281" x2="510" y2="165" stroke="white" stroke-width="0.4" opacity="0.07"/>
+                            <!-- 5 organic rings — irregular spacing, alternating major/minor -->
+                            <ellipse cx="281" cy="279" rx="50"  ry="48"  fill="none" stroke="white" stroke-width="1.30" opacity="0.82"/>
+                            <ellipse cx="278" cy="282" rx="98"  ry="96"  fill="none" stroke="white" stroke-width="0.65" opacity="0.48"/>
+                            <ellipse cx="282" cy="278" rx="150" ry="147" fill="none" stroke="white" stroke-width="1.30" opacity="0.80"/>
+                            <ellipse cx="279" cy="281" rx="196" ry="193" fill="none" stroke="white" stroke-width="0.65" opacity="0.50"/>
+                            <ellipse cx="280" cy="280" rx="250" ry="247" fill="none" stroke="white" stroke-width="1.20" opacity="0.78"/>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
+                        <div>
+                            <span class="text-[10px] text-white/25 uppercase tracking-[0.28em] block mb-3">03</span>
+                            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">Thryve</h2>
+                            <p class="text-primary font-medium mt-2">Product Owner</p>
+                            <p class="text-sm text-white/40 mt-1">Berlin · Oct 2019 – Dec 2022</p>
+                        </div>
+                        <p class="text-base text-white/70 leading-relaxed max-w-[420px]">
+                            Owned APIs and SDKs powering <strong class="text-white">1M+ users</strong> across 100+ B2B partners. Led 10+ wearable integrations. Contributed to growth from <strong class="text-white">€0 → €1M ARR</strong> and 7 → 35 people.
+                        </p>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-sm text-white/40">API &amp; SDK Development</span>
+                            <span class="text-sm text-white/40">Wearable Integrations</span>
+                            <span class="text-sm text-white/40">B2B SaaS Growth</span>
+                            <span class="text-sm text-white/40">Learning &amp; Onboarding</span>
+                        </div>
+                        <a href="portfolio/thryve.html"
+                            class="inline-flex items-center gap-2 text-sm text-primary/70 hover:text-primary transition-colors group w-fit">
+                            View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Panel 4: Ernst & Young (2 rings — start of career) ── -->
+            <section class="stack-panel w-full min-h-screen flex flex-col" style="--panel-z:40">
+                <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 shrink-0 flex items-center justify-between">
+                    <span class="text-[10px] text-white/25 uppercase tracking-[0.3em]">Experience</span>
+                    <a href="Matthew main CV.pdf" target="_blank" download
+                        onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
+                        class="text-[10px] text-white/25 hover:text-white/55 transition-colors uppercase tracking-[0.2em]">Download CV ↓</a>
+                </div>
+                <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center py-10 md:py-0 gap-8 md:gap-0">
+                    <div class="flex items-center justify-center md:pr-6">
+                        <svg viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg"
+                            class="w-full max-w-[300px] sm:max-w-[380px] md:max-w-none" style="max-height:68vh">
+                            <!-- Center pith -->
+                            <circle cx="280" cy="281" r="4.5" fill="white" opacity="0.40"/>
+                            <!-- Radial crack — wide open rings make cracks feel natural -->
+                            <line x1="280" y1="281" x2="505" y2="172" stroke="white" stroke-width="0.4" opacity="0.06"/>
+                            <!-- 2 organic rings — wide spacing, young tree -->
+                            <ellipse cx="281" cy="279" rx="118" ry="115" fill="none" stroke="white" stroke-width="1.30" opacity="0.82"/>
+                            <ellipse cx="279" cy="281" rx="250" ry="247" fill="none" stroke="white" stroke-width="0.68" opacity="0.55"/>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
+                        <div>
+                            <span class="text-[10px] text-white/25 uppercase tracking-[0.28em] block mb-3">04</span>
+                            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">Ernst &amp;<br>Young</h2>
+                            <p class="text-primary font-medium mt-2">Senior Risk Consultant</p>
+                            <p class="text-sm text-white/40 mt-1">Bangkok · Aug 2016 – Feb 2018</p>
+                        </div>
+                        <p class="text-base text-white/70 leading-relaxed max-w-[420px]">
+                            Drove risk assessments and process improvement for Thailand's largest corporations. Developed risk management frameworks for digital transformation. Led market research on emerging technologies including RPA.
+                        </p>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-sm text-white/40">Risk Management</span>
+                            <span class="text-sm text-white/40">Process Improvement</span>
+                            <span class="text-sm text-white/40">Digital Transformation</span>
+                            <span class="text-sm text-white/40">Market Research</span>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Stack Panel 2: Job 2 -->
-            <section
-                class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[100vh] md:min-h-[110vh] flex items-center"
-                style="--panel-z:20">
-                <div class="max-w-7xl mx-auto w-full">
-                    <div
-                        class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
-                        <div class="flex flex-col gap-2 md:w-1/3">
-                            <h3 class="text-xl font-bold text-white">Technical Product Manager</h3>
-                            <p class="text-primary font-medium">LabTwin GmbH</p>
-                            <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
-                                <span class="material-symbols-outlined text-base">calendar_month</span>
-                                <span>Jan 2023 - Nov 2024</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-white/40 text-sm">
-                                <span class="material-symbols-outlined text-base">location_on</span>
-                                <span>Berlin, Germany</span>
-                            </div>
-                            <div class="mt-4">
-                                <a href="portfolio/labtwin.html"
-                                    class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
-                                    <span>View Portfolio</span>
-                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-4 md:w-2/3">
-                            <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
-                                <li>Drove roadmap for voice and integration features supporting scientists in real lab
-                                    environments.</li>
-                                <li>Led the effort to streamline release processes with engineering, tripling deployment
-                                    frequency (<strong class="text-white">4 → 12 per year</strong>).</li>
-                                <li>Spearheaded retraining strategies for speech recognition, keeping scientific term
-                                    accuracy at <strong class="text-white">95%</strong>.</li>
-                                <li>Mentored a junior PM, encouraging autonomy and strong product intuition.</li>
-                            </ul>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span
-                                    class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Voice
-                                    AI</span>
-                                <span
-                                    class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Release
-                                    Management</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Stack Panel 3: Job 3 -->
-            <section
-                class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[100vh] md:min-h-[110vh] flex items-center"
-                style="--panel-z:30">
-                <div class="max-w-7xl mx-auto w-full">
-                    <div
-                        class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
-                        <div class="flex flex-col gap-2 md:w-1/3">
-                            <h3 class="text-xl font-bold text-white">Product Owner</h3>
-                            <p class="text-primary font-medium">Thryve GmbH</p>
-                            <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
-                                <span class="material-symbols-outlined text-base">calendar_month</span>
-                                <span>Oct 2019 - Dec 2022</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-white/40 text-sm">
-                                <span class="material-symbols-outlined text-base">location_on</span>
-                                <span>Berlin, Germany</span>
-                            </div>
-                            <div class="mt-4">
-                                <a href="portfolio/thryve.html"
-                                    class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
-                                    <span>View Portfolio</span>
-                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-4 md:w-2/3">
-                            <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
-                                <li>Owned and scaled APIs and SDKs powering <strong class="text-white">1M+
-                                        users</strong>
-                                    across 100+ B2B partners in digital health.</li>
-                                <li>Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and
-                                    more).</li>
-                                <li>Contributed to company growth from <strong class="text-white">€0 → €1M ARR</strong>
-                                    and from 7 → 35 people.</li>
-                                <li>Founded "Thryve Academy," a learning program that onboarded and aligned new hires in
-                                    record time.</li>
-                            </ul>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span
-                                    class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">API/SDK</span>
-                                <span
-                                    class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Wearable
-                                    Integrations</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Stack Panel 4: Job 4 -->
-            <section
-                class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[100vh] md:min-h-[110vh] flex items-center"
-                style="--panel-z:40">
-                <div class="max-w-7xl mx-auto w-full">
-                    <div
-                        class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
-                        <div class="flex flex-col gap-2 md:w-1/3">
-                            <h3 class="text-xl font-bold text-white">Senior Risk Consultant</h3>
-                            <p class="text-primary font-medium">Ernst & Young</p>
-                            <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
-                                <span class="material-symbols-outlined text-base">calendar_month</span>
-                                <span>Aug 2016 - Feb 2018</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-white/40 text-sm">
-                                <span class="material-symbols-outlined text-base">location_on</span>
-                                <span>Bangkok, Thailand</span>
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-4 md:w-2/3">
-                            <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
-                                <li>Drove risk assessments and process improvement projects for Thailand's largest
-                                    corps.</li>
-                                <li>Developed risk management frameworks and control testing procedures for digital
-                                    transformation initiatives.</li>
-                                <li>Led market research on emerging technologies (RPA) and competitive risk practices.
-                                </li>
-                            </ul>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Risk
-                                    Management</span>
-                                <span
-                                    class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Process
-                                    Improvement</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Stack Panel 5: Skills & Education -->
+            <!-- ── Panel 5: Skills & Education (original card layout) ── -->
             <section
                 class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[110vh] md:min-h-[120vh] flex items-center"
                 style="--panel-z:50">
@@ -424,46 +418,31 @@
                     <h2 class="text-3xl font-bold">Skills & Education</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Essential Skills -->
-                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
+                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 card-hover">
                             <h4 class="text-xl font-bold text-white flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary">psychology</span>
                                 Essential Skills
                             </h4>
                             <div class="flex flex-wrap gap-2">
-                                <span
-                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product
-                                    Roadmap</span>
-                                <span
-                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product
-                                    Discovery</span>
-                                <span
-                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">User
-                                    Research</span>
-                                <span
-                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">A/B
-                                    Testing</span>
-                                <span
-                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Stakeholder
-                                    Mgmt</span>
-                                <span
-                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Automation
-                                    (Python/n8n)</span>
-                                <span
-                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">AI
-                                    Implementation</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product Roadmap</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product Discovery</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">User Research</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">A/B Testing</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Stakeholder Mgmt</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Automation (Python/n8n)</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">AI Implementation</span>
                             </div>
                         </div>
 
                         <!-- Education -->
-                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
+                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 card-hover">
                             <h4 class="text-xl font-bold text-white flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary">school</span>
                                 Education
                             </h4>
                             <div class="flex flex-col gap-4">
                                 <div class="border-l-2 border-primary/30 pl-4">
-                                    <p class="font-bold text-white text-sm">Master of International and Development
-                                        Economics</p>
+                                    <p class="font-bold text-white text-sm">Master of International and Development Economics</p>
                                     <p class="text-primary text-xs mt-1">University of Applied Science Berlin</p>
                                     <p class="text-white/40 text-xs mt-1">DAAD Scholarship Recipient</p>
                                 </div>
@@ -476,7 +455,7 @@
                         </div>
 
                         <!-- Languages -->
-                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
+                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 card-hover">
                             <h4 class="text-xl font-bold text-white flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary">language</span>
                                 Languages
@@ -489,7 +468,6 @@
                                 <div class="w-full bg-white/10 rounded-full h-1.5">
                                     <div class="bg-primary h-1.5 rounded-full" style="width: 95%"></div>
                                 </div>
-
                                 <div class="flex justify-between items-center mt-2">
                                     <span class="text-white/80">German</span>
                                     <span class="text-primary text-sm font-bold">B1</span>
@@ -497,7 +475,6 @@
                                 <div class="w-full bg-white/10 rounded-full h-1.5">
                                     <div class="bg-primary h-1.5 rounded-full" style="width: 40%"></div>
                                 </div>
-
                                 <div class="flex justify-between items-center mt-2">
                                     <span class="text-white/80">Thai</span>
                                     <span class="text-primary text-sm font-bold">Native</span>
