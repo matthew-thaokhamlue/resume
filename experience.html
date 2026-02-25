@@ -114,6 +114,28 @@
             transform: translateY(-4px);
             background-color: rgba(255, 255, 255, 0.08);
         }
+
+        /* ── Geist-style stacking scroll panels ── */
+        .stack-panel {
+            position: sticky;
+            top: 0;
+            z-index: var(--panel-z, 10);
+            background: #101c22;
+            transform-origin: top center;
+            transition: scale 0.55s cubic-bezier(0.4,0,0.2,1),
+                        filter 0.55s cubic-bezier(0.4,0,0.2,1),
+                        border-radius 0.55s cubic-bezier(0.4,0,0.2,1);
+            will-change: scale, filter;
+        }
+        .stack-panel + .stack-panel {
+            border-radius: 1.5rem 1.5rem 0 0;
+            box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.55);
+        }
+        .stack-panel.is-covered {
+            scale: 0.965;
+            filter: brightness(0.58);
+            border-radius: 1.5rem;
+        }
     </style>
 </head>
 
@@ -166,7 +188,7 @@
         <main class="relative z-10 flex flex-1 flex-col">
 
             <!-- Sticky Experience Section -->
-            <div class="sticky top-0 z-10 w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16 animate-fade-in">
+            <div class="relative z-10 w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16 animate-fade-in">
 
                 <!-- Header -->
                 <div
@@ -434,7 +456,7 @@
             </div><!-- /sticky experience -->
 
             <!-- Certifications Scroll-Over Section -->
-            <section id="certifications" class="relative z-20 w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+            <section id="certifications" class="stack-panel w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24" style="--panel-z:20">
                 <div class="max-w-7xl mx-auto flex flex-col gap-12">
 
                     <!-- Section Header -->
@@ -747,6 +769,23 @@
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('translate-x-full');
         }
+    </script>
+    <script>
+        (function () {
+            var panels = document.querySelectorAll('.stack-panel');
+            if (!panels.length) return;
+            function update() {
+                var vh = window.innerHeight;
+                panels.forEach(function (panel, i) {
+                    var next = panels[i + 1];
+                    if (!next) return;
+                    var nextTop = next.getBoundingClientRect().top;
+                    panel.classList.toggle('is-covered', nextTop < vh * 0.88);
+                });
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        })();
     </script>
 </body>
 
