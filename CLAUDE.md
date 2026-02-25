@@ -57,7 +57,9 @@ A passive scroll IIFE toggles `is-covered` when the next panel's top crosses `vh
 
 - All external dependencies loaded via CDN (Tailwind, Font Awesome, Google Fonts, jQuery) — no `node_modules`
 - Tailwind config is duplicated in each HTML file's `<script id="tailwind-config">` block — keep them in sync when changing theme tokens
-- Google Analytics tag (G-D11HKMWFB4) is included in each page's `<head>`. Custom GA4 events are instrumented across all pages: `modal_article_viewed`, `portfolio_project_opened`, `resume_downloaded`, `external_link_clicked`, `testimonial_opened`, `social_profile_link_clicked`, `audio_played`, `mobile_menu_toggled`, `contact_intent_registered`, `credential_verified`. GA event pattern: `onclick="if(typeof gtag==='function'){gtag('event',...)}"`.
-- Portfolio work cards use `data-work="work1"` attributes; `portfolio.js` reads this to drive hash navigation and modal display.
+- Google Analytics tag (G-D11HKMWFB4) in each page `<head>`. GA4 custom events (`resume_downloaded`, `external_link_clicked`, `audio_played`, etc.) use inline `onclick="if(typeof gtag==='function'){gtag('event',...)}"` — never call `gtag()` without the guard.
+- `portfolio.html` career cards link directly to `portfolio/*.html`; personal project cards use an inline `openProject(id)` JS function with a `<dialog>` modal. `portfolio.js` and `data-work` attributes are legacy and not used.
 - SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
 - Images go in `images/` directory
+- `docs/plans/` — design docs (`*-design.md`) and implementation plans from brainstorm/writing-plans skill sessions
+- Branch naming: Claude-created branches use `claude/<adjective-name>` prefix (e.g. `claude/recursing-kalam`)
