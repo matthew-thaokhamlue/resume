@@ -13,9 +13,9 @@
   </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Matthew Thaokhamlue - Technical Product Manager</title>
+  <title>Matthew Thaokhamlue - Product Manager</title>
   <meta name="description"
-    content="Technical Product Manager with 5+ years driving AI-powered innovation in health analytics and laboratory informatics B2B SaaS platforms." />
+    content="A Product Manager with 5+ years driving AI-powered innovation in health analytics and laboratory informatics B2B SaaS platforms." />
   <meta name="author" content="Matthew Thaokhamlue" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://matthew-thaokhamlue.github.io/resume/" />
@@ -178,14 +178,47 @@
 
     /* Testimonial marquee */
     @keyframes marquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
+
     .marquee-track {
       animation: marquee 45s linear infinite;
     }
+
     .marquee-track:hover {
       animation-play-state: paused;
+    }
+
+    /* ── Geist-style stacking scroll panels ── */
+    .stack-panel {
+      position: sticky;
+      top: 0;
+      z-index: var(--panel-z, 10);
+      background: #101c22;
+      transform-origin: top center;
+      transition: scale 0.55s cubic-bezier(0.4,0,0.2,1),
+                  filter 0.55s cubic-bezier(0.4,0,0.2,1),
+                  border-radius 0.55s cubic-bezier(0.4,0,0.2,1);
+      will-change: scale, filter;
+    }
+
+    /* Incoming panels get a top-card edge */
+    .stack-panel + .stack-panel {
+      border-radius: 1.5rem 1.5rem 0 0;
+      box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Panel being covered: compress + dim */
+    .stack-panel.is-covered {
+      scale: 0.965;
+      filter: brightness(0.58);
+      border-radius: 1.5rem;
     }
   </style>
 </head>
@@ -269,415 +302,435 @@
       </button>
     </div>
 
-    <main
-      class="relative z-10 flex flex-1 flex-col">
+    <main class="relative z-10">
       <!-- Hero Section (Bento Grid Style) -->
-      <section class="sticky top-0 z-10 w-full min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 animate-fade-in py-20 sm:py-24">
-        <!-- Main Intro Card -->
-        <div
-          class="lg:col-span-2 flex flex-col justify-center gap-6 rounded-2xl bg-surface border border-white/5 p-8 sm:p-10 relative overflow-hidden group">
-          <div class="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span class="material-symbols-outlined text-9xl text-primary">rocket_launch</span>
-          </div>
-          <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue
-          </h1>
-          <p class="text-lg sm:text-xl text-primary font-medium tracking-tight">Senior Product Manager</p>
-          <p class="text-white/60 max-w-xl text-lg leading-relaxed">Crafting high-impact products at the intersection of
-            technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
+      <section class="stack-panel w-full h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8" style="--panel-z:10">
+        <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-3 gap-4 animate-fade-in py-16 h-full" style="grid-template-rows: 1fr auto;">
 
-          <!-- Audio + AI Match Actions -->
-          <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm w-full h-full">
-              <div class="flex items-center gap-3 mb-2">
-                <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                  <span class="material-symbols-outlined text-sm">graphic_eq</span>
-                </div>
-                <p class="text-xs font-medium text-white/80">Listen to my role discussion</p>
-              </div>
-              <audio controls class="w-full h-8 opacity-80 hover:opacity-100 transition-opacity"
-                onplay="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'play'})}"
-                onpause="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'pause'})}">
-                <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav" type="audio/wav" />
-                Your browser does not support the audio element.
-              </audio>
+          <!-- Row 1 Col 1-2: Main Intro Card -->
+          <div class="lg:col-span-2 flex flex-col justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-6 sm:p-8 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+              <span class="material-symbols-outlined text-8xl text-primary">rocket_launch</span>
             </div>
-            <button id="ai-match-trigger" type="button"
-              class="group w-full h-full p-4 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
-              <span class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-primary">smart_toy</span>
-                <span class="text-sm font-semibold text-white">Evaluate role fit with my evidence</span>
-              </span>
-            </button>
+            <div class="flex flex-col gap-3">
+              <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue</h1>
+              <p class="text-lg text-primary font-medium tracking-tight">Senior Product Manager</p>
+              <p class="text-white/60 max-w-xl leading-relaxed">Crafting high-impact products at the intersection of technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
+            </div>
+            <!-- Slim Audio + AI Match strip -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/5">
+                <span class="material-symbols-outlined text-primary text-sm shrink-0">graphic_eq</span>
+                <audio controls class="w-full h-7 opacity-80 hover:opacity-100 transition-opacity"
+                  onplay="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'play'})}"
+                  onpause="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'pause'})}">
+                  <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav" type="audio/wav" />
+                </audio>
+              </div>
+              <button id="ai-match-trigger" type="button"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 transition-colors text-left">
+                <span class="material-symbols-outlined text-primary text-sm shrink-0">smart_toy</span>
+                <span class="text-sm font-semibold text-white">Evaluate role fit</span>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <!-- Right Column: Portfolio & Download CV Stacked -->
-        <div class="flex flex-col gap-6 sm:gap-8 h-full">
-          <!-- Portfolio Link Card -->
-          <a class="group flex flex-col justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-8 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
+          <!-- Row 1 Col 3: Availability Sidebar -->
+          <div class="flex flex-col gap-3 rounded-2xl bg-surface border border-white/5 p-6">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary">location_on</span>
+              <div>
+                <p class="text-white font-medium text-sm">Berlin, Germany</p>
+                <p class="text-white/50 text-xs">Open to opportunities</p>
+              </div>
+            </div>
+            <div class="h-px bg-white/5"></div>
+            <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+              class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group"
+              onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'sidebar',location:'hero_sidebar'})}">
+              <i class="fab fa-linkedin text-lg text-primary shrink-0"></i>
+              <span class="text-white/70 group-hover:text-white text-sm transition-colors">LinkedIn</span>
+              <span class="material-symbols-outlined text-xs text-white/30 ml-auto">open_in_new</span>
+            </a>
+            <a href="https://github.com/matthew-thaokhamlue" target="_blank"
+              class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group"
+              onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'github',link_type:'sidebar',location:'hero_sidebar'})}">
+              <i class="fab fa-github text-lg text-white/60 shrink-0"></i>
+              <span class="text-white/70 group-hover:text-white text-sm transition-colors">GitHub</span>
+              <span class="material-symbols-outlined text-xs text-white/30 ml-auto">open_in_new</span>
+            </a>
+            <div class="h-px bg-white/5"></div>
+            <a href="Matthew main CV.pdf" target="_blank" rel="noopener noreferrer"
+              class="flex items-center justify-center gap-2 mt-auto h-10 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-primary/20"
+              onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'index'})}">
+              <span class="material-symbols-outlined text-sm">download</span>
+              Download CV
+            </a>
+          </div>
+
+          <!-- Row 2: 3 compact action cards -->
+          <a class="group flex items-center justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
             href="portfolio.html">
-            <div>
-              <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
-                <span class="material-symbols-outlined text-2xl">grid_view</span>
+            <div class="flex items-center gap-4">
+              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <span class="material-symbols-outlined">grid_view</span>
               </div>
-              <h3 class="text-2xl font-bold tracking-tight text-white">Matthew's Portfolio</h3>
-              <p class="text-white/60 mt-2">Explore my work in leading cross-functional teams.</p>
+              <div>
+                <h3 class="font-bold text-white">Portfolio</h3>
+                <p class="text-white/50 text-sm">Explore my work</p>
+              </div>
             </div>
-            <div class="flex items-center gap-2 text-primary font-medium mt-4">
-              <span>View Portfolio</span>
-              <span
-                class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-            </div>
+            <span class="material-symbols-outlined text-primary transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
           </a>
 
-          <!-- Download CV Card -->
-          <a class="group flex flex-col justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-8 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
-            href="Matthew main CV.pdf" target="_blank" rel="noopener noreferrer"
-            onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'index'})}">
-            <div>
-              <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
-                <span class="material-symbols-outlined text-2xl">download</span>
+          <a class="group flex items-center justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
+            href="experience.html">
+            <div class="flex items-center gap-4">
+              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <span class="material-symbols-outlined">description</span>
               </div>
-              <h3 class="text-2xl font-bold tracking-tight text-white">Download CV</h3>
-              <p class="text-white/60 mt-2">Get a copy of my resume and detailed work history.</p>
+              <div>
+                <h3 class="font-bold text-white">Experience</h3>
+                <p class="text-white/50 text-sm">Skills &amp; certifications</p>
+              </div>
             </div>
-            <div class="flex items-center gap-2 text-primary font-medium mt-4">
-              <span>Download PDF</span>
-              <span
-                class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_downward</span>
-            </div>
+            <span class="material-symbols-outlined text-primary transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
           </a>
+
+          <a class="group flex items-center justify-between gap-4 rounded-2xl bg-primary/10 border border-primary/20 p-5 transition-all duration-300 hover:bg-primary/20 hover:-translate-y-1"
+            href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'hero_section'})}">
+            <div class="flex items-center gap-4">
+              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <span class="material-symbols-outlined">person_add</span>
+              </div>
+              <div>
+                <h3 class="font-bold text-white">Let's Connect</h3>
+                <p class="text-white/50 text-sm">Get in touch</p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-primary transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+          </a>
+
         </div>
-
-        <!-- Resume Link Card -->
-        <a class="group flex flex-col justify-between gap-4 rounded-2xl bg-surface border border-white/5 p-8 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
-          href="experience.html">
-          <div>
-            <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
-              <span class="material-symbols-outlined text-2xl">description</span>
-            </div>
-            <h3 class="text-2xl font-bold tracking-tight text-white">Experience & Skills</h3>
-            <p class="text-white/60 mt-2">A detailed overview of my professional journey, skills, and certifications.
-            </p>
-          </div>
-          <div class="flex items-center gap-2 text-primary font-medium mt-4">
-            <span>View Experience</span>
-            <span
-              class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-          </div>
-        </a>
-
-        <!-- Contact Card -->
-        <a class="group lg:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-2xl bg-primary/10 border border-primary/20 p-8 transition-all duration-300 hover:bg-primary/20 hover:-translate-y-1"
-          href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'hero_section'})}">
-          <div class="flex-1">
-            <h3 class="text-2xl font-bold tracking-tight text-white">Let's Connect</h3>
-            <p class="text-white/70 mt-2">Have a project in mind or want to talk about product? I'd love to hear from
-              you.</p>
-          </div>
-          <button
-            class="flex shrink-0 items-center justify-center gap-2 h-12 px-6 bg-primary hover:bg-primary-dark text-white font-bold tracking-wide rounded-xl transition-colors shadow-lg shadow-primary/20">
-            <span>Get in Touch</span>
-            <span class="material-symbols-outlined">email</span>
-          </button>
-        </a>
       </section>
 
       <!-- Testimonials Section -->
-      <section id="testimonials" class="relative z-20 w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+      <section id="testimonials" class="stack-panel w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24" style="--panel-z:20">
         <div class="max-w-7xl mx-auto flex flex-col gap-12">
-        <div class="flex flex-col gap-4 text-center items-center">
-          <div class="flex items-center gap-2 text-primary">
-            <span class="material-symbols-outlined">forum</span>
-            <h3 class="font-bold tracking-wide uppercase text-sm">Testimonials</h3>
+          <div class="flex flex-col gap-4 text-center items-center">
+            <div class="flex items-center gap-2 text-primary">
+              <span class="material-symbols-outlined">forum</span>
+              <h3 class="font-bold tracking-wide uppercase text-sm">Testimonials</h3>
+            </div>
+            <h2 class="text-3xl sm:text-5xl font-bold">What Colleagues Say</h2>
+            <a href="https://www.linkedin.com/in/matthewthaokhamlue/details/recommendations/" target="_blank"
+              rel="noopener noreferrer" onclick="if(typeof gtag==="
+              function"){gtag("event","external_link_clicked",{destination_platform:"linkedin",link_type:"recommendations_score",location:"testimonials_section"})}"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/70 hover:text-white hover:border-primary/30 hover:bg-primary/10 transition-all duration-200">
+              <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              <span>7 recommendations on LinkedIn</span>
+              <span class="material-symbols-outlined text-base">open_in_new</span>
+            </a>
           </div>
-          <h2 class="text-3xl sm:text-5xl font-bold">What Colleagues Say</h2>
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue/details/recommendations/" target="_blank" rel="noopener noreferrer"
-            onclick="if(typeof gtag==="function"){gtag("event","external_link_clicked",{destination_platform:"linkedin",link_type:"recommendations_score",location:"testimonials_section"})}"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/70 hover:text-white hover:border-primary/30 hover:bg-primary/10 transition-all duration-200">
-            <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            <span>7 recommendations on LinkedIn</span>
-            <span class="material-symbols-outlined text-base">open_in_new</span>
-          </a>
-        </div>
-        <!-- Testimonials Marquee -->
-        <div class="w-full overflow-hidden" style="mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);">
-          <div class="marquee-track flex gap-6" style="width: max-content;">
-<div onclick="openTestimonial(this)" data-name="Paul Burggraf" data-role="Founder at Thryve"
-            data-image="images/PB.jpeg"
-            data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve's growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/PB.jpeg" alt="Paul Burggraf"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Paul Burggraf</h4>
-                <p class="text-primary text-sm">Founder at Thryve</p>
+          <!-- Testimonials Marquee -->
+          <div class="w-full overflow-hidden"
+            style="mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);">
+            <div class="marquee-track flex gap-6" style="width: max-content;">
+              <div onclick="openTestimonial(this)" data-name="Paul Burggraf" data-role="Founder at Thryve"
+                data-image="images/PB.jpeg"
+                data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve's growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/PB.jpeg" alt="Paul Burggraf"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Paul Burggraf</h4>
+                    <p class="text-primary text-sm">Founder at Thryve</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew joined Thryve as the 7th
+                  employee...
+                  As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and
+                  demanding field of health care from 1k end users to over 1 million end users."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Jeroen de Haas" data-role="CPO at Labforward"
+                data-image="images/jeroen-de-haas.png"
+                data-text="I've had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn't just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you're looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can't wait to see where his talents take him next."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/jeroen-de-haas.png" alt="Jeroen de Haas"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Jeroen de Haas</h4>
+                    <p class="text-primary text-sm">CPO at Labforward</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"What I admire most is his genuine can-do
+                  attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and
+                  focus...
+                  I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Robin Genolet"
+                data-role="Director Innovation & AI at Medgate" data-image="images/robin-genolet.jpeg"
+                data-text="At Medgate, we partnered with Berlin-based company mHealth Pioneers GmbH and use their Thryve product since July 2021. We use Thryve's standardized API and SDK to allow our patients to securely share with us sensor-generated data from hundreds of health devices via our mobile app. We then make the data available to our Doctors to support their teleconsultations. Their API standardizes the dozens of data formats used by a wide range of brands like Garmin, Fitbit, and Apple Healthkit. Thryve allowed us to minimize the duration of our development phase and takes care of the maintenance necessary when a data provider updates its API. We are both happy with the product and the team behind it: Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/robin-genolet.jpeg" alt="Robin Genolet"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Robin Genolet</h4>
+                    <p class="text-primary text-sm">Director Innovation & AI at Medgate</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew (Thryve Product Owner) and
+                  colleagues
+                  not only
+                  provided useful guidance during the development phase, but also helped us deal with challenges
+                  encountered
+                  with
+                  the brands we support..."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Ignatius Reza" data-role="CTO at Laboperator"
+                data-image="images/ignatius-reza.jpeg"
+                data-text="Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use. He's also a great person to have in the team. Great presence, character, motivation, and always willing to support."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/ignatius-reza.jpeg" alt="Ignatius Reza"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Ignatius Reza</h4>
+                    <p class="text-primary text-sm">CTO at Laboperator</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew is a great product manager with
+                  technical
+                  chops. He is great in digesting the complex area of developing a product which are highly technical,
+                  and
+                  coming
+                  up with product direction that is easy to understand and use..."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Sumner Price" data-role="Product Designer"
+                data-image="images/sumner-price.jpeg"
+                data-text="I had the pleasure of working with Matt on many projects within our product team. He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned. He was my go-to person whenever I felt uncertain about something. On top of that, his organizational skills—especially in creating PRDs and managing tickets—were invaluable. Working with him was truly a joy!"
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/sumner-price.jpeg" alt="Sumner Price"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Sumner Price</h4>
+                    <p class="text-primary text-sm">Product Designer at Labforward</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"He consistently impressed me with how
+                  quickly
+                  he
+                  picked up new initiatives and guided them through the product development process. As a product
+                  manager,
+                  Matt
+                  communicated clearly and ensured all relevant stakeholders were always aligned..."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Mark Dominick Flores"
+                data-role="Senior iOS Engineer at LabTwin" data-image="images/mark-flores.png"
+                data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he's great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I'd work with him again in a heartbeat. He's a huge asset to any product or engineering team."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/mark-flores.png" alt="Mark Dominick Flores"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Mark Dominick Flores</h4>
+                    <p class="text-primary text-sm">Senior iOS Engineer at LabTwin</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew has a remarkable ability to take
+                  nebulous business requirements and translate them into a clear, actionable backlog... He's also an
+                  incredibly fast learner. He quickly got up to speed on our complex systems."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Thuy Tran" data-role="Software Engineer at Doctorlib"
+                data-image=""
+                data-text="I worked with Matthew for more than 3 years in a cross-functional team where he was the Production Owner. I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let's get thing done, as well as his ability to pick things up quickly, his contribution to the team was highly significant and valuable. It was always a pleasure to co-work with him, as he takes his responsibility very seriously while maintaining a pleasant, collaborative discussion. I could always count on him to complete his tasks with full efforts and excellent output, and his supportive nature towards our colleagues."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <div
+                    class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
+                    TT</div>
+                  <div>
+                    <h4 class="font-bold text-white">Thuy Tran</h4>
+                    <p class="text-primary text-sm">Software Engineer at Doctorlib</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"I was extremely impressed with his
+                  analytical
+                  mind and his ability to dig deep and notice even the small details of a software feature. With his
+                  attitude of can-do and let's get thing done... his contribution to the team was highly significant."
+                </p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Paul Burggraf" data-role="Founder at Thryve"
+                data-image="images/PB.jpeg"
+                data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve's growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/PB.jpeg" alt="Paul Burggraf"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Paul Burggraf</h4>
+                    <p class="text-primary text-sm">Founder at Thryve</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew joined Thryve as the 7th
+                  employee...
+                  As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and
+                  demanding field of health care from 1k end users to over 1 million end users."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Jeroen de Haas" data-role="CPO at Labforward"
+                data-image="images/jeroen-de-haas.png"
+                data-text="I've had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn't just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you're looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can't wait to see where his talents take him next."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/jeroen-de-haas.png" alt="Jeroen de Haas"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Jeroen de Haas</h4>
+                    <p class="text-primary text-sm">CPO at Labforward</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"What I admire most is his genuine can-do
+                  attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and
+                  focus...
+                  I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Robin Genolet"
+                data-role="Director Innovation & AI at Medgate" data-image="images/robin-genolet.jpeg"
+                data-text="At Medgate, we partnered with Berlin-based company mHealth Pioneers GmbH and use their Thryve product since July 2021. We use Thryve's standardized API and SDK to allow our patients to securely share with us sensor-generated data from hundreds of health devices via our mobile app. We then make the data available to our Doctors to support their teleconsultations. Their API standardizes the dozens of data formats used by a wide range of brands like Garmin, Fitbit, and Apple Healthkit. Thryve allowed us to minimize the duration of our development phase and takes care of the maintenance necessary when a data provider updates its API. We are both happy with the product and the team behind it: Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/robin-genolet.jpeg" alt="Robin Genolet"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Robin Genolet</h4>
+                    <p class="text-primary text-sm">Director Innovation & AI at Medgate</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew (Thryve Product Owner) and
+                  colleagues
+                  not only
+                  provided useful guidance during the development phase, but also helped us deal with challenges
+                  encountered
+                  with
+                  the brands we support..."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Ignatius Reza" data-role="CTO at Laboperator"
+                data-image="images/ignatius-reza.jpeg"
+                data-text="Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use. He's also a great person to have in the team. Great presence, character, motivation, and always willing to support."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/ignatius-reza.jpeg" alt="Ignatius Reza"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Ignatius Reza</h4>
+                    <p class="text-primary text-sm">CTO at Laboperator</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew is a great product manager with
+                  technical
+                  chops. He is great in digesting the complex area of developing a product which are highly technical,
+                  and
+                  coming
+                  up with product direction that is easy to understand and use..."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Sumner Price" data-role="Product Designer"
+                data-image="images/sumner-price.jpeg"
+                data-text="I had the pleasure of working with Matt on many projects within our product team. He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned. He was my go-to person whenever I felt uncertain about something. On top of that, his organizational skills—especially in creating PRDs and managing tickets—were invaluable. Working with him was truly a joy!"
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/sumner-price.jpeg" alt="Sumner Price"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Sumner Price</h4>
+                    <p class="text-primary text-sm">Product Designer at Labforward</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"He consistently impressed me with how
+                  quickly
+                  he
+                  picked up new initiatives and guided them through the product development process. As a product
+                  manager,
+                  Matt
+                  communicated clearly and ensured all relevant stakeholders were always aligned..."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Mark Dominick Flores"
+                data-role="Senior iOS Engineer at LabTwin" data-image="images/mark-flores.png"
+                data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he's great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I'd work with him again in a heartbeat. He's a huge asset to any product or engineering team."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <img src="images/mark-flores.png" alt="Mark Dominick Flores"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
+                  <div>
+                    <h4 class="font-bold text-white">Mark Dominick Flores</h4>
+                    <p class="text-primary text-sm">Senior iOS Engineer at LabTwin</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew has a remarkable ability to take
+                  nebulous business requirements and translate them into a clear, actionable backlog... He's also an
+                  incredibly fast learner. He quickly got up to speed on our complex systems."</p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
+              </div>
+              <div onclick="openTestimonial(this)" data-name="Thuy Tran" data-role="Software Engineer at Doctorlib"
+                data-image=""
+                data-text="I worked with Matthew for more than 3 years in a cross-functional team where he was the Production Owner. I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let's get thing done, as well as his ability to pick things up quickly, his contribution to the team was highly significant and valuable. It was always a pleasure to co-work with him, as he takes his responsibility very seriously while maintaining a pleasant, collaborative discussion. I could always count on him to complete his tasks with full efforts and excellent output, and his supportive nature towards our colleagues."
+                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
+                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
+                <div class="flex items-center gap-4">
+                  <div
+                    class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
+                    TT</div>
+                  <div>
+                    <h4 class="font-bold text-white">Thuy Tran</h4>
+                    <p class="text-primary text-sm">Software Engineer at Doctorlib</p>
+                  </div>
+                </div>
+                <p class="text-white/70 italic leading-relaxed line-clamp-3">"I was extremely impressed with his
+                  analytical
+                  mind and his ability to dig deep and notice even the small details of a software feature. With his
+                  attitude of can-do and let's get thing done... his contribution to the team was highly significant."
+                </p>
+                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
               </div>
             </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew joined Thryve as the 7th employee...
-              As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and
-              demanding field of health care from 1k end users to over 1 million end users."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
           </div>
-<div onclick="openTestimonial(this)" data-name="Jeroen de Haas" data-role="CPO at Labforward"
-            data-image="images/jeroen-de-haas.png"
-            data-text="I've had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn't just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you're looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can't wait to see where his talents take him next."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/jeroen-de-haas.png" alt="Jeroen de Haas"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Jeroen de Haas</h4>
-                <p class="text-primary text-sm">CPO at Labforward</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"What I admire most is his genuine can-do
-              attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus...
-              I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Robin Genolet" data-role="Director Innovation & AI at Medgate"
-            data-image="images/robin-genolet.jpeg"
-            data-text="At Medgate, we partnered with Berlin-based company mHealth Pioneers GmbH and use their Thryve product since July 2021. We use Thryve's standardized API and SDK to allow our patients to securely share with us sensor-generated data from hundreds of health devices via our mobile app. We then make the data available to our Doctors to support their teleconsultations. Their API standardizes the dozens of data formats used by a wide range of brands like Garmin, Fitbit, and Apple Healthkit. Thryve allowed us to minimize the duration of our development phase and takes care of the maintenance necessary when a data provider updates its API. We are both happy with the product and the team behind it: Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/robin-genolet.jpeg" alt="Robin Genolet"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Robin Genolet</h4>
-                <p class="text-primary text-sm">Director Innovation & AI at Medgate</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew (Thryve Product Owner) and colleagues
-              not only
-              provided useful guidance during the development phase, but also helped us deal with challenges encountered
-              with
-              the brands we support..."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Ignatius Reza" data-role="CTO at Laboperator"
-            data-image="images/ignatius-reza.jpeg"
-            data-text="Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use. He's also a great person to have in the team. Great presence, character, motivation, and always willing to support."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/ignatius-reza.jpeg" alt="Ignatius Reza"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Ignatius Reza</h4>
-                <p class="text-primary text-sm">CTO at Laboperator</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew is a great product manager with
-              technical
-              chops. He is great in digesting the complex area of developing a product which are highly technical, and
-              coming
-              up with product direction that is easy to understand and use..."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Sumner Price" data-role="Product Designer"
-            data-image="images/sumner-price.jpeg"
-            data-text="I had the pleasure of working with Matt on many projects within our product team. He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned. He was my go-to person whenever I felt uncertain about something. On top of that, his organizational skills—especially in creating PRDs and managing tickets—were invaluable. Working with him was truly a joy!"
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/sumner-price.jpeg" alt="Sumner Price"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Sumner Price</h4>
-                <p class="text-primary text-sm">Product Designer at Labforward</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"He consistently impressed me with how quickly
-              he
-              picked up new initiatives and guided them through the product development process. As a product manager,
-              Matt
-              communicated clearly and ensured all relevant stakeholders were always aligned..."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Mark Dominick Flores"
-            data-role="Senior iOS Engineer at LabTwin" data-image="images/mark-flores.png"
-            data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he's great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I'd work with him again in a heartbeat. He's a huge asset to any product or engineering team."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/mark-flores.png" alt="Mark Dominick Flores"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Mark Dominick Flores</h4>
-                <p class="text-primary text-sm">Senior iOS Engineer at LabTwin</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew has a remarkable ability to take
-              nebulous business requirements and translate them into a clear, actionable backlog... He's also an
-              incredibly fast learner. He quickly got up to speed on our complex systems."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Thuy Tran" data-role="Software Engineer at Doctorlib"
-            data-image=""
-            data-text="I worked with Matthew for more than 3 years in a cross-functional team where he was the Production Owner. I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let's get thing done, as well as his ability to pick things up quickly, his contribution to the team was highly significant and valuable. It was always a pleasure to co-work with him, as he takes his responsibility very seriously while maintaining a pleasant, collaborative discussion. I could always count on him to complete his tasks with full efforts and excellent output, and his supportive nature towards our colleagues."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <div
-                class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
-                TT</div>
-              <div>
-                <h4 class="font-bold text-white">Thuy Tran</h4>
-                <p class="text-primary text-sm">Software Engineer at Doctorlib</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"I was extremely impressed with his analytical
-              mind and his ability to dig deep and notice even the small details of a software feature. With his
-              attitude of can-do and let's get thing done... his contribution to the team was highly significant."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Paul Burggraf" data-role="Founder at Thryve"
-            data-image="images/PB.jpeg"
-            data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve's growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/PB.jpeg" alt="Paul Burggraf"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Paul Burggraf</h4>
-                <p class="text-primary text-sm">Founder at Thryve</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew joined Thryve as the 7th employee...
-              As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and
-              demanding field of health care from 1k end users to over 1 million end users."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Jeroen de Haas" data-role="CPO at Labforward"
-            data-image="images/jeroen-de-haas.png"
-            data-text="I've had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn't just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you're looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can't wait to see where his talents take him next."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/jeroen-de-haas.png" alt="Jeroen de Haas"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Jeroen de Haas</h4>
-                <p class="text-primary text-sm">CPO at Labforward</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"What I admire most is his genuine can-do
-              attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus...
-              I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Robin Genolet" data-role="Director Innovation & AI at Medgate"
-            data-image="images/robin-genolet.jpeg"
-            data-text="At Medgate, we partnered with Berlin-based company mHealth Pioneers GmbH and use their Thryve product since July 2021. We use Thryve's standardized API and SDK to allow our patients to securely share with us sensor-generated data from hundreds of health devices via our mobile app. We then make the data available to our Doctors to support their teleconsultations. Their API standardizes the dozens of data formats used by a wide range of brands like Garmin, Fitbit, and Apple Healthkit. Thryve allowed us to minimize the duration of our development phase and takes care of the maintenance necessary when a data provider updates its API. We are both happy with the product and the team behind it: Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/robin-genolet.jpeg" alt="Robin Genolet"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Robin Genolet</h4>
-                <p class="text-primary text-sm">Director Innovation & AI at Medgate</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew (Thryve Product Owner) and colleagues
-              not only
-              provided useful guidance during the development phase, but also helped us deal with challenges encountered
-              with
-              the brands we support..."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Ignatius Reza" data-role="CTO at Laboperator"
-            data-image="images/ignatius-reza.jpeg"
-            data-text="Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use. He's also a great person to have in the team. Great presence, character, motivation, and always willing to support."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/ignatius-reza.jpeg" alt="Ignatius Reza"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Ignatius Reza</h4>
-                <p class="text-primary text-sm">CTO at Laboperator</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew is a great product manager with
-              technical
-              chops. He is great in digesting the complex area of developing a product which are highly technical, and
-              coming
-              up with product direction that is easy to understand and use..."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Sumner Price" data-role="Product Designer"
-            data-image="images/sumner-price.jpeg"
-            data-text="I had the pleasure of working with Matt on many projects within our product team. He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned. He was my go-to person whenever I felt uncertain about something. On top of that, his organizational skills—especially in creating PRDs and managing tickets—were invaluable. Working with him was truly a joy!"
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/sumner-price.jpeg" alt="Sumner Price"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Sumner Price</h4>
-                <p class="text-primary text-sm">Product Designer at Labforward</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"He consistently impressed me with how quickly
-              he
-              picked up new initiatives and guided them through the product development process. As a product manager,
-              Matt
-              communicated clearly and ensured all relevant stakeholders were always aligned..."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Mark Dominick Flores"
-            data-role="Senior iOS Engineer at LabTwin" data-image="images/mark-flores.png"
-            data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he's great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I'd work with him again in a heartbeat. He's a huge asset to any product or engineering team."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <img src="images/mark-flores.png" alt="Mark Dominick Flores"
-                class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-              <div>
-                <h4 class="font-bold text-white">Mark Dominick Flores</h4>
-                <p class="text-primary text-sm">Senior iOS Engineer at LabTwin</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew has a remarkable ability to take
-              nebulous business requirements and translate them into a clear, actionable backlog... He's also an
-              incredibly fast learner. He quickly got up to speed on our complex systems."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-<div onclick="openTestimonial(this)" data-name="Thuy Tran" data-role="Software Engineer at Doctorlib"
-            data-image=""
-            data-text="I worked with Matthew for more than 3 years in a cross-functional team where he was the Production Owner. I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let's get thing done, as well as his ability to pick things up quickly, his contribution to the team was highly significant and valuable. It was always a pleasure to co-work with him, as he takes his responsibility very seriously while maintaining a pleasant, collaborative discussion. I could always count on him to complete his tasks with full efforts and excellent output, and his supportive nature towards our colleagues."
-            class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-            <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-            <div class="flex items-center gap-4">
-              <div
-                class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
-                TT</div>
-              <div>
-                <h4 class="font-bold text-white">Thuy Tran</h4>
-                <p class="text-primary text-sm">Software Engineer at Doctorlib</p>
-              </div>
-            </div>
-            <p class="text-white/70 italic leading-relaxed line-clamp-3">"I was extremely impressed with his analytical
-              mind and his ability to dig deep and notice even the small details of a software feature. With his
-              attitude of can-do and let's get thing done... his contribution to the team was highly significant."</p>
-            <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-          </div>
-          </div>
-        </div>
         </div><!-- /testimonials-inner -->
       </section>
 
       <!-- My Story Section -->
-      <section id="my-story" class="relative z-30 w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+      <section id="my-story" class="stack-panel w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24" style="--panel-z:30">
         <div class="max-w-7xl mx-auto flex flex-col gap-12">
 
           <!-- Header -->
@@ -743,7 +796,8 @@
                 actually help them.
               </p>
               <p>
-                I care deeply about leading cross-functional teams with collaboration and clarity, delivering things that make users smile. Whether
+                I care deeply about leading cross-functional teams with collaboration and clarity, delivering things
+                that make users smile. Whether
                 it's streamlining a lab workflow or building health data infrastructure, I focus on bridging
                 technical complexity with human needs.
               </p>
@@ -770,8 +824,8 @@
     <footer class="border-t border-white/10 bg-background-dark py-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
         <div class="flex flex-col gap-2 text-center md:text-left">
-          <p class="text-white/60 text-sm">&copy; 2025 Matthew Thaokhamlue. All rights reserved.</p>
-          <p class="text-white/40 text-xs">Technical Product Manager | Berlin, Germany</p>
+          <p class="text-white/60 text-sm">&copy; 2026 Matthew Thaokhamlue. All rights reserved.</p>
+          <p class="text-white/40 text-xs">Product Manager | Berlin, Germany</p>
         </div>
         <div class="flex items-center gap-6">
           <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
@@ -820,6 +874,25 @@
     </div>
   </dialog>
 
+  <!-- Stacking scroll effect -->
+  <script>
+    (function () {
+      var panels = document.querySelectorAll('.stack-panel');
+      if (!panels.length) return;
+      function update() {
+        var vh = window.innerHeight;
+        panels.forEach(function (panel, i) {
+          var next = panels[i + 1];
+          if (!next) return;
+          var nextTop = next.getBoundingClientRect().top;
+          panel.classList.toggle('is-covered', nextTop < vh * 0.88);
+        });
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    })();
+  </script>
+
   <!-- AI Match Modal -->
   <dialog id="ai-match-modal"
     class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
@@ -840,8 +913,10 @@
             <textarea id="ai-match-jd" rows="5"
               class="w-full rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/45 focus:border-primary/50 focus:ring-primary/20"
               placeholder="Paste the full job description here..."></textarea>
-            <p class="rounded-lg border border-amber-300/30 bg-amber-500/10 px-3 py-2 text-xs leading-relaxed text-amber-100/90">
-              ChatGPT tip: If an error appears after you paste, your job description is usually fine. Try shortening your job description first, or open ChatGPT in a private/incognito window.
+            <p
+              class="rounded-lg border border-amber-300/30 bg-amber-500/10 px-3 py-2 text-xs leading-relaxed text-amber-100/90">
+              ChatGPT tip: If an error appears after you paste, your job description is usually fine. Try shortening
+              your job description first, or open ChatGPT in a private/incognito window.
               <a id="ai-chatgpt-fallback-link" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
                 class="ml-1 text-amber-100 underline hover:text-white">
                 Link doesn't work? Click here.
