@@ -133,13 +133,9 @@
                     <div class="flex items-center gap-6">
                         <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
                             href="index.html">Home</a>
-                        <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-                            href="about.html">About</a>
                         <a class="text-primary text-sm font-medium" href="experience.html">Experience</a>
                         <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
                             href="portfolio.html">Portfolio</a>
-                        <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-                            href="certificates.html">Certificates</a>
                     </div>
                     <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
                         class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
@@ -158,289 +154,564 @@
             class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
             <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="index.html"
                 onclick="toggleMenu()">Home</a>
-            <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="about.html"
-                onclick="toggleMenu()">About</a>
             <a class="text-2xl font-bold text-primary hover:text-primary transition-colors" href="experience.html"
                 onclick="toggleMenu()">Experience</a>
             <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="portfolio.html"
                 onclick="toggleMenu()">Portfolio</a>
-            <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="certificates.html"
-                onclick="toggleMenu()">Certificates</a>
             <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
                 <span class="material-symbols-outlined text-3xl">close</span>
             </button>
         </div>
 
-        <main
-            class="flex flex-1 flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16 animate-fade-in">
+        <main class="relative z-10 flex flex-1 flex-col">
 
-            <!-- Header -->
-            <div
-                class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
-                <div class="flex flex-col gap-4">
-                    <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Experience</h1>
-                    <p class="text-xl text-white/60">My professional track record and technical skills.</p>
-                </div>
-                <a href="Matthew main CV.pdf" target="_blank" download
-                    onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
-                    class="flex items-center justify-center gap-2 h-12 px-6 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl font-bold transition-all hover:-translate-y-0.5">
-                    Download PDF CV <span class="material-symbols-outlined text-sm">download</span>
-                </a>
-            </div>
+            <!-- Sticky Experience Section -->
+            <div class="sticky top-0 z-10 w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16 animate-fade-in">
 
-            <!-- Experience List -->
-            <section class="w-full max-w-7xl grid grid-cols-1 gap-6">
-                <!-- Job 1 -->
+                <!-- Header -->
                 <div
-                    class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
-                    <div class="flex flex-col gap-2 md:w-1/3">
-                        <h3 class="text-xl font-bold text-white">Senior Product Manager</h3>
-                        <p class="text-primary font-medium">Labforward GmbH</p>
-                        <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
-                            <span class="material-symbols-outlined text-base">calendar_month</span>
-                            <span>Nov 2024 - Nov 2025</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-white/40 text-sm">
-                            <span class="material-symbols-outlined text-base">location_on</span>
-                            <span>Berlin, Germany</span>
-                        </div>
-                        <div class="mt-4">
-                            <a href="portfolio/labforward.html" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
-                                <span>View Portfolio</span>
-                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                            </a>
-                        </div>
+                    class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
+                    <div class="flex flex-col gap-4">
+                        <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Experience</h1>
+                        <p class="text-xl text-white/60">My professional track record and technical skills.</p>
                     </div>
-                    <div class="flex flex-col gap-4 md:w-2/3">
-                        <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
-                            <li>Lead the product roadmap and end-to-end development cycle for core lab management
-                                products.</li>
-                            <li>Rebuilt team collaboration practices — directly helping secure a <strong
-                                    class="text-white">$500K contract renewal</strong>.</li>
-                            <li>Championed rapid prototyping loops, shrinking testing time from days to hours.</li>
-                            <li>Guided the BI team to automate reporting and data pipelines, turning ad-hoc insights
-                                into daily decisions.</li>
-                        </ul>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Product
-                                Roadmap</span>
-                            <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Rapid
-                                Prototyping</span>
-                            <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">BI
-                                Automation</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Job 2 -->
-                <div
-                    class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
-                    <div class="flex flex-col gap-2 md:w-1/3">
-                        <h3 class="text-xl font-bold text-white">Technical Product Manager</h3>
-                        <p class="text-primary font-medium">LabTwin GmbH</p>
-                        <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
-                            <span class="material-symbols-outlined text-base">calendar_month</span>
-                            <span>Jan 2023 - Nov 2024</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-white/40 text-sm">
-                            <span class="material-symbols-outlined text-base">location_on</span>
-                            <span>Berlin, Germany</span>
-                        </div>
-                        <div class="mt-4">
-                            <a href="portfolio/labtwin.html" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
-                                <span>View Portfolio</span>
-                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-4 md:w-2/3">
-                        <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
-                            <li>Drove roadmap for voice and integration features supporting scientists in real lab
-                                environments.</li>
-                            <li>Led the effort to streamline release processes with engineering, tripling deployment frequency (<strong
-                                    class="text-white">4 → 12 per year</strong>).</li>
-                            <li>Spearheaded retraining strategies for speech recognition, keeping scientific term
-                                accuracy at <strong class="text-white">95%</strong>.</li>
-                            <li>Mentored a junior PM, encouraging autonomy and strong product intuition.</li>
-                        </ul>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Voice
-                                AI</span>
-                            <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Release
-                                Management</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Job 3 -->
-                <div
-                    class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
-                    <div class="flex flex-col gap-2 md:w-1/3">
-                        <h3 class="text-xl font-bold text-white">Product Owner</h3>
-                        <p class="text-primary font-medium">Thryve GmbH</p>
-                        <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
-                            <span class="material-symbols-outlined text-base">calendar_month</span>
-                            <span>Oct 2019 - Dec 2022</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-white/40 text-sm">
-                            <span class="material-symbols-outlined text-base">location_on</span>
-                            <span>Berlin, Germany</span>
-                        </div>
-                        <div class="mt-4">
-                            <a href="portfolio/thryve.html" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
-                                <span>View Portfolio</span>
-                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-4 md:w-2/3">
-                        <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
-                            <li>Owned and scaled APIs and SDKs powering <strong class="text-white">1M+ users</strong>
-                                across 100+ B2B partners in digital health.</li>
-                            <li>Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and more).
-                            </li>
-                            <li>Contributed to company growth from <strong class="text-white">€0 → €1M ARR</strong> and
-                                from 7 → 35 people.</li>
-                            <li>Founded "Thryve Academy," a learning program that onboarded and aligned new hires in
-                                record time.</li>
-                        </ul>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            <span
-                                class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">API/SDK</span>
-                            <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Wearable
-                                Integrations</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Job 4 -->
-                <div
-                    class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
-                    <div class="flex flex-col gap-2 md:w-1/3">
-                        <h3 class="text-xl font-bold text-white">Senior Risk Consultant</h3>
-                        <p class="text-primary font-medium">Ernst & Young</p>
-                        <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
-                            <span class="material-symbols-outlined text-base">calendar_month</span>
-                            <span>Aug 2016 - Feb 2018</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-white/40 text-sm">
-                            <span class="material-symbols-outlined text-base">location_on</span>
-                            <span>Bangkok, Thailand</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-4 md:w-2/3">
-                        <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
-                            <li>Drove risk assessments and process improvement projects for Thailand’s largest corps.
-                            </li>
-                            <li>Developed risk management frameworks and control testing procedures for digital
-                                transformation initiatives.</li>
-                            <li>Led market research on emerging technologies (RPA) and competitive risk practices.
-                            </li>
-                        </ul>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Risk
-                                Management</span>
-                            <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Process
-                                Improvement</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Skills Section -->
-            <section class="w-full max-w-7xl flex flex-col gap-10 mt-12">
-                <h2 class="text-3xl font-bold">Skills & Certifications</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Essential Skills -->
-                    <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
-                        <h4 class="text-xl font-bold text-white flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">psychology</span>
-                            Essential Skills
-                        </h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product
-                                Roadmap</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product
-                                Discovery</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">User
-                                Research</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">A/B
-                                Testing</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Stakeholder
-                                Mgmt</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Automation
-                                (Python/n8n)</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">AI
-                                Implementation</span>
-                        </div>
-                    </div>
-
-                    <!-- Certifications -->
-                    <a href="certificates.html" class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 card-hover cursor-pointer group">
-                        <h4 class="text-xl font-bold text-white flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">verified</span>
-                            Certifications
-                        </h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm group-hover:bg-white/10 transition-colors">Professional
-                                Product Owner</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm group-hover:bg-white/10 transition-colors">PMI
-                                Agile Certified</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm group-hover:bg-white/10 transition-colors">Google
-                                UX Design</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm group-hover:bg-white/10 transition-colors">Google
-                                Cybersecurity</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm group-hover:bg-white/10 transition-colors">Comptia
-                                Security+</span>
-                            <span
-                                class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm group-hover:bg-white/10 transition-colors">AWS/Azure
-                                Solutions Architect</span>
-                        </div>
+                    <a href="Matthew main CV.pdf" target="_blank" download
+                        onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
+                        class="flex items-center justify-center gap-2 h-12 px-6 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl font-bold transition-all hover:-translate-y-0.5">
+                        Download PDF CV <span class="material-symbols-outlined text-sm">download</span>
                     </a>
+                </div>
 
-                    <!-- Languages -->
-                    <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
-                        <h4 class="text-xl font-bold text-white flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">language</span>
-                            Languages
-                        </h4>
-                        <div class="flex flex-col gap-3">
-                            <div class="flex justify-between items-center">
-                                <span class="text-white/80">English</span>
-                                <span class="text-primary text-sm font-bold">IELTS 7.5</span>
+                <!-- Experience List -->
+                <section class="w-full max-w-7xl grid grid-cols-1 gap-6">
+                    <!-- Job 1 -->
+                    <div
+                        class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
+                        <div class="flex flex-col gap-2 md:w-1/3">
+                            <h3 class="text-xl font-bold text-white">Senior Product Manager</h3>
+                            <p class="text-primary font-medium">Labforward GmbH</p>
+                            <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
+                                <span class="material-symbols-outlined text-base">calendar_month</span>
+                                <span>Nov 2024 - Nov 2025</span>
                             </div>
-                            <div class="w-full bg-white/10 rounded-full h-1.5">
-                                <div class="bg-primary h-1.5 rounded-full" style="width: 95%"></div>
+                            <div class="flex items-center gap-2 text-white/40 text-sm">
+                                <span class="material-symbols-outlined text-base">location_on</span>
+                                <span>Berlin, Germany</span>
                             </div>
-
-                            <div class="flex justify-between items-center mt-2">
-                                <span class="text-white/80">German</span>
-                                <span class="text-primary text-sm font-bold">B1</span>
-                            </div>
-                            <div class="w-full bg-white/10 rounded-full h-1.5">
-                                <div class="bg-primary h-1.5 rounded-full" style="width: 40%"></div>
-                            </div>
-
-                            <div class="flex justify-between items-center mt-2">
-                                <span class="text-white/80">Thai</span>
-                                <span class="text-primary text-sm font-bold">Native</span>
-                            </div>
-                            <div class="w-full bg-white/10 rounded-full h-1.5">
-                                <div class="bg-primary h-1.5 rounded-full" style="width: 100%"></div>
+                            <div class="mt-4">
+                                <a href="portfolio/labforward.html" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
+                                    <span>View Portfolio</span>
+                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                </a>
                             </div>
                         </div>
+                        <div class="flex flex-col gap-4 md:w-2/3">
+                            <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
+                                <li>Lead the product roadmap and end-to-end development cycle for core lab management
+                                    products.</li>
+                                <li>Rebuilt team collaboration practices — directly helping secure a <strong
+                                        class="text-white">$500K contract renewal</strong>.</li>
+                                <li>Championed rapid prototyping loops, shrinking testing time from days to hours.</li>
+                                <li>Guided the BI team to automate reporting and data pipelines, turning ad-hoc insights
+                                    into daily decisions.</li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Product
+                                    Roadmap</span>
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Rapid
+                                    Prototyping</span>
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">BI
+                                    Automation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job 2 -->
+                    <div
+                        class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
+                        <div class="flex flex-col gap-2 md:w-1/3">
+                            <h3 class="text-xl font-bold text-white">Technical Product Manager</h3>
+                            <p class="text-primary font-medium">LabTwin GmbH</p>
+                            <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
+                                <span class="material-symbols-outlined text-base">calendar_month</span>
+                                <span>Jan 2023 - Nov 2024</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-white/40 text-sm">
+                                <span class="material-symbols-outlined text-base">location_on</span>
+                                <span>Berlin, Germany</span>
+                            </div>
+                            <div class="mt-4">
+                                <a href="portfolio/labtwin.html" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
+                                    <span>View Portfolio</span>
+                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-4 md:w-2/3">
+                            <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
+                                <li>Drove roadmap for voice and integration features supporting scientists in real lab
+                                    environments.</li>
+                                <li>Led the effort to streamline release processes with engineering, tripling deployment frequency (<strong
+                                        class="text-white">4 → 12 per year</strong>).</li>
+                                <li>Spearheaded retraining strategies for speech recognition, keeping scientific term
+                                    accuracy at <strong class="text-white">95%</strong>.</li>
+                                <li>Mentored a junior PM, encouraging autonomy and strong product intuition.</li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Voice
+                                    AI</span>
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Release
+                                    Management</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job 3 -->
+                    <div
+                        class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
+                        <div class="flex flex-col gap-2 md:w-1/3">
+                            <h3 class="text-xl font-bold text-white">Product Owner</h3>
+                            <p class="text-primary font-medium">Thryve GmbH</p>
+                            <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
+                                <span class="material-symbols-outlined text-base">calendar_month</span>
+                                <span>Oct 2019 - Dec 2022</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-white/40 text-sm">
+                                <span class="material-symbols-outlined text-base">location_on</span>
+                                <span>Berlin, Germany</span>
+                            </div>
+                            <div class="mt-4">
+                                <a href="portfolio/thryve.html" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors">
+                                    <span>View Portfolio</span>
+                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-4 md:w-2/3">
+                            <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
+                                <li>Owned and scaled APIs and SDKs powering <strong class="text-white">1M+ users</strong>
+                                    across 100+ B2B partners in digital health.</li>
+                                <li>Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and more).
+                                </li>
+                                <li>Contributed to company growth from <strong class="text-white">€0 → €1M ARR</strong> and
+                                    from 7 → 35 people.</li>
+                                <li>Founded "Thryve Academy," a learning program that onboarded and aligned new hires in
+                                    record time.</li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">API/SDK</span>
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Wearable
+                                    Integrations</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job 4 -->
+                    <div
+                        class="flex flex-col md:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-surface border border-white/5 card-hover">
+                        <div class="flex flex-col gap-2 md:w-1/3">
+                            <h3 class="text-xl font-bold text-white">Senior Risk Consultant</h3>
+                            <p class="text-primary font-medium">Ernst & Young</p>
+                            <div class="flex items-center gap-2 text-white/40 text-sm mt-1">
+                                <span class="material-symbols-outlined text-base">calendar_month</span>
+                                <span>Aug 2016 - Feb 2018</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-white/40 text-sm">
+                                <span class="material-symbols-outlined text-base">location_on</span>
+                                <span>Bangkok, Thailand</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-4 md:w-2/3">
+                            <ul class="space-y-3 text-white/70 list-disc list-outside ml-4">
+                                <li>Drove risk assessments and process improvement projects for Thailand's largest corps.
+                                </li>
+                                <li>Developed risk management frameworks and control testing procedures for digital
+                                    transformation initiatives.</li>
+                                <li>Led market research on emerging technologies (RPA) and competitive risk practices.
+                                </li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Risk
+                                    Management</span>
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Process
+                                    Improvement</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section class="w-full max-w-7xl flex flex-col gap-10">
+                    <h2 class="text-3xl font-bold">Skills & Education</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Essential Skills -->
+                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
+                            <h4 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">psychology</span>
+                                Essential Skills
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product
+                                    Roadmap</span>
+                                <span
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product
+                                    Discovery</span>
+                                <span
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">User
+                                    Research</span>
+                                <span
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">A/B
+                                    Testing</span>
+                                <span
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Stakeholder
+                                    Mgmt</span>
+                                <span
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Automation
+                                    (Python/n8n)</span>
+                                <span
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">AI
+                                    Implementation</span>
+                            </div>
+                        </div>
+
+                        <!-- Education -->
+                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
+                            <h4 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">school</span>
+                                Education
+                            </h4>
+                            <div class="flex flex-col gap-4">
+                                <div class="border-l-2 border-primary/30 pl-4">
+                                    <p class="font-bold text-white text-sm">Master of International and Development Economics</p>
+                                    <p class="text-primary text-xs mt-1">University of Applied Science Berlin</p>
+                                    <p class="text-white/40 text-xs mt-1">DAAD Scholarship Recipient</p>
+                                </div>
+                                <div class="border-l-2 border-primary/30 pl-4">
+                                    <p class="font-bold text-white text-sm">Bachelor's Degree in Economics</p>
+                                    <p class="text-primary text-xs mt-1">Chiang Mai University</p>
+                                    <p class="text-white/40 text-xs mt-1">Quantitative Economics</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Languages -->
+                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
+                            <h4 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">language</span>
+                                Languages
+                            </h4>
+                            <div class="flex flex-col gap-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-white/80">English</span>
+                                    <span class="text-primary text-sm font-bold">IELTS 7.5</span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-1.5">
+                                    <div class="bg-primary h-1.5 rounded-full" style="width: 95%"></div>
+                                </div>
+
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-white/80">German</span>
+                                    <span class="text-primary text-sm font-bold">B1</span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-1.5">
+                                    <div class="bg-primary h-1.5 rounded-full" style="width: 40%"></div>
+                                </div>
+
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-white/80">Thai</span>
+                                    <span class="text-primary text-sm font-bold">Native</span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-1.5">
+                                    <div class="bg-primary h-1.5 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div><!-- /sticky experience -->
+
+            <!-- Certifications Scroll-Over Section -->
+            <section id="certifications" class="relative z-20 w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+                <div class="max-w-7xl mx-auto flex flex-col gap-12">
+
+                    <!-- Section Header -->
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center gap-2 text-primary">
+                            <span class="material-symbols-outlined">workspace_premium</span>
+                            <h3 class="font-bold tracking-wide uppercase text-sm">Professional Development</h3>
+                        </div>
+                        <h2 class="text-3xl sm:text-5xl font-bold tracking-tight">Certifications & Achievements</h2>
+                        <p class="text-lg text-white/60 max-w-2xl">
+                            A collection of professional certifications demonstrating expertise in product management,
+                            cybersecurity, cloud computing, and agile methodologies.
+                        </p>
+                    </div>
+
+                    <!-- Certificates Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                        <!-- ========== PRODUCT MANAGEMENT & BUSINESS ========== -->
+
+                        <!-- Professional Scrum Product Owner I -->
+                        <a href="https://www.scrum.org/certificates/508122"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'scrum.org',credential_name:'Professional Scrum Product Owner I'})} " target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">sprint</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Professional Scrum Product Owner I</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Scrum.org</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Supports backlog prioritization around customer value, clear acceptance criteria, and explicit trade-off communication when scope pressure increases.</p>
+                            </div>
+                        </a>
+
+                        <!-- PMI Agile Certified Practitioner -->
+                        <a href="https://www.credly.com/badges/4fd40df0-1b5b-4fe5-8988-82a753bb8134/linked_in_profile"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
+                            target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">sync</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">PMI Agile Certified Practitioner (PMI-ACP)®</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Project Management Institute</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Strengthens iterative delivery through smaller releases, faster feedback loops, and practical retrospectives that inform roadmap decisions.</p>
+                            </div>
+                        </a>
+
+                        <!-- Google UX Design Certificate -->
+                        <a href="https://www.coursera.org/account/accomplishments/professional-cert/1W2QRQSDFBJW"
+                            target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">draw</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Google UX Design Certificate</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Google via Coursera</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Improves product-design collaboration by grounding requirements in user flows, wireframes, and usability feedback before engineering implementation.</p>
+                            </div>
+                        </a>
+
+                        <!-- Google Business Intelligence Certificate -->
+                        <a href="https://www.credly.com/badges/fb022abf-3c4d-4907-b61a-852dbe4bf094/linked_in_profile"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} "
+                            target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">bar_chart</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Google Business Intelligence Certificate</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Google</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Provides practical BI fundamentals to define meaningful metrics, interpret dashboards critically, and improve product review discussions.</p>
+                            </div>
+                        </a>
+
+                        <!-- ========== CLOUD & ARCHITECTURE ========== -->
+
+                        <!-- Microsoft Azure Solutions Architect Expert -->
+                        <a href="https://learn.microsoft.com/en-us/users/matthewthaokhamlue/credentials/7ba4c4edb852a4b1"
+                            target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">architecture</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure Solutions Architect Expert</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Supports architecture discussions with engineering and clarifies cost, scalability, and reliability trade-offs in product decisions.</p>
+                            </div>
+                        </a>
+
+                        <!-- Microsoft Azure AI Engineer Associate -->
+                        <a href="https://learn.microsoft.com/en-us/users/matthewthaokhamlue/credentials/6fe6f4c3d438ec75"
+                            target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">smart_toy</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure AI Engineer Associate</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Builds understanding of AI system design, evaluation, and deployment constraints to scope GenAI features more realistically.</p>
+                            </div>
+                        </a>
+
+                        <!-- Microsoft Azure Administrator Associate -->
+                        <a href="https://www.credly.com/badges/7f8a7614-b5fd-4d2c-9c43-4a3b8368fb94/public_url"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} " target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">admin_panel_settings</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure Administrator Associate</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Improves reasoning about cloud operations, permissions, and cost drivers when prioritizing platform and reliability work.</p>
+                            </div>
+                        </a>
+
+                        <!-- Microsoft Azure AI Fundamentals -->
+                        <a href="https://www.credly.com/badges/45fb45cd-dc3d-4e35-80ce-d252dc3c4caa/public_url"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} " target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">psychology</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure AI Fundamentals</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Provides a practical baseline in AI and ML concepts, helping separate feasible use cases from vendor hype during discovery.</p>
+                            </div>
+                        </a>
+
+                        <!-- Microsoft Azure Data Fundamentals -->
+                        <a href="https://www.credly.com/badges/270ccc53-14f1-4169-9464-e6eadac533aa/public_url"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} " target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">storage</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Microsoft Azure Data Fundamentals</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Microsoft</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Improves framing of data requirements for analytics features, including data quality, storage choices, and reporting needs.</p>
+                            </div>
+                        </a>
+
+                        <!-- AWS Solutions Architect Associate -->
+                        <a href="https://www.credly.com/badges/68185585-2952-49bb-89c8-412ec2c6efff/public_url"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} " target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">cloud</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">AWS Solutions Architect Associate</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Amazon Web Services</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Supports collaboration with engineering on AWS architecture options and clarifies product impact of security, latency, and cost decisions.</p>
+                            </div>
+                        </a>
+
+                        <!-- AWS SysOps Administrator -->
+                        <a href="https://www.credly.com/badges/da129c0a-a6e5-4dc8-a463-beffb5e5e042/public_url"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} " target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">settings</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">AWS SysOps Administrator Associate</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Amazon Web Services</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Improves understanding of monitoring and incident workflows to support clear communication, impact prioritization, and incident response.</p>
+                            </div>
+                        </a>
+
+                        <!-- AWS Cloud Practitioner -->
+                        <a href="https://www.credly.com/badges/4cb5c446-2efc-4dc3-814c-7599c11cf732/public_url"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} " target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">cloud_done</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">AWS Cloud Practitioner</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Amazon Web Services</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Builds baseline cloud vocabulary that improves communication with engineering and technical planning conversations.</p>
+                            </div>
+                        </a>
+
+                        <!-- ========== CYBERSECURITY ========== -->
+
+                        <!-- Google Cybersecurity Professional Certificate -->
+                        <a href="https://www.credly.com/badges/04d750a0-4b93-4bd7-8ea9-7ee6ec444a82/public_url" target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">shield</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Google Cybersecurity Professional Certificate</h3>
+                                <p class="text-primary text-sm font-medium mb-3">Google</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Reinforces secure-by-design thinking in product requirements, including threat awareness, access controls, and incident readiness.</p>
+                            </div>
+                        </a>
+
+                        <!-- CompTIA Security+ -->
+                        <a href="https://www.credly.com/badges/4eb66bf5-6312-4eb9-b573-3a97d7106600/public_url"
+                            onclick="if(typeof gtag==='function'){gtag('event','credential_verified',{credential_issuer:'credly.com',credential_name:'credly.com certificate'})} " target="_blank"
+                            class="group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 hover:bg-surface-hover hover:-translate-y-1 transition-all duration-300 hover:border-primary/30">
+                            <div class="flex items-start justify-between">
+                                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-2xl">security</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-white/20 group-hover:text-primary/30 transition-colors">open_in_new</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">CompTIA Security+ CE</h3>
+                                <p class="text-primary text-sm font-medium mb-3">CompTIA</p>
+                                <p class="text-white/60 text-sm leading-relaxed">Expands practical security foundations across risk, network security, and controls so security requirements are included earlier in planning.</p>
+                            </div>
+                        </a>
+
                     </div>
                 </div>
             </section>
@@ -448,7 +719,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="border-t border-white/10 bg-background-dark py-12">
+        <footer class="relative z-20 bg-background-dark border-t border-white/10 py-12">
             <div
                 class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex flex-col gap-2 text-center md:text-left">
