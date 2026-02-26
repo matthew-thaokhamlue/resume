@@ -29,6 +29,18 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 **Modal Article Pattern:** Both `index.html` and `portfolio.html` use a pattern where `<article>` elements inside `<div id="main">` act as modal overlays. Articles are shown/hidden via CSS classes (`active`, `is-article-visible`) with JS managing transitions. Hash fragments (`#about`, `#work1`) drive navigation.
 
+**Stacking Scroll Pattern (`index.html`, `experience.html`):**
+- Both pages use inline `.stack-panel` CSS (`position: sticky`, `top: 0`) plus a wheel-driven snap IIFE near the end of each file.
+- Smoothness depends on cached `flowOffsets[]` (cumulative panel heights) instead of viewport-nearest panel detection.
+- Shared snap constants:
+  - `WHEEL_THRESHOLD = 20`
+  - `SNAP_DURATION_MS = 960`
+  - `SNAP_LOCK_MS = 560`
+  - `SNAP_EDGE_GUTTER_UP = 200` (critical for natural upward scrolling)
+- Upward snap guard: only allow upward snap when near the top edge of the active panel (`scrollY <= flowOffsets[from] + SNAP_EDGE_GUTTER_UP`).
+- Recompute offsets on resize (`cacheFlowOffsets()`), and keep wheel-ignore guard for nested scrollable areas (`dialog[open]`, `.overflow-y-auto`, form fields, `[data-stack-snap-ignore]`).
+- Mobile (`max-width: 767px`) disables snapping and covered-state transforms.
+
 ## Key Conventions
 
 - All external dependencies loaded via CDN (Tailwind, Font Awesome, Google Fonts, jQuery) — no `node_modules`
@@ -36,6 +48,8 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 - Google Analytics tag (G-D11HKMWFB4) is included in each page's `<head>`
 - SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
 - Images go in `images/` directory
+- If editing stack snap behavior, keep `index.html` and `experience.html` logic aligned and re-run:
+  - `node --test tests/ai-match.test.mjs tests/stack-snap-upward-regression.test.mjs`
 
 ## Known Issues
 

@@ -335,13 +335,12 @@
           <div
             class="lg:col-span-2 flex flex-col justify-center gap-3 rounded-2xl bg-surface border border-white/5 p-5 sm:p-6 relative overflow-hidden group">
             <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-              <span class="material-symbols-outlined text-9xl text-primary">rocket_launch</span>
+              <span class="material-symbols-outlined text-9xl text-primary">hub</span>
             </div>
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue
             </h1>
-            <p class="text-base sm:text-lg text-primary font-medium tracking-tight">Senior Product Manager</p>
-            <p class="text-white/60 max-w-xl leading-relaxed">Crafting high-impact products at the intersection of
-              technology and user-centric design. Specializing in AI/ML, SaaS, and platform development.</p>
+            <p class="text-base sm:text-lg text-primary font-medium tracking-tight">Senior Product Manager · AI Workflow Architect</p>
+            <p class="text-white/60 max-w-xl leading-relaxed">Senior PM and AI systems builder — I own GenAI roadmaps from LLM evaluation to production, and design multi-agent Claude Code workflows that automate complex knowledge work end-to-end.</p>
 
             <!-- Audio + AI Match Actions -->
             <div class="mt-2 grid grid-cols-1 lg:grid-cols-2 gap-3">
@@ -380,7 +379,7 @@
                   <span class="material-symbols-outlined text-xl">grid_view</span>
                 </div>
                 <h3 class="text-xl font-bold tracking-tight text-white">Matthew's Portfolio</h3>
-                <p class="text-white/60 mt-1 text-sm">Explore my work in leading cross-functional teams.</p>
+                <p class="text-white/60 mt-1 text-sm">AI product case studies, multi-agent systems, and agentic workflows I've built.</p>
               </div>
               <div class="flex items-center gap-2 text-primary font-medium mt-2">
                 <span class="text-sm">View Portfolio</span>
@@ -919,6 +918,19 @@
         var WHEEL_THRESHOLD = 20;
         var SNAP_LOCK_MS = 560;
         var SNAP_DURATION_MS = 960;
+        var SNAP_EDGE_GUTTER_UP = 200;
+
+        // Cache stable flow offsets (offsetTop shifts when panels are sticky-stuck)
+        var flowOffsets = [];
+        function cacheFlowOffsets() {
+          flowOffsets = [];
+          var cumulative = 0;
+          panels.forEach(function (panel) {
+            flowOffsets.push(cumulative);
+            cumulative += panel.offsetHeight;
+          });
+        }
+        cacheFlowOffsets();
 
         function clearCoveredState() {
           panels.forEach(function (panel) {
@@ -944,25 +956,19 @@
           }
         }
 
-        function nearestPanelIndex() {
-          var viewportCenter = window.innerHeight / 2;
-          var bestIndex = 0;
-          var bestDistance = Number.POSITIVE_INFINITY;
-          panels.forEach(function (panel, index) {
-            var rect = panel.getBoundingClientRect();
-            var panelCenter = rect.top + rect.height / 2;
-            var distance = Math.abs(panelCenter - viewportCenter);
-            if (distance < bestDistance) {
-              bestDistance = distance;
-              bestIndex = index;
-            }
-          });
-          return bestIndex;
+        function activePanelIndex() {
+          var y = window.scrollY + 1;
+          var active = 0;
+          for (var i = 0; i < flowOffsets.length; i++) {
+            if (flowOffsets[i] <= y) active = i;
+          }
+          return active;
         }
 
-        function targetScrollTop(panel) {
-          var rect = panel.getBoundingClientRect();
-          var nextTop = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2;
+        function targetScrollTop(index) {
+          var offset = flowOffsets[index];
+          var height = panels[index].offsetHeight;
+          var nextTop = offset + height / 2 - window.innerHeight / 2;
           var maxTop = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
           return Math.min(Math.max(nextTop, 0), maxTop);
         }
@@ -971,6 +977,7 @@
           if (snapUnlockTimer) window.clearTimeout(snapUnlockTimer);
           snapUnlockTimer = window.setTimeout(function () {
             isSnapping = false;
+            wheelDeltaBuffer = 0;
             update();
           }, SNAP_LOCK_MS);
         }
@@ -1010,11 +1017,15 @@
         }
 
         function snapToDirection(direction) {
-          var from = nearestPanelIndex();
+          var from = activePanelIndex();
           var to = from + (direction > 0 ? 1 : -1);
           if (to < 0 || to >= panels.length) return false;
+          // For upward snaps, only fire when near the top of the current panel
+          if (direction < 0 && window.scrollY > flowOffsets[from] + SNAP_EDGE_GUTTER_UP) {
+            return false;
+          }
           isSnapping = true;
-          if (!animateScrollTo(targetScrollTop(panels[to]))) {
+          if (!animateScrollTo(targetScrollTop(to))) {
             isSnapping = false;
             return false;
           }
@@ -1049,6 +1060,7 @@
             activeSnapFrame = null;
           }
           isSnapping = false;
+          cacheFlowOffsets();
           update();
         }
 

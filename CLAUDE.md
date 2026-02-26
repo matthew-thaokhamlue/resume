@@ -72,3 +72,46 @@ A passive scroll IIFE toggles `is-covered` when the next panel's top crosses `vh
 - Images go in `images/` directory
 - `docs/plans/` — design docs (`*-design.md`) and implementation plans from brainstorm/writing-plans skill sessions
 - Branch naming: Claude-created branches use `claude/<adjective-name>` prefix (e.g. `claude/recursing-kalam`)
+
+## Personal Brand & Content Positioning
+
+Matthew's positioning throughline: **"AI Workflow Architect"** — he builds AI systems, not just ships AI features. All copy, hero text, and card descriptions should reinforce this.
+
+**Confirmed facts per project (use for copy/story work):**
+- **Labforward**: Full GenAI roadmap ownership — ran LLM evaluation, drove strategy to production deployment
+- **LabTwin**: AI integration PM role — led strategy and partner integrations (not model/pipeline ownership)
+- **Automation Tools**: Multi-LLM suite (OpenAI, Claude, Gemini) — eliminates 12+ hrs/week of manual PM work
+- **MCP Server**: Live on GitHub but early-stage / proof of concept
+- **Interview-prep**: Multi-agent Claude Code framework (`/.claude/agents/onboarding.md` + `interview-prep.md`); uses MCP WebSearch/WebFetch; 5-stage pipeline; canonical I/O files (`00_user_profile.md`, `01_cv_resume.md`, `02_target_company_role.md`). Strongest single showcase of AI workflow architect skills.
+
+**Hero section (index.html) current state:** Subtitle = "Senior Product Manager · AI Workflow Architect"; description leads with "Senior PM and AI systems builder — I own GenAI roadmaps from LLM evaluation to production, and design multi-agent Claude Code workflows…"
+
+## Smooth Scroll Implementation Notes (2026-02-26)
+
+Append-only operational note for future edits:
+
+- `index.html` and `experience.html` should keep the same stack snap algorithm for consistent feel.
+- Root-cause lesson: viewport-nearest panel snapping can feel hectic on upward wheel input with sticky panels.
+- Preferred approach is flow-based snapping with cached cumulative offsets:
+  - Build `flowOffsets[]` from panel `offsetHeight` in order.
+  - Determine active panel from `window.scrollY` against `flowOffsets[]`.
+  - Compute snap target by centering the target panel in viewport.
+- Required constants for current behavior:
+  - `WHEEL_THRESHOLD = 20`
+  - `SNAP_DURATION_MS = 960`
+  - `SNAP_LOCK_MS = 560`
+  - `SNAP_EDGE_GUTTER_UP = 200`
+- Keep upward snap guard in place:
+  - Upward snap only when user is near panel top
+  - Condition: `direction < 0 && window.scrollY > flowOffsets[from] + SNAP_EDGE_GUTTER_UP` should return `false` (do not snap yet)
+- Keep `wheel` ignore guard for nested scroll containers and interactive controls:
+  - `dialog[open]`, `.overflow-y-auto`, `textarea`, `input`, `select`, `[data-stack-snap-ignore]`
+- Re-cache offsets on resize (`cacheFlowOffsets()`), then run `update()`.
+- Mobile mode (`max-width: 767px`) should bypass snapping and covered transforms.
+
+### Regression Test
+
+- File: `tests/stack-snap-upward-regression.test.mjs`
+- Purpose: verifies upward wheel does not force snap when user is deep inside current panel.
+- Run with:
+  - `node --test tests/ai-match.test.mjs tests/stack-snap-upward-regression.test.mjs`
