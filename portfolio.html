@@ -304,26 +304,7 @@
               </div>
             </div>
 
-            <!-- Project: RAG-Powered Meal Planner -->
-            <div onclick="openProject('rag-meal-planner')"
-              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-              <div
-                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-                <span
-                  class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">restaurant_menu</span>
-              </div>
-              <div class="flex flex-col gap-2 p-2">
-                <p class="text-white text-lg font-bold">RAG-Powered Meal Planner</p>
-                <p class="text-white/60 text-sm line-clamp-2">CLI application suggesting personalized meal plans using
-                  RAG
-                  and AI based on cooking history.</p>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-auto p-2">
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">RAG</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI/ML</span>
-              </div>
-            </div>
+            <!-- Project: RAG-Powered Meal Planner (commented out by request) -->
 
             <!-- Project: Interview Prep -->
             <div onclick="openProject('interview-prep')"
@@ -481,7 +462,8 @@
         solution: "Architected a modular, AI-native framework on top of Claude Code's sub-agent system. An onboarding agent parses your CV once into a canonical profile. An interview-prep agent then runs per stage: it autonomously searches the web for company product, business model, competitors, and recent news; fetches the JD from a URL; researches interviewer backgrounds; and generates a structured, stage-specific prep document. All web-sourced data is tagged [WEB] and uncertain findings are flagged [TO_VERIFY] for human review.",
         impact: ["5-stage pipeline (HR screening → Hiring Manager → Technical → Team → Executive) — each stage building on prior context", "Fully autonomous company research via web search — zero manual research required", "CV parsed once into a canonical profile, reused across all stages without duplication", "Interviewer background research built-in — agents surface likely focus areas before you walk in"],
         tech: "Agent skills, Claude Code Sub-Agents, MCPs, Markdown-structured canonical I/O "
-      },
+      }
+      /*
       'rag-meal-planner': {
         title: "RAG-Powered Meal Planner",
         tags: ["Personal Project", "RAG", "Python", "AI/ML"],
@@ -493,6 +475,7 @@
         impact: ["Fully functional CLI application for personal meal and shopping management", "Demonstrates practical application of RAG for personalization", "Open-source and available for others to use and contribute"],
         tech: "Python, RAG, FAISS, Sentence Transformers, OpenRouter (Claude 3.5 Sonnet), Click/Rich CLI"
       }
+      */
     };
 
     function openProject(projectId) {
