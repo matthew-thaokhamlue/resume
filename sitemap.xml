@@ -49,6 +49,24 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://matthew-thaokhamlue.github.io/resume/portfolio/mcp-server.html</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matthew-thaokhamlue.github.io/resume/portfolio/automation-tools.html</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matthew-thaokhamlue.github.io/resume/portfolio/interview-prep.html</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://matthew-thaokhamlue.github.io/resume/llms-full.txt</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>

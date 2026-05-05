@@ -14,9 +14,9 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 **Pages:** Each top-level HTML file is a standalone page sharing a common structure:
 - `index.html` — Main landing page (about, experience, certificates, contact as modal articles)
-- `portfolio.html` — Portfolio page with work detail modals
+- `portfolio.html` — Portfolio index page linking to standalone editorial case studies
 - `about.html`, `experience.html`, `certificates.html` — Dedicated full pages for each section
-- `portfolio/*.html` — Individual portfolio case study pages (labforward, labtwin, thryve)
+- `portfolio/*.html` — Individual editorial case study pages for career and personal projects
 
 **Styling:** Dual CSS approach:
 - **Tailwind CSS** via CDN (`cdn.tailwindcss.com`) with inline config in each HTML `<head>` — used for layout and utility classes. Config defines custom colors (`primary: #0da6f2`, `background-dark: #101c22`, `surface: #1a262d`), font family (`Space Grotesk`), and border radius tokens.
@@ -24,11 +24,11 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 **JavaScript:**
 - `assets/js/main.js` — Dimension template's modal article system (hash-based routing, article show/hide animations, keyboard/click handlers). jQuery-based.
-- `assets/js/portfolio.js` — Portfolio-specific routing that extends the article system with work card clicks, hash-based navigation between portfolio grid and work detail modals, and escape/close behavior that redirects appropriately.
+- `assets/js/portfolio.js` — Legacy Dimension-template routing; current `portfolio.html` and `portfolio/*.html` case-study pages do not use it.
 - `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt, opens ChatGPT or Claude.ai in a popup/tab. Contains all GA custom event tracking for the feature (`ai_match_*` events).
 - jQuery, browser detection, and breakpoint utilities are vendored in `assets/js/`.
 
-**Modal Article Pattern:** `index.html` uses a pattern where `<article>` elements inside `<div id="main">` act as modal overlays. Articles are shown/hidden via CSS classes (`active`, `is-article-visible`) with JS managing transitions. Hash fragments (`#about`) drive navigation.
+**Modal Article Pattern:** Legacy Dimension-template pages can use `<article>` elements inside `<div id="main">` as modal overlays. The current `portfolio.html` is a direct-link editorial index, not a modal-article page.
 
 ## Scroll Stack Panel Pattern
 
@@ -45,10 +45,10 @@ A passive scroll IIFE toggles `is-covered` when the next panel's top crosses `vh
 
 - **`index.html`**: hero (`--panel-z:10`) → testimonials (`--panel-z:20`, `h-screen overflow-hidden`) → my story (`--panel-z:30`)
 - **`portfolio.html`**: no stack panels (scrolling removed)
-- **`experience.html`**: 5 stack panels (`--panel-z:10`–`50`), one per job role. Scroll IIFE uses cached `flowOffsets[]` (cumulative heights) to avoid sticky `offsetTop` distortion. `SNAP_EDGE_GUTTER_UP=200` gate allows natural scroll through each panel before an upward snap fires.
-  - Panels 1–4 use an "Our Disciplines" 50/50 layout: organic SVG tree rings (left) + editorial text (right). Panel 5 is Skills/Education with a 3-column card grid.
-  - SVG tree ring counts = **accumulated career years**: Labforward=8, LabTwin=7, Thryve=5, EY=2. Preserve these when editing SVGs.
-  - Panel 5 requires `.card-hover` CSS in the page `<style>` block — don't remove it when editing other styles.
+- **`experience.html`**: 6 stack panels (`--panel-z:10`–`60`), one per job role plus Skills/Education. Scroll IIFE uses cached `flowOffsets[]` (cumulative heights) to avoid sticky `offsetTop` distortion. `SNAP_EDGE_GUTTER_UP=200` gate allows natural scroll through each panel before an upward snap fires.
+  - Panels 1–5 use an "Our Disciplines" 50/50 layout: organic SVG tree rings (left) + editorial text (right). Panel 6 is Skills/Education with a 3-column card grid.
+  - SVG tree ring counts = **accumulated career years**: Sema=9, Labforward=8, LabTwin=7, Thryve=5, EY=2. Preserve these when editing SVGs.
+  - Panel 6 requires `.card-hover` CSS in the page `<style>` block — don't remove it when editing other styles.
 
 ## File Editing Gotchas
 
@@ -67,7 +67,7 @@ A passive scroll IIFE toggles `is-covered` when the next panel's top crosses `vh
 - Standard stack-panel content container: `w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` — matches nav width/padding exactly. Use this for all panel content.
 - Tailwind config is duplicated in each HTML file's `<script id="tailwind-config">` block — keep them in sync when changing theme tokens
 - Google Analytics tag (G-D11HKMWFB4) in each page `<head>`. GA4 custom events (`resume_downloaded`, `external_link_clicked`, `audio_played`, etc.) use inline `onclick="if(typeof gtag==='function'){gtag('event',...)}"` — never call `gtag()` without the guard.
-- `portfolio.html` career cards link directly to `portfolio/*.html`; personal project cards use an inline `openProject(id)` JS function with a `<dialog>` modal. `portfolio.js` and `data-work` attributes are legacy and not used.
+- `portfolio.html` all project cards link directly to standalone `portfolio/*.html` editorial case-study pages. `portfolio.js`, `data-work` attributes, and old project `<dialog>` modals are legacy and not used.
 - SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
 - Images go in `images/` directory
 - `docs/plans/` — design docs (`*-design.md`) and implementation plans from brainstorm/writing-plans skill sessions

@@ -12,23 +12,34 @@
   </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>LabTwin Projects - Matthew Thaokhamlue</title>
+  <title>LabTwin Case Study - Matthew Thaokhamlue</title>
+  <meta name="description" content="LabTwin case study by Matthew Thaokhamlue, covering voice AI for scientists, inventory integrations, LLM intent recognition, and monthly release operations." />
+  <meta name="author" content="Matthew Thaokhamlue" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://matthew-thaokhamlue.github.io/resume/portfolio/labtwin.html" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 
-  <!-- Tailwind CSS -->
+  <!-- Open Graph -->
+  <meta property="og:title" content="LabTwin Case Study - Matthew Thaokhamlue" />
+  <meta property="og:description" content="How Matthew Thaokhamlue helped LabTwin ship voice AI workflows for lab scientists, from inventory integrations to GPT-powered intent recognition." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://matthew-thaokhamlue.github.io/resume/portfolio/labtwin.html" />
+  <meta property="og:image" content="https://matthew-thaokhamlue.github.io/resume/images/labtwin-card.png" />
+
+  <!-- Tailwind CSS, retained for mobile menu utility classes -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-  <!-- Fonts -->
+  <!-- Fonts: Fraunces display, Space Grotesk body, Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Tailwind Config -->
-  <script>
+  <!-- Editorial design layer -->
+  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260505b" />
+
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
@@ -36,245 +47,692 @@
           colors: {
             "primary": "#0da6f2",
             "primary-dark": "#0a8ccf",
+            "background-light": "#f5f7f8",
             "background-dark": "#101c22",
             "surface": "#1a262d",
             "surface-hover": "#233038",
           },
-          fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+          fontFamily: {
+            "display": ["Space Grotesk", "sans-serif"]
+          },
           borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
         },
       },
     }
   </script>
+
   <style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #101c22; }
-    ::-webkit-scrollbar-thumb { background: #233038; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #0da6f2; }
-    .glass-nav { background: rgba(16, 28, 34, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-    .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .card-hover { transition: all 0.3s ease; }
-    .card-hover:hover { transform: translateY(-4px); background-color: rgba(255, 255, 255, 0.08); }
+    ::-webkit-scrollbar-track { background: #0a1014; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4fb6dc; }
+
+    .case-backlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--ed-ink-dim);
+      font-size: var(--ed-fz-sm);
+      text-decoration: none;
+      margin-bottom: var(--ed-s-4);
+      transition: color var(--ed-d-fast) var(--ed-ease-soft), transform var(--ed-d-fast) var(--ed-ease-soft);
+    }
+
+    .case-backlink:hover {
+      color: var(--ed-accent-strong);
+      transform: translateX(-2px);
+    }
+
+    .case-hero {
+      position: relative;
+      min-height: 100svh;
+      padding-block: clamp(6rem, 14vh, 10rem) var(--ed-s-7);
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .case-hero::before {
+      content: "";
+      position: absolute;
+      inset: 12% -10% auto auto;
+      width: min(42rem, 62vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, rgba(108, 199, 233, 0.18), rgba(79, 182, 220, 0.07) 42%, transparent 68%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .case-hero__inner {
+      position: relative;
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: var(--ed-s-6);
+      width: 100%;
+    }
+
+    .case-hero__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-mute);
+    }
+
+    .case-hero__meta::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-hero__display {
+      font-family: var(--ed-display);
+      font-size: clamp(4rem, 11vw, 8.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+      font-weight: 320;
+      color: var(--ed-ink);
+      margin: 0;
+      will-change: font-variation-settings, letter-spacing, transform;
+    }
+
+    .case-hero__display em,
+    .case-section__title em,
+    .case-quote em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      color: var(--ed-accent-strong);
+      letter-spacing: -0.045em;
+    }
+
+    .case-hero__support {
+      max-width: 42rem;
+      color: var(--ed-ink-soft);
+      font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+      line-height: 1.55;
+      margin-top: var(--ed-s-4);
+    }
+
+    .case-hero__facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--ed-hairline);
+      border-bottom: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact {
+      padding: var(--ed-s-4) var(--ed-s-4) var(--ed-s-4) 0;
+      border-right: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact:last-child { border-right: 0; }
+    .case-fact__label {
+      display: block;
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-2);
+    }
+
+    .case-fact__value {
+      color: var(--ed-ink);
+      font-size: var(--ed-fz-base);
+      line-height: 1.35;
+    }
+
+    .case-section {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-section__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+      gap: clamp(3rem, 8vw, 7rem);
+      align-items: start;
+    }
+
+    .case-section__eyebrow {
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-3);
+    }
+
+    .case-section__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      font-weight: 340;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-prose {
+      display: grid;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+    }
+
+    .case-prose p { margin: 0; }
+
+    .case-prose strong {
+      color: var(--ed-ink);
+      font-weight: 600;
+    }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      gap: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-metric {
+      background: var(--ed-bg);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      min-height: 12rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    .case-metric__value {
+      font-family: var(--ed-display);
+      font-size: clamp(2.75rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+    }
+
+    .case-metric__label {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-sm);
+      line-height: 1.5;
+    }
+
+    .case-feature {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-feature__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: center;
+    }
+
+    .case-feature__media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      border: 1px solid var(--ed-hairline);
+      background: var(--ed-surface);
+      min-height: clamp(18rem, 42vw, 31rem);
+    }
+
+    .case-feature__media img {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.88) contrast(1.02);
+      opacity: 0.92;
+      transform: scale(1.015);
+    }
+
+    .case-feature__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(10, 16, 20, 0.42));
+      pointer-events: none;
+    }
+
+    .case-feature__media--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(108, 199, 233, 0.16), transparent 36%),
+        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    }
+
+    .case-feature__media--icon .material-symbols-outlined {
+      font-size: clamp(5rem, 14vw, 11rem);
+      color: rgba(108, 199, 233, 0.58);
+      filter: drop-shadow(0 24px 80px rgba(79, 182, 220, 0.16));
+    }
+
+
+    .case-feature__content {
+      display: grid;
+      gap: var(--ed-s-4);
+    }
+
+    .case-feature__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.4rem, 4.7vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin: 0;
+      color: var(--ed-ink);
+    }
+
+    .case-feature__title em {
+      font-style: italic;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 90, "WONK" 1;
+    }
+
+    .case-feature__text {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+      display: grid;
+      gap: var(--ed-s-3);
+    }
+
+    .case-impact-list {
+      list-style: none;
+      display: grid;
+      gap: var(--ed-s-3);
+      padding: 0;
+      margin: var(--ed-s-3) 0 0;
+    }
+
+    .case-impact-list li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--ed-s-3);
+      color: var(--ed-ink-soft);
+      line-height: 1.55;
+    }
+
+    .case-impact-list li::before {
+      content: "→";
+      color: var(--ed-accent-strong);
+      margin-top: 0.05em;
+    }
+
+    .case-quote {
+      padding-block: clamp(5rem, 12vw, 10rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-quote__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+    }
+
+    .case-quote blockquote {
+      max-width: 56rem;
+      font-family: var(--ed-display);
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-quote cite {
+      display: block;
+      margin-top: var(--ed-s-5);
+      color: var(--ed-ink-mute);
+      font-style: normal;
+      font-size: var(--ed-fz-sm);
+    }
+
+    .case-next {
+      padding-block: clamp(4rem, 10vw, 7rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-next__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    @media (max-width: 900px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .case-fact:nth-child(2) { border-right: 0; }
+      .case-fact:nth-child(-n+2) { border-bottom: 1px solid var(--ed-hairline); }
+
+      .case-section__inner,
+      .case-feature__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .case-feature__media { order: -1; }
+    }
+
+    @media (max-width: 640px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .case-fact,
+      .case-fact:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--ed-hairline);
+      }
+
+      .case-fact:last-child { border-bottom: 0; }
+    }
   </style>
 </head>
 
-<body class="font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white">
-  <div class="relative flex min-h-screen w-full flex-col">
-
-    <!-- TopNavBar -->
-    <header class="sticky top-0 z-50 flex justify-center glass-nav">
-      <div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
-        <div class="flex items-center gap-3">
-          <div class="size-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
-            <span class="font-bold text-xl">M</span>
-          </div>
-          <h2 class="text-white text-lg font-bold tracking-tight hidden sm:block">Matthew Thaokhamlue</h2>
-        </div>
-        <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
-          <div class="flex items-center gap-6">
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../index.html">Home</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../experience.html">Experience</a>
-            <a class="text-primary text-sm font-medium" href="../portfolio.html">Portfolio</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../certificates.html">Certifications</a>
-          </div>
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
-            <span class="truncate">Let's Connect</span>
-          </a>
-        </nav>
-        <button class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors" onclick="toggleMenu()">
-          <span class="material-symbols-outlined">menu</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../index.html" onclick="toggleMenu()">Home</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../experience.html" onclick="toggleMenu()">Experience</a>
-      <a class="text-2xl font-bold text-primary" href="../portfolio.html" onclick="toggleMenu()">Portfolio</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../certificates.html" onclick="toggleMenu()">Certifications</a>
-      <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
-        <span class="material-symbols-outlined text-3xl">close</span>
+<body class="ed-page">
+  <!-- Top bar -->
+  <header class="ed-topbar">
+    <div class="ed-topbar__inner">
+      <a class="ed-topbar__brand" href="../index.html">
+        <span class="ed-topbar__brand-mark">M</span>
+        <span>Matthew Thaokhamlue</span>
+      </a>
+      <nav class="ed-topbar__nav" aria-label="Primary">
+        <a class="ed-topbar__link" href="../index.html">Home</a>
+        <a class="ed-topbar__link" href="../experience.html">Experience</a>
+        <a class="ed-topbar__link" href="../portfolio.html" aria-current="page">Portfolio</a>
+        <a class="ed-topbar__link" href="../certificates.html">Certifications</a>
+        <a class="ed-btn ed-btn--accent" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+          rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar',page:'labtwin'})}">
+          Let&rsquo;s talk
+        </a>
+      </nav>
+      <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()">
+        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
       </button>
     </div>
+  </header>
 
-    <main class="flex flex-1 flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-12 animate-fade-in">
-
-      <!-- Back Link -->
-      <div class="w-full max-w-7xl">
-        <a href="../portfolio.html" class="inline-flex items-center gap-2 text-white/60 hover:text-primary transition-colors text-sm">
-          <span class="material-symbols-outlined text-lg">arrow_back</span>
-          <span>Back to Portfolio</span>
-        </a>
-      </div>
-
-      <!-- Header -->
-      <div class="w-full max-w-7xl flex flex-col gap-4">
-        <h2 class="text-2xl sm:text-3xl font-bold">LabTwin GmbH</h2>
-        <p class="text-lg text-white/60">LabTwin builds voice AI assistants for laboratory scientists, enabling hands-free data capture during experiments.</p>
-        <p class="text-lg text-white/60">Voice AI for Labs • Technical Product Manager • Jan 2023 - Nov 2024</p>
-        <div>
-          <a href="https://play.google.com/store/apps/details?id=com.labtwin.app" onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_domain:'play.google.com',link_type:'portfolio_project',project_name:'labtwin'})}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors w-fit"><span>Visit website</span><span class="material-symbols-outlined text-sm">open_in_new</span></a>
-        </div>
-      </div>
-
-      <!-- Projects Grid -->
-      <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-
-        <!-- Project: Inventory System Integration -->
-        <div onclick="openProject('inventory-integration')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-            <img src="../images/labtwin-inventory.png" alt="Inventory Integration" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Inventory System Integration</p>
-            <p class="text-white/60 text-sm line-clamp-2">Drove LabTwin voice assistant integration with Revvity Signals, enabling hands-free inventory management for scientists.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice Tech</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Product Mgmt</span>
-          </div>
-        </div>
-
-        <!-- Project: Monthly Release Train -->
-        <div onclick="openProject('release-train')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-            <span class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">train</span>
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Monthly Release Train</p>
-            <p class="text-white/60 text-sm line-clamp-2">Moved from quarterly to monthly releases by aligning QA, CS, Sales, and Marketing around a predictable cadence.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Process Change</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Cross-functional</span>
-          </div>
-        </div>
-
-        <!-- Project: LLM Intent Recognition -->
-        <div onclick="openProject('llm-intent')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-            <span class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">psychology</span>
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">LLM Intent Recognition</p>
-            <p class="text-white/60 text-sm line-clamp-2">Championed the company's first LLM adoption, replacing regex with GPT-3.5 to dramatically reduce false negatives.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">LLM</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice UX</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">First LLM Project</span>
-          </div>
-        </div>
-
-      </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-background-dark py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-        <p class="text-white/60 text-sm">&copy; 2025 Matthew Thaokhamlue. All rights reserved.</p>
-        <div class="flex items-center gap-6">
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" class="text-white/60 hover:text-primary transition-colors" onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'labtwin',link_position:'footer'})}"><i class="fab fa-linkedin text-2xl"></i></a>
-          <a href="https://github.com/matthew-thaokhamlue" target="_blank" class="text-white/60 hover:text-white transition-colors" onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'labtwin',link_position:'footer'})}"><i class="fab fa-github text-2xl"></i></a>
-        </div>
-      </div>
-    </footer>
+  <!-- Mobile menu -->
+  <div id="mobile-menu"
+    class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+    <a class="text-2xl font-medium text-white" href="../index.html" onclick="toggleMenu()">Home</a>
+    <a class="text-2xl font-medium text-white" href="../experience.html" onclick="toggleMenu()">Experience</a>
+    <a class="text-2xl font-medium text-white" href="../portfolio.html" onclick="toggleMenu()">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="../certificates.html" onclick="toggleMenu()">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu">
+      <span class="material-symbols-outlined text-3xl">close</span>
+    </button>
   </div>
 
-  <!-- Project Modal -->
-  <dialog id="project-modal" class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="closeProject(event)">
-      <div class="bg-surface border border-white/10 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl" onclick="event.stopPropagation()">
-        <div class="flex items-start justify-between p-6 sm:p-8 border-b border-white/5">
-          <div class="flex flex-col gap-2">
-            <h3 id="modal-title" class="text-2xl sm:text-3xl font-bold text-white"></h3>
-            <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+  <main>
+    <!-- Hero -->
+    <section class="case-hero ed-hero" id="top">
+      <div class="case-hero__inner">
+        <div>
+          <a class="case-backlink" href="../portfolio.html">
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+            <span>Back to portfolio</span>
+          </a>
+          <div class="case-hero__meta">
+            <span class="ed-eyebrow">LabTwin GmbH · Voice AI for Labs · 2023 — 2024</span>
           </div>
-          <button onclick="closeProject()" class="text-white/50 hover:text-white transition-colors p-2">
-            <span class="material-symbols-outlined text-3xl">close</span>
-          </button>
         </div>
-        <div class="overflow-y-auto p-6 sm:p-8 flex flex-col gap-8">
-          <div id="modal-image-container" class="hidden"><img id="modal-image" src="" alt="" class="w-full rounded-xl border border-white/10 object-cover max-h-80" /></div>
-          <div id="modal-links" class="flex flex-wrap gap-4"></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Project Overview</h4><div id="modal-overview" class="text-white/80 leading-relaxed space-y-2"></div></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">The Challenge</h4><p id="modal-challenge" class="text-white/80 leading-relaxed"></p></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Solution & Implementation</h4><p id="modal-solution" class="text-white/80 leading-relaxed"></p></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Impact & Results</h4><ul id="modal-impact" class="list-disc list-inside text-white/80 leading-relaxed space-y-1"></ul></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Technical Architecture</h4><p id="modal-tech" class="text-white/80 leading-relaxed"></p></div>
+
+        <div>
+          <h1 class="case-hero__display ed-hero__display">Voice AI for scientists who cannot stop to <em>type</em>.</h1>
+          <p class="case-hero__support">
+            As Technical Product Manager at LabTwin, I helped turn conversational AI into practical lab workflows: voice-controlled inventory, natural language intent recognition, and a release rhythm that made customer value ship every month.
+          </p>
+        </div>
+
+        <div class="case-hero__facts reveal">
+          <div class="case-fact">
+            <span class="case-fact__label">Role</span>
+            <span class="case-fact__value">Technical Product Manager</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Product</span>
+            <span class="case-fact__value">Voice AI assistant for labs</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Focus</span>
+            <span class="case-fact__value">Integrations, LLM, release operations</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Outcome</span>
+            <span class="case-fact__value">3x release frequency, 95% term accuracy</span>
+          </div>
         </div>
       </div>
+    </section>
+
+    <!-- Origin -->
+    <section class="case-section">
+      <div class="case-section__inner">
+        <div class="reveal">
+          <p class="case-section__eyebrow">The problem</p>
+          <h2 class="case-section__title">The lab was voice-first. The software still expected <em>hands</em>.</h2>
+        </div>
+        <div class="case-prose ed-philosophy__body">
+          <p>
+            In real labs, scientists are not sitting neatly at a desk. They are wearing gloves, handling samples, moving between instruments, and trying to capture observations without breaking flow or contaminating their work.
+          </p>
+          <p>
+            LabTwin already gave scientists a way to take notes by voice. But the deeper product question was bigger: could voice become a reliable interface for real scientific workflows, inventory updates, data capture, and intent recognition, not just dictation?
+          </p>
+          <p>
+            My role was to turn that ambition into shippable product work: partner integrations, release discipline, and the company’s first LLM-powered intent recognition system.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics -->
+    <section class="case-section" aria-label="LabTwin impact metrics">
+      <div class="case-metrics">
+        <div class="case-metric reveal">
+          <span class="case-metric__value">3x</span>
+          <span class="case-metric__label">release frequency increase, from quarterly to monthly shipping</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">12</span>
+          <span class="case-metric__label">releases per year after introducing the monthly release train</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">95%</span>
+          <span class="case-metric__label">scientific term accuracy maintained through speech recognition retraining</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">1st</span>
+          <span class="case-metric__label">LLM implementation for the company, moving beyond regex intent matching</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inventory -->
+    <section class="case-feature">
+      <div class="case-feature__inner">
+        <div class="case-feature__content">
+          <p class="case-section__eyebrow reveal">Integration case study</p>
+          <h2 class="case-feature__title reveal">Voice-controlled <em>inventory</em>.</h2>
+          <div class="case-feature__text ed-philosophy__body">
+            <p>
+              I spent my first weeks shadowing scientists in actual labs. Researchers in protective gear, hands occupied with samples, were stopping mid-experiment to type inventory updates into computers. Every interruption was a contamination risk. Every context switch was a chance for error.
+            </p>
+            <p>
+              I led the cross-functional effort to extend LabTwin’s voice assistant into inventory management through an integration with Revvity Signals. If a scientist could say, “I used 50ml of sodium chloride,” the system should update inventory automatically.
+            </p>
+            <p>
+              I coordinated between our engineering team and Revvity’s API team to connect voice commands to their inventory database. Scientists could scan items, check stock levels, and log consumption without touching a keyboard.
+            </p>
+          </div>
+          <ul class="case-impact-list reveal">
+            <li>Scientists could scan and locate items using voice, with real-time location tracking.</li>
+            <li>Inventory records stayed accurate because updates happened in the moment, not hours later from memory.</li>
+            <li>Experimental data and inventory management merged into one workflow.</li>
+          </ul>
+        </div>
+        <div class="case-feature__media reveal">
+          <img src="../images/labtwin-inventory.png" alt="LabTwin inventory integration" />
+        </div>
+      </div>
+    </section>
+
+    <!-- LLM -->
+    <section class="case-feature">
+      <div class="case-feature__inner">
+        <div class="case-feature__media case-feature__media--icon reveal">
+          <span class="material-symbols-outlined" aria-hidden="true">psychology</span>
+        </div>
+        <div class="case-feature__content">
+          <p class="case-section__eyebrow reveal">AI case study</p>
+          <h2 class="case-feature__title reveal">Natural language, not <em>robot language</em>.</h2>
+          <div class="case-feature__text ed-philosophy__body">
+            <p>
+              Backoffice data showed a clear pattern. Scientists were saying things like “I added around fifty milliliters of the buffer solution,” and the system returned nothing. Regex intent recognition only understood exact command patterns. “Add 50ml” worked. “I just added about fifty” did not.
+            </p>
+            <p>
+              I championed replacing regex with GPT-3.5 for intent recognition, built the business case, secured stakeholder buy-in, and started with a beta. We tracked false negatives, edge cases, and observation data before moving to production.
+            </p>
+            <p>
+              The biggest lesson was operational. LLMs need guardrails. They need systematic evaluation, not manual spot checks. This project established practices we could reuse for future AI features.
+            </p>
+          </div>
+          <ul class="case-impact-list reveal">
+            <li>False negatives dropped significantly after switching from regex to GPT-3.5.</li>
+            <li>Scientists could speak naturally instead of memorizing exact command syntax.</li>
+            <li>Established LLM evaluation practices for future AI work.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Release train -->
+    <section class="case-section">
+      <div class="case-section__inner">
+        <div class="reveal">
+          <p class="case-section__eyebrow">Operating model</p>
+          <h2 class="case-section__title">The release itself had become the <em>risk</em>.</h2>
+        </div>
+        <div class="case-prose ed-philosophy__body">
+          <p>
+            Every quarter, the pattern repeated. Three months of building, then two weeks of chaos. Engineering crunched to finish features. QA scrambled to test everything at once. If something broke in production, customers waited months for fixes.
+          </p>
+          <p>
+            I partnered with the Engineering Lead to move from quarterly to monthly releases. The technical shift was straightforward. The hard part was alignment. QA needed automated regression tests and narrower scope. Customer Success needed lighter release notes and predictable timing. Sales and Marketing still needed quarterly launch themes.
+          </p>
+          <p>
+            The result was a release train the company could trust. Smaller releases, lower deployment risk, faster customer fixes, and a rhythm everyone could plan around.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="case-quote">
+      <div class="case-quote__inner reveal">
+        <blockquote>
+          “A remarkable ability to take nebulous business requirements and translate them into a clear, actionable <em>backlog</em>.”
+        </blockquote>
+        <cite>Mark Dominick Flores, Senior iOS Engineer at LabTwin</cite>
+      </div>
+    </section>
+
+    <!-- Next -->
+    <section class="case-next">
+      <div class="case-next__inner reveal">
+        <div>
+          <p class="ed-eyebrow" style="margin-bottom: var(--ed-s-2);">Next case study</p>
+          <h2 class="case-feature__title" style="font-size: clamp(2rem, 4vw, 3.75rem);">AI-powered lab intelligence.</h2>
+        </div>
+        <div class="ed-hero__cta-row">
+          <a class="ed-btn" href="labforward.html">
+            Read Labforward case study
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="ed-link" href="../portfolio.html">
+            <span>Back to all portfolio</span>
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="ed-foot">
+    <div class="ed-foot__inner">
+      <div>
+        <p>&copy; 2026 Matthew Thaokhamlue.</p>
+        <p style="color: var(--ed-ink-mute); font-size: var(--ed-fz-xs); margin-top: 0.25rem;">
+          Builder · AI Workflow Architect · Berlin, Germany
+        </p>
+      </div>
+      <div class="ed-foot__icons">
+        <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'labtwin',link_position:'footer'})}"
+          aria-label="LinkedIn">
+          <i class="fab fa-linkedin text-2xl"></i>
+        </a>
+        <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'labtwin',link_position:'footer'})}"
+          aria-label="GitHub">
+          <i class="fab fa-github text-2xl"></i>
+        </a>
+      </div>
     </div>
-  </dialog>
+  </footer>
+
+  <!-- GSAP (pinned) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Editorial motion -->
+  <script src="../assets/js/editorial.js?v=20260505a"></script>
 
   <script>
-    function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('translate-x-full'); }
-
-    const projects = {
-      'inventory-integration': {
-        title: "Revvity Signals Inventory Integration",
-        tags: ["Product Management", "Voice Tech", "API Integration", "Inventory"],
-        image: "../images/labtwin-inventory.png",
-        links: [],
-        overview: `<p><strong>Role:</strong> Technical Product Manager</p><p><strong>Company:</strong> LabTwin GmbH (acquired by Labforward)</p>`,
-        challenge: "I spent my first weeks at LabTwin shadowing scientists in actual labs. What I saw surprised me. Researchers in full protective gear, hands occupied with samples, stopping mid-experiment to type inventory updates into a computer. Every interruption was a contamination risk. Every context switch was a chance for error. They had a voice assistant for taking notes, but when it came to tracking what chemicals they used, what reagents were running low, they were back to keyboards and spreadsheets.",
-        solution: "I led the cross-functional effort to extend LabTwin's voice assistant into inventory management. The idea was simple: if you can say 'I used 50ml of sodium chloride,' the system should update your inventory automatically. I coordinated between our engineering team and Revvity's API team to build the integration layer connecting voice commands to their inventory database. Scientists could scan items, check stock levels, and log consumption without ever touching a keyboard. Their hands stayed sterile. Their focus stayed on the science.",
-        impact: ["Scientists could scan and locate items using just their voice, with real-time location tracking.", "Inventory records stayed accurate because updates happened in the moment, not hours later from memory.", "Experimental data and inventory management merged into one workflow. No more switching between systems."],
-        tech: "Voice Recognition, API Integration, Cloud Connectivity, Mobile Development, Laboratory Information Systems"
-      },
-      'release-train': {
-        title: "Monthly Release Train",
-        tags: ["Technical PM", "Process Change", "Cross-functional Alignment", "QA Automation"],
-        image: null,
-        links: [],
-        overview: `<p><strong>Role:</strong> Technical Product Manager</p><p><strong>Company:</strong> LabTwin GmbH</p><p><strong>Partnership:</strong> Co-led with Engineering Lead</p>`,
-        challenge: "Every quarter, the same pattern. Three months of building, then two weeks of chaos. Engineering would crunch to finish features. QA would scramble to test everything at once. And when something broke in production, customers waited months for fixes. The release itself became the risk. But no one had complained loudly enough to force a change. I saw the pattern and thought: why wait for a crisis?",
-        solution: "I partnered with the Engineering Lead to move from quarterly to monthly releases. The technical shift was straightforward. The harder part was alignment. QA worried they couldn't test fast enough, so we introduced automated regression tests and narrowed scope per release. Customer Success worried about onboarding users more often, so we created lighter release notes and a predictable schedule they could plan around. Sales and Marketing wanted to bundle features for announcements, so we agreed on quarterly 'theme' releases while still shipping monthly. Everyone had a concern. We addressed each one directly.",
-        impact: ["Critical bug fixes reached customers in weeks, not months", "Smaller releases meant lower risk per deployment (less to break, easier to rollback)", "The team stopped crunching before arbitrary deadlines", "Customer Success, Sales, and Marketing gained predictability instead of chaos", "'When's the next release?' became a question with a clear answer"],
-        tech: "Release Management, CI/CD Process, QA Automation, Cross-functional Coordination, Stakeholder Management"
-      },
-      'llm-intent': {
-        title: "LLM Intent Recognition",
-        tags: ["Technical PM", "LLM", "GPT-3.5", "Voice UX", "First LLM Project"],
-        image: null,
-        links: [],
-        overview: `<p><strong>Role:</strong> Technical Product Manager</p><p><strong>Company:</strong> LabTwin GmbH</p><p><strong>Scope:</strong> Company's first LLM implementation</p>`,
-        challenge: "I was digging through our backoffice data when I noticed a pattern. Scientists were saying things like 'I added around fifty milliliters of the buffer solution,' and our system was returning nothing. False negatives everywhere. Our intent recognition ran on regex, which meant it only understood commands that matched exact patterns. 'Add 50ml' worked. 'I just added about fifty' didn't. Scientists had to learn how to talk to our system instead of the system learning how they talk. That's backwards.",
-        solution: "I championed replacing regex with GPT-3.5 for intent recognition, building the business case and securing stakeholder buy-in. It was our first LLM project, so we started with a beta. I ran continuous evaluation and observation throughout, tracking false negative rates and edge cases. The results were clear: false negatives dropped significantly. We moved to production. The project took longer than expected because we were learning as we went. But the biggest lesson wasn't technical. It was operational. LLMs need guardrails. They need systematic evaluation, not manual spot-checks. If we wanted to scale this, we had to build the infrastructure to monitor quality continuously.",
-        impact: ["False negative rate dropped significantly after switching from regex to GPT-3.5", "Scientists could speak naturally without learning 'robot language'", "Voice UX improved because the system adapted to users, not the other way around", "Established LLM evaluation practices that we could reuse for future AI features", "Learned that LLM quality doesn't maintain itself. You need systematic monitoring, not just launch and hope."],
-        tech: "GPT-3.5, Intent Recognition, LLM Evaluation, Voice UX, Natural Language Understanding, Quality Monitoring"
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (typeof gtag === 'function') {
+        var isOpen = menu.classList.contains('translate-x-full');
+        gtag('event', 'mobile_menu_toggled', { action: isOpen ? 'open' : 'close', page: 'labtwin' });
       }
-    };
-
-    function openProject(projectId) {
-      const project = projects[projectId];
-      if (!project) return;
-      document.getElementById('modal-title').textContent = project.title;
-      const tagsContainer = document.getElementById('modal-tags');
-      tagsContainer.innerHTML = '';
-      project.tags.forEach(tag => { const span = document.createElement('span'); span.className = 'text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full'; span.textContent = tag; tagsContainer.appendChild(span); });
-      const imageContainer = document.getElementById('modal-image-container');
-      const imageEl = document.getElementById('modal-image');
-      if (project.image) { imageEl.src = project.image; imageEl.alt = project.title; imageContainer.classList.remove('hidden'); } else { imageContainer.classList.add('hidden'); imageEl.src = ''; }
-      const linksContainer = document.getElementById('modal-links');
-      linksContainer.innerHTML = '';
-      if (project.links && project.links.length > 0) { project.links.forEach(link => { const a = document.createElement('a'); a.href = link.url; a.target = '_blank'; a.className = 'inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors whitespace-nowrap'; a.innerHTML = `<span>${link.text}</span><span class="material-symbols-outlined text-sm">open_in_new</span>`; linksContainer.appendChild(a); }); }
-      document.getElementById('modal-overview').innerHTML = project.overview;
-      document.getElementById('modal-challenge').textContent = project.challenge;
-      document.getElementById('modal-solution').textContent = project.solution;
-      document.getElementById('modal-tech').textContent = project.tech;
-      const impactList = document.getElementById('modal-impact');
-      impactList.innerHTML = '';
-      project.impact.forEach(item => { const li = document.createElement('li'); li.textContent = item; impactList.appendChild(li); });
-      const modal = document.getElementById('project-modal');
-      modal.showModal();
+      menu.classList.toggle('translate-x-full');
     }
-
-    function closeProject(event) { if (event && event.target !== event.currentTarget) return; document.getElementById('project-modal').close(); }
   </script>
 </body>
+
 </html>

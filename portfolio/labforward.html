@@ -2,6 +2,7 @@
 <html class="dark" lang="en">
 
 <head>
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D11HKMWFB4"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -11,213 +12,735 @@
   </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Labforward Projects - Matthew Thaokhamlue</title>
+  <title>Labforward Case Study - Matthew Thaokhamlue</title>
+  <meta name="description" content="Labforward case study by Matthew Thaokhamlue, covering GenAI roadmap ownership, multi-agent experiment workflows, rapid prototyping, and unified lab workspace work." />
+  <meta name="author" content="Matthew Thaokhamlue" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://matthew-thaokhamlue.github.io/resume/portfolio/labforward.html" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Labforward Case Study - Matthew Thaokhamlue" />
+  <meta property="og:description" content="How Matthew Thaokhamlue led GenAI roadmap, rapid validation, and unified workspace work at Labforward." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://matthew-thaokhamlue.github.io/resume/portfolio/labforward.html" />
+  <meta property="og:image" content="https://matthew-thaokhamlue.github.io/resume/images/labforward-card.png" />
+
+  <!-- Tailwind CSS, retained for mobile menu utility classes -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Fonts: Fraunces display, Space Grotesk body, Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script>
+
+  <!-- Editorial design layer -->
+  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260505b" />
+
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
-          colors: { "primary": "#0da6f2", "primary-dark": "#0a8ccf", "background-dark": "#101c22", "surface": "#1a262d", "surface-hover": "#233038" },
-          fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+          colors: {
+            "primary": "#0da6f2",
+            "primary-dark": "#0a8ccf",
+            "background-light": "#f5f7f8",
+            "background-dark": "#101c22",
+            "surface": "#1a262d",
+            "surface-hover": "#233038",
+          },
+          fontFamily: {
+            "display": ["Space Grotesk", "sans-serif"]
+          },
           borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
         },
       },
     }
   </script>
+
   <style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #101c22; }
-    ::-webkit-scrollbar-thumb { background: #233038; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #0da6f2; }
-    .glass-nav { background: rgba(16, 28, 34, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-    .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .card-hover { transition: all 0.3s ease; }
-    .card-hover:hover { transform: translateY(-4px); background-color: rgba(255, 255, 255, 0.08); }
+    ::-webkit-scrollbar-track { background: #0a1014; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4fb6dc; }
+
+    .case-backlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--ed-ink-dim);
+      font-size: var(--ed-fz-sm);
+      text-decoration: none;
+      margin-bottom: var(--ed-s-4);
+      transition: color var(--ed-d-fast) var(--ed-ease-soft), transform var(--ed-d-fast) var(--ed-ease-soft);
+    }
+
+    .case-backlink:hover {
+      color: var(--ed-accent-strong);
+      transform: translateX(-2px);
+    }
+
+    .case-hero {
+      position: relative;
+      min-height: 100svh;
+      padding-block: clamp(6rem, 14vh, 10rem) var(--ed-s-7);
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .case-hero::before {
+      content: "";
+      position: absolute;
+      inset: 12% -10% auto auto;
+      width: min(42rem, 62vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, rgba(108, 199, 233, 0.18), rgba(79, 182, 220, 0.07) 42%, transparent 68%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .case-hero__inner {
+      position: relative;
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: var(--ed-s-6);
+      width: 100%;
+    }
+
+    .case-hero__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-mute);
+    }
+
+    .case-hero__meta::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-hero__display {
+      font-family: var(--ed-display);
+      font-size: clamp(4rem, 11vw, 8.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+      font-weight: 320;
+      color: var(--ed-ink);
+      margin: 0;
+      will-change: font-variation-settings, letter-spacing, transform;
+    }
+
+    .case-hero__display em,
+    .case-section__title em,
+    .case-quote em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      color: var(--ed-accent-strong);
+      letter-spacing: -0.045em;
+    }
+
+    .case-hero__support {
+      max-width: 42rem;
+      color: var(--ed-ink-soft);
+      font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+      line-height: 1.55;
+      margin-top: var(--ed-s-4);
+    }
+
+    .case-hero__facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--ed-hairline);
+      border-bottom: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact {
+      padding: var(--ed-s-4) var(--ed-s-4) var(--ed-s-4) 0;
+      border-right: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact:last-child { border-right: 0; }
+    .case-fact__label {
+      display: block;
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-2);
+    }
+
+    .case-fact__value {
+      color: var(--ed-ink);
+      font-size: var(--ed-fz-base);
+      line-height: 1.35;
+    }
+
+    .case-section {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-section__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+      gap: clamp(3rem, 8vw, 7rem);
+      align-items: start;
+    }
+
+    .case-section__eyebrow {
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-3);
+    }
+
+    .case-section__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      font-weight: 340;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-prose {
+      display: grid;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+    }
+
+    .case-prose p { margin: 0; }
+
+    .case-prose strong {
+      color: var(--ed-ink);
+      font-weight: 600;
+    }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      gap: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-metric {
+      background: var(--ed-bg);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      min-height: 12rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    .case-metric__value {
+      font-family: var(--ed-display);
+      font-size: clamp(2.75rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+    }
+
+    .case-metric__label {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-sm);
+      line-height: 1.5;
+    }
+
+    .case-feature {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-feature__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: center;
+    }
+
+    .case-feature__media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      border: 1px solid var(--ed-hairline);
+      background: var(--ed-surface);
+      min-height: clamp(18rem, 42vw, 31rem);
+    }
+
+    .case-feature__media img {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.88) contrast(1.02);
+      opacity: 0.92;
+      transform: scale(1.015);
+    }
+
+    .case-feature__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(10, 16, 20, 0.42));
+      pointer-events: none;
+    }
+
+    .case-feature__media--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(108, 199, 233, 0.16), transparent 36%),
+        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    }
+
+    .case-feature__media--icon .material-symbols-outlined {
+      font-size: clamp(5rem, 14vw, 11rem);
+      color: rgba(108, 199, 233, 0.58);
+      filter: drop-shadow(0 24px 80px rgba(79, 182, 220, 0.16));
+    }
+
+
+    .case-feature__content {
+      display: grid;
+      gap: var(--ed-s-4);
+    }
+
+    .case-feature__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.4rem, 4.7vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin: 0;
+      color: var(--ed-ink);
+    }
+
+    .case-feature__title em {
+      font-style: italic;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 90, "WONK" 1;
+    }
+
+    .case-feature__text {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+      display: grid;
+      gap: var(--ed-s-3);
+    }
+
+    .case-impact-list {
+      list-style: none;
+      display: grid;
+      gap: var(--ed-s-3);
+      padding: 0;
+      margin: var(--ed-s-3) 0 0;
+    }
+
+    .case-impact-list li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--ed-s-3);
+      color: var(--ed-ink-soft);
+      line-height: 1.55;
+    }
+
+    .case-impact-list li::before {
+      content: "→";
+      color: var(--ed-accent-strong);
+      margin-top: 0.05em;
+    }
+
+    .case-quote {
+      padding-block: clamp(5rem, 12vw, 10rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-quote__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+    }
+
+    .case-quote blockquote {
+      max-width: 56rem;
+      font-family: var(--ed-display);
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-quote cite {
+      display: block;
+      margin-top: var(--ed-s-5);
+      color: var(--ed-ink-mute);
+      font-style: normal;
+      font-size: var(--ed-fz-sm);
+    }
+
+    .case-next {
+      padding-block: clamp(4rem, 10vw, 7rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-next__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    @media (max-width: 900px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .case-fact:nth-child(2) { border-right: 0; }
+      .case-fact:nth-child(-n+2) { border-bottom: 1px solid var(--ed-hairline); }
+
+      .case-section__inner,
+      .case-feature__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .case-feature__media { order: -1; }
+    }
+
+    @media (max-width: 640px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .case-fact,
+      .case-fact:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--ed-hairline);
+      }
+
+      .case-fact:last-child { border-bottom: 0; }
+    }
   </style>
 </head>
 
-<body class="font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white">
-  <div class="relative flex min-h-screen w-full flex-col">
-    <header class="sticky top-0 z-50 flex justify-center glass-nav">
-      <div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
-        <div class="flex items-center gap-3">
-          <div class="size-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg"><span class="font-bold text-xl">M</span></div>
-          <h2 class="text-white text-lg font-bold tracking-tight hidden sm:block">Matthew Thaokhamlue</h2>
-        </div>
-        <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
-          <div class="flex items-center gap-6">
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../index.html">Home</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../experience.html">Experience</a>
-            <a class="text-primary text-sm font-medium" href="../portfolio.html">Portfolio</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../certificates.html">Certifications</a>
-          </div>
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20"><span class="truncate">Let's Connect</span></a>
-        </nav>
-        <button class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></button>
-      </div>
-    </header>
-
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../index.html" onclick="toggleMenu()">Home</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../experience.html" onclick="toggleMenu()">Experience</a>
-      <a class="text-2xl font-bold text-primary" href="../portfolio.html" onclick="toggleMenu()">Portfolio</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../certificates.html" onclick="toggleMenu()">Certifications</a>
-      <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()"><span class="material-symbols-outlined text-3xl">close</span></button>
+<body class="ed-page">
+  <!-- Top bar -->
+  <header class="ed-topbar">
+    <div class="ed-topbar__inner">
+      <a class="ed-topbar__brand" href="../index.html">
+        <span class="ed-topbar__brand-mark">M</span>
+        <span>Matthew Thaokhamlue</span>
+      </a>
+      <nav class="ed-topbar__nav" aria-label="Primary">
+        <a class="ed-topbar__link" href="../index.html">Home</a>
+        <a class="ed-topbar__link" href="../experience.html">Experience</a>
+        <a class="ed-topbar__link" href="../portfolio.html" aria-current="page">Portfolio</a>
+        <a class="ed-topbar__link" href="../certificates.html">Certifications</a>
+        <a class="ed-btn ed-btn--accent" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+          rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar',page:'labforward'})}">
+          Let&rsquo;s talk
+        </a>
+      </nav>
+      <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()">
+        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+      </button>
     </div>
+  </header>
 
-    <main class="flex flex-1 flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-12 animate-fade-in">
-      <div class="w-full max-w-7xl">
-        <a href="../portfolio.html" class="inline-flex items-center gap-2 text-white/60 hover:text-primary transition-colors text-sm"><span class="material-symbols-outlined text-lg">arrow_back</span><span>Back to Portfolio</span></a>
-      </div>
-      <div class="w-full max-w-7xl flex flex-col gap-4">
-        <h2 class="text-2xl sm:text-3xl font-bold">Labforward GmbH</h2>
-        <p class="text-lg text-white/60">Labforward provides digital lab management software, helping scientists organize experiments and collaborate on research.</p>
-        <p class="text-lg text-white/60">Lab Management Platform • Senior Product Manager • Nov 2024 - Nov 2025</p>
-        <div><a href="https://redstone.vc/portfolio/labforward" onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_domain:'redstone.vc',link_type:'portfolio_project',project_name:'labforward'})}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors w-fit"><span>Visit website</span><span class="material-symbols-outlined text-sm">open_in_new</span></a></div>
-      </div>
-      <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        <div onclick="openProject('chat-experiment')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5"><span class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">smart_toy</span></div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Chat with Experiment</p>
-            <p class="text-white/60 text-sm line-clamp-2">Production multi-agent system that retrieves, reasons, and auto-fills experiment data—eliminating hours of daily manual work for lab scientists.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Multi-Agent</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Production System</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">70% Adoption</span>
-          </div>
-        </div>
-        <div onclick="openProject('rapid-prototype')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5"><span class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">rocket_launch</span></div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Rapid Prototype Validation</p>
-            <p class="text-white/60 text-sm line-clamp-2">Introduced AI-powered prototyping process that cut validation time by 4x and reduced rework rate from 50% to 15%.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Process Change</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI Tools</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Culture</span>
-          </div>
-        </div>
-        <div onclick="openProject('workspace')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5"><span class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">dashboard_customize</span></div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Unified Workspace</p>
-            <p class="text-white/60 text-sm line-clamp-2">Led end-to-end integration of IoT control dashboard with lab execution system into one workspace, securing €500K contract renewal.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">End-to-End PM</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">60% Adoption</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">€500K Renewal</span>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <footer class="border-t border-white/10 bg-background-dark py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-        <p class="text-white/60 text-sm">&copy; 2025 Matthew Thaokhamlue. All rights reserved.</p>
-        <div class="flex items-center gap-6">
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" class="text-white/60 hover:text-primary transition-colors" onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'labforward',link_position:'footer'})}"><i class="fab fa-linkedin text-2xl"></i></a>
-          <a href="https://github.com/matthew-thaokhamlue" target="_blank" class="text-white/60 hover:text-white transition-colors" onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'labforward',link_position:'footer'})}"><i class="fab fa-github text-2xl"></i></a>
-        </div>
-      </div>
-    </footer>
+  <!-- Mobile menu -->
+  <div id="mobile-menu"
+    class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+    <a class="text-2xl font-medium text-white" href="../index.html" onclick="toggleMenu()">Home</a>
+    <a class="text-2xl font-medium text-white" href="../experience.html" onclick="toggleMenu()">Experience</a>
+    <a class="text-2xl font-medium text-white" href="../portfolio.html" onclick="toggleMenu()">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="../certificates.html" onclick="toggleMenu()">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu">
+      <span class="material-symbols-outlined text-3xl">close</span>
+    </button>
   </div>
 
-  <dialog id="project-modal" class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="closeProject(event)">
-      <div class="bg-surface border border-white/10 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl" onclick="event.stopPropagation()">
-        <div class="flex items-start justify-between p-6 sm:p-8 border-b border-white/5">
-          <div class="flex flex-col gap-2">
-            <h3 id="modal-title" class="text-2xl sm:text-3xl font-bold text-white"></h3>
-            <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+  <main>
+    <!-- Hero -->
+    <section class="case-hero ed-hero" id="top">
+      <div class="case-hero__inner">
+        <div>
+          <a class="case-backlink" href="../portfolio.html">
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+            <span>Back to portfolio</span>
+          </a>
+          <div class="case-hero__meta">
+            <span class="ed-eyebrow">Labforward GmbH · Lab Intelligence Platform · 2024 — 2025</span>
           </div>
-          <button onclick="closeProject()" class="text-white/50 hover:text-white transition-colors p-2"><span class="material-symbols-outlined text-3xl">close</span></button>
         </div>
-        <div class="overflow-y-auto p-6 sm:p-8 flex flex-col gap-8">
-          <div id="modal-image-container" class="hidden"><img id="modal-image" src="" alt="" class="w-full rounded-xl border border-white/10 object-cover max-h-80" /></div>
-          <div id="modal-links" class="flex flex-wrap gap-4"></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Project Overview</h4><div id="modal-overview" class="text-white/80 leading-relaxed space-y-2"></div></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">The Challenge</h4><p id="modal-challenge" class="text-white/80 leading-relaxed"></p></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Solution & Implementation</h4><p id="modal-solution" class="text-white/80 leading-relaxed"></p></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Impact & Results</h4><ul id="modal-impact" class="list-disc list-inside text-white/80 leading-relaxed space-y-1"></ul></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Technical Architecture</h4><p id="modal-tech" class="text-white/80 leading-relaxed"></p></div>
+
+        <div>
+          <h1 class="case-hero__display ed-hero__display">From lab software to <em>AI-powered workflow</em>.</h1>
+          <p class="case-hero__support">
+            As Senior Product Manager at Labforward, I owned product roadmap work across lab management, GenAI experiments, rapid validation loops, and workspace unification, turning fragmented scientific workflows into systems users could trust.
+          </p>
+        </div>
+
+        <div class="case-hero__facts reveal">
+          <div class="case-fact">
+            <span class="case-fact__label">Role</span>
+            <span class="case-fact__value">Senior Product Manager</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Product</span>
+            <span class="case-fact__value">Lab management and AI workflows</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Focus</span>
+            <span class="case-fact__value">GenAI roadmap, prototyping, workspace</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Outcome</span>
+            <span class="case-fact__value">70% adoption, €500K renewal</span>
+          </div>
         </div>
       </div>
+    </section>
+
+    <!-- Origin -->
+    <section class="case-section">
+      <div class="case-section__inner">
+        <div class="reveal">
+          <p class="case-section__eyebrow">The problem</p>
+          <h2 class="case-section__title">The product had lab data. Scientists still had <em>tab fatigue</em>.</h2>
+        </div>
+        <div class="case-prose ed-philosophy__body">
+          <p>
+            Labforward served scientists running complex lab work, but the daily workflows were still fragmented. Scientists copied data from old experiments into new ones. IoT controls lived apart from experiment execution. Product ideas took weeks to validate, then too often came back with the same answer: “This is not what we meant.”
+          </p>
+          <p>
+            My role was to own the product roadmap for core lab management products and bring a more evidence-led operating model to the team. That meant using AI where it actually changed the workflow, not where it merely sounded impressive.
+          </p>
+          <p>
+            The throughline was simple: reduce manual work for scientists, validate before building, and connect disconnected lab systems into a workspace that matched how people actually worked.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics -->
+    <section class="case-section" aria-label="Labforward impact metrics">
+      <div class="case-metrics">
+        <div class="case-metric reveal">
+          <span class="case-metric__value">70%</span>
+          <span class="case-metric__label">production adoption for the AI-powered experiment workflow</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">4x</span>
+          <span class="case-metric__label">faster validation cycle after introducing rapid prototyping loops</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">15%</span>
+          <span class="case-metric__label">rework rate after changing validation culture, down from 50%</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">€500K</span>
+          <span class="case-metric__label">contract renewal supported by the unified workspace work</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chat with Experiment -->
+    <section class="case-feature">
+      <div class="case-feature__inner">
+        <div class="case-feature__content">
+          <p class="case-section__eyebrow reveal">AI case study</p>
+          <h2 class="case-feature__title reveal">Chat with <em>Experiment</em>.</h2>
+          <div class="case-feature__text ed-philosophy__body">
+            <p>
+              I watched a scientist flip between six browser tabs for twenty minutes, copying buffer concentrations from an old experiment into a new one, field by field. When I asked how often she did this, she laughed: “Every single day.”
+            </p>
+            <p>
+              We shipped a production multi-agent system where specialized agents handled distinct responsibilities: retrieval for relevant past experiments, reasoning for scientific context and user intent, and execution for auto-filling validated form fields.
+            </p>
+            <p>
+              The first approach used simple RAG. It worked technically, but users said it was accurate and slow. We evolved the design into orchestrated agents with a coordinator that routed queries and aggregated outputs. The system served real scientific workflows, not synthetic demos.
+            </p>
+          </div>
+          <ul class="case-impact-list reveal">
+            <li>Reached 70% adoption in production among users.</li>
+            <li>Eliminated 1-2 hours of daily manual data copying for affected workflows.</li>
+            <li>Moved GenAI from demo territory into daily scientific work.</li>
+          </ul>
+        </div>
+        <div class="case-feature__media case-feature__media--icon reveal">
+          <span class="material-symbols-outlined" aria-hidden="true">smart_toy</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rapid prototype -->
+    <section class="case-feature">
+      <div class="case-feature__inner">
+        <div class="case-feature__media case-feature__media--icon reveal">
+          <span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span>
+        </div>
+        <div class="case-feature__content">
+          <p class="case-section__eyebrow reveal">Process case study</p>
+          <h2 class="case-feature__title reveal">Validation before <em>commitment</em>.</h2>
+          <div class="case-feature__text ed-philosophy__body">
+            <p>
+              Half of what we built came back with the same response: “This is not what we meant.” A customer request sat in the CS backlog, Product and Design spent weeks on mockups, Engineering built for weeks, and the team discovered the mismatch only after the expensive work had already happened.
+            </p>
+            <p>
+              I did not mandate a new process from the top. I ran a pilot. When a customer requested better experiment search, I skipped the usual two-week design phase, built a working prototype with Cursor and v0.dev in four hours, and showed it to the customer the next day.
+            </p>
+            <p>
+              One day of work revealed what weeks of mockups would have missed: they wanted to search by reagent, not just experiment name. The pilot changed the team’s default question from “when can we build?” to “have we validated this yet?”
+            </p>
+          </div>
+          <ul class="case-impact-list reveal">
+            <li>Reduced time-to-validation from 8-12 weeks to 2-3 weeks.</li>
+            <li>Cut rework rate from 50% to 15%.</li>
+            <li>Increased feature adoption from 40% to 75%.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workspace -->
+    <section class="case-feature">
+      <div class="case-feature__inner">
+        <div class="case-feature__content">
+          <p class="case-section__eyebrow reveal">Workspace case study</p>
+          <h2 class="case-feature__title reveal">One workspace for the <em>lab</em>.</h2>
+          <div class="case-feature__text ed-philosophy__body">
+            <p>
+              A customer complaint landed on my desk, but I did not want to just fix what they asked for. I scheduled deep interviews with about ten users. The real problem was bigger than a missing feature.
+            </p>
+            <p>
+              Labforward had two separate systems: an IoT control dashboard for lab equipment and a lab execution system for running experiments. Scientists switched tabs constantly, copying data between systems. One user said, “If I’m going to use your app, I want it to help me, not slow me down.”
+            </p>
+            <p>
+              I led the project end-to-end: discovery, user research, mockup design, problem validation, cross-functional ideation with engineering, design, and sales, implementation clarifications, and final validation before launch.
+            </p>
+          </div>
+          <ul class="case-impact-list reveal">
+            <li>Reached 60% adoption among users.</li>
+            <li>Supported a €500K contract renewal.</li>
+            <li>Turned frustrated customer stakeholders into product advocates.</li>
+          </ul>
+        </div>
+        <div class="case-feature__media reveal">
+          <img src="../images/labforward-card.png" alt="Labforward lab intelligence platform" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="case-quote">
+      <div class="case-quote__inner reveal">
+        <blockquote>
+          “Matt dives in with curiosity and focus, turning ideas into tangible <em>outcomes</em>.”
+        </blockquote>
+        <cite>Jeroen de Haas, CPO at Labforward</cite>
+      </div>
+    </section>
+
+    <!-- Next -->
+    <section class="case-next">
+      <div class="case-next__inner reveal">
+        <div>
+          <p class="ed-eyebrow" style="margin-bottom: var(--ed-s-2);">Explore more</p>
+          <h2 class="case-feature__title" style="font-size: clamp(2rem, 4vw, 3.75rem);">Back to the full portfolio.</h2>
+        </div>
+        <div class="ed-hero__cta-row">
+          <a class="ed-btn" href="../portfolio.html">
+            View all projects
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="ed-link" href="thryve.html">
+            <span>Read Thryve case study</span>
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="ed-foot">
+    <div class="ed-foot__inner">
+      <div>
+        <p>&copy; 2026 Matthew Thaokhamlue.</p>
+        <p style="color: var(--ed-ink-mute); font-size: var(--ed-fz-xs); margin-top: 0.25rem;">
+          Builder · AI Workflow Architect · Berlin, Germany
+        </p>
+      </div>
+      <div class="ed-foot__icons">
+        <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'labforward',link_position:'footer'})}"
+          aria-label="LinkedIn">
+          <i class="fab fa-linkedin text-2xl"></i>
+        </a>
+        <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'labforward',link_position:'footer'})}"
+          aria-label="GitHub">
+          <i class="fab fa-github text-2xl"></i>
+        </a>
+      </div>
     </div>
-  </dialog>
+  </footer>
+
+  <!-- GSAP (pinned) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Editorial motion -->
+  <script src="../assets/js/editorial.js?v=20260505a"></script>
 
   <script>
-    function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('translate-x-full'); }
-    const projects = {
-      'chat-experiment': {
-        title: "Chat with Experiment",
-        tags: ["Senior PM", "Multi-Agent System", "Production AI", "LLM Orchestration"],
-        image: null,
-        links: [],
-        overview: `<p><strong>Role:</strong> Senior Product Manager</p><p><strong>Company:</strong> Labforward GmbH</p><p><strong>System:</strong> Production multi-agent architecture serving real users daily</p>`,
-        challenge: "I watched a scientist flip between six browser tabs for twenty minutes. She was copying buffer concentrations from an old experiment into a new one, field by field. When I asked how often she did this, she laughed: 'Every single day.' Non-power users told us this routine cost them 1-2 extra hours. For a platform meant to speed up lab work, we were actually slowing people down on recurring experiments. This wasn't a problem for a demo or MVP—this was a daily pain point affecting hundreds of scientists in production.",
-        solution: "We shipped a production multi-agent system where specialized agents handle distinct responsibilities: a retrieval agent finds relevant past experiments, a reasoning agent interprets scientific context and user intent, and an execution agent auto-fills form fields with validated data. I led discovery, user research, and architecture decisions end-to-end. Our first approach used simple RAG. It worked technically, but users said 'accurate but slow.' So we evolved to an orchestrated multi-agent design with a coordinator that routes queries to specialized agents and aggregates their outputs. The system runs in production daily, handling real scientific queries—not synthetic test cases. Before committing engineering resources, we validated the architecture with low-cost prototypes, testing with both power users and everyday scientists.",
-        impact: ["70% adoption in production—scientists use it as part of their daily workflow", "Eliminated 1-2 hours of daily manual data copying across the user base", "Multi-agent architecture enabled faster response times and higher accuracy than monolithic approaches", "System handles edge cases gracefully because each agent specializes in its domain"],
-        tech: "Multi-Agent Orchestration, LLM Coordination, Retrieval Agents, Reasoning Agents, Execution Agents, Production AI Systems, Design Thinking"
-      },
-      'rapid-prototype': {
-        title: "Rapid Prototype Validation",
-        tags: ["Senior PM", "Process Change", "AI Tools", "Culture Change"],
-        image: null,
-        links: [],
-        overview: `<p><strong>Role:</strong> Senior Product Manager</p><p><strong>Company:</strong> Labforward GmbH</p><p><strong>Focus:</strong> Process & Culture Transformation</p>`,
-        challenge: "Half of everything we built came back with the same response: 'This isn't what we meant.' I watched the pattern repeat. A customer request would sit in the CS backlog for 2 weeks, then Product and Design would spend 2 weeks on mockups, then Engineering would build for 4 weeks. Eight to twelve weeks total. And 50% of the time, we'd missed the mark completely. The team had started pointing fingers. Design blamed Product for bad requirements. Engineering blamed Design for impractical mockups. Everyone was frustrated, and no one was owning the outcomes.",
-        solution: "I chose not to mandate a new process from the top. Instead, I ran a pilot. When a customer requested 'better experiment search functionality,' I skipped the usual 2-week design phase. Using Cursor and v0.dev, I built a working prototype in 4 hours and showed it to the customer the next day. Their response surprised me: 'Not quite. We want to search by reagent, not just experiment name.' One day of work revealed what 2 weeks of mockups would have missed. We iterated the prototype, got their sign-off, and only then handed it to Design and Engineering to build properly. That single pilot created believers. I addressed each team's concerns directly, showing Design, Engineering, and Commercial how this made their jobs easier, not harder.",
-        impact: ["Time-to-validation dropped from 8-12 weeks to 2-3 weeks (4x faster)", "Rework rate fell from 50% to 15%", "Feature adoption jumped from 40% to 75%", "The question shifted from 'Why do we keep building things no one uses?' to 'We validate before we build.'"],
-        tech: "Cursor, v0.dev, Rapid Prototyping, Stakeholder Management, Change Management"
-      },
-      'workspace': {
-        title: "Unified Workspace",
-        tags: ["Senior PM", "End-to-End", "User Research", "€500K Renewal"],
-        image: null,
-        links: [],
-        overview: `<p><strong>Role:</strong> Senior Product Manager</p><p><strong>Company:</strong> Labforward GmbH</p><p><strong>Scope:</strong> End-to-end product development</p>`,
-        challenge: "A customer complaint landed on my desk, but I didn't want to just fix what they asked for. I wanted to understand why they were frustrated. So I scheduled deep interviews with about 10 users. What I heard surprised me. Our product had two separate systems: an IoT control dashboard for lab equipment and a lab execution system for running experiments. Scientists had to switch between tabs constantly, copying data from one place to another. One user put it bluntly: 'If I'm going to use your app, I want it to help me, not slow me down.' That line stuck with me. We weren't just missing a feature. We were breaking their mental model of how lab software should work.",
-        solution: "I led the entire project end-to-end: discovery, user research, mockup design, problem validation with users, solution ideation with engineers, designers, and sales, then clarifications during implementation, and final validation before launch. The solution was a unified 'workspace' that brought IoT controls and experiment execution into one view with a better data structure underneath. No more tab switching. No more copy-pasting between systems. The ideation sessions with cross-functional teams were key. Engineers understood the data structure challenges. Sales knew which customers would care most. Design pushed for simplicity. Everyone contributed to the solution.",
-        impact: ["60% adoption rate among users", "Led directly to a €500K contract renewal. The customer's project managers and super users became advocates for our product.", "One user told me: 'I can't wait to use this in my daily work. This is how scientific software should be.'", "Proved that listening deeply to complaints can turn frustrated customers into champions."],
-        tech: "Product Discovery, User Research, Cross-functional Collaboration, Data Architecture, IoT Integration, Lab Execution Systems"
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (typeof gtag === 'function') {
+        var isOpen = menu.classList.contains('translate-x-full');
+        gtag('event', 'mobile_menu_toggled', { action: isOpen ? 'open' : 'close', page: 'labforward' });
       }
-    };
-    function openProject(projectId) {
-      const project = projects[projectId];
-      if (!project) return;
-      document.getElementById('modal-title').textContent = project.title;
-      const tagsContainer = document.getElementById('modal-tags');
-      tagsContainer.innerHTML = '';
-      project.tags.forEach(tag => { const span = document.createElement('span'); span.className = 'text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full'; span.textContent = tag; tagsContainer.appendChild(span); });
-      const imageContainer = document.getElementById('modal-image-container');
-      const imageEl = document.getElementById('modal-image');
-      if (project.image) { imageEl.src = project.image; imageEl.alt = project.title; imageContainer.classList.remove('hidden'); } else { imageContainer.classList.add('hidden'); imageEl.src = ''; }
-      const linksContainer = document.getElementById('modal-links');
-      linksContainer.innerHTML = '';
-      if (project.links && project.links.length > 0) { project.links.forEach(link => { const a = document.createElement('a'); a.href = link.url; a.target = '_blank'; a.className = 'inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors whitespace-nowrap w-fit'; a.innerHTML = `<span>${link.text}</span><span class="material-symbols-outlined text-sm">open_in_new</span>`; linksContainer.appendChild(a); }); }
-      document.getElementById('modal-overview').innerHTML = project.overview;
-      document.getElementById('modal-challenge').textContent = project.challenge;
-      document.getElementById('modal-solution').textContent = project.solution;
-      document.getElementById('modal-tech').textContent = project.tech;
-      const impactList = document.getElementById('modal-impact');
-      impactList.innerHTML = '';
-      project.impact.forEach(item => { const li = document.createElement('li'); li.textContent = item; impactList.appendChild(li); });
-      document.getElementById('project-modal').showModal();
+      menu.classList.toggle('translate-x-full');
     }
-    function closeProject(event) { if (event && event.target !== event.currentTarget) return; document.getElementById('project-modal').close(); }
   </script>
 </body>
+
 </html>

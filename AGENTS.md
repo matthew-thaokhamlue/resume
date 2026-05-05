@@ -14,9 +14,9 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 **Pages:** Each top-level HTML file is a standalone page sharing a common structure:
 - `index.html` — Main landing page (about, experience, certificates, contact as modal articles)
-- `portfolio.html` — Portfolio page with work detail modals
+- `portfolio.html` — Portfolio index page linking to standalone editorial case studies
 - `about.html`, `experience.html`, `certificates.html` — Dedicated full pages for each section
-- `portfolio/*.html` — Individual portfolio case study pages (labforward, labtwin, thryve)
+- `portfolio/*.html` — Individual editorial case study pages for career and personal projects
 
 **Styling:** Dual CSS approach:
 - **Tailwind CSS** via CDN (`cdn.tailwindcss.com`) with inline config in each HTML `<head>` — used for layout and utility classes. Config defines custom colors (`primary: #0da6f2`, `background-dark: #101c22`, `surface: #1a262d`), font family (`Space Grotesk`), and border radius tokens.
@@ -24,10 +24,10 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 **JavaScript:**
 - `assets/js/main.js` — Dimension template's modal article system (hash-based routing, article show/hide animations, keyboard/click handlers). jQuery-based.
-- `assets/js/portfolio.js` — Portfolio-specific routing that extends the article system with work card clicks, hash-based navigation between portfolio grid and work detail modals, and escape/close behavior that redirects appropriately.
+- `assets/js/portfolio.js` — Legacy Dimension-template routing; current `portfolio.html` and `portfolio/*.html` case-study pages do not use it.
 - jQuery, browser detection, and breakpoint utilities are vendored in `assets/js/`.
 
-**Modal Article Pattern:** Both `index.html` and `portfolio.html` use a pattern where `<article>` elements inside `<div id="main">` act as modal overlays. Articles are shown/hidden via CSS classes (`active`, `is-article-visible`) with JS managing transitions. Hash fragments (`#about`, `#work1`) drive navigation.
+**Modal Article Pattern:** Legacy Dimension-template pages can use `<article>` elements inside `<div id="main">` as modal overlays. The current `portfolio.html` is a direct-link editorial index, not a modal-article page.
 
 **Stacking Scroll Pattern (`index.html`, `experience.html`):**
 - Both pages use inline `.stack-panel` CSS (`position: sticky`, `top: 0`) plus a wheel-driven snap IIFE near the end of each file.

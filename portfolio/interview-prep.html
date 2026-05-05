@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D11HKMWFB4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-D11HKMWFB4');
+  </script>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>AI Interview Prep Framework - Matthew Thaokhamlue</title>
+  <meta name="description" content="Open-source AI interview prep framework case study by Matthew Thaokhamlue, built with Claude Code sub-agents and canonical context files." />
+  <meta name="author" content="Matthew Thaokhamlue" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://matthew-thaokhamlue.github.io/resume/portfolio/interview-prep.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="AI Interview Prep Framework - Matthew Thaokhamlue" />
+  <meta property="og:description" content="A multi-agent Claude Code framework that turns a CV and target role into stage-specific interview prep." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://matthew-thaokhamlue.github.io/resume/portfolio/interview-prep.html" />
+  <meta property="og:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260505b" />
+
+  <script id="tailwind-config">
+    tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary": "#0da6f2", "primary-dark": "#0a8ccf", "background-dark": "#101c22", "surface": "#1a262d", "surface-hover": "#233038" }, fontFamily: { "display": ["Space Grotesk", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" } } } }
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a1014; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4fb6dc; }
+
+    .case-backlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--ed-ink-dim);
+      font-size: var(--ed-fz-sm);
+      text-decoration: none;
+      margin-bottom: var(--ed-s-4);
+      transition: color var(--ed-d-fast) var(--ed-ease-soft), transform var(--ed-d-fast) var(--ed-ease-soft);
+    }
+
+    .case-backlink:hover {
+      color: var(--ed-accent-strong);
+      transform: translateX(-2px);
+    }
+
+    .case-hero {
+      position: relative;
+      min-height: 100svh;
+      padding-block: clamp(6rem, 14vh, 10rem) var(--ed-s-7);
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .case-hero::before {
+      content: "";
+      position: absolute;
+      inset: 12% -10% auto auto;
+      width: min(42rem, 62vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, rgba(108, 199, 233, 0.18), rgba(79, 182, 220, 0.07) 42%, transparent 68%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .case-hero__inner {
+      position: relative;
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: var(--ed-s-6);
+      width: 100%;
+    }
+
+    .case-hero__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-mute);
+    }
+
+    .case-hero__meta::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-hero__display {
+      font-family: var(--ed-display);
+      font-size: clamp(4rem, 11vw, 8.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+      font-weight: 320;
+      color: var(--ed-ink);
+      margin: 0;
+      will-change: font-variation-settings, letter-spacing, transform;
+    }
+
+    .case-hero__display em,
+    .case-section__title em,
+    .case-quote em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      color: var(--ed-accent-strong);
+      letter-spacing: -0.045em;
+    }
+
+    .case-hero__support {
+      max-width: 42rem;
+      color: var(--ed-ink-soft);
+      font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+      line-height: 1.55;
+      margin-top: var(--ed-s-4);
+    }
+
+    .case-hero__facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--ed-hairline);
+      border-bottom: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact {
+      padding: var(--ed-s-4) var(--ed-s-4) var(--ed-s-4) 0;
+      border-right: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact:last-child { border-right: 0; }
+    .case-fact__label {
+      display: block;
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-2);
+    }
+
+    .case-fact__value {
+      color: var(--ed-ink);
+      font-size: var(--ed-fz-base);
+      line-height: 1.35;
+    }
+
+    .case-section {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-section__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+      gap: clamp(3rem, 8vw, 7rem);
+      align-items: start;
+    }
+
+    .case-section__eyebrow {
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-3);
+    }
+
+    .case-section__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      font-weight: 340;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-prose {
+      display: grid;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+    }
+
+    .case-prose p { margin: 0; }
+
+    .case-prose strong {
+      color: var(--ed-ink);
+      font-weight: 600;
+    }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      gap: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-metric {
+      background: var(--ed-bg);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      min-height: 12rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    .case-metric__value {
+      font-family: var(--ed-display);
+      font-size: clamp(2.75rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+    }
+
+    .case-metric__label {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-sm);
+      line-height: 1.5;
+    }
+
+    .case-feature {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-feature__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: center;
+    }
+
+    .case-feature__media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      border: 1px solid var(--ed-hairline);
+      background: var(--ed-surface);
+      min-height: clamp(18rem, 42vw, 31rem);
+    }
+
+    .case-feature__media img {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.88) contrast(1.02);
+      opacity: 0.92;
+      transform: scale(1.015);
+    }
+
+    .case-feature__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(10, 16, 20, 0.42));
+      pointer-events: none;
+    }
+
+    .case-feature__media--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(108, 199, 233, 0.16), transparent 36%),
+        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    }
+
+    .case-feature__media--icon .material-symbols-outlined {
+      font-size: clamp(5rem, 14vw, 11rem);
+      color: rgba(108, 199, 233, 0.58);
+      filter: drop-shadow(0 24px 80px rgba(79, 182, 220, 0.16));
+    }
+
+
+    .case-feature__content {
+      display: grid;
+      gap: var(--ed-s-4);
+    }
+
+    .case-feature__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.4rem, 4.7vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin: 0;
+      color: var(--ed-ink);
+    }
+
+    .case-feature__title em {
+      font-style: italic;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 90, "WONK" 1;
+    }
+
+    .case-feature__text {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+      display: grid;
+      gap: var(--ed-s-3);
+    }
+
+    .case-impact-list {
+      list-style: none;
+      display: grid;
+      gap: var(--ed-s-3);
+      padding: 0;
+      margin: var(--ed-s-3) 0 0;
+    }
+
+    .case-impact-list li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--ed-s-3);
+      color: var(--ed-ink-soft);
+      line-height: 1.55;
+    }
+
+    .case-impact-list li::before {
+      content: "→";
+      color: var(--ed-accent-strong);
+      margin-top: 0.05em;
+    }
+
+    .case-quote {
+      padding-block: clamp(5rem, 12vw, 10rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-quote__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+    }
+
+    .case-quote blockquote {
+      max-width: 56rem;
+      font-family: var(--ed-display);
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-quote cite {
+      display: block;
+      margin-top: var(--ed-s-5);
+      color: var(--ed-ink-mute);
+      font-style: normal;
+      font-size: var(--ed-fz-sm);
+    }
+
+    .case-next {
+      padding-block: clamp(4rem, 10vw, 7rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-next__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    @media (max-width: 900px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .case-fact:nth-child(2) { border-right: 0; }
+      .case-fact:nth-child(-n+2) { border-bottom: 1px solid var(--ed-hairline); }
+
+      .case-section__inner,
+      .case-feature__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .case-feature__media { order: -1; }
+    }
+
+    @media (max-width: 640px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .case-fact,
+      .case-fact:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--ed-hairline);
+      }
+
+      .case-fact:last-child { border-bottom: 0; }
+    }
+  </style>
+</head>
+
+<body class="ed-page">
+  <header class="ed-topbar">
+    <div class="ed-topbar__inner">
+      <a class="ed-topbar__brand" href="../index.html"><span class="ed-topbar__brand-mark">M</span><span>Matthew Thaokhamlue</span></a>
+      <nav class="ed-topbar__nav" aria-label="Primary">
+        <a class="ed-topbar__link" href="../index.html">Home</a>
+        <a class="ed-topbar__link" href="../experience.html">Experience</a>
+        <a class="ed-topbar__link" href="../portfolio.html" aria-current="page">Portfolio</a>
+        <a class="ed-topbar__link" href="../certificates.html">Certifications</a>
+        <a class="ed-btn ed-btn--accent" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar',page:'interview-prep'})}">Let&rsquo;s talk</a>
+      </nav>
+      <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+    </div>
+  </header>
+
+  <div id="mobile-menu" class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+    <a class="text-2xl font-medium text-white" href="../index.html" onclick="toggleMenu()">Home</a>
+    <a class="text-2xl font-medium text-white" href="../experience.html" onclick="toggleMenu()">Experience</a>
+    <a class="text-2xl font-medium text-white" href="../portfolio.html" onclick="toggleMenu()">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="../certificates.html" onclick="toggleMenu()">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu"><span class="material-symbols-outlined text-3xl">close</span></button>
+  </div>
+
+  <main>
+    <section class="case-hero ed-hero" id="top">
+      <div class="case-hero__inner">
+        <div>
+          <a class="case-backlink" href="../portfolio.html"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span><span>Back to portfolio</span></a>
+          <div class="case-hero__meta"><span class="ed-eyebrow">Personal project · Multi-agent Claude Code framework</span></div>
+        </div>
+        <div>
+          <h1 class="case-hero__display ed-hero__display">Interview prep as an <em>agentic workflow</em>.</h1>
+          <p class="case-hero__support">A multi-agent framework where agents parse your CV once, research the company, analyze the role, and generate stage-specific preparation documents with reusable context.</p>
+        </div>
+        <div class="case-hero__facts reveal"><div class="case-fact">
+            <span class="case-fact__label">Type</span>
+            <span class="case-fact__value">Open source framework</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Agents</span>
+            <span class="case-fact__value">Onboarding + interview prep</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Pipeline</span>
+            <span class="case-fact__value">5 interview stages</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Output</span>
+            <span class="case-fact__value">Stage-specific prep docs</span>
+          </div></div>
+      </div>
+    </section>
+
+    <section class="case-section"><div class="case-section__inner"><div class="reveal"><p class="case-section__eyebrow">The problem</p><h2 class="case-section__title">Interview prep is research, synthesis, and memory, all at <em>once</em>.</h2></div><div class="case-prose ed-philosophy__body"><p>Good interview preparation requires more than reading a job description. You need your CV, the company’s product, business model, competitors, recent news, likely interviewer focus areas, and a stage-specific strategy.</p><p>I built a multi-agent Claude Code framework that turns that messy workflow into a reusable pipeline. Paste your CV once, name the company, then let agents research, structure, and generate prep materials for each stage.</p></div></div></section>
+    <section class="case-section" aria-label="Interview prep impact metrics"><div class="case-metrics"><div class="case-metric reveal"><span class="case-metric__value">5</span><span class="case-metric__label">interview stages supported from HR screen to executive round</span></div><div class="case-metric reveal"><span class="case-metric__value">2</span><span class="case-metric__label">core agents, onboarding and interview prep, with clean handoff files</span></div><div class="case-metric reveal"><span class="case-metric__value">0</span><span class="case-metric__label">manual company research required after the pipeline starts</span></div><div class="case-metric reveal"><span class="case-metric__value">1x</span><span class="case-metric__label">CV parsing step reused across every generated artifact</span></div></div></section>
+    <section class="case-feature"><div class="case-feature__inner"><div class="case-feature__content"><p class="case-section__eyebrow reveal">Agent system</p><h2 class="case-feature__title reveal">A prep pipeline that compounds <em>context</em>.</h2><div class="case-feature__text ed-philosophy__body"><p>An onboarding agent parses the CV into a canonical profile. An interview-prep agent then runs per stage, searches the web for company context, fetches job descriptions, researches interviewer backgrounds, and writes a structured prep document.</p><p>Every web-sourced point is tagged, uncertain findings are marked for verification, and each stage builds on prior context instead of starting from zero.</p></div><ul class="case-impact-list reveal"><li>Generated stage-specific prep for HR, hiring manager, technical, team, and executive rounds.</li><li>Made company research autonomous while preserving source traceability.</li><li>Created reusable canonical files so the system remembers instead of re-parsing.</li></ul><div class="ed-hero__cta-row reveal"><a class="ed-btn ed-btn--accent" href="https://github.com/matthew-thaokhamlue/interview-prep" target="_blank" rel="noopener noreferrer">View on GitHub <span class="ed-link__arrow" aria-hidden="true">→</span></a></div></div><div class="case-feature__media case-feature__media--icon reveal"><span class="material-symbols-outlined" aria-hidden="true">smart_toy</span></div></div></section>
+    <section class="case-next"><div class="case-next__inner reveal"><div><p class="ed-eyebrow" style="margin-bottom: var(--ed-s-2);">Explore more</p><h2 class="case-feature__title" style="font-size: clamp(2rem, 4vw, 3.75rem);">Back to the full portfolio.</h2></div><div class="ed-hero__cta-row"><a class="ed-btn" href="../portfolio.html">View all projects <span class="ed-link__arrow" aria-hidden="true">→</span></a><a class="ed-link" href="mcp-server.html"><span>Read MCP server case study</span><span class="ed-link__arrow" aria-hidden="true">→</span></a></div></div></section>
+  </main>
+
+  <footer class="ed-foot">
+    <div class="ed-foot__inner">
+      <div><p>&copy; 2026 Matthew Thaokhamlue.</p><p style="color: var(--ed-ink-mute); font-size: var(--ed-fz-xs); margin-top: 0.25rem;">Builder · AI Workflow Architect · Berlin, Germany</p></div>
+      <div class="ed-foot__icons">
+        <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'interview-prep',link_position:'footer'})}" aria-label="LinkedIn"><i class="fab fa-linkedin text-2xl"></i></a>
+        <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'interview-prep',link_position:'footer'})}" aria-label="GitHub"><i class="fab fa-github text-2xl"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="../assets/js/editorial.js?v=20260505a"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (typeof gtag === 'function') {
+        var isOpen = menu.classList.contains('translate-x-full');
+        gtag('event', 'mobile_menu_toggled', { action: isOpen ? 'open' : 'close', page: 'interview-prep' });
+      }
+      menu.classList.toggle('translate-x-full');
+    }
+  </script>
+</body>
+
+</html>

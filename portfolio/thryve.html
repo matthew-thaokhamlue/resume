@@ -12,23 +12,36 @@
   </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Thryve Projects - Matthew Thaokhamlue</title>
+  <title>Thryve Case Study - Matthew Thaokhamlue</title>
+  <meta name="description"
+    content="Thryve case study by Matthew Thaokhamlue, scaling a health data API and wearable integration platform to 1M+ users across 100+ B2B partners." />
+  <meta name="author" content="Matthew Thaokhamlue" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://matthew-thaokhamlue.github.io/resume/portfolio/thryve.html" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 
-  <!-- Tailwind CSS -->
+  <!-- Open Graph -->
+  <meta property="og:title" content="Thryve Case Study - Matthew Thaokhamlue" />
+  <meta property="og:description"
+    content="How Matthew Thaokhamlue helped scale Thryve's health data API and wearable integration platform to 1M+ users and 100+ B2B partners." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://matthew-thaokhamlue.github.io/resume/portfolio/thryve.html" />
+  <meta property="og:image" content="https://matthew-thaokhamlue.github.io/resume/images/thryve-card.png" />
+
+  <!-- Tailwind CSS, retained for mobile menu utility classes -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-  <!-- Fonts -->
+  <!-- Fonts: Fraunces display, Space Grotesk body, Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Tailwind Config -->
-  <script>
+  <!-- Editorial design layer -->
+  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260505b" />
+
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
@@ -36,221 +49,688 @@
           colors: {
             "primary": "#0da6f2",
             "primary-dark": "#0a8ccf",
+            "background-light": "#f5f7f8",
             "background-dark": "#101c22",
             "surface": "#1a262d",
             "surface-hover": "#233038",
           },
-          fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+          fontFamily: {
+            "display": ["Space Grotesk", "sans-serif"]
+          },
           borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
         },
       },
     }
   </script>
+
   <style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #101c22; }
-    ::-webkit-scrollbar-thumb { background: #233038; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #0da6f2; }
-    .glass-nav { background: rgba(16, 28, 34, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-    .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .card-hover { transition: all 0.3s ease; }
-    .card-hover:hover { transform: translateY(-4px); background-color: rgba(255, 255, 255, 0.08); }
+    ::-webkit-scrollbar-track { background: #0a1014; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4fb6dc; }
+
+    .case-backlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--ed-ink-dim);
+      font-size: var(--ed-fz-sm);
+      text-decoration: none;
+      margin-bottom: var(--ed-s-4);
+      transition: color var(--ed-d-fast) var(--ed-ease-soft), transform var(--ed-d-fast) var(--ed-ease-soft);
+    }
+
+    .case-backlink:hover {
+      color: var(--ed-accent-strong);
+      transform: translateX(-2px);
+    }
+
+    .case-hero {
+      position: relative;
+      min-height: 100svh;
+      padding-block: clamp(6rem, 14vh, 10rem) var(--ed-s-7);
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .case-hero::before {
+      content: "";
+      position: absolute;
+      inset: 12% -10% auto auto;
+      width: min(42rem, 62vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, rgba(108, 199, 233, 0.18), rgba(79, 182, 220, 0.07) 42%, transparent 68%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .case-hero__inner {
+      position: relative;
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: var(--ed-s-6);
+      width: 100%;
+    }
+
+    .case-hero__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-mute);
+    }
+
+    .case-hero__meta::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-hero__display {
+      font-family: var(--ed-display);
+      font-size: clamp(4rem, 11vw, 8.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+      font-weight: 320;
+      color: var(--ed-ink);
+      margin: 0;
+      will-change: font-variation-settings, letter-spacing, transform;
+    }
+
+    .case-hero__display em,
+    .case-section__title em,
+    .case-quote em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      color: var(--ed-accent-strong);
+      letter-spacing: -0.045em;
+    }
+
+    .case-hero__support {
+      max-width: 42rem;
+      color: var(--ed-ink-soft);
+      font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+      line-height: 1.55;
+      margin-top: var(--ed-s-4);
+    }
+
+    .case-hero__facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--ed-hairline);
+      border-bottom: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact {
+      padding: var(--ed-s-4) var(--ed-s-4) var(--ed-s-4) 0;
+      border-right: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact:last-child { border-right: 0; }
+    .case-fact__label {
+      display: block;
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-2);
+    }
+
+    .case-fact__value {
+      color: var(--ed-ink);
+      font-size: var(--ed-fz-base);
+      line-height: 1.35;
+    }
+
+    .case-section {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-section__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+      gap: clamp(3rem, 8vw, 7rem);
+      align-items: start;
+    }
+
+    .case-section__eyebrow {
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-3);
+    }
+
+    .case-section__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      font-weight: 340;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-prose {
+      display: grid;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+    }
+
+    .case-prose p { margin: 0; }
+
+    .case-prose strong {
+      color: var(--ed-ink);
+      font-weight: 600;
+    }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      gap: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-metric {
+      background: var(--ed-bg);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      min-height: 12rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    .case-metric__value {
+      font-family: var(--ed-display);
+      font-size: clamp(2.75rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+    }
+
+    .case-metric__label {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-sm);
+      line-height: 1.5;
+    }
+
+    .case-feature {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-feature__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: center;
+    }
+
+    .case-feature__media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      border: 1px solid var(--ed-hairline);
+      background: var(--ed-surface);
+      min-height: clamp(18rem, 42vw, 31rem);
+    }
+
+    .case-feature__media img {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.88) contrast(1.02);
+      opacity: 0.92;
+      transform: scale(1.015);
+    }
+
+    .case-feature__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(10, 16, 20, 0.42));
+      pointer-events: none;
+    }
+
+    .case-feature__content {
+      display: grid;
+      gap: var(--ed-s-4);
+    }
+
+    .case-feature__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.4rem, 4.7vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin: 0;
+      color: var(--ed-ink);
+    }
+
+    .case-feature__title em {
+      font-style: italic;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 90, "WONK" 1;
+    }
+
+    .case-feature__text {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+      display: grid;
+      gap: var(--ed-s-3);
+    }
+
+    .case-impact-list {
+      list-style: none;
+      display: grid;
+      gap: var(--ed-s-3);
+      padding: 0;
+      margin: var(--ed-s-3) 0 0;
+    }
+
+    .case-impact-list li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--ed-s-3);
+      color: var(--ed-ink-soft);
+      line-height: 1.55;
+    }
+
+    .case-impact-list li::before {
+      content: "→";
+      color: var(--ed-accent-strong);
+      margin-top: 0.05em;
+    }
+
+    .case-quote {
+      padding-block: clamp(5rem, 12vw, 10rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-quote__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+    }
+
+    .case-quote blockquote {
+      max-width: 56rem;
+      font-family: var(--ed-display);
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-quote cite {
+      display: block;
+      margin-top: var(--ed-s-5);
+      color: var(--ed-ink-mute);
+      font-style: normal;
+      font-size: var(--ed-fz-sm);
+    }
+
+    .case-next {
+      padding-block: clamp(4rem, 10vw, 7rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-next__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    @media (max-width: 900px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .case-fact:nth-child(2) { border-right: 0; }
+      .case-fact:nth-child(-n+2) { border-bottom: 1px solid var(--ed-hairline); }
+
+      .case-section__inner,
+      .case-feature__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .case-feature__media { order: -1; }
+    }
+
+    @media (max-width: 640px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .case-fact,
+      .case-fact:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--ed-hairline);
+      }
+
+      .case-fact:last-child { border-bottom: 0; }
+    }
   </style>
 </head>
 
-<body class="font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white">
-  <div class="relative flex min-h-screen w-full flex-col">
-
-    <!-- TopNavBar -->
-    <header class="sticky top-0 z-50 flex justify-center glass-nav">
-      <div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
-        <div class="flex items-center gap-3">
-          <div class="size-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
-            <span class="font-bold text-xl">M</span>
-          </div>
-          <h2 class="text-white text-lg font-bold tracking-tight hidden sm:block">Matthew Thaokhamlue</h2>
-        </div>
-        <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
-          <div class="flex items-center gap-6">
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../index.html">Home</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../experience.html">Experience</a>
-            <a class="text-primary text-sm font-medium" href="../portfolio.html">Portfolio</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="../certificates.html">Certifications</a>
-          </div>
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
-            <span class="truncate">Let's Connect</span>
-          </a>
-        </nav>
-        <button class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors" onclick="toggleMenu()">
-          <span class="material-symbols-outlined">menu</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../index.html" onclick="toggleMenu()">Home</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../experience.html" onclick="toggleMenu()">Experience</a>
-      <a class="text-2xl font-bold text-primary" href="../portfolio.html" onclick="toggleMenu()">Portfolio</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="../certificates.html" onclick="toggleMenu()">Certifications</a>
-      <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
-        <span class="material-symbols-outlined text-3xl">close</span>
+<body class="ed-page">
+  <!-- Top bar -->
+  <header class="ed-topbar">
+    <div class="ed-topbar__inner">
+      <a class="ed-topbar__brand" href="../index.html">
+        <span class="ed-topbar__brand-mark">M</span>
+        <span>Matthew Thaokhamlue</span>
+      </a>
+      <nav class="ed-topbar__nav" aria-label="Primary">
+        <a class="ed-topbar__link" href="../index.html">Home</a>
+        <a class="ed-topbar__link" href="../experience.html">Experience</a>
+        <a class="ed-topbar__link" href="../portfolio.html" aria-current="page">Portfolio</a>
+        <a class="ed-topbar__link" href="../certificates.html">Certifications</a>
+        <a class="ed-btn ed-btn--accent" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+          rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar',page:'thryve'})}">
+          Let&rsquo;s talk
+        </a>
+      </nav>
+      <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()">
+        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
       </button>
     </div>
+  </header>
 
-    <main class="flex flex-1 flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-12 animate-fade-in">
-
-      <!-- Back Link -->
-      <div class="w-full max-w-7xl">
-        <a href="../portfolio.html" class="inline-flex items-center gap-2 text-white/60 hover:text-primary transition-colors text-sm">
-          <span class="material-symbols-outlined text-lg">arrow_back</span>
-          <span>Back to Portfolio</span>
-        </a>
-      </div>
-
-      <!-- Header -->
-      <div class="w-full max-w-7xl flex flex-col gap-4">
-        <h2 class="text-2xl sm:text-3xl font-bold">Thryve GmbH</h2>
-        <p class="text-lg text-white/60">Thryve connects wearables and health apps to a single API, helping companies build health products without the integration headache.</p>
-        <p class="text-lg text-white/60">Health Data Platform • Product Owner • Oct 2019 - Dec 2022</p>
-        <div>
-          <a href="http://thryve.health/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors w-fit"><span>Visit website</span><span class="material-symbols-outlined text-sm">open_in_new</span></a>
-        </div>
-      </div>
-
-      <!-- Projects Grid -->
-      <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-
-        <!-- Project: Corona Datenspende -->
-        <div onclick="openProject('corona-datenspende')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-            <img src="../images/corona-datenspende.png" alt="Corona Datenspende" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Corona Datenspende (RKI)</p>
-            <p class="text-white/60 text-sm line-clamp-2">Germany's first Corona-App for RKI. 500K+ active data donors, launched in 4 weeks, detected second wave 2 weeks early.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">German Gov't</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">500K+ Users</span>
-          </div>
-        </div>
-
-        <!-- Project: Thryve Health Data SDK -->
-        <div onclick="openProject('thryve-sdk')" class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-          <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-            <img src="../images/thryve-sdk.png" alt="Thryve Health Data API" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-          </div>
-          <div class="flex flex-col gap-2 p-2">
-            <p class="text-white text-lg font-bold">Thryve Health Data API</p>
-            <p class="text-white/60 text-sm line-clamp-2">Owned the unified SDK serving 1M+ users across 100+ health industry customers, simplifying wearable data integration.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-auto p-2">
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">API Platform</span>
-            <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Health Tech</span>
-          </div>
-        </div>
-
-      </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-background-dark py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-        <p class="text-white/60 text-sm">&copy; 2025 Matthew Thaokhamlue. All rights reserved.</p>
-        <div class="flex items-center gap-6">
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" class="text-white/60 hover:text-primary transition-colors" onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'thryve',link_position:'footer'})}"><i class="fab fa-linkedin text-2xl"></i></a>
-          <a href="https://github.com/matthew-thaokhamlue" target="_blank" class="text-white/60 hover:text-white transition-colors" onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'thryve',link_position:'footer'})}"><i class="fab fa-github text-2xl"></i></a>
-        </div>
-      </div>
-    </footer>
+  <!-- Mobile menu -->
+  <div id="mobile-menu"
+    class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+    <a class="text-2xl font-medium text-white" href="../index.html" onclick="toggleMenu()">Home</a>
+    <a class="text-2xl font-medium text-white" href="../experience.html" onclick="toggleMenu()">Experience</a>
+    <a class="text-2xl font-medium text-white" href="../portfolio.html" onclick="toggleMenu()">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="../certificates.html" onclick="toggleMenu()">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu">
+      <span class="material-symbols-outlined text-3xl">close</span>
+    </button>
   </div>
 
-  <!-- Project Modal -->
-  <dialog id="project-modal" class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="closeProject(event)">
-      <div class="bg-surface border border-white/10 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl" onclick="event.stopPropagation()">
-        <div class="flex items-start justify-between p-6 sm:p-8 border-b border-white/5">
-          <div class="flex flex-col gap-2">
-            <h3 id="modal-title" class="text-2xl sm:text-3xl font-bold text-white"></h3>
-            <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+  <main>
+    <!-- Hero -->
+    <section class="case-hero ed-hero" id="top">
+      <div class="case-hero__inner">
+        <div>
+          <a class="case-backlink" href="../portfolio.html">
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+            <span>Back to portfolio</span>
+          </a>
+          <div class="case-hero__meta">
+            <span class="ed-eyebrow">Thryve GmbH · Health Data Platform · 2019 — 2022</span>
           </div>
-          <button onclick="closeProject()" class="text-white/50 hover:text-white transition-colors p-2">
-            <span class="material-symbols-outlined text-3xl">close</span>
-          </button>
         </div>
-        <div class="overflow-y-auto p-6 sm:p-8 flex flex-col gap-8">
-          <div id="modal-image-container" class="hidden"><img id="modal-image" src="" alt="" class="w-full rounded-xl border border-white/10 object-cover max-h-80" /></div>
-          <div id="modal-links" class="flex flex-wrap gap-4"></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Project Overview</h4><div id="modal-overview" class="text-white/80 leading-relaxed space-y-2"></div></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">The Challenge</h4><p id="modal-challenge" class="text-white/80 leading-relaxed"></p></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Solution & Implementation</h4><p id="modal-solution" class="text-white/80 leading-relaxed"></p></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Impact & Results</h4><ul id="modal-impact" class="list-disc list-inside text-white/80 leading-relaxed space-y-1"></ul></div>
-          <div class="flex flex-col gap-3"><h4 class="text-primary uppercase tracking-wide text-sm font-bold">Technical Architecture</h4><p id="modal-tech" class="text-white/80 leading-relaxed"></p></div>
+
+        <div>
+          <h1 class="case-hero__display ed-hero__display">One API for the messy world of <em>wearable health data</em>.</h1>
+          <p class="case-hero__support">
+            As Product Owner at Thryve, I helped scale a regulated health data platform from a small startup into infrastructure used by more than one million people across digital health, research, insurance, and public health.
+          </p>
+        </div>
+
+        <div class="case-hero__facts reveal">
+          <div class="case-fact">
+            <span class="case-fact__label">Role</span>
+            <span class="case-fact__value">Product Owner</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Company stage</span>
+            <span class="case-fact__value">Employee #7 to scale-up</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Platform</span>
+            <span class="case-fact__value">API, SDK, wearable integrations</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Outcome</span>
+            <span class="case-fact__value">1M+ users, 100+ B2B partners</span>
+          </div>
         </div>
       </div>
+    </section>
+
+    <!-- Origin -->
+    <section class="case-section">
+      <div class="case-section__inner">
+        <div class="reveal">
+          <p class="case-section__eyebrow">The problem</p>
+          <h2 class="case-section__title">Health data was everywhere, but useful access was <em>nowhere</em>.</h2>
+        </div>
+        <div class="case-prose ed-philosophy__body">
+          <p>
+            Every health tech company I talked to had the same problem. They wanted to build products around wearable data, but every device had its own rules. Fitbit had one API. Garmin had another. Apple Health behaved differently depending on the iOS version. Oura, Withings, Samsung Health, Omron, each integration became its own mini-product.
+          </p>
+          <p>
+            I watched one customer spend four months connecting to a single device before they could even start building their actual product. Most health products needed five or six sources, not one. That meant teams were spending their best engineering time on plumbing instead of patient outcomes, research questions, or behavior change.
+          </p>
+          <p>
+            The product challenge was not just connecting devices. It was turning fragmented, noisy, sensitive health data into something developers could trust, and users could consent to safely.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics -->
+    <section class="case-section" aria-label="Thryve impact metrics">
+      <div class="case-metrics">
+        <div class="case-metric reveal">
+          <span class="case-metric__value">1M+</span>
+          <span class="case-metric__label">end users powered by Thryve health data infrastructure</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">100+</span>
+          <span class="case-metric__label">B2B partners across insurance, research, and digital health</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">10+</span>
+          <span class="case-metric__label">major wearable and health app integrations led or shipped</span>
+        </div>
+        <div class="case-metric reveal">
+          <span class="case-metric__value">€1M</span>
+          <span class="case-metric__label">ARR milestone reached as the company scaled from 7 to 35 people</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- API platform -->
+    <section class="case-feature">
+      <div class="case-feature__inner">
+        <div class="case-feature__content">
+          <p class="case-section__eyebrow reveal">Platform case study</p>
+          <h2 class="case-feature__title reveal">The unified <em>health data API</em>.</h2>
+          <div class="case-feature__text ed-philosophy__body">
+            <p>
+              We built one API that talked to hundreds of wearables and health apps. A developer could integrate once, then access normalized health data across Fitbit, Garmin, Apple Health, Withings, Oura, Samsung Health, Omron, and more.
+            </p>
+            <p>
+              I owned roadmap prioritization and worked with engineering to standardize the chaos behind the scenes. Heart rate from a Fitbit does not arrive like heart rate from an Apple Watch. Sleep, activity, workouts, and device metadata all required product decisions about consistency, edge cases, missing data, consent, and developer experience.
+            </p>
+            <p>
+              The best feedback I heard was simple: “You saved us six months.” That is what good infrastructure does. It disappears so someone else can build.
+            </p>
+          </div>
+          <ul class="case-impact-list reveal">
+            <li>Scaled API and SDK usage to 1M+ users across 100+ health industry customers.</li>
+            <li>Led 10+ wearable integrations, including Oura, Whoop, Omron, Samsung Health, and Apple Health.</li>
+            <li>Helped grow the company from €0 to €1M ARR and from 7 to 35 people.</li>
+          </ul>
+        </div>
+        <div class="case-feature__media reveal">
+          <img src="../images/thryve-sdk.png" alt="Thryve Health Data API interface" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Corona Datenspende -->
+    <section class="case-feature">
+      <div class="case-feature__inner">
+        <div class="case-feature__media reveal">
+          <img src="../images/corona-datenspende.png" alt="Corona Datenspende project" />
+        </div>
+        <div class="case-feature__content">
+          <p class="case-section__eyebrow reveal">Public health case study</p>
+          <h2 class="case-feature__title reveal">When product work became a <em>pandemic response</em>.</h2>
+          <div class="case-feature__text ed-philosophy__body">
+            <p>
+              In March 2020, COVID-19 had just hit Germany. We were still a small startup, but we had a question nobody had answered yet: could smartwatch data help detect population-level fever signals before the official numbers caught up?
+            </p>
+            <p>
+              We pitched the idea to the Robert Koch-Institute, Germany’s public health institute, then moved fast. Four weeks from concept to launch. Mobile app, data pipelines, privacy infrastructure, GDPR-compliant consent, and a public-facing story clear enough for hundreds of thousands of people to understand why donating their health data mattered.
+            </p>
+            <p>
+              On launch day, 300,000 people signed up in the first 24 hours. Over one million eventually registered, with 500,000 active data donors. The algorithms detected Germany’s second wave two weeks before official case numbers did.
+            </p>
+          </div>
+          <ul class="case-impact-list reveal">
+            <li>Launched Germany’s first Corona-App for RKI in four weeks.</li>
+            <li>Reached 1M+ registrations and 500K+ active data donors.</li>
+            <li>Supported early detection of Germany’s second wave two weeks before official case numbers.</li>
+          </ul>
+          <div class="ed-hero__cta-row reveal">
+            <a class="ed-btn ed-btn--accent" href="https://www.thryve.health/news/how-thryve-built-a-data-donation-tool-to-fight-covid-19-for-the-german-government" target="_blank" rel="noopener noreferrer"
+              onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_domain:'thryve.health',link_type:'portfolio_project',project_name:'corona_datenspende'})}">
+              Read Thryve article
+              <span class="ed-link__arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="ed-link" href="https://corona-datenspende.github.io/en/" target="_blank" rel="noopener noreferrer"
+              onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_domain:'corona-datenspende.github.io',link_type:'portfolio_project',project_name:'corona_datenspende'})}">
+              <span>Project archive</span>
+              <span class="ed-link__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Operating model -->
+    <section class="case-section">
+      <div class="case-section__inner">
+        <div class="reveal">
+          <p class="case-section__eyebrow">How I worked</p>
+          <h2 class="case-section__title">The job was part product, part operations, part <em>translation layer</em>.</h2>
+        </div>
+        <div class="case-prose ed-philosophy__body">
+          <p>
+            Thryve taught me how to be useful when the company is small and the product surface is wide. I moved between customer calls, sprint planning, QA, partner integration scoping, release coordination, and internal process design.
+          </p>
+          <p>
+            I worked closely with C-level, frontend, backend, QA, and customer teams to plan, execute, and review releases. The work was technical, but the core PM job was human: make the problem legible, make the tradeoff explicit, and keep the team moving without losing sight of the end user.
+          </p>
+          <p>
+            That period shaped how I still work now. Listen deeply, find the system underneath the complaint, and build infrastructure that lets other teams move faster.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="case-quote">
+      <div class="case-quote__inner reveal">
+        <blockquote>
+          “Matthew scaled a complex IT service in a highly regulated field of healthcare from 1k end users to over <em>1 million</em>.”
+        </blockquote>
+        <cite>Paul Burggraf, Founder at Thryve</cite>
+      </div>
+    </section>
+
+    <!-- Next -->
+    <section class="case-next">
+      <div class="case-next__inner reveal">
+        <div>
+          <p class="ed-eyebrow" style="margin-bottom: var(--ed-s-2);">Next case study</p>
+          <h2 class="case-feature__title" style="font-size: clamp(2rem, 4vw, 3.75rem);">Voice AI for scientists.</h2>
+        </div>
+        <div class="ed-hero__cta-row">
+          <a class="ed-btn" href="labtwin.html">
+            Read LabTwin case study
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="ed-link" href="../portfolio.html">
+            <span>Back to all portfolio</span>
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="ed-foot">
+    <div class="ed-foot__inner">
+      <div>
+        <p>&copy; 2026 Matthew Thaokhamlue.</p>
+        <p style="color: var(--ed-ink-mute); font-size: var(--ed-fz-xs); margin-top: 0.25rem;">
+          Builder · AI Workflow Architect · Berlin, Germany
+        </p>
+      </div>
+      <div class="ed-foot__icons">
+        <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'thryve',link_position:'footer'})}"
+          aria-label="LinkedIn">
+          <i class="fab fa-linkedin text-2xl"></i>
+        </a>
+        <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'thryve',link_position:'footer'})}"
+          aria-label="GitHub">
+          <i class="fab fa-github text-2xl"></i>
+        </a>
+      </div>
     </div>
-  </dialog>
+  </footer>
+
+  <!-- GSAP (pinned) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Editorial motion -->
+  <script src="../assets/js/editorial.js?v=20260505a"></script>
 
   <script>
-    function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('translate-x-full'); }
-
-    const projects = {
-      'corona-datenspende': {
-        title: "Corona Datenspende (RKI)",
-        tags: ["Product Owner", "German Government", "500K+ Users", "COVID-19 Response"],
-        image: "../images/corona-datenspende.png",
-        links: [
-          { text: "Thryve Article", url: "https://www.thryve.health/news/how-thryve-built-a-data-donation-tool-to-fight-covid-19-for-the-german-government" },
-          { text: "Project GitHub", url: "https://corona-datenspende.github.io/en/" }
-        ],
-        overview: `<p><strong>Role:</strong> Product Owner</p><p><strong>Client:</strong> Robert Koch-Institute (German Government)</p><p><strong>Timeline:</strong> 4 weeks from concept to launch</p><p><strong>Scale:</strong> 1M+ registrations, 500K+ active data donors</p>`,
-        challenge: "In March 2020, I watched my colleagues' faces go pale during a video call. COVID-19 had just hit Germany. We were a 7-person startup with an idea no one had tried before: What if smartwatches could detect a pandemic? The data existed. Every Fitbit, every Apple Watch quietly tracking heart rates and sleep. Fever shows up in that data. But it was locked away in manufacturers' silos, useless to the scientists who needed it most. We had no government contract. No guarantee anyone would listen. Just a hunch that we were sitting on something that mattered.",
-        solution: "We cold-called the Robert Koch-Institute, Germany's publich health institute, and pitched an idea that sounded crazy: let citizens donate their smartwatch data to fight the virus. I had our engineers briefed before RKI even said yes. We couldn't afford to wait. Four weeks. That's all we had before the first wave peaked. We built the app, the data pipelines, the privacy infrastructure, GDPR-complied, while the world was locking down. The whole team worked overtime and weekends. Not because anyone asked us to, but because we believed in what we were building.",
-        impact: ["On April 7th, 2020, we launched. 300,000 people signed up in the first 24 hours.", "I still remember refreshing the dashboard, watching the numbers climb, thinking: 'This is actually working.'", "Over 1 million people eventually registered. 500,000 became active data donors.", "Our algorithms detected Germany's second wave two weeks before official case numbers did. Two weeks. In a pandemic, that's a lifetime.", "RKI called it 'really quite unique', the largest citizen science project of its kind.", "I call it the moment I understood what product work can actually do when it matters."],
-        tech: "Wearable Data Integration (300+ devices), Fever Detection Algorithms, GDPR-Compliant Infrastructure, Mobile Apps (iOS/Android), Real-time Data Analytics"
-      },
-      'thryve-sdk': {
-        title: "Thryve Health Data API",
-        tags: ["Product Owner", "API Platform", "Health Tech", "SDK"],
-        image: "../images/thryve-sdk.png",
-        links: [],
-        overview: `<p><strong>Role:</strong> Product Owner</p><p><strong>Company:</strong> Thryve GmbH</p>`,
-        challenge: "Every health tech company I talked to had the same problem. They wanted to build apps that used wearable data, but integrating a single device took months. Fitbit had one API. Garmin had another. Apple Health worked differently on every iOS version. I watched a customer spend four months just connecting to Oura Ring. Four months before they could even start building their actual product. And that was just one device. Most apps needed five or six.",
-        solution: "We built one API that talked to all of them. A developer could connect to 300+ wearables and health apps with a single integration. I owned the product roadmap and drove prioritization with engineering to standardize the chaos. Heart rate from a Fitbit looks different than heart rate from an Apple Watch. We normalized everything so developers got clean, consistent data. They wrote one integration. We handled the mess behind the scenes.",
-        impact: ["Over 1 million users now get their health data through our API. That number still surprises me.", "We grew to €1M ARR, mostly through word of mouth. Developers told other developers.", "100+ customers signed on, from insurance companies to university research labs to digital health startups.", "We added Oura Ring, Whoop, Omron, Samsung Health, and six other major integrations while I was there.", "The best feedback I got: 'You saved us six months.' That's what good infrastructure does. It disappears so others can build."],
-        tech: "Data Normalization Engine, Real-Time Webhooks, Multi-Tenant Architecture, Device Integration Layer"
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (typeof gtag === 'function') {
+        var isOpen = menu.classList.contains('translate-x-full');
+        gtag('event', 'mobile_menu_toggled', { action: isOpen ? 'open' : 'close', page: 'thryve' });
       }
-    };
-
-    function openProject(projectId) {
-      const project = projects[projectId];
-      if (!project) return;
-      document.getElementById('modal-title').textContent = project.title;
-      const tagsContainer = document.getElementById('modal-tags');
-      tagsContainer.innerHTML = '';
-      project.tags.forEach(tag => { const span = document.createElement('span'); span.className = 'text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full'; span.textContent = tag; tagsContainer.appendChild(span); });
-      const imageContainer = document.getElementById('modal-image-container');
-      const imageEl = document.getElementById('modal-image');
-      if (project.image) { imageEl.src = project.image; imageEl.alt = project.title; imageContainer.classList.remove('hidden'); } else { imageContainer.classList.add('hidden'); imageEl.src = ''; }
-      const linksContainer = document.getElementById('modal-links');
-      linksContainer.innerHTML = '';
-      if (project.links && project.links.length > 0) { project.links.forEach(link => { const a = document.createElement('a'); a.href = link.url; a.target = '_blank'; a.className = 'inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg transition-colors whitespace-nowrap'; a.innerHTML = `<span>${link.text}</span><span class="material-symbols-outlined text-sm">open_in_new</span>`; linksContainer.appendChild(a); }); }
-      document.getElementById('modal-overview').innerHTML = project.overview;
-      document.getElementById('modal-challenge').textContent = project.challenge;
-      document.getElementById('modal-solution').textContent = project.solution;
-      document.getElementById('modal-tech').textContent = project.tech;
-      const impactList = document.getElementById('modal-impact');
-      impactList.innerHTML = '';
-      project.impact.forEach(item => { const li = document.createElement('li'); li.textContent = item; impactList.appendChild(li); });
-      const modal = document.getElementById('project-modal');
-      modal.showModal();
+      menu.classList.toggle('translate-x-full');
     }
-
-    function closeProject(event) { if (event && event.target !== event.currentTarget) return; document.getElementById('project-modal').close(); }
   </script>
 </body>
+
 </html>
