@@ -48,8 +48,8 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 - Google Analytics tag (G-D11HKMWFB4) is included in each page's `<head>`
 - SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
 - Images go in `images/` directory
-- If editing stack snap behavior, keep `index.html` and `experience.html` logic aligned and re-run:
-  - `node --test tests/ai-match.test.mjs tests/stack-snap-upward-regression.test.mjs`
+- If editing JavaScript behavior, AI Match markup, local page links/assets, or stack snap behavior, re-run:
+  - `node --test tests/*.test.mjs`
 
 ## Known Issues
 

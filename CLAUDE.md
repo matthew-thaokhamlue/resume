@@ -109,9 +109,10 @@ Append-only operational note for future edits:
 - Re-cache offsets on resize (`cacheFlowOffsets()`), then run `update()`.
 - Mobile mode (`max-width: 767px`) should bypass snapping and covered transforms.
 
-### Regression Test
+### Regression Tests
 
-- File: `tests/stack-snap-upward-regression.test.mjs`
-- Purpose: verifies upward wheel does not force snap when user is deep inside current panel.
+- `tests/ai-match.test.mjs`: verifies AI Match prompt, provider URL, clipboard, and popup helpers.
+- `tests/stack-snap-upward-regression.test.mjs`: verifies upward wheel does not force snap when user is deep inside current panel.
+- `tests/static-contract.test.mjs`: verifies local HTML references, AI Match DOM IDs, and prompt template wiring.
 - Run with:
-  - `node --test tests/ai-match.test.mjs tests/stack-snap-upward-regression.test.mjs`
+  - `node --test tests/*.test.mjs`
