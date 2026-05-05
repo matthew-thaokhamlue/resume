@@ -32,13 +32,12 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="assets/css/editorial.css?v=20260505a" />
 
-    <!-- Fonts -->
+    <!-- Fonts: Fraunces (display) + Space Grotesk (body) -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -74,22 +73,36 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #101c22;
+            background: #0a1014;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #233038;
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #0da6f2;
+            background: #4fb6dc;
         }
 
-        .glass-nav {
-            background: rgba(16, 28, 34, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        .experience-role-title {
+            font-family: var(--ed-display);
+            font-variation-settings: "opsz" 144, "SOFT" 12, "WONK" 0;
+            font-size: clamp(2.75rem, 6.25vw, 5.75rem);
+            font-weight: 340;
+            line-height: 0.98;
+            letter-spacing: -0.04em;
+            color: var(--ed-ink);
+        }
+
+        .experience-skill {
+            color: var(--ed-ink-mute);
+            font-size: 0.875rem;
+            transition: color 180ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .experience-skill:hover {
+            color: var(--ed-ink-soft);
         }
 
         .animate-fade-in {
@@ -162,36 +175,29 @@
     </style>
 </head>
 
-<body class="font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white">
+<body class="ed-page font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white">
     <div class="relative flex min-h-screen w-full flex-col">
 
         <!-- TopNavBar -->
-        <header class="sticky top-0 z-50 flex justify-center glass-nav">
-            <div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
-                <div class="flex items-center gap-3">
-                    <div class="size-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
-                        <span class="font-bold text-xl">M</span>
-                    </div>
-                    <h2 class="text-white text-lg font-bold tracking-tight hidden sm:block">Matthew Thaokhamlue</h2>
-                </div>
-                <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
-                    <div class="flex items-center gap-6">
-                        <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-                            href="index.html">Home</a>
-                        <a class="text-primary text-sm font-medium" href="experience.html">Experience</a>
-                        <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-                            href="portfolio.html">Portfolio</a>
-                        <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-                            href="certificates.html">Certifications</a>
-                    </div>
-                    <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-                        class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
-                        <span class="truncate">Let's Connect</span>
+        <header class="ed-topbar">
+            <div class="ed-topbar__inner">
+                <a class="ed-topbar__brand" href="index.html">
+                    <span class="ed-topbar__brand-mark">M</span>
+                    <span>Matthew Thaokhamlue</span>
+                </a>
+                <nav class="ed-topbar__nav" aria-label="Primary">
+                    <a class="ed-topbar__link" href="index.html">Home</a>
+                    <a class="ed-topbar__link" href="experience.html" aria-current="page">Experience</a>
+                    <a class="ed-topbar__link" href="portfolio.html">Portfolio</a>
+                    <a class="ed-topbar__link" href="certificates.html">Certifications</a>
+                    <a class="ed-btn ed-btn--ghost" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+                        rel="noopener noreferrer"
+                        onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar'})}">
+                        Let&rsquo;s talk
                     </a>
                 </nav>
-                <button class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors"
-                    onclick="toggleMenu()">
-                    <span class="material-symbols-outlined">menu</span>
+                <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()">
+                    <span class="material-symbols-outlined" aria-hidden="true">menu</span>
                 </button>
             </div>
         </header>
@@ -199,15 +205,15 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu"
             class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
-            <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="index.html"
+            <a class="text-2xl font-medium text-white" href="index.html"
                 onclick="toggleMenu()">Home</a>
-            <a class="text-2xl font-bold text-primary hover:text-primary transition-colors" href="experience.html"
+            <a class="text-2xl font-medium text-white" href="experience.html"
                 onclick="toggleMenu()">Experience</a>
-            <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="portfolio.html"
+            <a class="text-2xl font-medium text-white" href="portfolio.html"
                 onclick="toggleMenu()">Portfolio</a>
-            <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="certificates.html"
+            <a class="text-2xl font-medium text-white" href="certificates.html"
                 onclick="toggleMenu()">Certifications</a>
-            <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
+            <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu">
                 <span class="material-symbols-outlined text-3xl">close</span>
             </button>
         </div>
@@ -218,10 +224,10 @@
             <section class="stack-panel w-full min-h-screen flex flex-col animate-fade-in" style="--panel-z:10">
                 <!-- Top label bar — nav-aligned padding -->
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 shrink-0 flex items-center justify-between">
-                    <span class="text-[10px] text-white/40 uppercase tracking-[0.3em]">Experience</span>
+                    <span class="ed-eyebrow">Experience</span>
                     <a href="Matthew main CV.pdf" target="_blank" download
                         onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
-                        class="text-[10px] text-white/40 hover:text-white/70 transition-colors uppercase tracking-[0.2em]">Download CV ↓</a>
+                        class="ed-link text-[10px] uppercase tracking-[0.2em]">Download CV ↓</a>
                 </div>
                 <!-- Split layout — nav-aligned container -->
                 <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center py-10 md:py-0 gap-8 md:gap-0">
@@ -248,22 +254,22 @@
                     <!-- Right: content -->
                     <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
                         <div>
-                            <span class="text-[10px] text-white/25 uppercase tracking-[0.28em] block mb-3">01</span>
-                            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">Labforward</h2>
-                            <p class="text-primary font-medium mt-2">Senior Product Manager</p>
-                            <p class="text-sm text-white/40 mt-1">Berlin · Nov 2024 – Nov 2025</p>
+                            <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block mb-4">01</span>
+                            <p class="ed-eyebrow mb-3">Labforward · Berlin · Nov 2024 – Nov 2025</p>
+                            <h2 class="ed-display experience-role-title">Senior Product Manager</h2>
+                            <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">Labforward</p>
                         </div>
-                        <p class="text-base text-white/70 leading-relaxed max-w-[420px]">
-                            Led end-to-end product roadmap for core lab management tools. Rebuilt team collaboration practices — directly securing a <strong class="text-white">$500K contract renewal</strong>. Drove rapid prototyping loops that shrank testing from days to hours.
+                        <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
+                            Led end-to-end product roadmap for core lab management tools. Rebuilt team collaboration practices — directly securing a <strong class="text-[var(--ed-ink)]">$500K contract renewal</strong>. Drove rapid prototyping loops that shrank testing from days to hours.
                         </p>
                         <div class="flex flex-col gap-2">
-                            <span class="text-sm text-white/40">Product Roadmap</span>
-                            <span class="text-sm text-white/40">Rapid Prototyping</span>
-                            <span class="text-sm text-white/40">BI &amp; Data Pipelines</span>
-                            <span class="text-sm text-white/40">Stakeholder Management</span>
+                            <span class="experience-skill">Product Roadmap</span>
+                            <span class="experience-skill">Rapid Prototyping</span>
+                            <span class="experience-skill">BI &amp; Data Pipelines</span>
+                            <span class="experience-skill">Stakeholder Management</span>
                         </div>
                         <a href="portfolio/labforward.html"
-                            class="inline-flex items-center gap-2 text-sm text-primary/70 hover:text-primary transition-colors group w-fit">
+                            class="ed-link group w-fit">
                             View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
                         </a>
                     </div>
@@ -273,10 +279,10 @@
             <!-- ── Panel 2: LabTwin (7 rings accumulated) ── -->
             <section class="stack-panel w-full min-h-screen flex flex-col" style="--panel-z:20">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 shrink-0 flex items-center justify-between">
-                    <span class="text-[10px] text-white/40 uppercase tracking-[0.3em]">Experience</span>
+                    <span class="ed-eyebrow">Experience</span>
                     <a href="Matthew main CV.pdf" target="_blank" download
                         onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
-                        class="text-[10px] text-white/40 hover:text-white/70 transition-colors uppercase tracking-[0.2em]">Download CV ↓</a>
+                        class="ed-link text-[10px] uppercase tracking-[0.2em]">Download CV ↓</a>
                 </div>
                 <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center py-10 md:py-0 gap-8 md:gap-0">
                     <div class="flex items-center justify-center md:pr-6">
@@ -299,22 +305,22 @@
                     </div>
                     <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
                         <div>
-                            <span class="text-[10px] text-white/25 uppercase tracking-[0.28em] block mb-3">02</span>
-                            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">LabTwin</h2>
-                            <p class="text-primary font-medium mt-2">Technical Product Manager</p>
-                            <p class="text-sm text-white/40 mt-1">Berlin · Jan 2023 – Nov 2024</p>
+                            <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block mb-4">02</span>
+                            <p class="ed-eyebrow mb-3">LabTwin · Berlin · Jan 2023 – Nov 2024</p>
+                            <h2 class="ed-display experience-role-title">Technical Product Manager</h2>
+                            <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">LabTwin</p>
                         </div>
-                        <p class="text-base text-white/70 leading-relaxed max-w-[420px]">
-                            Drove roadmap for voice and lab integration features. Tripled deployment frequency from <strong class="text-white">4 → 12 releases per year</strong>. Led speech recognition retraining to maintain <strong class="text-white">95% accuracy</strong> on scientific terms.
+                        <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
+                            Drove roadmap for voice and lab integration features. Tripled deployment frequency from <strong class="text-[var(--ed-ink)]">4 → 12 releases per year</strong>. Led speech recognition retraining to maintain <strong class="text-[var(--ed-ink)]">95% accuracy</strong> on scientific terms.
                         </p>
                         <div class="flex flex-col gap-2">
-                            <span class="text-sm text-white/40">Voice AI &amp; NLP</span>
-                            <span class="text-sm text-white/40">Release Management</span>
-                            <span class="text-sm text-white/40">API &amp; Integration</span>
-                            <span class="text-sm text-white/40">Team Mentorship</span>
+                            <span class="experience-skill">Voice AI &amp; NLP</span>
+                            <span class="experience-skill">Release Management</span>
+                            <span class="experience-skill">API &amp; Integration</span>
+                            <span class="experience-skill">Team Mentorship</span>
                         </div>
                         <a href="portfolio/labtwin.html"
-                            class="inline-flex items-center gap-2 text-sm text-primary/70 hover:text-primary transition-colors group w-fit">
+                            class="ed-link group w-fit">
                             View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
                         </a>
                     </div>
@@ -324,10 +330,10 @@
             <!-- ── Panel 3: Thryve (5 rings accumulated) ── -->
             <section class="stack-panel w-full min-h-screen flex flex-col" style="--panel-z:30">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 shrink-0 flex items-center justify-between">
-                    <span class="text-[10px] text-white/40 uppercase tracking-[0.3em]">Experience</span>
+                    <span class="ed-eyebrow">Experience</span>
                     <a href="Matthew main CV.pdf" target="_blank" download
                         onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
-                        class="text-[10px] text-white/40 hover:text-white/70 transition-colors uppercase tracking-[0.2em]">Download CV ↓</a>
+                        class="ed-link text-[10px] uppercase tracking-[0.2em]">Download CV ↓</a>
                 </div>
                 <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center py-10 md:py-0 gap-8 md:gap-0">
                     <div class="flex items-center justify-center md:pr-6">
@@ -347,22 +353,22 @@
                     </div>
                     <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
                         <div>
-                            <span class="text-[10px] text-white/25 uppercase tracking-[0.28em] block mb-3">03</span>
-                            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">Thryve</h2>
-                            <p class="text-primary font-medium mt-2">Product Owner</p>
-                            <p class="text-sm text-white/40 mt-1">Berlin · Oct 2019 – Dec 2022</p>
+                            <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block mb-4">03</span>
+                            <p class="ed-eyebrow mb-3">Thryve · Berlin · Oct 2019 – Dec 2022</p>
+                            <h2 class="ed-display experience-role-title">Product Owner</h2>
+                            <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">Thryve</p>
                         </div>
-                        <p class="text-base text-white/70 leading-relaxed max-w-[420px]">
-                            Owned APIs and SDKs powering <strong class="text-white">1M+ users</strong> across 100+ B2B partners. Led 10+ wearable integrations. Contributed to growth from <strong class="text-white">€0 → €1M ARR</strong> and 7 → 35 people.
+                        <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
+                            Owned APIs and SDKs powering <strong class="text-[var(--ed-ink)]">1M+ users</strong> across 100+ B2B partners. Led 10+ wearable integrations. Contributed to growth from <strong class="text-[var(--ed-ink)]">€0 → €1M ARR</strong> and 7 → 35 people.
                         </p>
                         <div class="flex flex-col gap-2">
-                            <span class="text-sm text-white/40">API &amp; SDK Development</span>
-                            <span class="text-sm text-white/40">Wearable Integrations</span>
-                            <span class="text-sm text-white/40">B2B SaaS Growth</span>
-                            <span class="text-sm text-white/40">Learning &amp; Onboarding</span>
+                            <span class="experience-skill">API &amp; SDK Development</span>
+                            <span class="experience-skill">Wearable Integrations</span>
+                            <span class="experience-skill">B2B SaaS Growth</span>
+                            <span class="experience-skill">Learning &amp; Onboarding</span>
                         </div>
                         <a href="portfolio/thryve.html"
-                            class="inline-flex items-center gap-2 text-sm text-primary/70 hover:text-primary transition-colors group w-fit">
+                            class="ed-link group w-fit">
                             View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
                         </a>
                     </div>
@@ -372,10 +378,10 @@
             <!-- ── Panel 4: Ernst & Young (2 rings — start of career) ── -->
             <section class="stack-panel w-full min-h-screen flex flex-col" style="--panel-z:40">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 shrink-0 flex items-center justify-between">
-                    <span class="text-[10px] text-white/40 uppercase tracking-[0.3em]">Experience</span>
+                    <span class="ed-eyebrow">Experience</span>
                     <a href="Matthew main CV.pdf" target="_blank" download
                         onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'experience'})}"
-                        class="text-[10px] text-white/40 hover:text-white/70 transition-colors uppercase tracking-[0.2em]">Download CV ↓</a>
+                        class="ed-link text-[10px] uppercase tracking-[0.2em]">Download CV ↓</a>
                 </div>
                 <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center py-10 md:py-0 gap-8 md:gap-0">
                     <div class="flex items-center justify-center md:pr-6">
@@ -392,97 +398,76 @@
                     </div>
                     <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
                         <div>
-                            <span class="text-[10px] text-white/25 uppercase tracking-[0.28em] block mb-3">04</span>
-                            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">Ernst &amp;<br>Young</h2>
-                            <p class="text-primary font-medium mt-2">Senior Risk Consultant</p>
-                            <p class="text-sm text-white/40 mt-1">Bangkok · Aug 2016 – Feb 2018</p>
+                            <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block mb-4">04</span>
+                            <p class="ed-eyebrow mb-3">Ernst &amp; Young · Bangkok · Aug 2016 – Feb 2018</p>
+                            <h2 class="ed-display experience-role-title">Senior Risk Consultant</h2>
+                            <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">Ernst &amp; Young</p>
                         </div>
-                        <p class="text-base text-white/70 leading-relaxed max-w-[420px]">
+                        <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
                             Drove risk assessments and process improvement for Thailand's largest corporations. Developed risk management frameworks for digital transformation. Led market research on emerging technologies including RPA.
                         </p>
                         <div class="flex flex-col gap-2">
-                            <span class="text-sm text-white/40">Risk Management</span>
-                            <span class="text-sm text-white/40">Process Improvement</span>
-                            <span class="text-sm text-white/40">Digital Transformation</span>
-                            <span class="text-sm text-white/40">Market Research</span>
+                            <span class="experience-skill">Risk Management</span>
+                            <span class="experience-skill">Process Improvement</span>
+                            <span class="experience-skill">Digital Transformation</span>
+                            <span class="experience-skill">Market Research</span>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ── Panel 5: Skills & Education (original card layout) ── -->
+            <!-- ── Panel 5: Skills & Education (editorial ledger) ── -->
             <section
-                class="stack-panel w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 min-h-[110vh] md:min-h-[120vh] flex items-center"
+                class="stack-panel w-full min-h-[110vh] md:min-h-[120vh] flex items-center"
                 style="--panel-z:50">
-                <div class="max-w-7xl mx-auto w-full flex flex-col gap-10">
-                    <h2 class="text-3xl font-bold">Skills & Education</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Essential Skills -->
-                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 card-hover">
-                            <h4 class="text-xl font-bold text-white flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">psychology</span>
-                                Essential Skills
-                            </h4>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product Roadmap</span>
-                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Product Discovery</span>
-                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">User Research</span>
-                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">A/B Testing</span>
-                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Stakeholder Mgmt</span>
-                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">Automation (Python/n8n)</span>
-                                <span class="px-3 py-1.5 rounded-lg bg-white/5 text-white/80 text-sm hover:bg-white/10 transition-colors">AI Implementation</span>
-                            </div>
+                <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24">
+                    <div class="ed-howitworks__heading">
+                        <div style="grid-column: 1 / -1;">
+                            <p class="ed-eyebrow mb-3">Capabilities · Education · Languages</p>
+                            <h2 class="ed-display experience-role-title">Skills &amp; Education</h2>
+                            <p class="text-base sm:text-lg leading-relaxed text-[var(--ed-ink-soft)] max-w-5xl mt-5">
+                                The practical toolkit behind the career story: product judgment, AI implementation,
+                                economics training, and the language range to work across Berlin, Bangkok, and global teams.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ed-stages">
+                        <div class="ed-stage">
+                            <span class="ed-stage__num">01</span>
+                            <h3 class="ed-stage__title">Product Systems</h3>
+                            <p class="ed-stage__desc">
+                                Product roadmap, product discovery, user research, A/B testing, and stakeholder management.
+                            </p>
+                            <span class="ed-stage__line" aria-hidden="true"></span>
                         </div>
 
-                        <!-- Education -->
-                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 card-hover">
-                            <h4 class="text-xl font-bold text-white flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">school</span>
-                                Education
-                            </h4>
-                            <div class="flex flex-col gap-4">
-                                <div class="border-l-2 border-primary/30 pl-4">
-                                    <p class="font-bold text-white text-sm">Master of International and Development Economics</p>
-                                    <p class="text-primary text-xs mt-1">University of Applied Science Berlin</p>
-                                    <p class="text-white/40 text-xs mt-1">DAAD Scholarship Recipient</p>
-                                </div>
-                                <div class="border-l-2 border-primary/30 pl-4">
-                                    <p class="font-bold text-white text-sm">Bachelor's Degree in Economics</p>
-                                    <p class="text-primary text-xs mt-1">Chiang Mai University</p>
-                                    <p class="text-white/40 text-xs mt-1">Quantitative Economics</p>
-                                </div>
-                            </div>
+                        <div class="ed-stage">
+                            <span class="ed-stage__num">02</span>
+                            <h3 class="ed-stage__title">AI Implementation</h3>
+                            <p class="ed-stage__desc">
+                                Automation with Python and n8n, GenAI workflow design, rapid prototyping, and evidence-led AI delivery.
+                            </p>
+                            <span class="ed-stage__line" aria-hidden="true"></span>
                         </div>
 
-                        <!-- Languages -->
-                        <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5 card-hover">
-                            <h4 class="text-xl font-bold text-white flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">language</span>
-                                Languages
-                            </h4>
-                            <div class="flex flex-col gap-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-white/80">English</span>
-                                    <span class="text-primary text-sm font-bold">IELTS 7.5</span>
-                                </div>
-                                <div class="w-full bg-white/10 rounded-full h-1.5">
-                                    <div class="bg-primary h-1.5 rounded-full" style="width: 95%"></div>
-                                </div>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="text-white/80">German</span>
-                                    <span class="text-primary text-sm font-bold">B1</span>
-                                </div>
-                                <div class="w-full bg-white/10 rounded-full h-1.5">
-                                    <div class="bg-primary h-1.5 rounded-full" style="width: 40%"></div>
-                                </div>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="text-white/80">Thai</span>
-                                    <span class="text-primary text-sm font-bold">Native</span>
-                                </div>
-                                <div class="w-full bg-white/10 rounded-full h-1.5">
-                                    <div class="bg-primary h-1.5 rounded-full" style="width: 100%"></div>
-                                </div>
-                            </div>
+                        <div class="ed-stage">
+                            <span class="ed-stage__num">03</span>
+                            <h3 class="ed-stage__title">Education</h3>
+                            <p class="ed-stage__desc">
+                                Master of International and Development Economics, University of Applied Science Berlin.
+                                DAAD scholarship recipient. Bachelor's Degree in Economics, Chiang Mai University.
+                            </p>
+                            <span class="ed-stage__line" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="ed-stage">
+                            <span class="ed-stage__num">04</span>
+                            <h3 class="ed-stage__title">Languages</h3>
+                            <p class="ed-stage__desc">
+                                English IELTS 7.5, German B1, and native Thai.
+                            </p>
+                            <span class="ed-stage__line" aria-hidden="true"></span>
                         </div>
                     </div>
                 </div>
@@ -491,21 +476,20 @@
         </main>
 
         <!-- Footer -->
-        <footer class="relative z-20 bg-background-dark border-t border-white/10 py-12">
-            <div
-                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex flex-col gap-2 text-center md:text-left">
-                    <p class="text-white/60 text-sm">&copy; 2026 Matthew Thaokhamlue. All rights reserved.</p>
-                    <p class="text-white/40 text-xs">Product Manager | Berlin, Germany</p>
+        <footer class="ed-foot">
+            <div class="ed-foot__inner">
+                <div>
+                    <p>&copy; 2026 Matthew Thaokhamlue.</p>
+                    <p style="color: var(--ed-ink-mute); font-size: var(--ed-fz-xs); margin-top: 0.25rem;">
+                        Builder · AI Workflow Architect · Berlin, Germany
+                    </p>
                 </div>
-                <div class="flex items-center gap-6">
-                    <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-                        class="text-white/60 hover:text-primary transition-colors"
+                <div class="ed-foot__icons">
+                    <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
                         onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'experience',link_position:'footer'})}">
                         <i class="fab fa-linkedin text-2xl"></i>
                     </a>
-                    <a href="https://github.com/matthew-thaokhamlue" target="_blank"
-                        class="text-white/60 hover:text-white transition-colors"
+                    <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
                         onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'experience',link_position:'footer'})}">
                         <i class="fab fa-github text-2xl"></i>
                     </a>
