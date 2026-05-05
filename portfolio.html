@@ -30,19 +30,20 @@
   <meta property="og:url" content="https://matthew-thaokhamlue.github.io/resume/portfolio.html" />
   <meta property="og:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS (kept for legacy modal markup) -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-  <!-- Fonts -->
+  <!-- Fonts: Fraunces (display) + Space Grotesk (body) + Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Tailwind Config -->
+  <!-- Editorial design layer -->
+  <link rel="stylesheet" href="assets/css/editorial.css?v=20260505b" />
+
+  <!-- Tailwind Config (kept; used by retained modal + mobile menu markup) -->
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -66,298 +67,229 @@
   </script>
   <style>
     .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
 
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
+    /* Scrollbar — editorial palette */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a1014; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4fb6dc; }
 
-    ::-webkit-scrollbar-track {
-      background: #101c22;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #233038;
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #0da6f2;
-    }
-
-    .glass-nav {
-      background: rgba(16, 28, 34, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .animate-fade-in {
-      animation: fadeIn 0.8s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .card-hover {
-      transition: all 0.3s ease;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-4px);
-      background-color: rgba(255, 255, 255, 0.08);
-    }
+    dialog:not([open]) { display: none; }
+    dialog[open] { display: flex; }
   </style>
 </head>
 
-<body class="font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white">
-  <div class="relative flex min-h-screen w-full flex-col">
-
-    <!-- TopNavBar -->
-    <header class="sticky top-0 z-50 flex justify-center glass-nav">
-      <div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
-        <div class="flex items-center gap-3">
-          <div class="size-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
-            <span class="font-bold text-xl">M</span>
-          </div>
-          <h2 class="text-white text-lg font-bold tracking-tight hidden sm:block">Matthew Thaokhamlue</h2>
-        </div>
-        <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
-          <div class="flex items-center gap-6">
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="index.html">Home</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-              href="experience.html">Experience</a>
-            <a class="text-primary text-sm font-medium" href="portfolio.html">Portfolio</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-              href="certificates.html">Certifications</a>
-          </div>
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
-            <span class="truncate">Let's Connect</span>
-          </a>
-        </nav>
-        <button class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors" onclick="toggleMenu()">
-          <span class="material-symbols-outlined">menu</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu"
-      class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="index.html"
-        onclick="toggleMenu()">Home</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="experience.html"
-        onclick="toggleMenu()">Experience</a>
-      <a class="text-2xl font-bold text-primary hover:text-primary transition-colors" href="portfolio.html"
-        onclick="toggleMenu()">Portfolio</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="certificates.html"
-        onclick="toggleMenu()">Certifications</a>
-      <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
-        <span class="material-symbols-outlined text-3xl">close</span>
+<body class="ed-page">
+  <!-- Top bar -->
+  <header class="ed-topbar">
+    <div class="ed-topbar__inner">
+      <a class="ed-topbar__brand" href="index.html">
+        <span class="ed-topbar__brand-mark">M</span>
+        <span>Matthew Thaokhamlue</span>
+      </a>
+      <nav class="ed-topbar__nav" aria-label="Primary">
+        <a class="ed-topbar__link" href="index.html">Home</a>
+        <a class="ed-topbar__link" href="experience.html">Experience</a>
+        <a class="ed-topbar__link" href="portfolio.html" aria-current="page">Portfolio</a>
+        <a class="ed-topbar__link" href="certificates.html">Certifications</a>
+        <a class="ed-btn ed-btn--ghost" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+          rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar',page:'portfolio'})}">
+          Let&rsquo;s talk
+        </a>
+      </nav>
+      <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()">
+        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
       </button>
     </div>
+  </header>
 
-    <main class="relative z-10">
-      <section
-        class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 pt-14 pb-20 sm:pt-20 sm:pb-24 md:pt-24 md:pb-28 gap-16 animate-fade-in">
-        <!-- Header -->
-        <div class="w-full max-w-7xl flex flex-col gap-6 text-center">
-          <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">Portfolio and Projects</h1>
-          <p class="text-xl text-white/60 max-w-2xl mx-auto">
-            A selected collection of my professional and personal works in AI/ML, SaaS, and platform development,
-            showcasing my ability to lead teams and
-            deliver impactful products.
-          </p>
-        </div>
-        <!-- Career Projects Section -->
-        <div class="w-full max-w-7xl flex flex-col gap-8">
-          <div class="flex items-center gap-4">
-            <span class="material-symbols-outlined text-3xl text-primary">work</span>
-            <h2 class="text-2xl sm:text-3xl font-bold">Career Portfolio</h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-
-            <!-- Thryve Card -->
-            <a href="portfolio/thryve.html"
-              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-              <div
-                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-                <img src="images/thryve-card.png" alt="Thryve"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-              </div>
-              <div class="flex flex-col gap-2 p-2">
-                <p class="text-white text-lg font-bold">Thryve GmbH</p>
-                <p class="text-white/60 text-sm line-clamp-2">Health Data Platform • Product Owner • Unified SDK for
-                  wearable data integration.</p>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-auto p-2">
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">API Product</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Health Tech</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Wearable
-                  Devices</span>
-              </div>
-            </a>
-
-            <!-- LabTwin Card -->
-            <a href="portfolio/labtwin.html"
-              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-              <div
-                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-                <img src="images/labtwin-card.png" alt="LabTwin"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-              </div>
-              <div class="flex flex-col gap-2 p-2">
-                <p class="text-white text-lg font-bold">LabTwin GmbH</p>
-                <p class="text-white/60 text-sm line-clamp-2">Voice AI for Labs • Technical PM • Led AI integration
-                  strategy for voice assistants and LLM-powered workflows across laboratory instrumentation.</p>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-auto p-2">
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Voice AI</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI
-                  Integration</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">LLM</span>
-              </div>
-            </a>
-            <!-- Labforward Card -->
-            <a href="portfolio/labforward.html"
-              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-              <div
-                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5 overflow-hidden">
-                <img src="images/labforward-card.png" alt="Labforward"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-              </div>
-              <div class="flex flex-col gap-2 p-2">
-                <p class="text-white text-lg font-bold">Labforward GmbH</p>
-                <p class="text-white/60 text-sm line-clamp-2">Lab Intelligence Platform • Senior PM • Owned the GenAI
-                  roadmap end-to-end — from LLM evaluation to production deployment of AI-powered experiment search.</p>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-auto p-2">
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">GenAI</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">LLM</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI Strategy</span>
-              </div>
-            </a>
-
-          </div>
-        </div>
-      </section>
-
-      <section class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 gap-16">
-        <!-- Personal Projects Section -->
-        <div class="w-full max-w-7xl flex flex-col gap-8">
-          <div class="flex items-center gap-4">
-            <span class="material-symbols-outlined text-3xl text-primary">code</span>
-            <h2 class="text-2xl sm:text-3xl font-bold">Personal Projects</h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-
-            <!-- Project: Fast Project Docs MCP Server -->
-            <div onclick="openProject('mcp-server')"
-              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-              <div
-                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-                <span
-                  class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">terminal</span>
-              </div>
-              <div class="flex flex-col gap-2 p-2">
-                <p class="text-white text-lg font-bold">Fast Project Docs MCP Server</p>
-                <p class="text-white/60 text-sm line-clamp-2">Open-source MCP server that connects AI agents to a
-                  structured spec-generation workflow — enabling autonomous, context-aware project documentation.</p>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-auto p-2">
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">MCP</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">AI Agents</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Open Source</span>
-              </div>
-            </div>
-
-            <!-- Project: AI-Powered Automation Tools -->
-            <div onclick="openProject('automation-tools')"
-              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-              <div
-                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-                <span
-                  class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">auto_fix_high</span>
-              </div>
-              <div class="flex flex-col gap-2 p-2">
-                <p class="text-white text-lg font-bold">AI-Powered Automation Tools</p>
-                <p class="text-white/60 text-sm line-clamp-2">Multi-LLM Python suite (OpenAI, Claude, Gemini) —
-                  orchestrates agentic PM workflows to eliminate 12+ hrs/week of manual release notes, ticket creation,
-                  and API testing.</p>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-auto p-2">
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">LLM
-                  Orchestration</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Agentic
-                  Workflows</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Python</span>
-              </div>
-            </div>
-
-            <!-- Project: RAG-Powered Meal Planner (commented out by request) -->
-
-            <!-- Project: Interview Prep -->
-            <div onclick="openProject('interview-prep')"
-              class="flex flex-col gap-4 rounded-2xl bg-surface border border-white/5 p-4 card-hover cursor-pointer group">
-              <div
-                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-surface-hover flex items-center justify-center border border-white/5">
-                <span
-                  class="material-symbols-outlined text-6xl text-primary/50 group-hover:text-primary transition-colors">smart_toy</span>
-              </div>
-              <div class="flex flex-col gap-2 p-2">
-                <p class="text-white text-lg font-bold">AI Interview Prep Framework</p>
-                <p class="text-white/60 text-sm line-clamp-2">Multi-agent Claude Code system — paste your CV once, name
-                  a company, and autonomous agents research it and generate stage-specific prep docs across a 5-stage
-                  pipeline.</p>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-auto p-2">
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Multi-Agent</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Claude Code</span>
-                <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">Open Source</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-background-dark py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="flex flex-col gap-2 text-center md:text-left">
-          <p class="text-white/60 text-sm">&copy; 2025 Matthew Thaokhamlue. All rights reserved.</p>
-        </div>
-        <div class="flex items-center gap-6">
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            class="text-white/60 hover:text-primary transition-colors"
-            onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'portfolio',link_position:'footer'})}">
-            <i class="fab fa-linkedin text-2xl"></i>
-          </a>
-          <a href="https://github.com/matthew-thaokhamlue" target="_blank"
-            class="text-white/60 hover:text-white transition-colors"
-            onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'portfolio',link_position:'footer'})}">
-            <i class="fab fa-github text-2xl"></i>
-          </a>
-        </div>
-      </div>
-    </footer>
-
+  <!-- Mobile menu -->
+  <div id="mobile-menu"
+    class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+    <a class="text-2xl font-medium text-white" href="index.html" onclick="toggleMenu()">Home</a>
+    <a class="text-2xl font-medium text-white" href="experience.html" onclick="toggleMenu()">Experience</a>
+    <a class="text-2xl font-medium text-white" href="portfolio.html" onclick="toggleMenu()">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="certificates.html" onclick="toggleMenu()">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu">
+      <span class="material-symbols-outlined text-3xl">close</span>
+    </button>
   </div>
 
+  <main>
+    <!-- ────────────────  HERO  ──────────────── -->
+    <section class="ed-hero ed-hero--page" id="top">
+      <div class="ed-hero__inner">
+        <div class="ed-hero__meta">
+          <span class="ed-eyebrow">Selected works · 2018 — present</span>
+        </div>
+        <div>
+          <h1 class="ed-hero__display">Portfolio &amp; <em>projects</em>.</h1>
+          <p class="ed-hero__support">
+            A selected collection of professional case studies and personal AI projects, products I led from
+            discovery to production across health tech, lab intelligence, and developer tooling.
+          </p>
+        </div>
+      </div>
+    </section>
 
-  <!-- Project Modal -->
+    <!-- ────────────────  CAREER PORTFOLIO  ──────────────── -->
+    <section class="ed-section reveal">
+      <div class="ed-section__inner">
+        <div class="ed-section__head">
+          <span class="ed-section__eyebrow">Career portfolio</span>
+          <h2 class="ed-section__title">Products I led from <em>discovery</em> to production.</h2>
+        </div>
+        <div class="ed-cards">
+
+          <!-- Thryve -->
+          <a class="ed-card" href="portfolio/thryve.html">
+            <div class="ed-card__media">
+              <img src="images/thryve-card.png" alt="Thryve" />
+            </div>
+            <div class="ed-card__body">
+              <p class="ed-card__kicker">Health Data Platform · Product Owner</p>
+              <h3 class="ed-card__title">Thryve GmbH</h3>
+              <p class="ed-card__lede">Unified SDK for wearable data integration, scaled from launch to 1M+ users and €0&rarr;€1M ARR.</p>
+            </div>
+            <div class="ed-card__tags">
+              <span class="ed-tag">API Product</span>
+              <span class="ed-tag">Health Tech</span>
+              <span class="ed-tag">Wearable Devices</span>
+            </div>
+          </a>
+
+          <!-- LabTwin -->
+          <a class="ed-card" href="portfolio/labtwin.html">
+            <div class="ed-card__media">
+              <img src="images/labtwin-card.png" alt="LabTwin" />
+            </div>
+            <div class="ed-card__body">
+              <p class="ed-card__kicker">Voice AI for Labs · Technical PM</p>
+              <h3 class="ed-card__title">LabTwin GmbH</h3>
+              <p class="ed-card__lede">Led AI integration strategy for voice assistants and LLM-powered workflows across laboratory instrumentation.</p>
+            </div>
+            <div class="ed-card__tags">
+              <span class="ed-tag">Voice AI</span>
+              <span class="ed-tag">AI Integration</span>
+              <span class="ed-tag">LLM</span>
+            </div>
+          </a>
+
+          <!-- Labforward -->
+          <a class="ed-card" href="portfolio/labforward.html">
+            <div class="ed-card__media">
+              <img src="images/labforward-card.png" alt="Labforward" />
+            </div>
+            <div class="ed-card__body">
+              <p class="ed-card__kicker">Lab Intelligence Platform · Senior PM</p>
+              <h3 class="ed-card__title">Labforward GmbH</h3>
+              <p class="ed-card__lede">Owned the GenAI roadmap end-to-end, from LLM evaluation to production deployment of AI-powered experiment search.</p>
+            </div>
+            <div class="ed-card__tags">
+              <span class="ed-tag">GenAI</span>
+              <span class="ed-tag">LLM</span>
+              <span class="ed-tag">AI Strategy</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────  PERSONAL PROJECTS  ──────────────── -->
+    <section class="ed-section reveal">
+      <div class="ed-section__inner">
+        <div class="ed-section__head">
+          <span class="ed-section__eyebrow">Personal projects</span>
+          <h2 class="ed-section__title">Things I build on <em>weekends</em> when no one&rsquo;s watching.</h2>
+        </div>
+        <div class="ed-cards">
+
+          <!-- MCP Server -->
+          <button type="button" class="ed-card" onclick="openProject('mcp-server')" aria-label="Open Fast Project Docs MCP Server details">
+            <div class="ed-card__media ed-card__media--icon">
+              <span class="material-symbols-outlined" aria-hidden="true">terminal</span>
+            </div>
+            <div class="ed-card__body">
+              <p class="ed-card__kicker">Open source · MCP server</p>
+              <h3 class="ed-card__title">Fast Project Docs MCP Server</h3>
+              <p class="ed-card__lede">Open-source MCP server that connects AI agents to a structured spec-generation workflow, enabling autonomous, context-aware project documentation.</p>
+            </div>
+            <div class="ed-card__tags">
+              <span class="ed-tag">MCP</span>
+              <span class="ed-tag">AI Agents</span>
+              <span class="ed-tag">Open Source</span>
+            </div>
+          </button>
+
+          <!-- Automation Tools -->
+          <button type="button" class="ed-card" onclick="openProject('automation-tools')" aria-label="Open AI-Powered Automation Tools details">
+            <div class="ed-card__media ed-card__media--icon">
+              <span class="material-symbols-outlined" aria-hidden="true">auto_fix_high</span>
+            </div>
+            <div class="ed-card__body">
+              <p class="ed-card__kicker">Personal · LLM workflow automation</p>
+              <h3 class="ed-card__title">AI-Powered Automation Tools</h3>
+              <p class="ed-card__lede">Multi-LLM Python suite (OpenAI, Claude, Gemini), orchestrates agentic PM workflows to eliminate 12+ hrs/week of manual release notes, ticket creation, and API testing.</p>
+            </div>
+            <div class="ed-card__tags">
+              <span class="ed-tag">LLM Orchestration</span>
+              <span class="ed-tag">Agentic Workflows</span>
+              <span class="ed-tag">Python</span>
+            </div>
+          </button>
+
+          <!-- Interview Prep -->
+          <button type="button" class="ed-card" onclick="openProject('interview-prep')" aria-label="Open AI Interview Prep Framework details">
+            <div class="ed-card__media ed-card__media--icon">
+              <span class="material-symbols-outlined" aria-hidden="true">smart_toy</span>
+            </div>
+            <div class="ed-card__body">
+              <p class="ed-card__kicker">Open source · Multi-agent framework</p>
+              <h3 class="ed-card__title">AI Interview Prep Framework</h3>
+              <p class="ed-card__lede">Multi-agent Claude Code system, paste your CV once, name a company, and autonomous agents research it and generate stage-specific prep docs across a 5-stage pipeline.</p>
+            </div>
+            <div class="ed-card__tags">
+              <span class="ed-tag">Multi-Agent</span>
+              <span class="ed-tag">Claude Code</span>
+              <span class="ed-tag">Open Source</span>
+            </div>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="ed-foot">
+    <div class="ed-foot__inner">
+      <div>
+        <p>&copy; 2026 Matthew Thaokhamlue.</p>
+        <p style="color: var(--ed-ink-mute); font-size: var(--ed-fz-xs); margin-top: 0.25rem;">
+          Builder · AI Workflow Architect · Berlin, Germany
+        </p>
+      </div>
+      <div class="ed-foot__icons">
+        <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'portfolio',link_position:'footer'})}"
+          aria-label="LinkedIn">
+          <i class="fab fa-linkedin text-2xl"></i>
+        </a>
+        <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'portfolio',link_position:'footer'})}"
+          aria-label="GitHub">
+          <i class="fab fa-github text-2xl"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Project Modal (kept verbatim — contract for openProject/closeProject and the projects dict below) -->
   <dialog id="project-modal"
     class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
     <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="closeProject(event)">
@@ -423,6 +355,14 @@
     </div>
   </dialog>
 
+  <!-- GSAP (pinned) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Editorial motion (reveal hooks) -->
+  <script src="assets/js/editorial.js?v=20260505b"></script>
+
+  <!-- Page-level glue (kept contract: toggleMenu, openProject, closeProject, projects dict) -->
   <script>
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu');

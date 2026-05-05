@@ -655,3 +655,246 @@
       animation: none !important;
     }
   }
+
+/* ── editorial-content-pages ── */
+  /* Hero modifier for content pages (portfolio, certificates) — calmer, not full viewport. */
+  .ed-hero--page {
+    min-height: 0;
+    padding-block: calc(var(--ed-s-7) + var(--ed-s-3)) var(--ed-s-7);
+  }
+  .ed-hero--page .ed-hero__inner {
+    grid-template-rows: auto auto auto;
+    gap: var(--ed-s-5);
+  }
+
+  /* Section primitive — used to host card grids on content pages. */
+  .ed-section {
+    padding-block: var(--ed-s-7) var(--ed-s-8);
+    border-top: 1px solid var(--ed-hairline);
+  }
+  .ed-section:first-of-type { border-top: 0; }
+  .ed-section__inner {
+    max-width: var(--ed-content-max);
+    margin-inline: auto;
+    padding-inline: var(--ed-gutter-x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ed-s-6);
+  }
+  .ed-section__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ed-s-3);
+    max-width: 48rem;
+  }
+  .ed-section__eyebrow {
+    font-family: var(--ed-body);
+    font-size: var(--ed-fz-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ed-ink-mute);
+    font-weight: 500;
+  }
+  .ed-section__title {
+    font-family: var(--ed-display);
+    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+    font-size: var(--ed-fz-3xl);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ed-ink);
+    margin: 0;
+  }
+  .ed-section__title em {
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "SOFT" 75, "WONK" 1;
+    color: var(--ed-accent-strong);
+  }
+
+  /* Card grid — auto-fit with a comfortable minimum so it reflows cleanly. */
+  .ed-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: var(--ed-s-5);
+  }
+  @media (min-width: 1024px) {
+    .ed-cards {
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    }
+  }
+
+  /* Card itself — hairline on dark surface, no fill on tags, calm hover lift. */
+  .ed-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ed-s-4);
+    padding: var(--ed-s-4);
+    background: var(--ed-bg-soft);
+    border: 1px solid var(--ed-hairline);
+    border-radius: 1rem;
+    color: inherit;
+    text-decoration: none;
+    text-align: left;
+    cursor: pointer;
+    /* Keep button-resets minimal so <button class="ed-card"> looks identical to <a>. */
+    font: inherit;
+    width: 100%;
+    transition: transform var(--ed-d-base) var(--ed-ease-soft),
+                border-color var(--ed-d-base) var(--ed-ease-soft),
+                background-color var(--ed-d-base) var(--ed-ease-soft);
+  }
+  .ed-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--ed-hairline-strong);
+    background: var(--ed-surface);
+  }
+  .ed-card:focus-visible {
+    outline: 1px solid var(--ed-accent);
+    outline-offset: 2px;
+  }
+
+  .ed-card__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: var(--ed-surface);
+    border: 1px solid var(--ed-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ed-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--ed-d-slow) var(--ed-ease);
+  }
+  .ed-card:hover .ed-card__media img {
+    transform: scale(1.04);
+  }
+  .ed-card__media .material-symbols-outlined {
+    font-size: 3.25rem;
+    color: var(--ed-ink-mute);
+    transition: color var(--ed-d-base) var(--ed-ease-soft);
+  }
+  .ed-card:hover .ed-card__media .material-symbols-outlined {
+    color: var(--ed-accent-strong);
+  }
+
+  .ed-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ed-s-2);
+  }
+  .ed-card__kicker {
+    font-family: var(--ed-body);
+    font-size: var(--ed-fz-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ed-ink-mute);
+    margin: 0;
+  }
+  .ed-card__title {
+    font-family: var(--ed-display);
+    font-variation-settings: "opsz" 96, "SOFT" 25, "WONK" 0;
+    font-size: var(--ed-fz-xl);
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    color: var(--ed-ink);
+    margin: 0;
+  }
+  .ed-card__lede {
+    font-family: var(--ed-body);
+    font-size: var(--ed-fz-sm);
+    color: var(--ed-ink-soft);
+    line-height: 1.55;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .ed-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ed-s-2);
+    margin-top: auto;
+  }
+  .ed-tag {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--ed-hairline);
+    border-radius: 999px;
+    font-family: var(--ed-body);
+    font-size: var(--ed-fz-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ed-ink-mute);
+    background: transparent;
+    transition: color var(--ed-d-base) var(--ed-ease-soft),
+                border-color var(--ed-d-base) var(--ed-ease-soft);
+  }
+  .ed-card:hover .ed-tag {
+    color: var(--ed-ink-soft);
+    border-color: var(--ed-hairline-strong);
+  }
+
+  /* Certificate-card variant — credentials get a circular badge icon, no media image. */
+  .ed-card--cert .ed-card__media {
+    aspect-ratio: auto;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ed-card__icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    border: 1px solid var(--ed-hairline-strong);
+    display: grid;
+    place-items: center;
+    color: var(--ed-accent-strong);
+    transition: border-color var(--ed-d-base) var(--ed-ease-soft);
+  }
+  .ed-card--cert:hover .ed-card__icon {
+    border-color: var(--ed-accent);
+  }
+  .ed-card__icon .material-symbols-outlined {
+    font-size: 1.5rem;
+  }
+  .ed-card__external {
+    color: var(--ed-ink-mute);
+    transition: color var(--ed-d-base) var(--ed-ease-soft);
+  }
+  .ed-card--cert:hover .ed-card__external {
+    color: var(--ed-ink-soft);
+  }
+  .ed-card__external .material-symbols-outlined {
+    font-size: 1.25rem;
+  }
+
+  /* Personal-project icon-only media — bigger glyph, no border. */
+  .ed-card__media--icon {
+    background: var(--ed-surface);
+  }
+
+  /* Reduced-motion: cancel transitions on cards too. */
+  @media (prefers-reduced-motion: reduce) {
+    .ed-card,
+    .ed-card__media img,
+    .ed-card__media .material-symbols-outlined,
+    .ed-tag,
+    .ed-card__icon,
+    .ed-card__external {
+      transition: none !important;
+    }
+    .ed-card:hover {
+      transform: none !important;
+    }
+    .ed-card:hover .ed-card__media img {
+      transform: none !important;
+    }
+  }
