@@ -88,19 +88,20 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS (kept for legacy modal markup) -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-  <!-- Fonts -->
+  <!-- Fonts: Fraunces (display) + Space Grotesk (body) -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Tailwind Config -->
+  <!-- Editorial design layer (loaded after Tailwind so @layer takes precedence) -->
+  <link rel="stylesheet" href="assets/css/editorial.css?v=20260505a" />
+
+  <!-- Tailwind Config (kept; only used by retained modal markup) -->
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -127,754 +128,279 @@
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
+    /* Custom scrollbar — keep editorial palette */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a1014; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4fb6dc; }
 
-    ::-webkit-scrollbar-track {
-      background: #101c22;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #233038;
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #0da6f2;
-    }
-
-    .glass-nav {
-      background: rgba(16, 28, 34, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .animate-fade-in {
-      animation: fadeIn 0.8s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Fix dialog display */
-    dialog:not([open]) {
-      display: none;
-    }
-
-    dialog[open] {
-      display: flex;
-    }
-
-    /* Testimonial marquee */
-    @keyframes marquee {
-      0% {
-        transform: translateX(0);
-      }
-
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-
-    .marquee-track {
-      animation: marquee 45s linear infinite;
-    }
-
-    .marquee-track:hover {
-      animation-play-state: paused;
-    }
-
-    /* ── Geist-style stacking scroll panels ── */
-    .stack-panel {
-      position: sticky;
-      top: 0;
-      z-index: var(--panel-z, 10);
-      background: #101c22;
-      transform-origin: top center;
-      transition: scale 0.55s cubic-bezier(0.4, 0, 0.2, 1),
-        filter 0.55s cubic-bezier(0.4, 0, 0.2, 1),
-        border-radius 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-      will-change: scale, filter;
-    }
-
-    /* Incoming panels get a top-card edge */
-    .stack-panel+.stack-panel {
-      border-radius: 1.5rem 1.5rem 0 0;
-      box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.55);
-    }
-
-    /* Panel being covered: compress + dim */
-    .stack-panel.is-covered {
-      scale: 0.965;
-      filter: brightness(0.58);
-      border-radius: 1.5rem;
-    }
-
-    @media (max-width: 767px) {
-      .stack-panel {
-        position: relative;
-        top: auto;
-        transition: none;
-      }
-
-      .stack-panel+.stack-panel {
-        border-radius: 0;
-        box-shadow: none;
-      }
-
-      .stack-panel.is-covered {
-        scale: 1;
-        filter: none;
-        border-radius: 0;
-      }
-    }
+    /* Fix dialog display (kept from prior version for retained modals) */
+    dialog:not([open]) { display: none; }
+    dialog[open] { display: flex; }
   </style>
 </head>
 
-<body class="bg-background-dark text-white font-display antialiased">
-  <div class="relative min-h-screen flex flex-col">
-    <!-- Background Blur Circles -->
-    <div class="absolute inset-0 overflow-hidden z-0">
-      <div
-        class="absolute top-[-200px] left-[-200px] size-[400px] rounded-full bg-primary/20 blur-3xl opacity-50 animate-pulse-slow">
-      </div>
-      <div
-        class="absolute bottom-[-200px] right-[-200px] size-[400px] rounded-full bg-primary/20 blur-3xl opacity-50 animate-pulse-slow delay-1000">
-      </div>
-      <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 text-primary/10">
-        <svg fill="none" height="800" viewBox="0 0 800 800" width="800" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="1144.52"
-              id="filter0_f_1_183" width="1144.52" x="-172.26" y="-172.26">
-              <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
-              <feGaussianBlur in="BackgroundImage" stdDeviation="100"></feGaussianBlur>
-              <feComposite in2="SourceAlpha" operator="in" result="effect1_foregroundBlur_1_183"></feComposite>
-              <feBlend in="SourceGraphic" in2="effect1_foregroundBlur_1_183" mode="normal" result="shape"></feBlend>
-            </filter>
-          </defs>
-          <g filter="url(#filter0_f_1_183)">
-            <path
-              d="M589.699 400C589.699 504.629 504.629 589.7 400 589.7C295.371 589.7 210.301 504.629 210.301 400C210.301 295.371 295.371 210.301 400 210.301C504.629 210.301 589.699 295.371 589.699 400Z"
-              stroke="currentColor" stroke-width="20"></path>
-            <path
-              d="M518.3 400C518.3 465.345 465.345 518.3 400 518.3C334.655 518.3 281.7 465.345 281.7 400C281.7 334.655 334.655 281.7 400 281.7C465.345 281.7 518.3 334.655 518.3 400Z"
-              stroke="currentColor" stroke-width="20"></path>
-            <path
-              d="M400 447C425.957 447 447 425.957 447 400C447 374.043 425.957 353 400 353C374.043 353 353 374.043 353 400C353 425.957 374.043 447 400 447Z"
-              stroke="currentColor" stroke-width="20"></path>
-          </g>
-        </svg>
-      </div>
-    </div>
-
-    <!-- TopNavBar -->
-    <header class="sticky top-0 z-50 flex justify-center glass-nav">
-      <div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
-        <div class="flex items-center gap-3">
-          <div class="size-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
-            <span class="font-bold text-xl">M</span>
-          </div>
-          <h2 class="text-white text-lg font-bold tracking-tight hidden sm:block">Matthew Thaokhamlue</h2>
-        </div>
-        <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
-          <div class="flex items-center gap-6">
-            <a class="text-primary text-sm font-medium" href="index.html">Home</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-              href="experience.html">Experience</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-              href="portfolio.html">Portfolio</a>
-            <a class="text-white/70 hover:text-primary transition-colors text-sm font-medium"
-              href="certificates.html">Certifications</a>
-          </div>
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold tracking-wide transition-colors shadow-lg shadow-primary/20"
-            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar'})}">
-            <span class="truncate">Let's Connect</span>
-          </a>
-        </nav>
-        <button class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors" onclick="toggleMenu()">
-          <span class="material-symbols-outlined">menu</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu"
-      class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
-      <a class="text-2xl font-bold text-primary hover:text-primary transition-colors" href="index.html"
-        onclick="toggleMenu()">Home</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="experience.html"
-        onclick="toggleMenu()">Experience</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="portfolio.html"
-        onclick="toggleMenu()">Portfolio</a>
-      <a class="text-2xl font-bold text-white hover:text-primary transition-colors" href="certificates.html"
-        onclick="toggleMenu()">Certifications</a>
-      <button class="absolute top-6 right-6 p-2 text-white hover:text-primary" onclick="toggleMenu()">
-        <span class="material-symbols-outlined text-3xl">close</span>
+<body class="ed-page">
+  <!-- Top bar -->
+  <header class="ed-topbar">
+    <div class="ed-topbar__inner">
+      <a class="ed-topbar__brand" href="index.html">
+        <span class="ed-topbar__brand-mark">M</span>
+        <span>Matthew Thaokhamlue</span>
+      </a>
+      <nav class="ed-topbar__nav" aria-label="Primary">
+        <a class="ed-topbar__link" href="index.html" aria-current="page">Home</a>
+        <a class="ed-topbar__link" href="experience.html">Experience</a>
+        <a class="ed-topbar__link" href="portfolio.html">Portfolio</a>
+        <a class="ed-topbar__link" href="certificates.html">Certifications</a>
+        <a class="ed-btn ed-btn--ghost" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
+          rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar'})}">
+          Let&rsquo;s talk
+        </a>
+      </nav>
+      <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()">
+        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
       </button>
     </div>
+  </header>
 
-    <main class="relative z-10">
-      <!-- Hero Section (Bento Grid Style) -->
-      <section
-        class="stack-panel w-full min-h-screen md:h-screen flex items-start md:items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-0"
-        style="--panel-z:10">
-        <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in py-6 sm:py-8">
-          <!-- Main Intro Card -->
-          <div
-            class="lg:col-span-2 flex flex-col justify-center gap-3 rounded-2xl bg-surface border border-white/5 p-5 sm:p-6 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-              <span class="material-symbols-outlined text-9xl text-primary">hub</span>
-            </div>
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white">Matthew <br>Thaokhamlue
-            </h1>
-            <p class="text-base sm:text-lg text-primary font-medium tracking-tight">Builder · AI Workflow Architect</p>
-            <p class="text-white/60 max-w-xl leading-relaxed">As a builder, I turn complex ideas into intelligent products people love to use, and tick business metrics.</p>
+  <!-- Mobile menu (kept structurally — restyled) -->
+  <div id="mobile-menu"
+    class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+    <a class="text-2xl font-medium text-white" href="index.html" onclick="toggleMenu()">Home</a>
+    <a class="text-2xl font-medium text-white" href="experience.html" onclick="toggleMenu()">Experience</a>
+    <a class="text-2xl font-medium text-white" href="portfolio.html" onclick="toggleMenu()">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="certificates.html" onclick="toggleMenu()">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu">
+      <span class="material-symbols-outlined text-3xl">close</span>
+    </button>
+  </div>
 
-            <!-- Audio + AI Match Actions -->
-            <div class="mt-2 grid grid-cols-1 lg:grid-cols-2 gap-3">
-              <div class="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm w-full h-full">
-                <div class="flex items-center gap-3 mb-2">
-                  <div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                    <span class="material-symbols-outlined text-sm">graphic_eq</span>
-                  </div>
-                  <p class="text-xs font-medium text-white/80">Listen to my role discussion</p>
-                </div>
-                <audio controls class="w-full h-8 opacity-80 hover:opacity-100 transition-opacity"
-                  onplay="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'play'})}"
-                  onpause="if(typeof gtag==='function'){gtag('event','audio_played',{audio_title:'role_discussion',action:'pause'})}">
-                  <source src="Podcast about Matthew Thaokhamlue's Technical Product Manager role.wav"
-                    type="audio/wav" />
-                  Your browser does not support the audio element.
-                </audio>
-              </div>
-              <button id="ai-match-trigger" type="button"
-                class="group w-full h-full p-3 rounded-xl border border-primary/35 bg-primary/10 hover:bg-primary/20 text-left transition-colors">
-                <span class="flex items-center gap-3">
-                  <span class="material-symbols-outlined text-primary">smart_toy</span>
-                  <span class="text-sm font-semibold text-white">Evaluate role fit with my evidence</span>
-                </span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Right Column: Portfolio & Download CV Stacked -->
-          <div class="flex flex-col gap-4 h-full">
-            <!-- Portfolio Link Card -->
-            <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
-              href="portfolio.html">
-              <div>
-                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                  <span class="material-symbols-outlined text-xl">grid_view</span>
-                </div>
-                <h3 class="text-xl font-bold tracking-tight text-white">Matthew's Portfolio</h3>
-                <p class="text-white/60 mt-1 text-sm">AI product case studies, multi-agent systems, and agentic workflows I've built.</p>
-              </div>
-              <div class="flex items-center gap-2 text-primary font-medium mt-2">
-                <span class="text-sm">View Portfolio</span>
-                <span
-                  class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-              </div>
-            </a>
-
-            <!-- Download CV Card -->
-            <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30 flex-1"
-              href="Matthew main CV.pdf" target="_blank" rel="noopener noreferrer"
-              onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'index'})}">
-              <div>
-                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                  <span class="material-symbols-outlined text-xl">download</span>
-                </div>
-                <h3 class="text-xl font-bold tracking-tight text-white">Download CV</h3>
-                <p class="text-white/60 mt-1 text-sm">Get a copy of my resume and detailed work history.</p>
-              </div>
-              <div class="flex items-center gap-2 text-primary font-medium mt-2">
-                <span class="text-sm">Download PDF</span>
-                <span
-                  class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_downward</span>
-              </div>
-            </a>
-          </div>
-
-          <!-- Resume Link Card -->
-          <a class="group flex flex-col justify-between gap-3 rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-hover hover:-translate-y-1 hover:border-primary/30"
-            href="experience.html">
-            <div>
-              <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                <span class="material-symbols-outlined text-xl">description</span>
-              </div>
-              <h3 class="text-xl font-bold tracking-tight text-white">Experience & Skills</h3>
-              <p class="text-white/60 mt-1 text-sm">A detailed overview of my professional journey, skills, and
-                certifications.</p>
-            </div>
-            <div class="flex items-center gap-2 text-primary font-medium mt-2">
-              <span class="text-sm">View Experience</span>
-              <span
-                class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-            </div>
-          </a>
-
-          <!-- Contact Card -->
-          <a class="group lg:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl bg-primary/10 border border-primary/20 p-5 transition-all duration-300 hover:bg-primary/20 hover:-translate-y-1"
-            href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'hero_section'})}">
-            <div class="flex-1">
-              <h3 class="text-xl font-bold tracking-tight text-white">Let's Connect</h3>
-              <p class="text-white/70 mt-1 text-sm">Have a project in mind or want to talk about product? I'd love to
-                hear from you.</p>
-            </div>
-            <button
-              class="flex shrink-0 items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-dark text-white font-bold tracking-wide rounded-xl transition-colors shadow-lg shadow-primary/20">
-              <span class="text-sm">Get in Touch</span>
-              <span class="material-symbols-outlined text-sm">email</span>
-            </button>
-          </a>
-      </section>
-
-      <!-- Testimonials Section -->
-      <section id="testimonials"
-        class="stack-panel w-full min-h-screen md:h-screen bg-background-dark px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 overflow-x-hidden"
-        style="--panel-z:20">
-        <div class="max-w-7xl mx-auto flex flex-col gap-12">
-          <div class="flex flex-col gap-4 text-center items-center">
-            <div class="flex items-center gap-2 text-primary">
-              <span class="material-symbols-outlined">forum</span>
-              <h3 class="font-bold tracking-wide uppercase text-sm">Testimonials</h3>
-            </div>
-            <h2 class="text-3xl sm:text-5xl font-bold">What Colleagues Say</h2>
-            <a href="https://www.linkedin.com/in/matthewthaokhamlue/details/recommendations/" target="_blank"
-              rel="noopener noreferrer" onclick="if(typeof gtag==="
-              function"){gtag("event","external_link_clicked",{destination_platform:"linkedin",link_type:"recommendations_score",location:"testimonials_section"})}"
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/70 hover:text-white hover:border-primary/30 hover:bg-primary/10 transition-all duration-200">
-              <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-              </svg>
-              <span>7 recommendations on LinkedIn</span>
-              <span class="material-symbols-outlined text-base">open_in_new</span>
-            </a>
-          </div>
-          <!-- Testimonials Marquee -->
-          <div class="w-full overflow-hidden"
-            style="mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);">
-            <div class="marquee-track flex gap-6" style="width: max-content;">
-              <div onclick="openTestimonial(this)" data-name="Paul Burggraf" data-role="Founder at Thryve"
-                data-image="images/PB.jpeg"
-                data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve's growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/PB.jpeg" alt="Paul Burggraf"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Paul Burggraf</h4>
-                    <p class="text-primary text-sm">Founder at Thryve</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew joined Thryve as the 7th
-                  employee...
-                  As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and
-                  demanding field of health care from 1k end users to over 1 million end users."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Jeroen de Haas" data-role="CPO at Labforward"
-                data-image="images/jeroen-de-haas.png"
-                data-text="I've had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn't just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you're looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can't wait to see where his talents take him next."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/jeroen-de-haas.png" alt="Jeroen de Haas"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Jeroen de Haas</h4>
-                    <p class="text-primary text-sm">CPO at Labforward</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"What I admire most is his genuine can-do
-                  attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and
-                  focus...
-                  I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Robin Genolet"
-                data-role="Director Innovation & AI at Medgate" data-image="images/robin-genolet.jpeg"
-                data-text="At Medgate, we partnered with Berlin-based company mHealth Pioneers GmbH and use their Thryve product since July 2021. We use Thryve's standardized API and SDK to allow our patients to securely share with us sensor-generated data from hundreds of health devices via our mobile app. We then make the data available to our Doctors to support their teleconsultations. Their API standardizes the dozens of data formats used by a wide range of brands like Garmin, Fitbit, and Apple Healthkit. Thryve allowed us to minimize the duration of our development phase and takes care of the maintenance necessary when a data provider updates its API. We are both happy with the product and the team behind it: Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/robin-genolet.jpeg" alt="Robin Genolet"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Robin Genolet</h4>
-                    <p class="text-primary text-sm">Director Innovation & AI at Medgate</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew (Thryve Product Owner) and
-                  colleagues
-                  not only
-                  provided useful guidance during the development phase, but also helped us deal with challenges
-                  encountered
-                  with
-                  the brands we support..."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Ignatius Reza" data-role="CTO at Laboperator"
-                data-image="images/ignatius-reza.jpeg"
-                data-text="Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use. He's also a great person to have in the team. Great presence, character, motivation, and always willing to support."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/ignatius-reza.jpeg" alt="Ignatius Reza"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Ignatius Reza</h4>
-                    <p class="text-primary text-sm">CTO at Laboperator</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew is a great product manager with
-                  technical
-                  chops. He is great in digesting the complex area of developing a product which are highly technical,
-                  and
-                  coming
-                  up with product direction that is easy to understand and use..."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Sumner Price" data-role="Product Designer"
-                data-image="images/sumner-price.jpeg"
-                data-text="I had the pleasure of working with Matt on many projects within our product team. He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned. He was my go-to person whenever I felt uncertain about something. On top of that, his organizational skills—especially in creating PRDs and managing tickets—were invaluable. Working with him was truly a joy!"
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/sumner-price.jpeg" alt="Sumner Price"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Sumner Price</h4>
-                    <p class="text-primary text-sm">Product Designer at Labforward</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"He consistently impressed me with how
-                  quickly
-                  he
-                  picked up new initiatives and guided them through the product development process. As a product
-                  manager,
-                  Matt
-                  communicated clearly and ensured all relevant stakeholders were always aligned..."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Mark Dominick Flores"
-                data-role="Senior iOS Engineer at LabTwin" data-image="images/mark-flores.png"
-                data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he's great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I'd work with him again in a heartbeat. He's a huge asset to any product or engineering team."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/mark-flores.png" alt="Mark Dominick Flores"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Mark Dominick Flores</h4>
-                    <p class="text-primary text-sm">Senior iOS Engineer at LabTwin</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew has a remarkable ability to take
-                  nebulous business requirements and translate them into a clear, actionable backlog... He's also an
-                  incredibly fast learner. He quickly got up to speed on our complex systems."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Thuy Tran" data-role="Software Engineer at Doctorlib"
-                data-image=""
-                data-text="I worked with Matthew for more than 3 years in a cross-functional team where he was the Production Owner. I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let's get thing done, as well as his ability to pick things up quickly, his contribution to the team was highly significant and valuable. It was always a pleasure to co-work with him, as he takes his responsibility very seriously while maintaining a pleasant, collaborative discussion. I could always count on him to complete his tasks with full efforts and excellent output, and his supportive nature towards our colleagues."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <div
-                    class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
-                    TT</div>
-                  <div>
-                    <h4 class="font-bold text-white">Thuy Tran</h4>
-                    <p class="text-primary text-sm">Software Engineer at Doctorlib</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"I was extremely impressed with his
-                  analytical
-                  mind and his ability to dig deep and notice even the small details of a software feature. With his
-                  attitude of can-do and let's get thing done... his contribution to the team was highly significant."
-                </p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Paul Burggraf" data-role="Founder at Thryve"
-                data-image="images/PB.jpeg"
-                data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve's growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/PB.jpeg" alt="Paul Burggraf"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Paul Burggraf</h4>
-                    <p class="text-primary text-sm">Founder at Thryve</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew joined Thryve as the 7th
-                  employee...
-                  As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and
-                  demanding field of health care from 1k end users to over 1 million end users."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Jeroen de Haas" data-role="CPO at Labforward"
-                data-image="images/jeroen-de-haas.png"
-                data-text="I've had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn't just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you're looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can't wait to see where his talents take him next."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/jeroen-de-haas.png" alt="Jeroen de Haas"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Jeroen de Haas</h4>
-                    <p class="text-primary text-sm">CPO at Labforward</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"What I admire most is his genuine can-do
-                  attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and
-                  focus...
-                  I've truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Robin Genolet"
-                data-role="Director Innovation & AI at Medgate" data-image="images/robin-genolet.jpeg"
-                data-text="At Medgate, we partnered with Berlin-based company mHealth Pioneers GmbH and use their Thryve product since July 2021. We use Thryve's standardized API and SDK to allow our patients to securely share with us sensor-generated data from hundreds of health devices via our mobile app. We then make the data available to our Doctors to support their teleconsultations. Their API standardizes the dozens of data formats used by a wide range of brands like Garmin, Fitbit, and Apple Healthkit. Thryve allowed us to minimize the duration of our development phase and takes care of the maintenance necessary when a data provider updates its API. We are both happy with the product and the team behind it: Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/robin-genolet.jpeg" alt="Robin Genolet"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Robin Genolet</h4>
-                    <p class="text-primary text-sm">Director Innovation & AI at Medgate</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew (Thryve Product Owner) and
-                  colleagues
-                  not only
-                  provided useful guidance during the development phase, but also helped us deal with challenges
-                  encountered
-                  with
-                  the brands we support..."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Ignatius Reza" data-role="CTO at Laboperator"
-                data-image="images/ignatius-reza.jpeg"
-                data-text="Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use. He's also a great person to have in the team. Great presence, character, motivation, and always willing to support."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/ignatius-reza.jpeg" alt="Ignatius Reza"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Ignatius Reza</h4>
-                    <p class="text-primary text-sm">CTO at Laboperator</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew is a great product manager with
-                  technical
-                  chops. He is great in digesting the complex area of developing a product which are highly technical,
-                  and
-                  coming
-                  up with product direction that is easy to understand and use..."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Sumner Price" data-role="Product Designer"
-                data-image="images/sumner-price.jpeg"
-                data-text="I had the pleasure of working with Matt on many projects within our product team. He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned. He was my go-to person whenever I felt uncertain about something. On top of that, his organizational skills—especially in creating PRDs and managing tickets—were invaluable. Working with him was truly a joy!"
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/sumner-price.jpeg" alt="Sumner Price"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Sumner Price</h4>
-                    <p class="text-primary text-sm">Product Designer at Labforward</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"He consistently impressed me with how
-                  quickly
-                  he
-                  picked up new initiatives and guided them through the product development process. As a product
-                  manager,
-                  Matt
-                  communicated clearly and ensured all relevant stakeholders were always aligned..."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Mark Dominick Flores"
-                data-role="Senior iOS Engineer at LabTwin" data-image="images/mark-flores.png"
-                data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He's also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he's great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I'd work with him again in a heartbeat. He's a huge asset to any product or engineering team."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <img src="images/mark-flores.png" alt="Mark Dominick Flores"
-                    class="w-14 h-14 rounded-full object-cover border-2 border-primary/20">
-                  <div>
-                    <h4 class="font-bold text-white">Mark Dominick Flores</h4>
-                    <p class="text-primary text-sm">Senior iOS Engineer at LabTwin</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"Matthew has a remarkable ability to take
-                  nebulous business requirements and translate them into a clear, actionable backlog... He's also an
-                  incredibly fast learner. He quickly got up to speed on our complex systems."</p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-              <div onclick="openTestimonial(this)" data-name="Thuy Tran" data-role="Software Engineer at Doctorlib"
-                data-image=""
-                data-text="I worked with Matthew for more than 3 years in a cross-functional team where he was the Production Owner. I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let's get thing done, as well as his ability to pick things up quickly, his contribution to the team was highly significant and valuable. It was always a pleasure to co-work with him, as he takes his responsibility very seriously while maintaining a pleasant, collaborative discussion. I could always count on him to complete his tasks with full efforts and excellent output, and his supportive nature towards our colleagues."
-                class="flex-shrink-0 w-[340px] cursor-pointer flex flex-col gap-5 p-6 rounded-2xl bg-surface border border-white/5 relative hover:bg-surface-hover transition-colors group">
-                <span class="material-symbols-outlined text-6xl text-white/5 absolute top-6 right-6">format_quote</span>
-                <div class="flex items-center gap-4">
-                  <div
-                    class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
-                    TT</div>
-                  <div>
-                    <h4 class="font-bold text-white">Thuy Tran</h4>
-                    <p class="text-primary text-sm">Software Engineer at Doctorlib</p>
-                  </div>
-                </div>
-                <p class="text-white/70 italic leading-relaxed line-clamp-3">"I was extremely impressed with his
-                  analytical
-                  mind and his ability to dig deep and notice even the small details of a software feature. With his
-                  attitude of can-do and let's get thing done... his contribution to the team was highly significant."
-                </p>
-                <p class="text-primary text-sm font-medium mt-auto group-hover:underline">Read full testimonial</p>
-              </div>
-            </div>
-          </div>
-        </div><!-- /testimonials-inner -->
-      </section>
-
-      <!-- My Story Section -->
-      <section id="my-story" class="stack-panel w-full bg-background-dark px-4 sm:px-6 lg:px-8 py-20 sm:py-24"
-        style="--panel-z:30">
-        <div class="max-w-7xl mx-auto flex flex-col gap-12">
-
-          <!-- Header -->
-          <div class="flex flex-col gap-4">
-            <h2 class="text-3xl sm:text-5xl font-bold tracking-tight">My Story</h2>
-          </div>
-
-          <!-- Content -->
-          <div class="flex flex-col md:flex-row gap-12">
-            <!-- Sidebar: Photo + Education -->
-            <div class="md:w-[30%] shrink-0 flex flex-col gap-8">
-              <div class="relative">
-                <div class="absolute -inset-2 bg-primary/20 rounded-2xl blur-lg"></div>
-                <img src="images/MT.jpg" alt="Matthew Thaokhamlue"
-                  class="relative w-full rounded-2xl shadow-2xl border border-white/10">
-              </div>
-              <div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-white/5">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                  <span class="material-symbols-outlined text-primary">school</span>
-                  Education
-                </h3>
-                <div class="flex flex-col gap-4">
-                  <div class="border-l-2 border-primary/30 pl-4">
-                    <h4 class="font-bold text-white">Master of International and Development Economics</h4>
-                    <p class="text-primary text-sm">University of Applied Science Berlin</p>
-                    <p class="text-white/40 text-xs mt-1">DAAD Scholarship Recipient</p>
-                  </div>
-                  <div class="border-l-2 border-primary/30 pl-4">
-                    <h4 class="font-bold text-white">Bachelor's Degree in Economics</h4>
-                    <p class="text-primary text-sm">Chiang Mai University</p>
-                    <p class="text-white/40 text-xs mt-1">Quantitative Economics</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Story Text -->
-            <div
-              class="md:w-[70%] flex flex-col gap-6 text-white/80 leading-relaxed text-lg overflow-y-auto h-full pr-4 custom-scrollbar">
-              <p>
-                I still remember opening that letter. A DAAD scholarship to study in Berlin. I had to read it
-                three times to believe it was real. Me? Berlin? That moment taught me that taking a leap, even
-                when you think you're not ready, can reshape your entire trajectory.
-              </p>
-              <p>
-                My background isn't typical. I started in Economics in Chiang Mai, learning about market
-                systems, incentives, and why people make the decisions they do. Moved across the continent,
-                Berlin was cold (way colder than Thailand prepared me for), but it's where I discovered that
-                economics wasn't just about markets, it was about understanding what makes people tick. That's
-                when technology clicked for me.
-              </p>
-              <p>
-                I saw how digital tools could transform entire industries. Not theoretically, but actually.
-                Scientists using voice AI in labs. People tracking their health through wearables. When I joined
-                Thryve as employee #7, I barely knew what an API was. But I knew how to listen. How to ask "why"
-                five times until you get to the real problem. I helped drive us from a few thousand to 1 million users
-                and from €0 to €1M ARR.
-              </p>
-              <p>
-                Here's what I've learned across EY, Thryve, LabTwin, and Labforward: great products aren't about
-                the technology stack. They're about the human on the other side of the screen. The scientist who
-                just wants to log their experiment without fumbling. The healthcare analyst from insurance corp
-                who needs reliable data without the headache. The end user who wants their health information to
-                actually help them.
-              </p>
-              <p>
-                I care deeply about leading cross-functional teams with collaboration and clarity, delivering things
-                that make users smile. Whether
-                it's streamlining a lab workflow or building health data infrastructure, I focus on bridging
-                technical complexity with human needs.
-              </p>
-              <p>
-                Product management is a lot like cooking. You can follow a recipe perfectly, but if you don't
-                understand why each ingredient matters, you miss the magic. You need to taste as you go. Adjust.
-                Iterate. Both require attention to detail, patience, and a deep desire to create something
-                delightful for others. And both, when done right, bring genuine joy.
-              </p>
-              <p>
-                That DAAD scholarship didn't just take me from Thailand to Germany. It taught me that the most
-                interesting problems live at intersections, between economics and technology, between data and
-                intuition, and between what's technically possible and what's actually meaningful. That's where
-                I build. That's where I belong.
-              </p>
-            </div>
-          </div>
-
+  <main>
+    <!-- ────────────────  HERO  ──────────────── -->
+    <section class="ed-hero" id="top">
+      <div class="ed-hero__inner">
+        <div class="ed-hero__meta">
+          <span class="ed-eyebrow">Builder · AI Workflow Architect · Berlin</span>
         </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-background-dark py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="flex flex-col gap-2 text-center md:text-left">
-          <p class="text-white/60 text-sm">&copy; 2026 Matthew Thaokhamlue. All rights reserved.</p>
-          <p class="text-white/40 text-xs">Builder · AI Workflow Architect | Berlin, Germany</p>
+        <div>
+          <h1 class="ed-hero__display">I build AI <em>workflows</em>,<br />not AI features.</h1>
+          <p class="ed-hero__support">
+            Senior product manager and AI systems builder. I own GenAI roadmaps from LLM evaluation to
+            production, and design multi-agent Claude Code workflows that ship work without me in the loop.
+          </p>
         </div>
-        <div class="flex items-center gap-6">
-          <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
-            class="text-white/60 hover:text-primary transition-colors"
-            onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'index',link_position:'footer'})}">
-            <i class="fab fa-linkedin text-2xl"></i>
+        <div class="ed-hero__cta-row">
+          <button id="ai-match-trigger" type="button" class="ed-btn ed-btn--accent">
+            <span>Evaluate role fit with my evidence</span>
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </button>
+          <a class="ed-btn ed-btn--ghost" href="Matthew main CV.pdf" target="_blank" rel="noopener noreferrer"
+            onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'Matthew main CV.pdf',page_location:'index'})}">
+            Download CV
+            <span class="ed-link__arrow" aria-hidden="true">↓</span>
           </a>
-          <a href="https://github.com/matthew-thaokhamlue" target="_blank"
-            class="text-white/60 hover:text-white transition-colors"
-            onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'index',link_position:'footer'})}">
-            <i class="fab fa-github text-2xl"></i>
+          <a class="ed-link" href="portfolio.html">
+            <span>Or skim the portfolio</span>
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
           </a>
         </div>
       </div>
-    </footer>
-  </div>
+    </section>
 
-  <!-- Testimonial Modal -->
+    <!-- ────────────────  PRODUCT PHILOSOPHY  ──────────────── -->
+    <section class="ed-philosophy" id="philosophy">
+      <div class="ed-philosophy__inner">
+        <div class="reveal">
+          <p class="ed-eyebrow" style="margin-bottom: var(--ed-s-3);">Product philosophy</p>
+          <h2 class="ed-philosophy__lede">Great products are not about the <em>technology stack</em>. They&rsquo;re about the human on the other side of the screen.</h2>
+        </div>
+        <div class="ed-philosophy__body">
+          <p>
+            I still remember opening that letter. A DAAD scholarship to study in Berlin. I had to read it
+            three times to believe it was real. Me? Berlin? That moment taught me that taking a leap, even
+            when you think you&rsquo;re not ready, can reshape your entire trajectory.
+          </p>
+          <p>
+            My background isn&rsquo;t typical. I started in Economics in Chiang Mai, learning about market
+            systems, incentives, and why people make the decisions they do. Moved across the continent,
+            Berlin was cold (way colder than Thailand prepared me for), but it&rsquo;s where I discovered that
+            economics wasn&rsquo;t just about markets, it was about understanding what makes people tick. That&rsquo;s
+            when technology clicked for me.
+          </p>
+          <p>
+            I saw how digital tools could transform entire industries. Not theoretically, but actually.
+            Scientists using voice AI in labs. People tracking their health through wearables. When I joined
+            Thryve as employee #7, I barely knew what an API was. But I knew how to listen. How to ask &ldquo;why&rdquo;
+            five times until you get to the real problem. I helped drive us from a few thousand to 1 million users
+            and from &euro;0 to &euro;1M ARR.
+          </p>
+          <p>
+            Here&rsquo;s what I&rsquo;ve learned across EY, Thryve, LabTwin, and Labforward: the scientist who just wants
+            to log their experiment without fumbling. The healthcare analyst from insurance corp who needs reliable
+            data without the headache. The end user who wants their health information to actually help them.
+            That&rsquo;s the human I build for.
+          </p>
+          <p>
+            I care deeply about leading cross-functional teams with collaboration and clarity, delivering things
+            that make users smile. Whether it&rsquo;s streamlining a lab workflow or building health data
+            infrastructure, I focus on bridging technical complexity with human needs.
+          </p>
+          <p>
+            Product management is a lot like cooking. You can follow a recipe perfectly, but if you don&rsquo;t
+            understand why each ingredient matters, you miss the magic. You need to taste as you go. Adjust.
+            Iterate. Both require attention to detail, patience, and a deep desire to create something
+            delightful for others. And both, when done right, bring genuine joy.
+          </p>
+          <p>
+            That DAAD scholarship didn&rsquo;t just take me from Thailand to Germany. It taught me that the most
+            interesting problems live at intersections, between economics and technology, between data and
+            intuition, and between what&rsquo;s technically possible and what&rsquo;s actually meaningful. That&rsquo;s where
+            I build. That&rsquo;s where I belong.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────  HOW IT WORKS (Abstract)  ──────────────── -->
+    <section class="ed-howitworks" id="how-it-works">
+      <div class="ed-howitworks__inner">
+        <div class="ed-howitworks__heading">
+          <p class="ed-eyebrow reveal">The system</p>
+          <h2 class="ed-display reveal" style="font-size: var(--ed-fz-3xl); line-height: 1.1; letter-spacing: -0.025em; margin: 0;">
+            Four stages I run, again and again, until the workflow ships itself.
+          </h2>
+        </div>
+        <div class="ed-stages">
+          <div class="ed-stage">
+            <span class="ed-stage__num">01</span>
+            <h3 class="ed-stage__title">Discovery</h3>
+            <p class="ed-stage__desc">Five whys until the real problem surfaces. Talk to the human on the other side of the screen, not the persona deck.</p>
+            <span class="ed-stage__line" aria-hidden="true"></span>
+          </div>
+          <div class="ed-stage">
+            <span class="ed-stage__num">02</span>
+            <h3 class="ed-stage__title">Architecture</h3>
+            <p class="ed-stage__desc">Design the workflow, not the feature. LLM evaluation, model boundaries, fail-safe paths, evals before launch.</p>
+            <span class="ed-stage__line" aria-hidden="true"></span>
+          </div>
+          <div class="ed-stage">
+            <span class="ed-stage__num">03</span>
+            <h3 class="ed-stage__title">Build</h3>
+            <p class="ed-stage__desc">Multi-agent Claude Code pipelines, MCP servers, prototypes that ship to staging in days, not quarters.</p>
+            <span class="ed-stage__line" aria-hidden="true"></span>
+          </div>
+          <div class="ed-stage">
+            <span class="ed-stage__num">04</span>
+            <h3 class="ed-stage__title">Ship</h3>
+            <p class="ed-stage__desc">Production deployment, observability, the boring parts that make AI products trustworthy and recover gracefully.</p>
+            <span class="ed-stage__line" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────  SIGNATURE ANIMATION  ──────────────── -->
+    <section class="ed-signature" id="signature" aria-label="Brand signature">
+      <div class="ed-signature__inner">
+        <p class="ed-eyebrow reveal" style="text-align:center; margin-bottom: var(--ed-s-5);">A composition</p>
+        <div class="ed-signature__stage">
+          <div class="ed-signature__words">
+            <p class="ed-signature__word">Builder.</p>
+            <p class="ed-signature__word ed-signature__word--accent">Workflow.</p>
+            <p class="ed-signature__word">Architect.</p>
+            <p class="ed-signature__word ed-signature__word--accent">AI.</p>
+          </div>
+        </div>
+        <p class="ed-signature__caption reveal">What I am, and what I do, in four words.</p>
+      </div>
+    </section>
+
+    <!-- ────────────────  INLINE QUOTES  ──────────────── -->
+    <section class="ed-quotes" id="recommendations">
+      <div class="ed-quotes__inner">
+        <p class="ed-eyebrow reveal">In their words</p>
+
+        <button type="button" class="ed-quote" onclick="openTestimonial(this)"
+          data-name="Jeroen de Haas" data-role="CPO at Labforward"
+          data-image="images/jeroen-de-haas.png"
+          data-text="I&apos;ve had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner&mdash;someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I&apos;ve truly seen him grow&mdash;from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn&apos;t just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you&apos;re looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can&apos;t wait to see where his talents take him next.">
+          <p class="ed-quote__text">Matt is a natural team player who listens, collaborates, and makes everyone around him better.</p>
+          <p class="ed-quote__attr"><strong>Jeroen de Haas</strong> CPO at Labforward</p>
+        </button>
+
+        <button type="button" class="ed-quote" onclick="openTestimonial(this)"
+          data-name="Mark Dominick Flores" data-role="Senior iOS Engineer at LabTwin"
+          data-image="images/mark-flores.png"
+          data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He&apos;s also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he&apos;s great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I&apos;d work with him again in a heartbeat. He&apos;s a huge asset to any product or engineering team.">
+          <p class="ed-quote__text">A remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog.</p>
+          <p class="ed-quote__attr"><strong>Mark Dominick Flores</strong> Senior iOS Engineer at LabTwin</p>
+        </button>
+
+        <button type="button" class="ed-quote" onclick="openTestimonial(this)"
+          data-name="Paul Burggraf" data-role="Founder at Thryve"
+          data-image="images/PB.jpeg"
+          data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve&apos;s growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly.">
+          <p class="ed-quote__text">He scaled a complex IT service in a highly regulated field of healthcare from 1k end users to over 1 million.</p>
+          <p class="ed-quote__attr"><strong>Paul Burggraf</strong> Founder at Thryve</p>
+        </button>
+
+        <div class="ed-quotes__more reveal">
+          <a class="ed-link" href="https://www.linkedin.com/in/matthewthaokhamlue/details/recommendations/" target="_blank"
+            rel="noopener noreferrer"
+            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'recommendations_score',location:'inline_quotes_section'})}">
+            <span>Seven more recommendations on LinkedIn</span>
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────  FINAL CTA  ──────────────── -->
+    <section class="ed-cta" id="contact">
+      <div class="ed-cta__inner">
+        <h2 class="ed-cta__line reveal">Have a workflow worth <em>building</em>?<br />Let&rsquo;s talk about it.</h2>
+        <div class="ed-cta__row reveal">
+          <a class="ed-btn" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
+            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'final_cta'})}">
+            Reach out on LinkedIn
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="ed-link" href="mailto:matthew.thaokhamlue@gmail.com">
+            <span>Or send an email</span>
+            <span class="ed-link__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ────────────────  FOOTER  ──────────────── -->
+  <footer class="ed-foot">
+    <div class="ed-foot__inner">
+      <div>
+        <p>&copy; 2026 Matthew Thaokhamlue.</p>
+        <p style="color: var(--ed-ink-mute); font-size: var(--ed-fz-xs); margin-top: 0.25rem;">
+          Builder · AI Workflow Architect · Berlin, Germany
+        </p>
+      </div>
+      <div class="ed-foot__icons">
+        <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'index',link_position:'footer'})}"
+          aria-label="LinkedIn">
+          <i class="fab fa-linkedin text-2xl"></i>
+        </a>
+        <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
+          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'index',link_position:'footer'})}"
+          aria-label="GitHub">
+          <i class="fab fa-github text-2xl"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Testimonial Modal (kept — used by inline quote click) -->
   <dialog id="testimonial-modal"
     class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
     <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="closeTestimonial(event)">
@@ -882,7 +408,7 @@
         class="bg-surface border border-white/10 rounded-2xl max-w-2xl w-full p-8 shadow-2xl transform transition-all scale-100 relative"
         onclick="event.stopPropagation()">
         <button onclick="closeTestimonial()"
-          class="absolute top-4 right-4 text-white/50 hover:text-white transition-colors">
+          class="absolute top-4 right-4 text-white/50 hover:text-white transition-colors" aria-label="Close testimonial">
           <span class="material-symbols-outlined text-3xl">close</span>
         </button>
         <div class="flex flex-col gap-6">
@@ -897,7 +423,7 @@
               <p id="modal-role" class="text-primary text-base"></p>
             </div>
           </div>
-          <div class="max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+          <div class="max-h-[60vh] overflow-y-auto pr-2">
             <p id="modal-text" class="text-white/80 text-lg leading-relaxed italic"></p>
           </div>
         </div>
@@ -905,173 +431,7 @@
     </div>
   </dialog>
 
-  <!-- Stacking scroll effect -->
-  <script>
-      (function () {
-        var panels = Array.prototype.slice.call(document.querySelectorAll('.stack-panel'));
-        if (!panels.length) return;
-        var mobileQuery = window.matchMedia('(max-width: 767px)');
-        var isSnapping = false;
-        var snapUnlockTimer = null;
-        var activeSnapFrame = null;
-        var wheelDeltaBuffer = 0;
-        var WHEEL_THRESHOLD = 20;
-        var SNAP_LOCK_MS = 560;
-        var SNAP_DURATION_MS = 960;
-        var SNAP_EDGE_GUTTER_UP = 200;
-
-        // Cache stable flow offsets (offsetTop shifts when panels are sticky-stuck)
-        var flowOffsets = [];
-        function cacheFlowOffsets() {
-          flowOffsets = [];
-          var cumulative = 0;
-          panels.forEach(function (panel) {
-            flowOffsets.push(cumulative);
-            cumulative += panel.offsetHeight;
-          });
-        }
-        cacheFlowOffsets();
-
-        function clearCoveredState() {
-          panels.forEach(function (panel) {
-            panel.classList.remove('is-covered');
-          });
-        }
-
-        function update() {
-          if (mobileQuery.matches) {
-            clearCoveredState();
-            return;
-          }
-
-          var vh = window.innerHeight;
-          panels.forEach(function (panel, i) {
-            var next = panels[i + 1];
-            if (!next) return;
-            var nextTop = next.getBoundingClientRect().top;
-            panel.classList.toggle('is-covered', nextTop < vh * 0.88);
-          });
-          if (window.scrollY <= 1 && panels[0]) {
-            panels[0].classList.remove('is-covered');
-          }
-        }
-
-        function activePanelIndex() {
-          var y = window.scrollY + 1;
-          var active = 0;
-          for (var i = 0; i < flowOffsets.length; i++) {
-            if (flowOffsets[i] <= y) active = i;
-          }
-          return active;
-        }
-
-        function targetScrollTop(index) {
-          var offset = flowOffsets[index];
-          var height = panels[index].offsetHeight;
-          var nextTop = offset + height / 2 - window.innerHeight / 2;
-          var maxTop = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
-          return Math.min(Math.max(nextTop, 0), maxTop);
-        }
-
-        function unlockSnapAfterDelay() {
-          if (snapUnlockTimer) window.clearTimeout(snapUnlockTimer);
-          snapUnlockTimer = window.setTimeout(function () {
-            isSnapping = false;
-            wheelDeltaBuffer = 0;
-            update();
-          }, SNAP_LOCK_MS);
-        }
-
-        function easeInOutSine(t) {
-          return -(Math.cos(Math.PI * t) - 1) / 2;
-        }
-
-        function animateScrollTo(targetTop) {
-          var startTop = window.scrollY;
-          var distance = targetTop - startTop;
-          if (Math.abs(distance) < 1) return false;
-
-          if (activeSnapFrame) {
-            window.cancelAnimationFrame(activeSnapFrame);
-            activeSnapFrame = null;
-          }
-
-          var startTime = null;
-          function step(timestamp) {
-            if (startTime === null) startTime = timestamp;
-            var progress = Math.min((timestamp - startTime) / SNAP_DURATION_MS, 1);
-            var eased = easeInOutSine(progress);
-            window.scrollTo(0, startTop + distance * eased);
-
-            if (progress < 1) {
-              activeSnapFrame = window.requestAnimationFrame(step);
-              return;
-            }
-
-            activeSnapFrame = null;
-            unlockSnapAfterDelay();
-          }
-
-          activeSnapFrame = window.requestAnimationFrame(step);
-          return true;
-        }
-
-        function snapToDirection(direction) {
-          var from = activePanelIndex();
-          var to = from + (direction > 0 ? 1 : -1);
-          if (to < 0 || to >= panels.length) return false;
-          // For upward snaps, only fire when near the top of the current panel
-          if (direction < 0 && window.scrollY > flowOffsets[from] + SNAP_EDGE_GUTTER_UP) {
-            return false;
-          }
-          isSnapping = true;
-          if (!animateScrollTo(targetScrollTop(to))) {
-            isSnapping = false;
-            return false;
-          }
-          return true;
-        }
-
-        function shouldIgnoreWheel(target) {
-          if (!target || !target.closest) return false;
-          return Boolean(target.closest('dialog[open], .overflow-y-auto, textarea, input, select, [data-stack-snap-ignore]'));
-        }
-
-        function onWheel(event) {
-          if (mobileQuery.matches) return;
-          if (shouldIgnoreWheel(event.target)) return;
-          if (isSnapping) {
-            event.preventDefault();
-            return;
-          }
-
-          wheelDeltaBuffer += event.deltaY;
-          if (Math.abs(wheelDeltaBuffer) < WHEEL_THRESHOLD) return;
-
-          var snapped = snapToDirection(wheelDeltaBuffer);
-          wheelDeltaBuffer = 0;
-          if (snapped) event.preventDefault();
-        }
-
-        function onResize() {
-          wheelDeltaBuffer = 0;
-          if (activeSnapFrame) {
-            window.cancelAnimationFrame(activeSnapFrame);
-            activeSnapFrame = null;
-          }
-          isSnapping = false;
-          cacheFlowOffsets();
-          update();
-        }
-
-        window.addEventListener('wheel', onWheel, { passive: false });
-        window.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', onResize);
-        update();
-      })();
-  </script>
-
-  <!-- AI Match Modal -->
+  <!-- AI Match Modal (kept verbatim — contract for assets/js/ai-match.js) -->
   <dialog id="ai-match-modal"
     class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
     <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" data-ai-match-overlay>
@@ -1097,7 +457,7 @@
               your job description first, or open ChatGPT in a private/incognito window.
               <a id="ai-chatgpt-fallback-link" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
                 class="ml-1 text-amber-100 underline hover:text-white">
-                Link doesn't work? Click here.
+                Link doesn&apos;t work? Click here.
               </a>
             </p>
           </div>
@@ -1113,7 +473,17 @@
     </div>
   </dialog>
 
+  <!-- GSAP (pinned) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Editorial motion -->
+  <script src="assets/js/editorial.js?v=20260505a"></script>
+
+  <!-- AI Match feature (kept) -->
   <script type="module" src="assets/js/ai-match.js?v=20260213a"></script>
+
+  <!-- Page-level glue (kept contract: toggleMenu, openTestimonial, closeTestimonial) -->
   <script>
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu');

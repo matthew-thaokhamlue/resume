@@ -74,8 +74,8 @@ function createHarness(scriptCode, options = {}) {
   return { eventHandlers };
 }
 
-test('index stacking script does not force upward snap when deep in current panel', () => {
-  const htmlPath = path.resolve('index.html');
+test('experience stacking script does not force upward snap when deep in current panel', () => {
+  const htmlPath = path.resolve('experience.html');
   const html = fs.readFileSync(htmlPath, 'utf8');
   const script = extractStackingScript(html);
   const { eventHandlers } = createHarness(script, {

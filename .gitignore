@@ -54,3 +54,4 @@ pids
 
 # Local git worktrees
 .worktrees/
+.gstack/
