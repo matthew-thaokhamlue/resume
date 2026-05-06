@@ -315,19 +315,26 @@
       pointer-events: none;
     }
 
-    .case-feature__media--icon {
+    .case-feature__media--illustration {
       display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: center;
       background:
-        radial-gradient(circle at 35% 30%, rgba(108, 199, 233, 0.16), transparent 36%),
-        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+        radial-gradient(circle at 28% 24%, rgba(108, 199, 233, 0.18), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(108, 199, 233, 0.10), transparent 38%),
+        linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
     }
 
-    .case-feature__media--icon .material-symbols-outlined {
-      font-size: clamp(5rem, 14vw, 11rem);
-      color: rgba(108, 199, 233, 0.58);
-      filter: drop-shadow(0 24px 80px rgba(79, 182, 220, 0.16));
+    .case-feature__media--illustration img {
+      object-fit: cover;
+      object-position: center;
+      filter: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .case-feature__media--illustration::after {
+      display: none;
     }
 
 
@@ -605,8 +612,8 @@
             <li>Moved GenAI from demo territory into daily scientific work.</li>
           </ul>
         </div>
-        <div class="case-feature__media case-feature__media--icon reveal">
-          <span class="material-symbols-outlined" aria-hidden="true">smart_toy</span>
+        <div class="case-feature__media case-feature__media--illustration reveal">
+          <img src="../images/labforward-chat-experiment.png" alt="Abstract illustration of multiple agent streams converging into a structured experiment workflow chamber" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>
@@ -614,8 +621,8 @@
     <!-- Rapid prototype -->
     <section class="case-feature">
       <div class="case-feature__inner">
-        <div class="case-feature__media case-feature__media--icon reveal">
-          <span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span>
+        <div class="case-feature__media case-feature__media--illustration reveal">
+          <img src="../images/labforward-validation-loop.png" alt="Abstract illustration of a compact validation loop passing through prototype and verification thresholds before opening into a clear path" loading="lazy" decoding="async" />
         </div>
         <div class="case-feature__content">
           <p class="case-section__eyebrow reveal">Process case study</p>
@@ -663,8 +670,8 @@
             <li>Turned frustrated customer stakeholders into product advocates.</li>
           </ul>
         </div>
-        <div class="case-feature__media reveal">
-          <img src="../images/labforward-card.png" alt="Labforward lab intelligence platform" />
+        <div class="case-feature__media case-feature__media--illustration reveal">
+          <img src="../images/labforward-unified-workspace.png" alt="Abstract illustration of two separate system lanes merging through a central aperture into one unified workspace" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>

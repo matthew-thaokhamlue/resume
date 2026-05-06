@@ -48,6 +48,10 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 - Google Analytics tag (G-D11HKMWFB4) is included in each page's `<head>`
 - SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
 - Images go in `images/` directory
+- Editorial case-study feature blocks can switch from `.case-feature__media--icon` placeholders to plain `.case-feature__media` with an `<img src="../images/*.png">`; existing CSS already handles crop and sizing.
+- `labtwin.html` and `labforward.html` use a local `.case-feature__media--illustration` variant for full-bleed art; disable the default image filter/transform and hide the media overlay so abstract illustrations render cleanly.
+- `portfolio.html` card covers should use dedicated `images/*-card.png` assets rather than the larger case-study illustration files, so grid art can diverge without overwriting page-level visuals.
+- `thryve.html` now uses the same local `.case-feature__media--illustration` treatment for full-bleed abstract art instead of the older SDK screenshot-style media block.
 - If editing JavaScript behavior, AI Match markup, local page links/assets, or stack snap behavior, re-run:
   - `node --test tests/*.test.mjs`
 

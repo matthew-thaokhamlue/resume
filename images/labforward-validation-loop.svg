@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -40 960 760" role="img" aria-labelledby="title desc">
+  <title id="title">Minimal rapid validation loop</title>
+  <desc id="desc">A customer request becomes a quick prototype, a customer test, and a clearer build decision.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a1014"/><stop offset="1" stop-color="#122029"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#000" flood-opacity=".35"/></filter>
+    <style>.card{fill:#0e171c;stroke:#fff;stroke-opacity:.12}.muted{fill:#8b969e;font:600 13px Space Grotesk,system-ui,sans-serif;letter-spacing:2.4px}.text{fill:#f3f5f7;font:700 24px Space Grotesk,system-ui,sans-serif}.small{fill:#c7cfd5;font:500 16px Space Grotesk,system-ui,sans-serif}.thin{fill:none;stroke-linecap:round;stroke-linejoin:round}.soft{stroke:#fff;stroke-opacity:.18}.accent{stroke:#6cc7e9}</style>
+  </defs>
+  <rect y="-40" width="960" height="760" rx="42" fill="url(#bg)"/>
+  <circle cx="480" cy="320" r="250" fill="#6cc7e9" opacity=".045"/>
+
+  <path d="M246 244C340 116 594 116 712 248C808 356 704 520 480 520C256 520 152 356 246 244Z" class="thin accent" stroke-width="2.2" stroke-opacity=".46"/>
+  <path d="M242 246l-8 42 38-18" class="thin accent" stroke-width="2.2" stroke-opacity=".46"/>
+
+  <g transform="translate(110 172)" filter="url(#shadow)">
+    <rect width="206" height="132" rx="28" class="card"/>
+    <text x="26" y="42" class="muted">REQUEST</text>
+    <text x="26" y="84" class="text">reagent</text>
+    <text x="26" y="112" class="small">search</text>
+  </g>
+  <g transform="translate(376 132)" filter="url(#shadow)">
+    <rect width="208" height="176" rx="30" class="card"/>
+    <text x="26" y="44" class="muted">PROTOTYPE</text>
+    <text x="26" y="88" class="text">4 hours</text>
+    <path d="M48 124h78m-28-30 30 30-30 30" class="thin accent" stroke-width="5"/>
+  </g>
+  <g transform="translate(646 172)" filter="url(#shadow)">
+    <rect width="204" height="132" rx="28" class="card"/>
+    <text x="26" y="42" class="muted">TEST</text>
+    <path d="M48 86l20 20 48-64" class="thin accent" stroke-width="5"/>
+    <text x="130" y="94" class="small">next day</text>
+  </g>
+
+  <g transform="translate(170 438)" filter="url(#shadow)">
+    <rect width="260" height="104" rx="26" class="card"/>
+    <text x="24" y="38" class="muted">REWORK</text>
+    <text x="24" y="78" class="text" font-size="28">50% → 15%</text>
+  </g>
+  <g transform="translate(530 438)" filter="url(#shadow)">
+    <rect width="260" height="104" rx="26" fill="#6cc7e9" fill-opacity=".10" stroke="#6cc7e9" stroke-opacity=".30"/>
+    <text x="24" y="38" fill="#8bd9f5" font="600 13px Space Grotesk,system-ui,sans-serif" letter-spacing="2.4px">VALIDATION</text>
+    <text x="24" y="78" class="text" font-size="28">4x faster</text>
+  </g>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -40 960 760" role="img" aria-labelledby="title desc">
+  <title id="title">Minimal voice-controlled inventory workflow</title>
+  <desc id="desc">A voice command flows through LabTwin into a laboratory inventory update.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1014"/><stop offset="1" stop-color="#122029"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6cc7e9" stop-opacity="0.18"/><stop offset="0.5" stop-color="#6cc7e9"/><stop offset="1" stop-color="#f3f5f7" stop-opacity="0.7"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#000" flood-opacity="0.35"/></filter>
+    <style>
+      .card{fill:#0e171c;stroke:#fff;stroke-opacity:.12}.muted{fill:#8b969e;font:600 13px Space Grotesk,system-ui,sans-serif;letter-spacing:2.4px}.text{fill:#f3f5f7;font:700 26px Space Grotesk,system-ui,sans-serif}.small{fill:#c7cfd5;font:500 16px Space Grotesk,system-ui,sans-serif}.accent{stroke:#6cc7e9}.soft{stroke:#fff;stroke-opacity:.18}.thin{fill:none;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect y="-40" width="960" height="760" rx="42" fill="url(#bg)"/>
+  <circle cx="480" cy="322" r="238" fill="#6cc7e9" opacity=".045"/>
+
+  <g class="thin" transform="translate(302 94)">
+    <path d="M178 38C254 30 326 78 356 146C386 214 360 294 300 338C240 382 146 390 86 342C26 294 6 204 38 134C70 64 105 46 178 38Z" class="soft"/>
+    <path d="M178 96C226 90 272 120 292 164C312 208 296 260 258 288C220 316 158 320 120 290C82 260 70 204 90 158C110 114 132 100 178 96Z" fill="none" stroke="#6cc7e9" stroke-opacity=".34"/>
+    <path d="M178 148C202 145 226 160 236 183C246 206 238 232 218 246C198 262 168 264 148 248C128 232 122 204 132 181C142 160 154 150 178 148Z" class="soft"/>
+  </g>
+
+  <g transform="translate(112 214)" filter="url(#shadow)">
+    <rect width="254" height="158" rx="30" class="card"/>
+    <text x="28" y="44" class="muted">VOICE</text>
+    <path d="M64 68v42m-18-22c0 28 36 28 36 0m-18 50v18m-28 0h56" class="thin accent" stroke-width="4"/>
+    <text x="110" y="90" class="text">50 ml</text>
+    <text x="110" y="120" class="small">sodium chloride</text>
+  </g>
+
+  <path d="M366 292C442 278 506 278 590 316C642 340 690 340 744 306" class="thin" stroke="url(#line)" stroke-width="3"/>
+  <circle cx="480" cy="292" r="5" fill="#6cc7e9"/><circle cx="600" cy="318" r="5" fill="#6cc7e9" opacity=".8"/>
+  <text x="480" y="374" text-anchor="middle" class="muted">SIGNALS API</text>
+
+  <g transform="translate(708 170)" filter="url(#shadow)">
+    <rect width="178" height="286" rx="30" class="card"/>
+    <text x="28" y="44" class="muted">STOCK</text>
+    <path d="M74 76h30M84 76v54l-28 58c-6 13 3 28 18 28h40c15 0 24-15 18-28l-28-58V76" class="thin soft" stroke-width="3"/>
+    <path d="M61 190c20 12 44-12 68 0l8 18c2 7-3 14-12 14H65c-9 0-14-7-11-14Z" fill="#6cc7e9" opacity=".32"/>
+    <rect x="28" y="226" width="122" height="40" rx="20" fill="#6cc7e9" fill-opacity=".12" stroke="#6cc7e9" stroke-opacity=".3"/>
+    <text x="48" y="253" class="text" font-size="22">−50 ml</text>
+  </g>
+</svg>

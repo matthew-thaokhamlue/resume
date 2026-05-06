@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">Minimal call center robot coach</title>
+  <desc id="desc">A minimal friendly robot wearing a call-center headset for AI interview preparation.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1014"/>
+      <stop offset="1" stop-color="#122029"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#6cc7e9" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#6cc7e9" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.423 0 0 0 0 0.780 0 0 0 0 0.914 0 0 0 .42 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="960" height="600" rx="34" fill="url(#bg)"/>
+  <circle cx="480" cy="300" r="222" fill="url(#halo)"/>
+
+  <g transform="translate(480 300)" filter="url(#glow)">
+    <!-- headset band -->
+    <path d="M-145-12C-145-102-84-168 0-168C84-168 145-102 145-12" fill="none" stroke="#6cc7e9" stroke-opacity="0.38" stroke-width="14" stroke-linecap="round"/>
+
+    <!-- robot head -->
+    <rect x="-120" y="-96" width="240" height="176" rx="48" fill="#6cc7e9" fill-opacity="0.10" stroke="#6cc7e9" stroke-opacity="0.55" stroke-width="4"/>
+    <rect x="-70" y="-32" width="140" height="58" rx="27" fill="#0d171d" stroke="#f3f5f7" stroke-opacity="0.14" stroke-width="3"/>
+    <circle cx="-36" cy="-3" r="9" fill="#6cc7e9"/>
+    <circle cx="36" cy="-3" r="9" fill="#6cc7e9"/>
+    <path d="M-34 46C-15 61 15 61 34 46" fill="none" stroke="#6cc7e9" stroke-opacity="0.78" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- headset cups -->
+    <rect x="-164" y="-42" width="48" height="82" rx="22" fill="#0d171d" stroke="#6cc7e9" stroke-opacity="0.55" stroke-width="4"/>
+    <rect x="116" y="-42" width="48" height="82" rx="22" fill="#0d171d" stroke="#6cc7e9" stroke-opacity="0.55" stroke-width="4"/>
+
+    <!-- boom mic -->
+    <path d="M140 24C132 72 91 94 46 94" fill="none" stroke="#6cc7e9" stroke-opacity="0.72" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="34" cy="94" r="10" fill="#6cc7e9"/>
+
+    <!-- small body/base -->
+    <path d="M-68 92H68C96 92 118 115 118 143V158H-118V143C-118 115-96 92-68 92Z" fill="#6cc7e9" fill-opacity="0.08" stroke="#6cc7e9" stroke-opacity="0.30" stroke-width="4"/>
+    <path d="M-44 126h88" fill="none" stroke="#f3f5f7" stroke-opacity="0.16" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>

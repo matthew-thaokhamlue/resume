@@ -315,19 +315,26 @@
       pointer-events: none;
     }
 
-    .case-feature__media--icon {
+    .case-feature__media--illustration {
       display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: center;
       background:
-        radial-gradient(circle at 35% 30%, rgba(108, 199, 233, 0.16), transparent 36%),
-        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+        radial-gradient(circle at 28% 24%, rgba(108, 199, 233, 0.18), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(108, 199, 233, 0.10), transparent 38%),
+        linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
     }
 
-    .case-feature__media--icon .material-symbols-outlined {
-      font-size: clamp(5rem, 14vw, 11rem);
-      color: rgba(108, 199, 233, 0.58);
-      filter: drop-shadow(0 24px 80px rgba(79, 182, 220, 0.16));
+    .case-feature__media--illustration img {
+      object-fit: cover;
+      object-position: center;
+      filter: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .case-feature__media--illustration::after {
+      display: none;
     }
 
 
@@ -605,8 +612,8 @@
             <li>Experimental data and inventory management merged into one workflow.</li>
           </ul>
         </div>
-        <div class="case-feature__media reveal">
-          <img src="../images/labtwin-inventory.png" alt="LabTwin inventory integration" />
+        <div class="case-feature__media case-feature__media--illustration reveal">
+          <img src="../images/labtwin-voice-inventory.png" alt="Abstract illustration of a spoken signal resolving through an aperture into structured laboratory inventory updates" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>
@@ -614,8 +621,8 @@
     <!-- LLM -->
     <section class="case-feature">
       <div class="case-feature__inner">
-        <div class="case-feature__media case-feature__media--icon reveal">
-          <span class="material-symbols-outlined" aria-hidden="true">psychology</span>
+        <div class="case-feature__media case-feature__media--illustration reveal">
+          <img src="../images/labtwin-natural-language.png" alt="Abstract illustration of natural language transforming through a luminous chamber into an ordered laboratory workflow" loading="lazy" decoding="async" />
         </div>
         <div class="case-feature__content">
           <p class="case-section__eyebrow reveal">AI case study</p>

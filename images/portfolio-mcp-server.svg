@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">Minimal MCP server diagram</title>
+  <desc id="desc">An AI agent connects to project docs through an MCP server.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a1014"/><stop offset="1" stop-color="#122029"/></linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6cc7e9" stop-opacity=".18"/><stop offset=".5" stop-color="#6cc7e9"/><stop offset="1" stop-color="#f3f5f7" stop-opacity=".7"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#000" flood-opacity=".34"/></filter>
+    <style>.card{fill:#0e171c;stroke:#fff;stroke-opacity:.12}.muted{fill:#8b969e;font:600 13px Space Grotesk,system-ui,sans-serif;letter-spacing:2.4px}.text{fill:#f3f5f7;font:700 28px Space Grotesk,system-ui,sans-serif}.small{fill:#c7cfd5;font:500 17px Space Grotesk,system-ui,sans-serif}.thin{fill:none;stroke-linecap:round;stroke-linejoin:round}.soft{stroke:#fff;stroke-opacity:.18}.accent{stroke:#6cc7e9}</style>
+  </defs>
+  <rect width="960" height="600" rx="34" fill="url(#bg)"/>
+  <circle cx="480" cy="300" r="208" fill="#6cc7e9" opacity=".045"/>
+  <g transform="translate(106 196)" filter="url(#shadow)">
+    <rect width="210" height="122" rx="28" class="card"/>
+    <text x="26" y="42" class="muted">AGENT</text>
+    <text x="26" y="84" class="text">ask docs</text>
+  </g>
+  <path d="M316 258C390 244 430 248 500 286" class="thin" stroke="url(#line)" stroke-width="3"/>
+  <g transform="translate(390 126)">
+    <g class="thin"><path d="M90 20C146 16 200 50 222 100C244 150 226 210 182 242C138 274 70 278 28 242C-14 206-28 142-6 92C16 42 36 24 90 20Z" class="soft"/><path d="M90 66C122 62 154 82 168 112C182 142 170 178 144 198C118 218 78 220 52 200C26 180 18 142 32 110C46 80 60 68 90 66Z" class="accent" stroke-opacity=".34"/></g>
+    <polygon points="90,82 152,118 152,190 90,226 28,190 28,118" fill="#6cc7e9" fill-opacity=".08" stroke="#6cc7e9" stroke-opacity=".32" stroke-width="2"/>
+    <text x="90" y="164" text-anchor="middle" class="text">MCP</text>
+  </g>
+  <path d="M566 286C626 270 658 246 708 206" class="thin" stroke="url(#line)" stroke-width="3"/>
+  <g transform="translate(700 166)" filter="url(#shadow)">
+    <rect width="176" height="92" rx="24" class="card"/>
+    <text x="24" y="36" class="muted">DOCS</text><text x="24" y="66" class="small">README.md</text>
+    <rect y="130" width="176" height="92" rx="24" fill="#6cc7e9" fill-opacity=".10" stroke="#6cc7e9" stroke-opacity=".28"/>
+    <text x="24" y="166" fill="#8bd9f5" font="600 13px Space Grotesk,system-ui,sans-serif" letter-spacing="2.4px">OUTPUT</text><text x="24" y="196" class="small">SPEC.md</text>
+  </g>
+</svg>

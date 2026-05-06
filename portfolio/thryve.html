@@ -317,6 +317,28 @@
       pointer-events: none;
     }
 
+    .case-feature__media--illustration {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(108, 199, 233, 0.18), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(108, 199, 233, 0.10), transparent 38%),
+        linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+    }
+
+    .case-feature__media--illustration img {
+      object-fit: cover;
+      object-position: center;
+      filter: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .case-feature__media--illustration::after {
+      display: none;
+    }
+
     .case-feature__content {
       display: grid;
       gap: var(--ed-s-4);
@@ -591,8 +613,8 @@
             <li>Helped grow the company from €0 to €1M ARR and from 7 to 35 people.</li>
           </ul>
         </div>
-        <div class="case-feature__media reveal">
-          <img src="../images/thryve-sdk.png" alt="Thryve Health Data API interface" />
+        <div class="case-feature__media case-feature__media--illustration reveal">
+          <img src="../images/thryve-health-api.png" alt="Abstract illustration of fragmented health data streams resolving through one luminous aperture into a unified trusted API layer" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>

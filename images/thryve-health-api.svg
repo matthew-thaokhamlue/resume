@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -40 960 760" role="img" aria-labelledby="title desc">
+  <title id="title">Minimal unified health data API</title>
+  <desc id="desc">Fragmented wearable sources flow into one normalized health data API.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a1014"/><stop offset="1" stop-color="#122029"/></linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6cc7e9" stop-opacity=".18"/><stop offset=".5" stop-color="#6cc7e9"/><stop offset="1" stop-color="#f3f5f7" stop-opacity=".7"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#000" flood-opacity=".35"/></filter>
+    <style>.card{fill:#0e171c;stroke:#fff;stroke-opacity:.12}.muted{fill:#8b969e;font:600 13px Space Grotesk,system-ui,sans-serif;letter-spacing:2.4px}.text{fill:#f3f5f7;font:700 26px Space Grotesk,system-ui,sans-serif}.small{fill:#c7cfd5;font:500 16px Space Grotesk,system-ui,sans-serif}.thin{fill:none;stroke-linecap:round;stroke-linejoin:round}.soft{stroke:#fff;stroke-opacity:.18}.accent{stroke:#6cc7e9}</style>
+  </defs>
+  <rect y="-40" width="960" height="760" rx="42" fill="url(#bg)"/>
+  <circle cx="482" cy="318" r="250" fill="#6cc7e9" opacity=".045"/>
+
+  <g transform="translate(112 148)" filter="url(#shadow)">
+    <rect width="222" height="326" rx="30" class="card"/>
+    <text x="28" y="44" class="muted">SOURCES</text>
+    <g class="small">
+      <circle cx="42" cy="92" r="8" fill="#6cc7e9"/><text x="64" y="98">Fitbit</text>
+      <path d="M34 154l12-22 13 22Z" fill="#6cc7e9" opacity=".75"/><text x="64" y="154">Garmin</text>
+      <circle cx="46" cy="210" r="15" fill="none" stroke="#c7cfd5" stroke-width="3"/><text x="64" y="216">Oura</text>
+      <path d="M34 270c0-13 20-18 24-5 7-13 25-6 23 7-1 14-21 25-23 27-2-2-24-14-24-29Z" fill="#6cc7e9" opacity=".75"/><text x="94" y="278">Apple Health</text>
+    </g>
+  </g>
+
+  <path d="M334 314C412 298 458 302 506 332" class="thin" stroke="url(#line)" stroke-width="3"/>
+  <g transform="translate(390 96)">
+    <g class="thin">
+      <path d="M150 48C222 42 290 86 318 150C346 214 324 288 268 330C212 372 128 378 74 334C20 290 2 208 30 144C58 80 82 54 150 48Z" class="soft"/>
+      <path d="M150 104C198 100 244 128 264 172C284 216 270 266 232 294C194 324 134 328 96 298C56 268 44 214 64 168C84 124 104 108 150 104Z" class="accent" stroke-opacity=".34"/>
+    </g>
+    <polygon points="150,138 214,176 214,250 150,288 86,250 86,176" fill="#6cc7e9" fill-opacity=".08" stroke="#6cc7e9" stroke-opacity=".32" stroke-width="2"/>
+    <path d="M116 194h68M116 224h68" class="thin accent" stroke-width="5"/>
+    <text x="150" y="354" text-anchor="middle" class="text" font-size="31">ONE API</text>
+    <text x="150" y="382" text-anchor="middle" class="muted">NORMALIZED</text>
+  </g>
+  <path d="M602 326C660 310 692 292 746 250" class="thin" stroke="url(#line)" stroke-width="3"/>
+
+  <g transform="translate(716 170)" filter="url(#shadow)">
+    <rect width="188" height="282" rx="30" class="card"/>
+    <text x="28" y="44" class="muted">OUTPUT</text>
+    <text x="28" y="96" class="small">/health/daily</text>
+    <line x1="28" y1="124" x2="156" y2="124" class="thin soft"/>
+    <text x="28" y="166" class="text" font-size="21">heart rate</text>
+    <text x="28" y="202" class="text" font-size="21">sleep</text>
+    <text x="28" y="238" class="text" font-size="21">activity</text>
+  </g>
+</svg>
