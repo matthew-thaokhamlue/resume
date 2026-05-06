@@ -7,18 +7,75 @@ const PROVIDER_URL_BUILDERS = {
 
 const PROFILE_CONTEXT = {
   FULL_NAME: 'Matthew Thaokhamlue',
-  ROLE: 'Senior Product Manager',
+  ROLE: 'Senior Product Manager · AI Workflow Architect',
   SUMMARY: 'Senior Product Manager with 7+ years shipping AI/ML, health analytics, laboratory informatics, and B2B SaaS products across platform and user-facing experiences.',
   PORTFOLIO: [
-    '- Labforward: Led roadmap and discovery for laboratory informatics workflows and data-intensive SaaS products.',
-    '- LabTwin: Drove voice-AI product strategy, API/SDK decisions, and cross-functional delivery for lab execution products.',
-    '- Thryve: Worked on digital health product initiatives connecting biometric data, user needs, and partner-facing platform capabilities.',
-    '- Chat-with-Experiment: Portfolio project focused on conversational experience design for experimental and workflow-heavy domains.',
-    '- RAG Meal Planner: Portfolio project demonstrating retrieval-augmented generation for contextual, user-specific planning flows.',
+    '- Sema Technologies (Mar 2026 – Present): Senior Product Manager. Owned the integration strategy behind Liz\'s sensory system, giving Sema\'s AI-native observability platform reliable work signals across Product, Engineering, and CS. Skills: AI Product Strategy, Integration Strategy, Organizational Observability, Customer Feedback Loops.',
+    '- Labforward (Nov 2024 – Nov 2025): Senior Product Manager. Led roadmap and discovery for laboratory informatics workflows and data-intensive SaaS products. Skills: GenAI Product Strategy, Customer-Critical Roadmaps, Rapid Prototyping, Product Operations.',
+    '- LabTwin (Jan 2023 – Nov 2024): Technical Product Manager. Drove voice-AI product strategy, API/SDK decisions, and cross-functional delivery for lab execution products. Skills: Voice AI & NLP, Lab Workflow Integrations, Release Cadence, Scientific UX.',
+    '- Thryve (Oct 2019 – Dec 2022): Product Owner. Worked on digital health product initiatives connecting biometric data, user needs, and partner-facing platform capabilities. Skills: API & SDK Strategy, Wearable Integrations, Health Data Platforms, B2B SaaS Growth.',
+    '- Ernst & Young (Aug 2016 – Feb 2018): Senior Risk Consultant. Learned where organizations fracture first: risk, process, controls, and change. Skills: Operational Risk, Process Systems, Digital Transformation, Automation Research.',
   ].join('\n'),
 };
 
 const PROMPT_VERSION = 'match-v1';
+
+function normalize(text) {
+  return text.replace(/\s+/g, ' ').trim();
+}
+
+function parseProfileContext(html) {
+  if (typeof DOMParser === 'undefined') return null;
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const portfolioLines = [];
+
+  doc.querySelectorAll('section[id^="role-"]:not(#role-skills)').forEach((section) => {
+    const eyebrow = section.querySelector('.ed-eyebrow');
+    const titleEl = section.querySelector('.experience-role-title');
+    const descEl = section.querySelector('.ed-philosophy__body p');
+    const skillEls = section.querySelectorAll('.experience-skill');
+
+    if (!eyebrow || !titleEl) return;
+
+    const eyebrowText = normalize(eyebrow.textContent);
+    const titleText = normalize(titleEl.textContent);
+    const descText = descEl ? normalize(descEl.textContent) : '';
+    const skills = Array.from(skillEls)
+      .map((el) => normalize(el.textContent))
+      .join(', ');
+
+    let line = `- ${eyebrowText}: ${titleText}.`;
+    if (descText) line += ` ${descText}`;
+    if (skills) line += ` Skills: ${skills}.`;
+    portfolioLines.push(line);
+  });
+
+  doc.querySelectorAll('#role-skills .ed-stage').forEach((stage) => {
+    const title = stage.querySelector('.ed-stage__title');
+    const desc = stage.querySelector('.ed-stage__desc');
+    if (title && desc) {
+      portfolioLines.push(`- ${normalize(title.textContent)}: ${normalize(desc.textContent)}`);
+    }
+  });
+
+  if (portfolioLines.length === 0) return null;
+
+  return {
+    FULL_NAME: PROFILE_CONTEXT.FULL_NAME,
+    ROLE: PROFILE_CONTEXT.ROLE,
+    SUMMARY: PROFILE_CONTEXT.SUMMARY,
+    PORTFOLIO: portfolioLines.join('\n'),
+  };
+}
+
+async function fetchProfileContext() {
+  const response = await fetch('experience.html');
+  if (!response.ok) {
+    throw new Error(`Failed to load experience.html: ${response.status}`);
+  }
+  const html = await response.text();
+  return parseProfileContext(html) || PROFILE_CONTEXT;
+}
 
 function fillPromptTemplate(template, context) {
   return template.replace(/\{\{([A-Z_]+)\}\}/g, (match, key) => {
@@ -61,9 +118,9 @@ function buildAskInstruction(options = {}) {
   ].join(' ');
 }
 
-function composePromptFromTemplate(template, options = {}) {
+function composePromptFromTemplate(template, options = {}, profileContext = PROFILE_CONTEXT) {
   const context = {
-    ...PROFILE_CONTEXT,
+    ...profileContext,
     ASK: buildAskInstruction(options),
   };
   return fillPromptTemplate(template, context);
@@ -85,8 +142,8 @@ async function copyPromptToClipboard(prompt) {
   }
 }
 
-async function buildAndCopyPrompt(template, options = {}, copyFn = copyPromptToClipboard) {
-  const prompt = composePromptFromTemplate(template, options);
+async function buildAndCopyPrompt(template, options = {}, copyFn = copyPromptToClipboard, profileContext = PROFILE_CONTEXT) {
+  const prompt = composePromptFromTemplate(template, options, profileContext);
   const copied = await copyFn(prompt);
   return { prompt, copied };
 }
@@ -143,6 +200,21 @@ function initAiMatchModal() {
   if (!trigger || !modal || !closeButton || providerButtons.length === 0) return;
 
   let cachedTemplate = '';
+  let cachedProfileContext = null;
+
+  async function getResources() {
+    if (!cachedTemplate) {
+      cachedTemplate = await fetchPromptTemplate();
+    }
+    if (!cachedProfileContext) {
+      try {
+        cachedProfileContext = await fetchProfileContext();
+      } catch {
+        cachedProfileContext = PROFILE_CONTEXT;
+      }
+    }
+    return { template: cachedTemplate, profileContext: cachedProfileContext };
+  }
 
   const closeModal = () => {
     if (typeof modal.close === 'function') {
@@ -181,13 +253,14 @@ function initAiMatchModal() {
       setStatusMessage(statusElement, 'Preparing your prompt...');
 
       try {
-        if (!cachedTemplate) {
-          cachedTemplate = await fetchPromptTemplate();
-        }
+        const { template, profileContext } = await getResources();
 
-        const { copied } = await buildAndCopyPrompt(cachedTemplate, {
-          jobDescription,
-        });
+        const { copied } = await buildAndCopyPrompt(
+          template,
+          { jobDescription },
+          copyPromptToClipboard,
+          profileContext,
+        );
 
         if (copied) {
           setStatusMessage(statusElement, 'Prompt copied. Opening ChatGPT...');
@@ -239,13 +312,14 @@ function initAiMatchModal() {
       setStatusMessage(statusElement, 'Preparing your prompt...');
 
       try {
-        if (!cachedTemplate) {
-          cachedTemplate = await fetchPromptTemplate();
-        }
+        const { template, profileContext } = await getResources();
 
-        const { prompt, copied } = await buildAndCopyPrompt(cachedTemplate, {
-          jobDescription,
-        });
+        const { prompt, copied } = await buildAndCopyPrompt(
+          template,
+          { jobDescription },
+          copyPromptToClipboard,
+          profileContext,
+        );
         const likelyNoPrefill = provider === 'gemini' || provider === 'grok';
 
         if (shouldUseClipboardFallback(provider)) {
@@ -302,6 +376,8 @@ if (typeof window !== 'undefined') {
     copyPromptToClipboard,
     buildAndCopyPrompt,
     fetchPromptTemplate,
+    fetchProfileContext,
+    parseProfileContext,
     openBlankTab,
     openProviderInNewTab,
     initAiMatchModal,
@@ -320,6 +396,8 @@ export {
   copyPromptToClipboard,
   buildAndCopyPrompt,
   fetchPromptTemplate,
+  fetchProfileContext,
+  parseProfileContext,
   openBlankTab,
   openProviderInNewTab,
   initAiMatchModal,
