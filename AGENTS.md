@@ -29,17 +29,11 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 **Modal Article Pattern:** Legacy Dimension-template pages can use `<article>` elements inside `<div id="main">` as modal overlays. The current `portfolio.html` is a direct-link editorial index, not a modal-article page.
 
-**Stacking Scroll Pattern (`index.html`, `experience.html`):**
-- Both pages use inline `.stack-panel` CSS (`position: sticky`, `top: 0`) plus a wheel-driven snap IIFE near the end of each file.
-- Smoothness depends on cached `flowOffsets[]` (cumulative panel heights) instead of viewport-nearest panel detection.
-- Shared snap constants:
-  - `WHEEL_THRESHOLD = 20`
-  - `SNAP_DURATION_MS = 960`
-  - `SNAP_LOCK_MS = 560`
-  - `SNAP_EDGE_GUTTER_UP = 200` (critical for natural upward scrolling)
-- Upward snap guard: only allow upward snap when near the top edge of the active panel (`scrollY <= flowOffsets[from] + SNAP_EDGE_GUTTER_UP`).
-- Recompute offsets on resize (`cacheFlowOffsets()`), and keep wheel-ignore guard for nested scrollable areas (`dialog[open]`, `.overflow-y-auto`, form fields, `[data-stack-snap-ignore]`).
-- Mobile (`max-width: 767px`) disables snapping and covered-state transforms.
+**Scroll Motion Pattern (`index.html`, `experience.html`):**
+- Both pages rely on native OS scrolling plus GSAP + ScrollTrigger reveals defined in `assets/js/editorial.js`. No sticky panels, no scroll snap, no wheel hijack.
+- `editorial.js` targets `.reveal`, `.ed-stage`, `.ed-signature`, `.ed-philosophy`, `.ed-quote`, and `.ed-hero__display`. Adding `class="reveal"` to any block fades it up on scroll.
+- `experience.html` role sections use the `.reveal` hook on the SVG container and the right-column content wrapper, so each chapter fades up as it enters the viewport. Skills/Education panel uses `.ed-stages` (animated by `initStages`).
+- Reduced motion is honored both in `editorial.js` (`prefersReducedMotion` short-circuit) and in `editorial.css` (`@media (prefers-reduced-motion: reduce)`).
 
 ## Key Conventions
 
