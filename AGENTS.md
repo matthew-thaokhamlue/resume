@@ -52,6 +52,8 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 - `labtwin.html` and `labforward.html` use a local `.case-feature__media--illustration` variant for full-bleed art; disable the default image filter/transform and hide the media overlay so abstract illustrations render cleanly.
 - `portfolio.html` card covers should use dedicated `images/*-card.png` assets rather than the larger case-study illustration files, so grid art can diverge without overwriting page-level visuals.
 - `thryve.html` now uses the same local `.case-feature__media--illustration` treatment for full-bleed abstract art instead of the older SDK screenshot-style media block.
+- When editing Sema/Liz experience copy, keep it public-safe: no customer names, beta counts, revenue or DAU targets, or internal team structure; emphasize AI product builder plus integration strategy.
+- [Sent from Claude] Matthew's positioning throughline is "AI Workflow Architect"; reinforce building AI systems, not just shipping AI features, in copy/story work.
 - If editing JavaScript behavior, AI Match markup, local page links/assets, or stack snap behavior, re-run:
   - `node --test tests/*.test.mjs`
 

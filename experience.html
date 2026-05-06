@@ -112,6 +112,48 @@
             color: var(--ed-ink-soft);
         }
 
+        .sema-story {
+            display: grid;
+            gap: 0.95rem;
+            max-width: 31rem;
+            padding-left: 1.15rem;
+            border-left: 1px solid var(--ed-hairline-strong);
+        }
+
+        .sema-story__item {
+            display: grid;
+            grid-template-columns: minmax(5.75rem, auto) 1fr;
+            gap: 1rem;
+            align-items: baseline;
+        }
+
+        .sema-story__label {
+            font-family: var(--ed-mono);
+            font-size: 0.67rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--ed-accent-strong);
+        }
+
+        .sema-story__text {
+            margin: 0;
+            color: var(--ed-ink-dim);
+            font-size: 0.875rem;
+            line-height: 1.55;
+        }
+
+        @media (max-width: 640px) {
+            .sema-story {
+                padding-left: 0;
+                border-left: 0;
+            }
+
+            .sema-story__item {
+                grid-template-columns: 1fr;
+                gap: 0.35rem;
+            }
+        }
+
         .animate-fade-in {
             animation: fadeIn 0.8s ease-out forwards;
         }
@@ -276,13 +318,33 @@
                             <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">Sema Technologies Inc.</p>
                         </div>
                         <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
-                            Turns ambiguity into product systems for Sema's AI-native work, connecting customer signal, business priorities, and technical reality into decisions teams can execute. Shipped several customer-outreach initiatives that <strong class="text-[var(--ed-ink)]">doubled target-account reach</strong>.
+                            Owned the integration strategy behind Liz&rsquo;s sensory system, giving Sema&rsquo;s AI-native observability platform the reliable work signals it needs to reason across Product, Engineering, and CS.
                         </p>
+                        <div class="sema-story" aria-label="Liz product story beats">
+                            <div class="sema-story__item">
+                                <span class="sema-story__label">Ingest</span>
+                                <p class="sema-story__text">
+                                    Connected Jira, GitHub, Slack, Zoom, Linear, and documents into the observability layer feeding Chat, Preset Insights, and future action workflows.
+                                </p>
+                            </div>
+                            <div class="sema-story__item">
+                                <span class="sema-story__label">Clarify</span>
+                                <p class="sema-story__text">
+                                    Focused integration scope and reliability so Liz could turn noisy work data into trusted organizational signal.
+                                </p>
+                            </div>
+                            <div class="sema-story__item">
+                                <span class="sema-story__label">Close the loop</span>
+                                <p class="sema-story__text">
+                                    Linked customer feedback, product decisions, engineering delivery, and release communication into one execution path.
+                                </p>
+                            </div>
+                        </div>
                         <div class="flex flex-col gap-2">
-                            <span class="experience-skill">Product Strategy</span>
-                            <span class="experience-skill">Customer Outreach</span>
-                            <span class="experience-skill">Release Operations</span>
-                            <span class="experience-skill">AI Workflow Architecture</span>
+                            <span class="experience-skill">AI Product Strategy</span>
+                            <span class="experience-skill">Integration Strategy</span>
+                            <span class="experience-skill">Organizational Observability</span>
+                            <span class="experience-skill">Customer Feedback Loops</span>
                         </div>
                     </div>
                 </div>
@@ -336,13 +398,13 @@
                             <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">Labforward</p>
                         </div>
                         <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
-                            Led end-to-end product roadmap for core lab management tools. Rebuilt team collaboration practices — directly securing a <strong class="text-[var(--ed-ink)]">$500K contract renewal</strong>. Drove rapid prototyping loops that shrank testing from days to hours.
+                            Turned lab operations and GenAI ambiguity into shipped product direction. Owned roadmap, customer-critical collaboration loops, and rapid prototypes that protected a <strong class="text-[var(--ed-ink)]">$500K contract renewal</strong> while shrinking validation cycles from days to hours.
                         </p>
                         <div class="flex flex-col gap-2">
-                            <span class="experience-skill">Product Roadmap</span>
+                            <span class="experience-skill">GenAI Product Strategy</span>
+                            <span class="experience-skill">Customer-Critical Roadmaps</span>
                             <span class="experience-skill">Rapid Prototyping</span>
-                            <span class="experience-skill">BI &amp; Data Pipelines</span>
-                            <span class="experience-skill">Stakeholder Management</span>
+                            <span class="experience-skill">Product Operations</span>
                         </div>
                         <a href="portfolio/labforward.html"
                             class="ed-link group w-fit">
@@ -395,13 +457,13 @@
                             <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">LabTwin</p>
                         </div>
                         <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
-                            Drove roadmap for voice and lab integration features. Tripled deployment frequency from <strong class="text-[var(--ed-ink)]">4 → 12 releases per year</strong>. Led speech recognition retraining to maintain <strong class="text-[var(--ed-ink)]">95% accuracy</strong> on scientific terms.
+                            Moved AI from demo surface to daily lab workflow. Owned voice and integration roadmap, tripled deployment frequency from <strong class="text-[var(--ed-ink)]">4 → 12 releases per year</strong>, and kept speech recognition at <strong class="text-[var(--ed-ink)]">95% accuracy</strong> for scientific language.
                         </p>
                         <div class="flex flex-col gap-2">
                             <span class="experience-skill">Voice AI &amp; NLP</span>
-                            <span class="experience-skill">Release Management</span>
-                            <span class="experience-skill">API &amp; Integration</span>
-                            <span class="experience-skill">Team Mentorship</span>
+                            <span class="experience-skill">Lab Workflow Integrations</span>
+                            <span class="experience-skill">Release Cadence</span>
+                            <span class="experience-skill">Scientific UX</span>
                         </div>
                         <a href="portfolio/labtwin.html"
                             class="ed-link group w-fit">
@@ -451,13 +513,13 @@
                             <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">Thryve</p>
                         </div>
                         <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
-                            Owned APIs and SDKs powering <strong class="text-[var(--ed-ink)]">1M+ users</strong> across 100+ B2B partners. Led 10+ wearable integrations. Contributed to growth from <strong class="text-[var(--ed-ink)]">€0 → €1M ARR</strong> and 7 → 35 people.
+                            Built the integration muscle underneath health-data products at scale. Owned APIs and SDKs powering <strong class="text-[var(--ed-ink)]">1M+ users</strong> across 100+ B2B partners, led 10+ wearable integrations, and helped grow the company from <strong class="text-[var(--ed-ink)]">€0 → €1M ARR</strong>.
                         </p>
                         <div class="flex flex-col gap-2">
-                            <span class="experience-skill">API &amp; SDK Development</span>
+                            <span class="experience-skill">API &amp; SDK Strategy</span>
                             <span class="experience-skill">Wearable Integrations</span>
+                            <span class="experience-skill">Health Data Platforms</span>
                             <span class="experience-skill">B2B SaaS Growth</span>
-                            <span class="experience-skill">Learning &amp; Onboarding</span>
                         </div>
                         <a href="portfolio/thryve.html"
                             class="ed-link group w-fit">
@@ -504,13 +566,13 @@
                             <p class="text-sm text-[var(--ed-accent-strong)] font-medium mt-4">Ernst &amp; Young</p>
                         </div>
                         <p class="text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[420px]">
-                            Drove risk assessments and process improvement for Thailand's largest corporations. Developed risk management frameworks for digital transformation. Led market research on emerging technologies including RPA.
+                            Learned where organizations fracture first: risk, process, controls, and change. Mapped operational gaps for large enterprises, built digital transformation risk frameworks, and researched emerging automation such as RPA.
                         </p>
                         <div class="flex flex-col gap-2">
-                            <span class="experience-skill">Risk Management</span>
-                            <span class="experience-skill">Process Improvement</span>
+                            <span class="experience-skill">Operational Risk</span>
+                            <span class="experience-skill">Process Systems</span>
                             <span class="experience-skill">Digital Transformation</span>
-                            <span class="experience-skill">Market Research</span>
+                            <span class="experience-skill">Automation Research</span>
                         </div>
                     </div>
                 </div>

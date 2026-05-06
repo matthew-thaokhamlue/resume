@@ -121,6 +121,36 @@ test('index.html keeps the AI Match DOM contract used by assets/js/ai-match.js',
   assert.deepEqual(unsupportedProviders, []);
 });
 
+test('experience.html frames Sema around Liz observability story beats', () => {
+  const experienceHtml = readText('experience.html');
+
+  assert.match(
+    experienceHtml,
+    /Owned the integration strategy behind Liz(?:'|&rsquo;)s sensory system/,
+  );
+  assert.match(experienceHtml, /Sema(?:'|&rsquo;)s AI-native observability platform/);
+  assert.match(experienceHtml, /Jira, GitHub, Slack, Zoom, Linear, and documents/);
+
+  const storyBeatLabels = [
+    ...experienceHtml.matchAll(/<span class="sema-story__label">([^<]+)<\/span>/g),
+  ].map((match) => match[1]);
+  assert.deepEqual(storyBeatLabels, ['Ingest', 'Clarify', 'Close the loop']);
+});
+
+test('experience.html frames earlier roles as the career spine behind Liz', () => {
+  const experienceHtml = readText('experience.html');
+  const expectedStoryPhrases = [
+    'Turned lab operations and GenAI ambiguity into shipped product direction',
+    'Moved AI from demo surface to daily lab workflow',
+    'Built the integration muscle underneath health-data products at scale',
+    'Learned where organizations fracture first: risk, process, controls, and change',
+  ];
+
+  for (const phrase of expectedStoryPhrases) {
+    assert.match(experienceHtml, new RegExp(escapeRegExp(phrase)));
+  }
+});
+
 test('AI Match prompt template exists for the configured prompt version', () => {
   const aiMatchJs = readText('assets/js/ai-match.js');
   const versionMatch = aiMatchJs.match(/const PROMPT_VERSION = ['"]([^'"]+)['"]/);
