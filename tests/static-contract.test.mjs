@@ -129,7 +129,7 @@ test('experience.html frames Sema around Liz observability story beats', () => {
     /Owned the integration strategy behind Liz(?:'|&rsquo;)s sensory system/,
   );
   assert.match(experienceHtml, /Sema(?:'|&rsquo;)s AI-native observability platform/);
-  assert.match(experienceHtml, /Jira, GitHub, Slack, Zoom, Linear, and documents/);
+  assert.match(experienceHtml, /Jira, GitHub, Slack, Zoom, Linear, and document/);
 
   const storyBeatLabels = [
     ...experienceHtml.matchAll(/<span class="sema-story__label">([^<]+)<\/span>/g),

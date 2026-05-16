@@ -2,11 +2,22 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "Person",
+      "@id": "https://matthew-thaokhamlue.github.io/#person",
+      "name": "Matthew Thaokhamlue",
+      "jobTitle": "Senior Product Manager",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Sema Technologies Inc."
+      },
+      "url": "https://matthew-thaokhamlue.github.io/"
+    },
+    {
       "@type": "WebSite",
       "@id": "https://matthew-thaokhamlue.github.io/#website",
       "url": "https://matthew-thaokhamlue.github.io/",
-      "name": "Matthew Thaokhamlue - Technical Product Manager",
-      "description": "Technical Product Manager specializing in AI-powered innovation, B2B SaaS platforms, and health analytics",
+      "name": "Matthew Thaokhamlue - Senior Product Manager & AI Workflow Architect",
+      "description": "Senior Product Manager and AI workflow architect specializing in AI-native product strategy, B2B SaaS platforms, and integration systems.",
       "potentialAction": [
         {
           "@type": "SearchAction",
