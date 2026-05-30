@@ -1,56 +1,29 @@
 # AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Key Files
+- `index.html` — main landing page (editorial flow, AI Match feature, GA events)
+- `experience.html` — career timeline (GSAP reveals, SVG tree rings with career-year counts)
+- `portfolio/*.html` — editorial case study pages
+- `assets/js/ai-match.js` — "Evaluate role fit" feature: prompt template, provider URL, GA events
+- `assets/js/editorial.js` — GSAP scroll reveals shared by `index.html` and `experience.html`
+- `assets/js/main.js` / `assets/js/portfolio.js` — legacy Dimension-template code; CRLF line endings
+- `tests/` — Node.js test suite (`node --test tests/*.test.mjs`)
+- `harness/validate.sh` — invariant checker; run after editing HTML or harness rules
+- For full conventions, brand copy guidance, and gotchas: see CLAUDE.md
 
-## Project Overview
+## Architecture Invariants (checked by harness/validate.sh)
+- GA tag `G-D11HKMWFB4` must be in every content page's `<head>` — `about.html` (redirect) and `cv.html` (export) are exempt
+- `typeof gtag==='function'` guard required on every inline `gtag()` call — never call gtag without it
+- `AI Workflow Architect` must remain in `index.html` — canonical brand positioning
+- ` DAU` must not appear in any content page — public-safe content (no internal metrics)
 
-Static resume/portfolio website for Matthew Thaokhamlue, deployed to GitHub Pages. No build step, no bundler, no package manager — just static HTML/CSS/JS served directly.
+## Gotchas
+- `index.html` and `assets/js/*.js` use **CRLF line endings** — the Edit tool silently fails to match strings in these files; use the Python byte-replace pattern in CLAUDE.md
+- Tailwind config is duplicated in each HTML `<head>` (`<script id="tailwind-config">`) — change theme tokens in all pages, not just one
+- SVG tree ring counts encode accumulated career years: Sema=9, Labforward=8, LabTwin=7, Thryve=5, EY=2 — preserve when editing SVGs
+- Background subagents (`run_in_background: true`) cannot use Edit or Write tools — apply all file edits in the main agent session
 
-## Development
-
-Open `index.html` in a browser to test. No build or install commands needed. The site is deployed by pushing to the `main` branch (GitHub Pages serves from root).
-
-## Architecture
-
-**Pages:** Each top-level HTML file is a standalone page sharing a common structure:
-- `index.html` — Main landing page (about, experience, certificates, contact as modal articles)
-- `portfolio.html` — Portfolio index page linking to standalone editorial case studies
-- `about.html`, `experience.html`, `certificates.html` — Dedicated full pages for each section
-- `portfolio/*.html` — Individual editorial case study pages for career and personal projects
-
-**Styling:** Dual CSS approach:
-- **Tailwind CSS** via CDN (`cdn.tailwindcss.com`) with inline config in each HTML `<head>` — used for layout and utility classes. Config defines custom colors (`primary: #0da6f2`, `background-dark: #101c22`, `surface: #1a262d`), font family (`Space Grotesk`), and border radius tokens.
-- **SASS/CSS** in `assets/sass/` and `assets/css/` — legacy styles from the HTML5 UP Dimension template. `main.css` and `portfolio.css` handle the modal article animation system.
-
-**JavaScript:**
-- `assets/js/main.js` — Dimension template's modal article system (hash-based routing, article show/hide animations, keyboard/click handlers). jQuery-based.
-- `assets/js/portfolio.js` — Legacy Dimension-template routing; current `portfolio.html` and `portfolio/*.html` case-study pages do not use it.
-- jQuery, browser detection, and breakpoint utilities are vendored in `assets/js/`.
-
-**Modal Article Pattern:** Legacy Dimension-template pages can use `<article>` elements inside `<div id="main">` as modal overlays. The current `portfolio.html` is a direct-link editorial index, not a modal-article page.
-
-**Scroll Motion Pattern (`index.html`, `experience.html`):**
-- Both pages rely on native OS scrolling plus GSAP + ScrollTrigger reveals defined in `assets/js/editorial.js`. No sticky panels, no scroll snap, no wheel hijack.
-- `editorial.js` targets `.reveal`, `.ed-stage`, `.ed-signature`, `.ed-philosophy`, `.ed-quote`, and `.ed-hero__display`. Adding `class="reveal"` to any block fades it up on scroll.
-- `experience.html` role sections use the `.reveal` hook on the SVG container and the right-column content wrapper, so each chapter fades up as it enters the viewport. Skills/Education panel uses `.ed-stages` (animated by `initStages`).
-- Reduced motion is honored both in `editorial.js` (`prefersReducedMotion` short-circuit) and in `editorial.css` (`@media (prefers-reduced-motion: reduce)`).
-
-## Key Conventions
-
-- All external dependencies loaded via CDN (Tailwind, Font Awesome, Google Fonts, jQuery) — no `node_modules`
-- Tailwind config is duplicated in each HTML file's `<script id="tailwind-config">` block — keep them in sync when changing theme tokens
-- Google Analytics tag (G-D11HKMWFB4) is included in each page's `<head>`
-- SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
-- Images go in `images/` directory
-- Editorial case-study feature blocks can switch from `.case-feature__media--icon` placeholders to plain `.case-feature__media` with an `<img src="../images/*.png">`; existing CSS already handles crop and sizing.
-- `labtwin.html` and `labforward.html` use a local `.case-feature__media--illustration` variant for full-bleed art; disable the default image filter/transform and hide the media overlay so abstract illustrations render cleanly.
-- `portfolio.html` card covers should use dedicated `images/*-card.png` assets rather than the larger case-study illustration files, so grid art can diverge without overwriting page-level visuals.
-- `thryve.html` now uses the same local `.case-feature__media--illustration` treatment for full-bleed abstract art instead of the older SDK screenshot-style media block.
-- When editing Sema/Liz experience copy, keep it public-safe: no customer names, beta counts, revenue or DAU targets, or internal team structure; emphasize AI product builder plus integration strategy.
-- [Sent from Claude] Matthew's positioning throughline is "AI Workflow Architect"; reinforce building AI systems, not just shipping AI features, in copy/story work.
-- If editing JavaScript behavior, AI Match markup, local page links/assets, or stack snap behavior, re-run:
-  - `node --test tests/*.test.mjs`
-
-## Known Issues
-
-None at this time.
+## Workflow
+- Run tests: `node --test tests/*.test.mjs`
+- Run harness checks: `bash harness/validate.sh`
+- Worktrees land in `.claude/worktrees/` — clean up with `git worktree remove --force` after merging

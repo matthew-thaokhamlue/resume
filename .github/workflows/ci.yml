@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# NOTE: GitHub Pages deploys from main independently of this workflow.
+# This gives a red X on failure but does NOT block the live site unless you add
+# branch protection requiring this check (Settings → Branches → main →
+# "Require status checks to pass before merging").
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run tests
+        run: node --test tests/*.test.mjs
+
+      - name: Validate harness invariants
+        run: bash harness/validate.sh
