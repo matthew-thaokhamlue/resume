@@ -336,6 +336,28 @@
       display: none;
     }
 
+    /* Company logo plate: light card so dark brand logos read on the dark page */
+    .case-feature__media--logo {
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(2.5rem, 7vw, 5rem);
+      min-height: clamp(15rem, 32vw, 24rem);
+    }
+
+    .case-feature__media--logo::after { display: none; }
+
+    .case-feature__media--logo img {
+      width: 100%;
+      height: auto;
+      max-height: 6rem;
+      object-fit: contain;
+      filter: none;
+      opacity: 1;
+      transform: none;
+    }
+
 
     .case-feature__content {
       display: grid;
@@ -572,14 +594,18 @@
             <span class="ed-link__arrow" aria-hidden="true">→</span>
           </a>
         </div>
-        <div class="case-feature__media case-feature__media--illustration reveal" aria-hidden="true"></div>
+        <div class="case-feature__media case-feature__media--logo reveal">
+          <img src="../images/thryve-card.png" alt="Thryve logo" loading="lazy" decoding="async" />
+        </div>
       </div>
     </section>
 
     <!-- LabTwin -->
     <section class="case-feature">
       <div class="case-feature__inner">
-        <div class="case-feature__media case-feature__media--illustration reveal" aria-hidden="true"></div>
+        <div class="case-feature__media case-feature__media--logo reveal">
+          <img src="../images/labtwin-card.png" alt="LabTwin logo" loading="lazy" decoding="async" />
+        </div>
         <div class="case-feature__content">
           <p class="case-section__eyebrow reveal">LabTwin · Technical Product Manager</p>
           <h2 class="case-feature__title reveal">Shipping faster, <em>together</em>.</h2>
@@ -631,14 +657,18 @@
             <span class="ed-link__arrow" aria-hidden="true">→</span>
           </a>
         </div>
-        <div class="case-feature__media case-feature__media--illustration reveal" aria-hidden="true"></div>
+        <div class="case-feature__media case-feature__media--logo reveal">
+          <img src="../images/labforward-card.png" alt="Labforward logo" loading="lazy" decoding="async" />
+        </div>
       </div>
     </section>
 
     <!-- Sema -->
     <section class="case-feature">
       <div class="case-feature__inner">
-        <div class="case-feature__media case-feature__media--illustration reveal" aria-hidden="true"></div>
+        <div class="case-feature__media case-feature__media--logo reveal">
+          <img src="../images/sema-logo.svg" alt="Sema logo" loading="lazy" decoding="async" />
+        </div>
         <div class="case-feature__content">
           <p class="case-section__eyebrow reveal">Sema · Senior AI Product Manager</p>
           <h2 class="case-feature__title reveal">Five integrations in 60 days, <em>agent-first</em>.</h2>
