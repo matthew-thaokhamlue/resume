@@ -13,22 +13,23 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 ## Architecture
 
 **Pages:** Each top-level HTML file is a standalone page sharing a common structure:
-- `index.html` — Main landing page (about, experience, certificates, contact as modal articles)
+- `index.html` — Main landing page (hero, testimonials, AI Match, contact)
 - `portfolio.html` — Portfolio index page linking to standalone editorial case studies
-- `about.html`, `experience.html`, `certificates.html` — Dedicated full pages for each section
+- `experience.html`, `certificates.html` — Dedicated full pages for each section
 - `portfolio/*.html` — Individual editorial case study pages for career and personal projects
+- `about.html` — redirect stub to `index.html` (meta refresh + JS); not a content page, exempt from GA/metadata rules, not in the sitemap
+- `cv.html` — generated CV export linked as a download from index/experience; not hand-maintained
 
-**Styling:** Dual CSS approach:
+**Styling:**
 - **Tailwind CSS** via CDN (`cdn.tailwindcss.com`) with inline config in each HTML `<head>` — used for layout and utility classes. Config defines custom colors (`primary: #0da6f2`, `background-dark: #101c22`, `surface: #1a262d`), font family (`Space Grotesk`), and border radius tokens.
-- **SASS/CSS** in `assets/sass/` and `assets/css/` — legacy styles from the HTML5 UP Dimension template. `main.css` and `portfolio.css` handle the modal article animation system.
+- **`assets/css/editorial.css`** — the editorial design system (reveals, hero display, stages, quotes). Loaded with a `?v=` cache-bust param that must stay identical across all pages (tested).
 
 **JavaScript:**
-- `assets/js/main.js` — Dimension template's modal article system (hash-based routing, article show/hide animations, keyboard/click handlers). jQuery-based.
-- `assets/js/portfolio.js` — Legacy Dimension-template routing; current `portfolio.html` and `portfolio/*.html` case-study pages do not use it.
+- `assets/js/editorial.js` — GSAP + ScrollTrigger scroll reveals (see Scroll Motion Pattern below). Same `?v=` cache-bust rule as editorial.css.
 - `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt, opens ChatGPT or Claude.ai in a popup/tab. Contains all GA custom event tracking for the feature (`ai_match_*` events).
-- jQuery, browser detection, and breakpoint utilities are vendored in `assets/js/`.
+- The legacy HTML5 UP Dimension assets (jQuery, `main.js`, `portfolio.js`, `main.css`, `portfolio.css`, the SASS tree, and local Font Awesome webfonts) were deleted in June 2026 — no page referenced them. Don't reintroduce them.
 
-**Modal Article Pattern:** Legacy Dimension-template pages can use `<article>` elements inside `<div id="main">` as modal overlays. The current `portfolio.html` is a direct-link editorial index, not a modal-article page.
+**CDN dependencies:** GSAP 3.12.5, ScrollTrigger 3.12.5, and Font Awesome 6.4.0 are pinned on cdnjs with `integrity` (SRI sha384) + `crossorigin="anonymous"` attributes. When bumping a CDN version, recompute the hash: `curl -sf <url> | openssl dgst -sha384 -binary | base64`. The Tailwind CDN script is dynamic and cannot carry SRI.
 
 ## Scroll Motion Pattern
 
@@ -44,7 +45,7 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 ## File Editing Gotchas
 
-- `index.html` and `assets/js/*.js` use CRLF line endings; all other HTML files use LF-only. The Edit tool silently fails to match strings in CRLF files. Use this Python pattern for reliable replacements:
+- `index.html` and `assets/js/editorial.js` use CRLF line endings (`ai-match.js` is LF); all other HTML files use LF-only. The Edit tool silently fails to match strings in CRLF files. Use this Python pattern for reliable replacements:
   ```python
   with open('index.html', 'rb') as f: src = f.read().decode('utf-8')
   src = src.replace('OLD', 'NEW')
@@ -55,12 +56,13 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 ## Key Conventions
 
-- All external dependencies loaded via CDN (Tailwind, Font Awesome, Google Fonts, jQuery) — no `node_modules`
+- All external dependencies loaded via CDN (Tailwind, GSAP, Font Awesome, Google Fonts) — no `node_modules`
 - Standard content container: `w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` — matches nav width/padding exactly. Use this for all section content.
-- Tailwind config is duplicated in each HTML file's `<script id="tailwind-config">` block — keep them in sync when changing theme tokens
-- Google Analytics tag (G-D11HKMWFB4) in each page `<head>`. GA4 custom events (`resume_downloaded`, `external_link_clicked`, `audio_played`, etc.) use inline `onclick="if(typeof gtag==='function'){gtag('event',...)}"` — never call `gtag()` without the guard.
-- `portfolio.html` all project cards link directly to standalone `portfolio/*.html` editorial case-study pages. `portfolio.js`, `data-work` attributes, and old project `<dialog>` modals are legacy and not used.
-- SEO: `structured-data.json` contains JSON-LD schema, `sitemap.xml` and `robots.txt` are at root
+- Tailwind config is duplicated in each HTML file's `<script id="tailwind-config">` block — keep them in sync when changing theme tokens (tested)
+- Google Analytics tag (G-D11HKMWFB4) in each content page `<head>` (`about.html` and `cv.html` exempt). GA4 custom events (`resume_downloaded`, `external_link_clicked`, `audio_played`, etc.) use inline `onclick="if(typeof gtag==='function'){gtag('event',...)}"` — never call `gtag()` without the guard.
+- `portfolio.html` all project cards link directly to standalone `portfolio/*.html` editorial case-study pages.
+- SEO: JSON-LD Person schema lives inline in `index.html` `<head>` (there is no separate structured-data file — a standalone JSON file is invisible to crawlers). `sitemap.xml` and `robots.txt` are at root; content pages carry Open Graph + Twitter Card tags (tested). `portfolio/achievement.html` is intentionally hidden: noindex, unlinked, excluded from the sitemap — keep it that way.
+- Machine-readable profile: `llms.txt` (summary + page index) and `llms-full.txt` (full CV) at root — update the current-role facts there when career copy changes on the site.
 - Images go in `images/` directory
 - `docs/plans/` — design docs (`*-design.md`) and implementation plans from brainstorm/writing-plans skill sessions
 - Branch naming: Claude-created branches use `claude/<adjective-name>` prefix (e.g. `claude/recursing-kalam`)
@@ -91,6 +93,7 @@ Current state for both pages:
 ### Regression Tests
 
 - `tests/ai-match.test.mjs`: verifies AI Match prompt, provider URL, clipboard, and popup helpers.
-- `tests/static-contract.test.mjs`: verifies local HTML references, AI Match DOM IDs, and prompt template wiring.
+- `tests/static-contract.test.mjs`: verifies local HTML references, AI Match DOM IDs, prompt template wiring, and the experience.html story beats.
+- `tests/site-contract.test.mjs`: verifies sitemap ↔ disk sync (achievement.html excluded by design), per-page head metadata (title, description, canonical, OG, Twitter Card), GA tag presence, Tailwind config sync across pages, editorial `?v=` cache-bust consistency, and same-page anchor targets.
 - Run with:
   - `node --test tests/*.test.mjs`

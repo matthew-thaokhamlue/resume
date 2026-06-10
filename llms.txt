@@ -1,10 +1,10 @@
-# Matthew Thaokhamlue - Senior Product Manager
+# Matthew Thaokhamlue - Senior AI Product Manager
 
-> Matthew Thaokhamlue is a Senior Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
+> Matthew Thaokhamlue is a Senior AI Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
 
 ## Key Information
 
-- **Current Role**: Senior Product Manager at Labforward GmbH (Nov 2024 - Nov 2025)
+- **Current Role**: Senior AI Product Manager at Sema Technologies Inc. (Mar 2026 - Present)
 - **Location**: Berlin, Germany
 - **Specializations**: AI/ML Product Management, B2B SaaS, Health Analytics, Laboratory Informatics, Voice AI, API/SDK Platforms
 - **Languages**: English (IELTS 7.5), German (B1), Thai (Native)
@@ -24,6 +24,9 @@
 - [Labforward Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/labforward.html): Lab management product leadership
 - [LabTwin Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/labtwin.html): Voice AI for laboratory environments
 - [Thryve Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/thryve.html): Health data API/SDK platform
+- [MCP Server](https://matthew-thaokhamlue.github.io/resume/portfolio/mcp-server.html): Model Context Protocol server project
+- [Automation Tools](https://matthew-thaokhamlue.github.io/resume/portfolio/automation-tools.html): Multi-LLM PM automation suite
+- [Interview Prep](https://matthew-thaokhamlue.github.io/resume/portfolio/interview-prep.html): Multi-agent Claude Code interview-prep framework
 
 ## Contact
 

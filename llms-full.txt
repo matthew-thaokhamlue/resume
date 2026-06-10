@@ -1,11 +1,11 @@
-# Matthew Thaokhamlue - Senior Product Manager
+# Matthew Thaokhamlue - Senior AI Product Manager
 
-> Matthew Thaokhamlue is a Senior Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
+> Matthew Thaokhamlue is a Senior AI Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
 
 ## Contact Information
 
 - **Full Name**: Matthew Thaokhamlue
-- **Title**: Senior Product Manager
+- **Title**: Senior AI Product Manager
 - **Location**: Berlin, Germany
 - **Email**: matthew.thaokhamlue@gmail.com
 - **LinkedIn**: https://www.linkedin.com/in/matthewthaokhamlue
@@ -17,6 +17,15 @@
 Senior Product Manager with 7+ years of experience building and scaling B2B SaaS products at the intersection of AI, health analytics, and laboratory informatics. Proven track record of taking products from 0 to 1M+ users, driving revenue growth from €0 to €1M ARR, and leading cross-functional teams across engineering, design, data, and customer success. Deep technical fluency across cloud architectures (AWS, Azure), AI/ML systems, API platforms, and voice AI. Known for bridging technical complexity with human-centered design, rapid prototyping, and data-driven decision making.
 
 ## Work Experience
+
+### Senior AI Product Manager — Sema Technologies Inc.
+**Mar 2026 - Present | Dresden & Berlin, Germany**
+
+- Own the integration strategy behind Liz's sensory system, giving Sema's AI-native observability platform the reliable work signals it needs to reason across Product, Engineering, and CS.
+- Designed the integration layer across Jira, GitHub, Slack, Zoom, Linear, and document sources into the observability stack feeding Chat, Preset Insights, and action workflows — hit KPI delivering 5 enterprise integration rollouts within 60 days.
+- Built automated product practices for AI-first development — release notes, ticket cleanup, recurring PM operations — turning SOC 2 documentation from an enterprise deal blocker into trusted organizational signal Liz can reason on.
+- Aligned roadmap and feature prioritization across Product, Engineering, and CS based on production usage and business impact — scoping new pilots directly from the signal Liz already had.
+- Key skills: AI Product Strategy, Integration Strategy, Organizational Observability, Customer Feedback Loops
 
 ### Senior Product Manager — Labforward GmbH
 **Nov 2024 - Nov 2025 | Berlin, Germany**

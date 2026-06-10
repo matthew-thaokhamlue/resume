@@ -43,8 +43,5 @@ Allow: /assets/css/
 Allow: /assets/js/
 Allow: /images/
 
-# Disallow crawling of unnecessary files
-Disallow: /assets/sass/
-
 # Sitemap
 Sitemap: https://matthew-thaokhamlue.github.io/resume/sitemap.xml

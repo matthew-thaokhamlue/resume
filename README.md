@@ -1,93 +1,47 @@
-# Matthew Thaokhamlue - Resume Website
+# Matthew Thaokhamlue - Resume & Portfolio
 
-A professional resume website built using the HTML5 UP Dimension template, showcasing my experience as a Technical Product Manager with expertise in AI-powered innovation and B2B SaaS platforms.
+Personal resume and portfolio website for Matthew Thaokhamlue, Senior AI Product Manager. Static HTML/CSS/JS with no build step, deployed to GitHub Pages from the `main` branch.
 
-## 🚀 Live Website
+## Live Website
 
-Visit the live website at: [Your GitHub Pages URL will be here]
+https://matthew-thaokhamlue.github.io/resume/
 
-## 📋 Features
+## Architecture
 
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Professional Sections**: About, Experience, Skills, and Contact
-- **Functional Contact Form**: Direct email integration using mailto protocol
-- **Social Media Integration**: Links to LinkedIn and GitHub profiles
-- **Modern UI**: Clean, professional design with smooth animations
+- **No build step.** Every page is standalone HTML served directly from the repo root. Open `index.html` in a browser to develop.
+- **Styling**: Tailwind CSS via CDN with an inline config per page (custom tokens: `primary #0da6f2`, `background-dark #101c22`, `surface #1a262d`, Space Grotesk), plus `assets/css/editorial.css` for the editorial design system.
+- **Motion**: GSAP + ScrollTrigger (pinned CDN with SRI hashes) drive scroll reveals via `assets/js/editorial.js`. Native OS scrolling only; reduced motion is honored.
+- **AI Match**: `assets/js/ai-match.js` powers the "Evaluate role fit" feature on the homepage (paste a job description, open ChatGPT/Claude with a prefilled prompt).
+- **Analytics**: GA4 (`G-D11HKMWFB4`) with guarded inline `gtag()` event calls.
 
-## 🛠️ Technologies Used
-
-- HTML5
-- CSS3 (with responsive design)
-- JavaScript (jQuery)
-- Font Awesome icons
-- HTML5 UP Dimension template
-
-## 📧 Contact Form
-
-The contact form uses a client-side email solution that:
-- Opens the user's default email client
-- Pre-fills the email with the contact information
-- Sends directly to matthew.thaokhamlue@gmail.com
-- Works perfectly with GitHub Pages static hosting
-
-## 🚀 GitHub Pages Deployment
-
-### Automatic Deployment
-1. Push your code to the `main` branch
-2. Go to your repository Settings
-3. Navigate to "Pages" in the left sidebar
-4. Under "Source", select "Deploy from a branch"
-5. Choose `main` branch and `/ (root)` folder
-6. Click "Save"
-7. Your site will be available at `https://[username].github.io/[repository-name]`
-
-### Manual Testing
-Before deployment, you can test locally by:
-1. Opening `index.html` in your browser
-2. Testing all navigation links
-3. Testing the contact form functionality
-4. Verifying responsive design on different screen sizes
-
-## 📁 File Structure
+## Pages
 
 ```
-├── index.html              # Main HTML file
-├── assets/
-│   ├── css/
-│   │   ├── main.css        # Main stylesheet (with custom contact form styles)
-│   │   ├── noscript.css    # Fallback styles
-│   │   └── fontawesome-all.min.css
-│   ├── js/
-│   │   ├── main.js         # Main JavaScript (with contact form handler)
-│   │   ├── jquery.min.js
-│   │   ├── browser.min.js
-│   │   ├── breakpoints.min.js
-│   │   └── util.js
-│   └── webfonts/           # Font Awesome fonts
-├── images/                 # Template images
-└── README.md              # This file
+index.html               Landing page (hero, testimonials, AI Match, contact)
+experience.html          Career history with tree-ring visuals per role
+portfolio.html           Index of editorial case studies
+portfolio/*.html         Standalone case studies (career + personal projects)
+certificates.html        Certifications
+about.html               Redirect stub to index.html
+cv.html                  Generated CV export (linked as a download)
+llms.txt / llms-full.txt Machine-readable profile for AI crawlers
 ```
 
-## 🎨 Customization
+## Tests & CI
 
-The website content is fully customized with:
-- Professional summary and background
-- Detailed work experience at Labforward, LabTwin, Thryve, and EY
-- Technical skills including AI/ML, Cloud, and Product Management
-- Educational background and certifications
-- Contact information and social media links
+```bash
+node --test tests/*.test.mjs   # contract tests (local refs, metadata, sitemap sync, AI Match)
+bash harness/validate.sh       # invariant checks (GA tags, gtag guards, brand phrase)
+```
 
-## 📱 Contact Information
+Both run in GitHub Actions (`.github/workflows/ci.yml`) on every push and pull request against `main`.
+
+## Deployment
+
+Push to `main`. GitHub Pages serves the repository root; there is no build or release step.
+
+## Contact
 
 - **Email**: matthew.thaokhamlue@gmail.com
 - **LinkedIn**: [linkedin.com/in/matthewthaokhamlue](https://www.linkedin.com/in/matthewthaokhamlue)
 - **GitHub**: [github.com/matthew-thaokhamlue](https://github.com/matthew-thaokhamlue)
-- **Location**: Dresden, Germany
-
-## 📄 License
-
-This project uses the HTML5 UP Dimension template, which is free for personal and commercial use under the [Creative Commons license](https://html5up.net/license).
-
----
-
-**Template Credit**: [HTML5 UP](https://html5up.net) - Dimension template by [@ajlkn](https://twitter.com/ajlkn)
