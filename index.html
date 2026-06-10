@@ -2,15 +2,9 @@
 <html class="dark" lang="en">
 
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D11HKMWFB4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-D11HKMWFB4');
-  </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Matthew Thaokhamlue - Builder · AI Workflow Architect</title>
@@ -139,11 +133,11 @@
         <a class="ed-topbar__link" href="certificates.html">Certifications</a>
         <a class="ed-btn ed-btn--accent" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
           rel="noopener noreferrer"
-          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar'})}">
+          data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"linkedin","link_type":"cta_button","location":"nav_bar"}'>
           Let&rsquo;s talk
         </a>
       </nav>
-      <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()">
+      <button class="ed-topbar__menu" aria-label="Open menu" data-action="toggle-menu">
         <span class="material-symbols-outlined" aria-hidden="true">menu</span>
       </button>
     </div>
@@ -152,11 +146,11 @@
   <!-- Mobile menu (kept structurally — restyled) -->
   <div id="mobile-menu"
     class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
-    <a class="text-2xl font-medium text-white" href="index.html" onclick="toggleMenu()">Home</a>
-    <a class="text-2xl font-medium text-white" href="experience.html" onclick="toggleMenu()">Experience</a>
-    <a class="text-2xl font-medium text-white" href="portfolio.html" onclick="toggleMenu()">Portfolio</a>
-    <a class="text-2xl font-medium text-white" href="certificates.html" onclick="toggleMenu()">Certifications</a>
-    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu">
+    <a class="text-2xl font-medium text-white" href="index.html" data-action="toggle-menu">Home</a>
+    <a class="text-2xl font-medium text-white" href="experience.html" data-action="toggle-menu">Experience</a>
+    <a class="text-2xl font-medium text-white" href="portfolio.html" data-action="toggle-menu">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="certificates.html" data-action="toggle-menu">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" data-action="toggle-menu" aria-label="Close menu">
       <span class="material-symbols-outlined text-3xl">close</span>
     </button>
   </div>
@@ -181,7 +175,7 @@
             <span class="ed-link__arrow" aria-hidden="true">→</span>
           </button>
           <a class="ed-btn ed-btn--ghost" href="cv.html" target="_blank" rel="noopener noreferrer"
-            onclick="if(typeof gtag==='function'){gtag('event','resume_downloaded',{file_name:'cv.html',page_location:'index'})}">
+            data-ga-event="resume_downloaded" data-ga-params='{"file_name":"cv.html","page_location":"index"}'>
             View CV
             <span class="ed-link__arrow" aria-hidden="true">↓</span>
           </a>
@@ -285,7 +279,7 @@
       <div class="ed-quotes__inner">
         <p class="ed-eyebrow reveal">In their words</p>
 
-        <button type="button" class="ed-quote" onclick="openTestimonial(this)"
+        <button type="button" class="ed-quote" data-action="open-testimonial"
           data-name="Jeroen de Haas" data-role="CPO at Labforward"
           data-image="images/jeroen-de-haas.png"
           data-text="I&apos;ve had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner&mdash;someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I&apos;ve truly seen him grow&mdash;from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn&apos;t just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you&apos;re looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can&apos;t wait to see where his talents take him next.">
@@ -293,7 +287,7 @@
           <p class="ed-quote__attr"><strong>Jeroen de Haas</strong> CPO at Labforward</p>
         </button>
 
-        <button type="button" class="ed-quote" onclick="openTestimonial(this)"
+        <button type="button" class="ed-quote" data-action="open-testimonial"
           data-name="Mark Dominick Flores" data-role="Senior iOS Engineer at LabTwin"
           data-image="images/mark-flores.png"
           data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He&apos;s also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he&apos;s great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I&apos;d work with him again in a heartbeat. He&apos;s a huge asset to any product or engineering team.">
@@ -301,7 +295,7 @@
           <p class="ed-quote__attr"><strong>Mark Dominick Flores</strong> Senior iOS Engineer at LabTwin</p>
         </button>
 
-        <button type="button" class="ed-quote" onclick="openTestimonial(this)"
+        <button type="button" class="ed-quote" data-action="open-testimonial"
           data-name="Paul Burggraf" data-role="Founder at Thryve"
           data-image="images/PB.jpeg"
           data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve&apos;s growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly.">
@@ -312,7 +306,7 @@
         <div class="ed-quotes__more reveal">
           <a class="ed-link" href="https://www.linkedin.com/in/matthewthaokhamlue/details/recommendations/" target="_blank"
             rel="noopener noreferrer"
-            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'recommendations_score',location:'inline_quotes_section'})}">
+            data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"linkedin","link_type":"recommendations_score","location":"inline_quotes_section"}'>
             <span>Seven more recommendations on LinkedIn</span>
             <span class="ed-link__arrow" aria-hidden="true">→</span>
           </a>
@@ -326,7 +320,7 @@
         <h2 class="ed-cta__line reveal">Have a workflow worth <em>building</em>?<br />Let&rsquo;s talk about it.</h2>
         <div class="ed-cta__row reveal">
           <a class="ed-btn" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
-            onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'final_cta'})}">
+            data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"linkedin","link_type":"cta_button","location":"final_cta"}'>
             Reach out on LinkedIn
             <span class="ed-link__arrow" aria-hidden="true">→</span>
           </a>
@@ -350,12 +344,12 @@
       </div>
       <div class="ed-foot__icons">
         <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
-          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'index',link_position:'footer'})}"
+          data-ga-event="social_profile_link_clicked" data-ga-params='{"platform":"linkedin","page":"index","link_position":"footer"}'
           aria-label="LinkedIn">
           <i class="fab fa-linkedin text-2xl"></i>
         </a>
         <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
-          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'index',link_position:'footer'})}"
+          data-ga-event="social_profile_link_clicked" data-ga-params='{"platform":"github","page":"index","link_position":"footer"}'
           aria-label="GitHub">
           <i class="fab fa-github text-2xl"></i>
         </a>
@@ -366,11 +360,10 @@
   <!-- Testimonial Modal (kept — used by inline quote click) -->
   <dialog id="testimonial-modal"
     class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="closeTestimonial(event)">
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" data-testimonial-overlay>
       <div
-        class="bg-surface border border-white/10 rounded-2xl max-w-2xl w-full p-8 shadow-2xl transform transition-all scale-100 relative"
-        onclick="event.stopPropagation()">
-        <button onclick="closeTestimonial()"
+        class="bg-surface border border-white/10 rounded-2xl max-w-2xl w-full p-8 shadow-2xl transform transition-all scale-100 relative">
+        <button data-action="close-testimonial"
           class="absolute top-4 right-4 text-white/50 hover:text-white transition-colors" aria-label="Close testimonial">
           <span class="material-symbols-outlined text-3xl">close</span>
         </button>
@@ -441,60 +434,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 
   <!-- Editorial motion -->
+  <script src="assets/js/site.js?v=20260610"></script>
   <script src="assets/js/editorial.js?v=20260610"></script>
 
   <!-- AI Match feature (kept) -->
   <script type="module" src="assets/js/ai-match.js?v=20260506a"></script>
-
-  <!-- Page-level glue (kept contract: toggleMenu, openTestimonial, closeTestimonial) -->
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('mobile-menu');
-      if (typeof gtag === 'function') {
-        var isOpen = menu.classList.contains('translate-x-full');
-        gtag('event', 'mobile_menu_toggled', { action: isOpen ? 'open' : 'close' });
-      }
-      menu.classList.toggle('translate-x-full');
-    }
-
-    function openTestimonial(element) {
-      if (typeof gtag === 'function') {
-        gtag('event', 'testimonial_opened', { testimonial_author: element.getAttribute('data-name') || 'unknown' });
-      }
-      const modal = document.getElementById('testimonial-modal');
-      const name = element.getAttribute('data-name');
-      const role = element.getAttribute('data-role');
-      const image = element.getAttribute('data-image');
-      const text = element.getAttribute('data-text');
-
-      document.getElementById('modal-name').textContent = name;
-      document.getElementById('modal-role').textContent = role;
-
-      const imgEl = document.getElementById('modal-image');
-      const initialsEl = document.getElementById('modal-initials');
-
-      if (image) {
-        imgEl.src = image;
-        imgEl.alt = 'Portrait of ' + name;
-        imgEl.classList.remove('hidden');
-        initialsEl.classList.add('hidden');
-      } else {
-        imgEl.classList.add('hidden');
-        initialsEl.classList.remove('hidden');
-        const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2);
-        initialsEl.textContent = initials;
-      }
-
-      document.getElementById('modal-text').textContent = text;
-      modal.showModal();
-    }
-
-    function closeTestimonial(event) {
-      if (event && event.target !== event.currentTarget) return;
-      const modal = document.getElementById('testimonial-modal');
-      modal.close();
-    }
-  </script>
 </body>
 
 </html>

@@ -8,11 +8,12 @@ https://matthew-thaokhamlue.github.io/resume/
 
 ## Architecture
 
-- **No build step.** Every page is standalone HTML served directly from the repo root. Open `index.html` in a browser to develop.
-- **Styling**: Tailwind CSS via CDN with an inline config per page (custom tokens: `primary #0da6f2`, `background-dark #101c22`, `surface #1a262d`, Space Grotesk), plus `assets/css/editorial.css` for the editorial design system.
+- **No build step to deploy.** Every page is standalone HTML served directly from the repo root. Open `index.html` in a browser to develop. (Tailwind has a dev-time regen step only when classes change — see `tailwind.config.js`.)
+- **Styling**: precompiled Tailwind CSS (`assets/css/tailwind.css`, theme in `tailwind.config.js`), plus `assets/css/editorial.css` for the editorial design system.
 - **Motion**: GSAP + ScrollTrigger (pinned CDN with SRI hashes) drive scroll reveals via `assets/js/editorial.js`. Native OS scrolling only; reduced motion is honored.
 - **AI Match**: `assets/js/ai-match.js` powers the "Evaluate role fit" feature on the homepage (paste a job description, open ChatGPT/Claude with a prefilled prompt).
-- **Analytics**: GA4 (`G-D11HKMWFB4`) with guarded inline `gtag()` event calls.
+- **Analytics**: GA4 (`G-D11HKMWFB4`) bootstrapped in `assets/js/site.js`, with declarative `data-ga-event` click tracking.
+- **Security**: every page ships a Content-Security-Policy meta tag with no `'unsafe-inline'` scripts; all interactive behavior lives in external JS.
 
 ## Pages
 

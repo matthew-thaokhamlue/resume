@@ -2,14 +2,9 @@
 <html class="dark" lang="en">
 
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D11HKMWFB4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-D11HKMWFB4');
-  </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Thryve Case Study - Matthew Thaokhamlue</title>
@@ -468,11 +463,11 @@
         <a class="ed-topbar__link" href="../certificates.html">Certifications</a>
         <a class="ed-btn ed-btn--accent" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank"
           rel="noopener noreferrer"
-          onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_platform:'linkedin',link_type:'cta_button',location:'nav_bar',page:'thryve'})}">
+          data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"linkedin","link_type":"cta_button","location":"nav_bar","page":"thryve"}'>
           Let&rsquo;s talk
         </a>
       </nav>
-      <button class="ed-topbar__menu" aria-label="Open menu" onclick="toggleMenu()">
+      <button class="ed-topbar__menu" aria-label="Open menu" data-action="toggle-menu">
         <span class="material-symbols-outlined" aria-hidden="true">menu</span>
       </button>
     </div>
@@ -481,11 +476,11 @@
   <!-- Mobile menu -->
   <div id="mobile-menu"
     class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
-    <a class="text-2xl font-medium text-white" href="../index.html" onclick="toggleMenu()">Home</a>
-    <a class="text-2xl font-medium text-white" href="../experience.html" onclick="toggleMenu()">Experience</a>
-    <a class="text-2xl font-medium text-white" href="../portfolio.html" onclick="toggleMenu()">Portfolio</a>
-    <a class="text-2xl font-medium text-white" href="../certificates.html" onclick="toggleMenu()">Certifications</a>
-    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" onclick="toggleMenu()" aria-label="Close menu">
+    <a class="text-2xl font-medium text-white" href="../index.html" data-action="toggle-menu">Home</a>
+    <a class="text-2xl font-medium text-white" href="../experience.html" data-action="toggle-menu">Experience</a>
+    <a class="text-2xl font-medium text-white" href="../portfolio.html" data-action="toggle-menu">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="../certificates.html" data-action="toggle-menu">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" data-action="toggle-menu" aria-label="Close menu">
       <span class="material-symbols-outlined text-3xl">close</span>
     </button>
   </div>
@@ -631,12 +626,12 @@
           </ul>
           <div class="ed-hero__cta-row reveal">
             <a class="ed-btn ed-btn--accent" href="https://www.thryve.health/news/how-thryve-built-a-data-donation-tool-to-fight-covid-19-for-the-german-government" target="_blank" rel="noopener noreferrer"
-              onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_domain:'thryve.health',link_type:'portfolio_project',project_name:'corona_datenspende'})}">
+              data-ga-event="external_link_clicked" data-ga-params='{"destination_domain":"thryve.health","link_type":"portfolio_project","project_name":"corona_datenspende"}'>
               Read Thryve article
               <span class="ed-link__arrow" aria-hidden="true">→</span>
             </a>
             <a class="ed-link" href="https://corona-datenspende.github.io/en/" target="_blank" rel="noopener noreferrer"
-              onclick="if(typeof gtag==='function'){gtag('event','external_link_clicked',{destination_domain:'corona-datenspende.github.io',link_type:'portfolio_project',project_name:'corona_datenspende'})}">
+              data-ga-event="external_link_clicked" data-ga-params='{"destination_domain":"corona-datenspende.github.io","link_type":"portfolio_project","project_name":"corona_datenspende"}'>
               <span>Project archive</span>
               <span class="ed-link__arrow" aria-hidden="true">→</span>
             </a>
@@ -708,12 +703,12 @@
       </div>
       <div class="ed-foot__icons">
         <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
-          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'linkedin',page:'thryve',link_position:'footer'})}"
+          data-ga-event="social_profile_link_clicked" data-ga-params='{"platform":"linkedin","page":"thryve","link_position":"footer"}'
           aria-label="LinkedIn">
           <i class="fab fa-linkedin text-2xl"></i>
         </a>
         <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
-          onclick="if(typeof gtag==='function'){gtag('event','social_profile_link_clicked',{platform:'github',page:'thryve',link_position:'footer'})}"
+          data-ga-event="social_profile_link_clicked" data-ga-params='{"platform":"github","page":"thryve","link_position":"footer"}'
           aria-label="GitHub">
           <i class="fab fa-github text-2xl"></i>
         </a>
@@ -726,18 +721,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 
   <!-- Editorial motion -->
+  <script src="../assets/js/site.js?v=20260610"></script>
   <script src="../assets/js/editorial.js?v=20260610"></script>
-
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('mobile-menu');
-      if (typeof gtag === 'function') {
-        var isOpen = menu.classList.contains('translate-x-full');
-        gtag('event', 'mobile_menu_toggled', { action: isOpen ? 'open' : 'close', page: 'thryve' });
-      }
-      menu.classList.toggle('translate-x-full');
-    }
-  </script>
 </body>
 
 </html>

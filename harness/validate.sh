@@ -35,8 +35,13 @@ for page in "${CONTENT_PAGES[@]}"; do
   require_phrase "$page" "G-D11HKMWFB4"
 done
 
-# Main page must guard every gtag() call and preserve brand positioning.
-require_phrase index.html "typeof gtag==='function'"
+# GA lives in site.js (delegated [data-ga-event] tracking): the gtag guard and
+# config must stay there, and pages must load it. Brand positioning stays on index.
+require_phrase assets/js/site.js "typeof window.gtag === 'function'"
+require_phrase assets/js/site.js "G-D11HKMWFB4"
+for page in "${CONTENT_PAGES[@]}"; do
+  require_phrase "$page" "assets/js/site.js"
+done
 require_phrase index.html "AI Workflow Architect"
 
 # Public-safe content: internal metrics must not appear in any content page.

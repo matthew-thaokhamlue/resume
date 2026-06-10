@@ -111,6 +111,59 @@ test('local asset cache-bust versions match across all content pages', () => {
   assert.equal(versions.size, 1, `expected one shared ?v= version, found: ${[...versions].join(', ')}`);
 });
 
+test('content pages have no inline event handlers', () => {
+  const failures = [];
+  for (const page of contentPages()) {
+    const matches = [...readText(page).matchAll(/\son(?:click|keydown|keyup|submit|change|load|error|mouseover|focus|blur)\s*=/g)];
+    if (matches.length > 0) failures.push(`${page}: ${matches.length} inline handler(s)`);
+  }
+  assert.deepEqual(failures, []);
+});
+
+test('content pages carry the Content-Security-Policy meta tag', () => {
+  const missing = contentPages().filter(
+    (page) => !readText(page).includes('http-equiv="Content-Security-Policy"'),
+  );
+  assert.deepEqual(missing, []);
+});
+
+test('the only inline scripts are JSON-LD data blocks', () => {
+  const failures = [];
+  for (const page of contentPages()) {
+    for (const match of readText(page).matchAll(/<script(?![^>]*\bsrc=)([^>]*)>/g)) {
+      if (!match[1].includes('application/ld+json')) {
+        failures.push(`${page}: executable inline script (${match[1].trim() || 'no attrs'})`);
+      }
+    }
+  }
+  assert.deepEqual(failures, []);
+});
+
+test('data-ga-params attributes hold valid JSON', () => {
+  const failures = [];
+  for (const page of contentPages()) {
+    for (const match of readText(page).matchAll(/data-ga-params='([^']*)'/g)) {
+      try {
+        JSON.parse(match[1]);
+      } catch {
+        failures.push(`${page}: invalid JSON ${match[1].slice(0, 60)}`);
+      }
+    }
+  }
+  assert.deepEqual(failures, []);
+});
+
+test('every data-action in markup is handled by site.js', () => {
+  const siteJs = readText('assets/js/site.js');
+  const unhandled = new Set();
+  for (const page of contentPages()) {
+    for (const match of readText(page).matchAll(/data-action="([^"]+)"/g)) {
+      if (!siteJs.includes(`case '${match[1]}':`)) unhandled.add(`${page}: ${match[1]}`);
+    }
+  }
+  assert.deepEqual([...unhandled], []);
+});
+
 test('fragment links point at ids that exist', () => {
   // cv.html is a generated export with GitHub-style `user-content-*` anchor ids — skip it.
   const failures = [];

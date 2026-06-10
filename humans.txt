@@ -11,5 +11,5 @@ Last update: 2026-06-10
 Language: English
 Doctype: HTML5
 Standards: HTML5, CSS3, Tailwind CSS
-Components: Tailwind CSS CDN, GSAP + ScrollTrigger, Font Awesome, Google Fonts (Fraunces, Space Grotesk)
+Components: Tailwind CSS (precompiled), GSAP + ScrollTrigger, Font Awesome, Google Fonts (Fraunces, Space Grotesk)
 Software: GitHub Pages

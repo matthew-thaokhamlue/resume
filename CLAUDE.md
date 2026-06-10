@@ -21,15 +21,18 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 - `cv.html` — generated CV export linked as a download from index/experience; not hand-maintained
 
 **Styling:**
-- **Tailwind CSS** via CDN (`cdn.tailwindcss.com`) with inline config in each HTML `<head>` — used for layout and utility classes. Config defines custom colors (`primary: #0da6f2`, `background-dark: #101c22`, `surface: #1a262d`), font family (`Space Grotesk`), and border radius tokens.
-- **`assets/css/editorial.css`** — the editorial design system (reveals, hero display, stages, quotes). Loaded with a `?v=` cache-bust param that must stay identical across all pages (tested).
+- **Tailwind CSS, precompiled** — `assets/css/tailwind.css` is a checked-in one-time compile (tailwindcss 3.4.17 + forms + container-queries plugins). Theme tokens live only in `tailwind.config.js` at the repo root, which also documents the regen command. **After adding/removing Tailwind classes in any HTML/JS file, regenerate the stylesheet** — a static compile only contains classes found in the content scan, so a new class without a rebuild silently renders unstyled.
+- **`assets/css/editorial.css`** — the editorial design system (reveals, hero display, stages, quotes). Loaded after tailwind.css so its rules win the cascade. All local CSS/JS use a `?v=` cache-bust param that must stay identical across all pages (tested).
 
 **JavaScript:**
-- `assets/js/editorial.js` — GSAP + ScrollTrigger scroll reveals (see Scroll Motion Pattern below). Same `?v=` cache-bust rule as editorial.css.
-- `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt, opens ChatGPT or Claude.ai in a popup/tab. Contains all GA custom event tracking for the feature (`ai_match_*` events).
+- `assets/js/site.js` — site-wide glue: GA bootstrap (`gtag` config), delegated GA event tracking via `[data-ga-event]`/`[data-ga-params]`, mobile menu (`data-action="toggle-menu"`), and the testimonial modal (`data-action="open-testimonial"` etc.). Loaded on every content page.
+- `assets/js/editorial.js` — GSAP + ScrollTrigger scroll reveals (see Scroll Motion Pattern below).
+- `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt, opens ChatGPT or Claude.ai in a popup/tab. (Contains no gtag calls.)
 - The legacy HTML5 UP Dimension assets (jQuery, `main.js`, `portfolio.js`, `main.css`, `portfolio.css`, the SASS tree, and local Font Awesome webfonts) were deleted in June 2026 — no page referenced them. Don't reintroduce them.
 
-**CDN dependencies:** GSAP 3.12.5, ScrollTrigger 3.12.5, and Font Awesome 6.4.0 are pinned on cdnjs with `integrity` (SRI sha384) + `crossorigin="anonymous"` attributes. When bumping a CDN version, recompute the hash: `curl -sf <url> | openssl dgst -sha384 -binary | base64`. The Tailwind CDN script is dynamic and cannot carry SRI.
+**CDN dependencies:** GSAP 3.12.5, ScrollTrigger 3.12.5, and Font Awesome 6.4.0 are pinned on cdnjs with `integrity` (SRI sha384) + `crossorigin="anonymous"` attributes. When bumping a CDN version, recompute the hash: `curl -sf <url> | openssl dgst -sha384 -binary | base64`.
+
+**Content-Security-Policy:** every content page carries a CSP `<meta>` tag (first element in `<head>`) with `script-src 'self' cdnjs googletagmanager` — **no `'unsafe-inline'` for scripts**. Consequences: never add inline `<script>` blocks (JSON-LD data blocks are the only exception) or inline `on*=` handlers; put behavior in `site.js` and wire it with data attributes. When adding a new external resource, extend the CSP on all 11 pages (tested).
 
 ## Scroll Motion Pattern
 
@@ -56,10 +59,10 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 
 ## Key Conventions
 
-- All external dependencies loaded via CDN (Tailwind, GSAP, Font Awesome, Google Fonts) — no `node_modules`
+- External dependencies via CDN (GSAP, Font Awesome, Google Fonts) — no `node_modules`; Tailwind is precompiled into `assets/css/tailwind.css`
 - Standard content container: `w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` — matches nav width/padding exactly. Use this for all section content.
-- Tailwind config is duplicated in each HTML file's `<script id="tailwind-config">` block — keep them in sync when changing theme tokens (tested)
-- Google Analytics tag (G-D11HKMWFB4) in each content page `<head>` (`about.html` and `cv.html` exempt). GA4 custom events (`resume_downloaded`, `external_link_clicked`, `audio_played`, etc.) use inline `onclick="if(typeof gtag==='function'){gtag('event',...)}"` — never call `gtag()` without the guard.
+- Tailwind theme tokens live in `tailwind.config.js` only — regenerate `assets/css/tailwind.css` after changing them (command in that file's header comment)
+- Google Analytics loader (G-D11HKMWFB4) in each content page `<head>` (`about.html` and `cv.html` exempt); config + events live in `assets/js/site.js`. GA4 custom events (`resume_downloaded`, `external_link_clicked`, etc.) are wired declaratively: `data-ga-event="event_name" data-ga-params='{"key":"value"}'` on the clickable element — never inline `onclick` (CSP forbids it, tested).
 - `portfolio.html` all project cards link directly to standalone `portfolio/*.html` editorial case-study pages.
 - SEO: JSON-LD Person schema lives inline in `index.html` `<head>` (there is no separate structured-data file — a standalone JSON file is invisible to crawlers). `sitemap.xml` and `robots.txt` are at root; content pages carry Open Graph + Twitter Card tags (tested). `portfolio/achievement.html` is intentionally hidden: noindex, unlinked, excluded from the sitemap — keep it that way.
 - Machine-readable profile: `llms.txt` (summary + page index) and `llms-full.txt` (full CV) at root — update the current-role facts there when career copy changes on the site.
@@ -94,6 +97,6 @@ Current state for both pages:
 
 - `tests/ai-match.test.mjs`: verifies AI Match prompt, provider URL, clipboard, and popup helpers.
 - `tests/static-contract.test.mjs`: verifies local HTML references, AI Match DOM IDs, prompt template wiring, and the experience.html story beats.
-- `tests/site-contract.test.mjs`: verifies sitemap ↔ disk sync (achievement.html excluded by design), per-page head metadata (title, description, canonical, OG, Twitter Card), GA tag presence, Tailwind config sync across pages, editorial `?v=` cache-bust consistency, and same-page anchor targets.
+- `tests/site-contract.test.mjs`: verifies sitemap ↔ disk sync (achievement.html excluded by design), per-page head metadata (title, description, canonical, OG, Twitter Card), GA tag presence, precompiled-Tailwind usage (no Play CDN, no inline config), `?v=` cache-bust consistency, CSP meta presence, zero inline event handlers, no executable inline scripts (JSON-LD only), `data-ga-params` JSON validity, `data-action` ↔ site.js handler sync, and same-page anchor targets.
 - Run with:
   - `node --test tests/*.test.mjs`
