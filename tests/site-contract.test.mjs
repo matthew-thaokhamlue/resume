@@ -89,32 +89,26 @@ test('content pages carry the GA tag', () => {
   assert.deepEqual(missing, []);
 });
 
-test('tailwind config is identical across all content pages', () => {
-  // Strip whitespace and trailing commas so only semantic drift fails the test.
-  const normalize = (config) => config.replace(/\s+/g, '').replace(/,([}\]])/g, '$1');
-  const configs = new Map();
-
+test('content pages use the precompiled tailwind stylesheet, not the Play CDN', () => {
+  const failures = [];
   for (const page of contentPages()) {
-    const match = readText(page).match(/tailwind\.config\s*=\s*(\{[\s\S]*?\})\s*<\/script>/);
-    assert.ok(match, `${page}: no inline tailwind.config block`);
-    configs.set(page, normalize(match[1]));
+    const html = readText(page);
+    const prefix = page.startsWith('portfolio/') ? '../' : '';
+    if (html.includes('cdn.tailwindcss.com')) failures.push(`${page}: still loads the Tailwind Play CDN`);
+    if (/tailwind\.config\s*=/.test(html)) failures.push(`${page}: still has an inline tailwind config block`);
+    if (!html.includes(`${prefix}assets/css/tailwind.css?v=`)) failures.push(`${page}: missing compiled tailwind.css link`);
   }
-
-  const reference = configs.get('index.html');
-  const drifted = [...configs.entries()]
-    .filter(([, config]) => config !== reference)
-    .map(([page]) => page);
-  assert.deepEqual(drifted, [], 'tailwind config drifted from index.html');
+  assert.deepEqual(failures, []);
 });
 
-test('editorial asset cache-bust versions match across all content pages', () => {
+test('local asset cache-bust versions match across all content pages', () => {
   const versions = new Set();
   for (const page of contentPages()) {
-    for (const match of readText(page).matchAll(/editorial\.(?:css|js)\?v=([A-Za-z0-9]+)/g)) {
+    for (const match of readText(page).matchAll(/(?:editorial\.(?:css|js)|tailwind\.css|site\.js)\?v=([A-Za-z0-9]+)/g)) {
       versions.add(match[1]);
     }
   }
-  assert.equal(versions.size, 1, `expected one editorial ?v= version, found: ${[...versions].join(', ')}`);
+  assert.equal(versions.size, 1, `expected one shared ?v= version, found: ${[...versions].join(', ')}`);
 });
 
 test('fragment links point at ids that exist', () => {

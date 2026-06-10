@@ -36,8 +36,8 @@
   <meta name="twitter:description" content="Product management case studies: Labforward lab management platform, LabTwin voice AI for scientists, Thryve health data API/SDK platform (1M+ users)." />
   <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
 
-  <!-- Tailwind CSS (kept for legacy modal markup) -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260610" />
 
   <!-- Fonts: Fraunces (display) + Space Grotesk (body) + Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -49,28 +49,6 @@
   <!-- Editorial design layer -->
   <link rel="stylesheet" href="assets/css/editorial.css?v=20260610" />
 
-  <!-- Tailwind Config (kept; used by retained modal + mobile menu markup) -->
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "primary": "#0da6f2",
-            "primary-dark": "#0a8ccf",
-            "background-light": "#f5f7f8",
-            "background-dark": "#101c22",
-            "surface": "#1a262d",
-            "surface-hover": "#233038",
-          },
-          fontFamily: {
-            "display": ["Space Grotesk", "sans-serif"]
-          },
-          borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
-        },
-      },
-    }
-  </script>
   <style>
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
