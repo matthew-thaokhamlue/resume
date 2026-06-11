@@ -10,6 +10,8 @@ Static resume/portfolio website for Matthew Thaokhamlue, deployed to GitHub Page
 
 Open `index.html` in a browser to test. No build or install commands needed. The site is deployed by pushing to the `main` branch (GitHub Pages serves from root).
 
+Pushing this repo uses the personal `gh` account `matthew-thaokhamlue` (not `matthew-semasoftware`); a push to `main` triggers both the CI workflow and the Pages build automatically, so verify CI is green after pushing.
+
 ## Architecture
 
 **Pages:** Each top-level HTML file is a standalone page sharing a common structure:
@@ -27,6 +29,7 @@ Open `index.html` in a browser to test. No build or install commands needed. The
 **JavaScript:**
 - `assets/js/site.js` — site-wide glue: GA bootstrap (`gtag` config), delegated GA event tracking via `[data-ga-event]`/`[data-ga-params]`, mobile menu (`data-action="toggle-menu"`), and the testimonial modal (`data-action="open-testimonial"` etc.). Loaded on every content page.
 - `assets/js/editorial.js` — GSAP + ScrollTrigger scroll reveals (see Scroll Motion Pattern below).
+- `assets/js/hero.js` — index.html only: the "Living Workflow" hero (generative canvas workflow graph with DISCOVERY/ARCHITECTURE/BUILD/SHIP labeled nodes, char-split intro choreography, magnetic CTAs). Carries its own `?v=` version like ai-match.js (the cache-bust contract test only pins site.js/editorial.*/tailwind.css). Canvas runs without GSAP; intro + magnetic require it. Intro-hidden CSS states live in editorial.css gated by `@media (scripting: enabled)` + `[data-intro-pending]` (hero.js removes the attribute on first run, so blocked CDN / no JS / reduced motion all fail visible). Canvas labels draw on ≥768px only; the rAF loop pauses offscreen via IntersectionObserver. Contract-tested in static-contract.test.mjs (hero markup hooks + exact h1 markup, which splitHeadline restores post-intro).
 - `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt, opens ChatGPT or Claude.ai in a popup/tab. (Contains no gtag calls.)
 - The legacy HTML5 UP Dimension assets (jQuery, `main.js`, `portfolio.js`, `main.css`, `portfolio.css`, the SASS tree, and local Font Awesome webfonts) were deleted in June 2026 — no page referenced them. Don't reintroduce them.
 
@@ -56,6 +59,9 @@ Open `index.html` in a browser to test. No build or install commands needed. The
   ```
 - Background subagents (`run_in_background: true`) cannot use Edit or Write tools — use them for research/reads only; apply all file edits in the main agent session.
 - Worktrees created by Claude land in `.claude/worktrees/` — clean up with `git worktree remove --force` after branches are merged.
+- The rtk Bash hook mangles grep patterns with escaped parens/alternations and can fail on missing `gsed` — for multi-pattern greps over the HTML files, use `rtk proxy grep` or a python script instead.
+- zsh reserves `status` as a read-only variable — shell loops in Bash/Monitor tools must use a different variable name or they exit 1.
+- `cv.html` is a GitHub-export render whose TOC anchors use `id="user-content-*"`, so its `#fragment` links don't resolve statically — that's why it's exempt from the fragment-link contract test.
 
 ## Key Conventions
 

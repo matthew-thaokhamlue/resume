@@ -656,6 +656,101 @@
     }
   }
 
+/* ── editorial-living-hero ── */
+  /* index.html "Living Workflow" hero: canvas graph layer,
+     load-choreography states, scroll cue. Driven by hero.js. */
+  .ed-hero__canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  .ed-hero--living .ed-hero__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Scroll cue — hairline with a falling accent dot */
+  .ed-hero__scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: var(--ed-s-4);
+    z-index: 1;
+    width: 1px;
+    height: 44px;
+    background: var(--ed-hairline-strong);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .ed-hero__scroll-cue::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1px;
+    width: 3px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--ed-accent);
+    animation: ed-cue-drop 2.4s var(--ed-ease-soft) infinite;
+  }
+  @keyframes ed-cue-drop {
+    0%   { top: 0; opacity: 0; }
+    15%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { top: calc(100% - 3px); opacity: 0; }
+  }
+
+  /* Headline split spans (added/removed at runtime by hero.js).
+     No overflow masks — Fraunces italic overhangs clip badly. */
+  .ed-hero__word { display: inline-block; white-space: nowrap; }
+  .ed-hero__char { display: inline-block; will-change: transform, opacity; }
+
+  /* Hairline draw-in next to the eyebrow. .is-intro-armed (set by JS
+     alongside inline initial states) holds it collapsed until the
+     timeline adds .is-intro; order matters — .is-intro wins. */
+  .ed-hero--living .ed-hero__meta::after { transform-origin: left center; }
+  .ed-hero--living.is-intro-armed .ed-hero__meta::after { transform: scaleX(0); }
+  .ed-hero--living.is-intro .ed-hero__meta::after {
+    transform: scaleX(1);
+    transition: transform 900ms var(--ed-ease) 120ms;
+  }
+
+  /* Magnetic CTAs — GSAP owns transform; CSS keeps color transitions. */
+  .ed-hero--living .ed-btn--magnetic {
+    transition-property: background-color, color, border-color;
+  }
+  .ed-hero--living .ed-btn--magnetic:hover,
+  .ed-hero--living .ed-btn--magnetic:active { transform: none; }
+
+  /* Intro initial states — only when scripting is on and motion allowed.
+     hero.js removes [data-intro-pending] on its first run, so a blocked
+     CDN, disabled JS, an old browser, or reduced motion all fail visible. */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .ed-hero--living[data-intro-pending] .ed-eyebrow,
+    .ed-hero--living[data-intro-pending] .ed-hero__display,
+    .ed-hero--living[data-intro-pending] .ed-hero__support,
+    .ed-hero--living[data-intro-pending] .ed-hero__cta-row,
+    .ed-hero--living[data-intro-pending] .ed-hero__scroll-cue {
+      opacity: 0;
+    }
+    .ed-hero--living[data-intro-pending] .ed-hero__meta::after {
+      transform: scaleX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ed-hero__scroll-cue::after { animation: none !important; }
+  }
+
+  @media (max-width: 767px) {
+    .ed-hero__canvas { opacity: 0.85; }
+    /* CTA stack fills the hero bottom on small screens */
+    .ed-hero__scroll-cue { display: none; }
+  }
+
 /* ── editorial-content-pages ── */
   /* Hero modifier for content pages (portfolio, certificates) — calmer, not full viewport. */
   .ed-hero--page {

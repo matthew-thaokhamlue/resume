@@ -151,6 +151,29 @@ test('experience.html frames earlier roles as the career spine behind Liz', () =
   }
 });
 
+test('index.html keeps the living-workflow hero contract', () => {
+  const indexHtml = readText('index.html');
+
+  // Markup hooks hero.js depends on
+  for (const hook of ['ed-hero--living', 'ed-hero__canvas', 'ed-hero__scroll-cue', 'data-intro-pending']) {
+    assert.match(indexHtml, new RegExp(escapeRegExp(hook)), `Missing ${hook}`);
+  }
+  assert.match(indexHtml, /assets\/js\/hero\.js\?v=/, 'Missing hero.js script tag');
+
+  // The headline split/restore round-trip and editorial.js's scrub both
+  // target this exact h1 markup.
+  assert.match(
+    indexHtml,
+    /I build AI <em>workflows<\/em>,<br \/>not AI features\./,
+    'Hero h1 markup changed — hero.js splitHeadline and the scrub depend on it',
+  );
+
+  // Cheap guards that the perf/a11y gates survive refactors
+  const heroJs = readText('assets/js/hero.js');
+  assert.match(heroJs, /prefers-reduced-motion/, 'hero.js lost its reduced-motion gate');
+  assert.match(heroJs, /IntersectionObserver/, 'hero.js lost its offscreen rAF pause');
+});
+
 test('AI Match prompt template exists for the configured prompt version', () => {
   const aiMatchJs = readText('assets/js/ai-match.js');
   const versionMatch = aiMatchJs.match(/const PROMPT_VERSION = ['"]([^'"]+)['"]/);
