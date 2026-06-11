@@ -31,8 +31,8 @@
     <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260610" />
-    <link rel="stylesheet" href="assets/css/editorial.css?v=20260610" />
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260611" />
+    <link rel="stylesheet" href="assets/css/editorial.css?v=20260611" />
 
     <!-- Fonts: Fraunces (display) + Space Grotesk (body) -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -158,10 +158,15 @@
         }
 
         /* Reveal directional variants (additive to .reveal in editorial.css).
-           Higher specificity .reveal.X.is-in selectors reset to translate3d(0,0,0). */
-        .reveal.reveal-left { transform: translate3d(-44px, 0, 0); }
-        .reveal.reveal-right { transform: translate3d(44px, 0, 0); }
-        .reveal.reveal-up-lg { transform: translate3d(0, 36px, 0); }
+           Pre-reveal transforms apply only while the body carries the
+           motion-pending attribute and scripting + motion are available,
+           matching the gated base .reveal state. .is-in resets win by
+           source order. */
+        @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+            [data-motion-pending] .reveal.reveal-left { transform: translate3d(-44px, 0, 0); }
+            [data-motion-pending] .reveal.reveal-right { transform: translate3d(44px, 0, 0); }
+            [data-motion-pending] .reveal.reveal-up-lg { transform: translate3d(0, 36px, 0); }
+        }
         .reveal.reveal-left.is-in,
         .reveal.reveal-right.is-in,
         .reveal.reveal-up-lg.is-in { transform: translate3d(0, 0, 0); }
@@ -173,7 +178,7 @@
     </style>
 </head>
 
-<body class="ed-page font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white">
+<body class="ed-page font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white" data-motion-pending>
     <div class="relative flex min-h-screen w-full flex-col">
 
         <!-- TopNavBar -->
@@ -244,6 +249,9 @@
                 </div>
             </section>
 
+            <!-- career.js: spine + chapter choreography hook -->
+            <div class="ed-career">
+
             <!-- ── Panel 1: Sema Technologies (9 rings accumulated) ── -->
             <section class="w-full py-20 md:py-28 border-t border-white/5" id="role-sema">
                 <!-- Split layout — nav-aligned container -->
@@ -283,36 +291,36 @@
                     </div>
                     <!-- Right: content -->
                     <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
-                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block reveal">01</span>
-                        <p class="ed-eyebrow reveal">Sema Technologies · Dresden &amp; Berlin · Mar 2026 – Present</p>
-                        <h2 class="ed-display experience-role-title reveal reveal-up-lg"><em>Senior AI</em> Product Manager</h2>
-                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium reveal">Sema Technologies Inc.</p>
+                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block">01</span>
+                        <p class="ed-eyebrow">Sema Technologies · Dresden &amp; Berlin · Mar 2026 – Present</p>
+                        <h2 class="ed-display experience-role-title"><em>Senior AI</em> Product Manager</h2>
+                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium">Sema Technologies Inc.</p>
                         <div class="ed-philosophy__body text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[440px]">
                             <p>
                                 Owned the integration strategy behind Liz&rsquo;s sensory system, giving Sema&rsquo;s AI-native observability platform the reliable work signals it needs to reason across Product, Engineering, and CS.
                             </p>
                         </div>
                         <div class="sema-story" aria-label="Liz product story beats">
-                            <div class="sema-story__item reveal">
+                            <div class="sema-story__item">
                                 <span class="sema-story__label">Ingest</span>
                                 <p class="sema-story__text">
                                     Designed the integration layer across Jira, GitHub, Slack, Zoom, Linear, and document sources into the observability stack feeding Chat, Preset Insights, and action workflows — hit KPI delivering 5 enterprise integration rollouts within 60 days.
                                 </p>
                             </div>
-                            <div class="sema-story__item reveal">
+                            <div class="sema-story__item">
                                 <span class="sema-story__label">Clarify</span>
                                 <p class="sema-story__text">
                                     Built automated product practices for AI-first development &mdash; release notes, ticket cleanup, recurring PM operations &mdash; turning SOC 2 documentation from an enterprise deal blocker into trusted organizational signal Liz can reason on.
                                 </p>
                             </div>
-                            <div class="sema-story__item reveal">
+                            <div class="sema-story__item">
                                 <span class="sema-story__label">Close the loop</span>
                                 <p class="sema-story__text">
                                     Aligned roadmap and feature prioritization across Product, Engineering, and CS based on production usage and business impact — scoping new pilots directly from the signal Liz already had.
                                 </p>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-2 reveal">
+                        <div class="flex flex-col gap-2">
                             <span class="experience-skill">AI Product Strategy</span>
                             <span class="experience-skill">Integration Strategy</span>
                             <span class="experience-skill">Organizational Observability</span>
@@ -360,23 +368,23 @@
                     </div>
                     <!-- Content: sits left on md+ -->
                     <div class="flex flex-col gap-6 md:order-1 md:pr-8 lg:pr-12">
-                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block reveal">02</span>
-                        <p class="ed-eyebrow reveal">Labforward · Berlin · Nov 2024 – Nov 2025</p>
-                        <h2 class="ed-display experience-role-title reveal reveal-up-lg"><em>Senior</em> Product Manager</h2>
-                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium reveal">Labforward</p>
+                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block">02</span>
+                        <p class="ed-eyebrow">Labforward · Berlin · Nov 2024 – Nov 2025</p>
+                        <h2 class="ed-display experience-role-title"><em>Senior</em> Product Manager</h2>
+                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium">Labforward</p>
                         <div class="ed-philosophy__body text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[440px]">
                             <p>
                                 Turned lab operations and GenAI ambiguity into shipped product direction. Owned roadmap, customer-critical collaboration loops, and rapid prototypes that protected a <strong class="text-[var(--ed-ink)]">$500K contract renewal</strong> while shrinking validation cycles from days to hours.
                             </p>
                         </div>
-                        <div class="flex flex-col gap-2 reveal">
+                        <div class="flex flex-col gap-2">
                             <span class="experience-skill">GenAI Product Strategy</span>
                             <span class="experience-skill">Customer-Critical Roadmaps</span>
                             <span class="experience-skill">Rapid Prototyping</span>
                             <span class="experience-skill">Product Operations</span>
                         </div>
                         <a href="portfolio/labforward.html"
-                            class="ed-link group w-fit reveal">
+                            class="ed-link group w-fit">
                             View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
                         </a>
                     </div>
@@ -417,23 +425,23 @@
                         </svg>
                     </div>
                     <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
-                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block reveal">03</span>
-                        <p class="ed-eyebrow reveal">LabTwin · Berlin · Jan 2023 – Nov 2024</p>
-                        <h2 class="ed-display experience-role-title reveal reveal-up-lg"><em>Technical</em> Product Manager</h2>
-                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium reveal">LabTwin</p>
+                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block">03</span>
+                        <p class="ed-eyebrow">LabTwin · Berlin · Jan 2023 – Nov 2024</p>
+                        <h2 class="ed-display experience-role-title"><em>Technical</em> Product Manager</h2>
+                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium">LabTwin</p>
                         <div class="ed-philosophy__body text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[440px]">
                             <p>
                                 Moved AI from demo surface to daily lab workflow. Owned voice and integration roadmap, tripled deployment frequency from <strong class="text-[var(--ed-ink)]">4 → 12 releases per year</strong>, and kept speech recognition at <strong class="text-[var(--ed-ink)]">95% accuracy</strong> for scientific language.
                             </p>
                         </div>
-                        <div class="flex flex-col gap-2 reveal">
+                        <div class="flex flex-col gap-2">
                             <span class="experience-skill">Voice AI &amp; NLP</span>
                             <span class="experience-skill">Lab Workflow Integrations</span>
                             <span class="experience-skill">Release Cadence</span>
                             <span class="experience-skill">Scientific UX</span>
                         </div>
                         <a href="portfolio/labtwin.html"
-                            class="ed-link group w-fit reveal">
+                            class="ed-link group w-fit">
                             View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
                         </a>
                     </div>
@@ -471,23 +479,23 @@
                         </svg>
                     </div>
                     <div class="flex flex-col gap-6 md:order-1 md:pr-8 lg:pr-12">
-                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block reveal">04</span>
-                        <p class="ed-eyebrow reveal">Thryve · Berlin · Oct 2019 – Dec 2022</p>
-                        <h2 class="ed-display experience-role-title reveal reveal-up-lg">Product Owner</h2>
-                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium reveal">Thryve</p>
+                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block">04</span>
+                        <p class="ed-eyebrow">Thryve · Berlin · Oct 2019 – Dec 2022</p>
+                        <h2 class="ed-display experience-role-title">Product Owner</h2>
+                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium">Thryve</p>
                         <div class="ed-philosophy__body text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[440px]">
                             <p>
                                 Built the integration muscle underneath health-data products at scale. Owned APIs and SDKs powering <strong class="text-[var(--ed-ink)]">1M+ users</strong> across 100+ B2B partners, led 10+ wearable integrations, and helped grow the company from <strong class="text-[var(--ed-ink)]">€0 → €1M ARR</strong>.
                             </p>
                         </div>
-                        <div class="flex flex-col gap-2 reveal">
+                        <div class="flex flex-col gap-2">
                             <span class="experience-skill">API &amp; SDK Strategy</span>
                             <span class="experience-skill">Wearable Integrations</span>
                             <span class="experience-skill">Health Data Platforms</span>
                             <span class="experience-skill">B2B SaaS Growth</span>
                         </div>
                         <a href="portfolio/thryve.html"
-                            class="ed-link group w-fit reveal">
+                            class="ed-link group w-fit">
                             View Portfolio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
                         </a>
                     </div>
@@ -522,16 +530,16 @@
                         </svg>
                     </div>
                     <div class="flex flex-col gap-6 md:pl-8 lg:pl-12">
-                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block reveal">05</span>
-                        <p class="ed-eyebrow reveal">Ernst &amp; Young · Bangkok · Aug 2016 – Feb 2018</p>
-                        <h2 class="ed-display experience-role-title reveal reveal-up-lg"><em>Senior</em> Risk Consultant</h2>
-                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium reveal">Ernst &amp; Young</p>
+                        <span class="text-[10px] text-[var(--ed-ink-mute)] uppercase tracking-[0.28em] block">05</span>
+                        <p class="ed-eyebrow">Ernst &amp; Young · Bangkok · Aug 2016 – Feb 2018</p>
+                        <h2 class="ed-display experience-role-title"><em>Senior</em> Risk Consultant</h2>
+                        <p class="text-sm text-[var(--ed-accent-strong)] font-medium">Ernst &amp; Young</p>
                         <div class="ed-philosophy__body text-base text-[var(--ed-ink-soft)] leading-relaxed max-w-[440px]">
                             <p>
                                 Learned where organizations fracture first: risk, process, controls, and change. Mapped operational gaps for large enterprises, built digital transformation risk frameworks, and researched emerging automation such as RPA.
                             </p>
                         </div>
-                        <div class="flex flex-col gap-2 reveal">
+                        <div class="flex flex-col gap-2">
                             <span class="experience-skill">Operational Risk</span>
                             <span class="experience-skill">Process Systems</span>
                             <span class="experience-skill">Digital Transformation</span>
@@ -540,6 +548,8 @@
                     </div>
                 </div>
             </section>
+
+            </div><!-- /.ed-career -->
 
             <!-- ── Panel 6: Skills & Education (editorial ledger) ── -->
             <section class="w-full py-20 md:py-28 border-t border-white/5" id="role-skills">
@@ -624,9 +634,10 @@
     <!-- GSAP scroll-driven motion (mirrors index.html) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-    <script src="assets/js/site.js?v=20260610"></script>
-    <script src="assets/js/editorial.js?v=20260610"></script>
+    <script src="assets/js/site.js?v=20260611"></script>
+    <script src="assets/js/editorial.js?v=20260611"></script>
     <script src="assets/js/rings.js?v=20260611a"></script>
+    <script src="assets/js/career.js?v=20260611b"></script>
 </body>
 
 </html>

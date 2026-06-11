@@ -28,12 +28,12 @@
   <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="../assets/css/tailwind.css?v=20260610" />
+  <link rel="stylesheet" href="../assets/css/tailwind.css?v=20260611" />
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
-  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260610" />
+  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260611" />
 
 
   <style>
@@ -435,7 +435,7 @@
   </style>
 </head>
 
-<body class="ed-page">
+<body class="ed-page" data-motion-pending>
   <header class="ed-topbar">
     <div class="ed-topbar__inner">
       <a class="ed-topbar__brand" href="../index.html"><span class="ed-topbar__brand-mark">M</span><span>Matthew Thaokhamlue</span></a>
@@ -469,7 +469,7 @@
           <h1 class="case-hero__display ed-hero__display">PM work should be thoughtful, not <em>manual</em>.</h1>
           <p class="case-hero__support">A multi-LLM Python suite that automates release notes, Jira ticket drafting, API testing notes, and other recurring workflows, freeing time for actual product judgment.</p>
         </div>
-        <div class="case-hero__facts reveal"><div class="case-fact">
+        <div class="case-hero__facts"><div class="case-fact">
             <span class="case-fact__label">Type</span>
             <span class="case-fact__value">Personal automation suite</span>
           </div>
@@ -490,7 +490,7 @@
 
     <section class="case-section"><div class="case-section__inner"><div class="reveal"><p class="case-section__eyebrow">The problem</p><h2 class="case-section__title">Too much PM time was trapped in <em>formatting</em>.</h2></div><div class="case-prose ed-philosophy__body"><p>Release notes, Jira tickets, API testing notes, and recurring product operations all require consistency. But consistency should not consume 8-12 hours every week.</p><p>I built a multi-LLM Python toolset that uses OpenAI, Claude, Gemini, Jira APIs, and lightweight workflow apps to automate the repeatable parts while keeping the judgment layer human.</p></div></div></section>
     <section class="case-section" aria-label="Automation tools impact metrics"><div class="case-metrics"><div class="case-metric reveal"><span class="case-metric__value">12h</span><span class="case-metric__label">weekly manual PM work eliminated from recurring operations</span></div><div class="case-metric reveal"><span class="case-metric__value">90%</span><span class="case-metric__label">reduction in manual formatting errors</span></div><div class="case-metric reveal"><span class="case-metric__value">15m</span><span class="case-metric__label">release note creation time, down from roughly four hours</span></div><div class="case-metric reveal"><span class="case-metric__value">3</span><span class="case-metric__label">LLM providers orchestrated across workflows</span></div></div></section>
-    <section class="case-feature"><div class="case-feature__inner"><div class="case-feature__media reveal"><img src="../images/portfolio-automation-tools.png" alt="Abstract converging workflow streams resolving into a clean structured output, symbolizing PM automation across recurring tasks" loading="lazy" decoding="async" /></div><div class="case-feature__content"><p class="case-section__eyebrow reveal">Workflow architecture</p><h2 class="case-feature__title reveal">Agentic workflows for the <em>boring work</em>.</h2><div class="case-feature__text ed-philosophy__body"><p>The suite parses structured and unstructured inputs, calls the right LLM for the job, and produces consistent artifacts: release notes, Jira ticket drafts, API test summaries, and PM operating documents.</p><p>The product instinct behind it is the same one I use at work: automate the parts where consistency matters, keep the human in the loop where judgment matters.</p></div><ul class="case-impact-list reveal"><li>Saved 12+ hours per week across routine PM work.</li><li>Created 100% consistency in recurring documentation formats.</li><li>Reduced release note creation from four hours to fifteen minutes.</li></ul></div></div></section>
+    <section class="case-feature"><div class="case-feature__inner"><div class="case-feature__media reveal"><img src="../images/portfolio-automation-tools.png" alt="Abstract converging workflow streams resolving into a clean structured output, symbolizing PM automation across recurring tasks" loading="lazy" decoding="async" /></div><div class="case-feature__content"><p class="case-section__eyebrow reveal">Workflow architecture</p><h2 class="case-feature__title reveal">Agentic workflows for the <em>boring work</em>.</h2><div class="case-feature__text ed-philosophy__body"><p>The suite parses structured and unstructured inputs, calls the right LLM for the job, and produces consistent artifacts: release notes, Jira ticket drafts, API test summaries, and PM operating documents.</p><p>The product instinct behind it is the same one I use at work: automate the parts where consistency matters, keep the human in the loop where judgment matters.</p></div><ul class="case-impact-list"><li>Saved 12+ hours per week across routine PM work.</li><li>Created 100% consistency in recurring documentation formats.</li><li>Reduced release note creation from four hours to fifteen minutes.</li></ul></div></div></section>
     <section class="case-next"><div class="case-next__inner reveal"><div><p class="ed-eyebrow" style="margin-bottom: var(--ed-s-2);">Next project</p><h2 class="case-feature__title" style="font-size: clamp(2rem, 4vw, 3.75rem);">AI interview prep as a system.</h2></div><div class="ed-hero__cta-row"><a class="ed-btn" href="interview-prep.html">Read interview-prep case study <span class="ed-link__arrow" aria-hidden="true">→</span></a><a class="ed-link" href="../portfolio.html"><span>Back to all portfolio</span><span class="ed-link__arrow" aria-hidden="true">→</span></a></div></div></section>
   </main>
 
@@ -506,8 +506,9 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-  <script src="../assets/js/site.js?v=20260610"></script>
-  <script src="../assets/js/editorial.js?v=20260610"></script>
+  <script src="../assets/js/site.js?v=20260611"></script>
+  <script src="../assets/js/editorial.js?v=20260611"></script>
+  <script src="../assets/js/case.js?v=20260611b"></script>
 </body>
 
 </html>

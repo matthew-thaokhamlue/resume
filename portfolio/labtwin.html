@@ -28,7 +28,7 @@
   <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/labtwin-card.png" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="../assets/css/tailwind.css?v=20260610" />
+  <link rel="stylesheet" href="../assets/css/tailwind.css?v=20260611" />
 
   <!-- Fonts: Fraunces display, Space Grotesk body, Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
 
   <!-- Editorial design layer -->
-  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260610" />
+  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260611" />
 
 
   <style>
@@ -447,7 +447,7 @@
   </style>
 </head>
 
-<body class="ed-page">
+<body class="ed-page" data-motion-pending>
   <!-- Top bar -->
   <header class="ed-topbar">
     <div class="ed-topbar__inner">
@@ -505,7 +505,7 @@
           </p>
         </div>
 
-        <div class="case-hero__facts reveal">
+        <div class="case-hero__facts">
           <div class="case-fact">
             <span class="case-fact__label">Role</span>
             <span class="case-fact__value">Technical Product Manager</span>
@@ -586,7 +586,7 @@
               I coordinated between our engineering team and Revvity’s API team to connect voice commands to their inventory database. Scientists could scan items, check stock levels, and log consumption without touching a keyboard.
             </p>
           </div>
-          <ul class="case-impact-list reveal">
+          <ul class="case-impact-list">
             <li>Scientists could scan and locate items using voice, with real-time location tracking.</li>
             <li>Inventory records stayed accurate because updates happened in the moment, not hours later from memory.</li>
             <li>Experimental data and inventory management merged into one workflow.</li>
@@ -618,7 +618,7 @@
               The biggest lesson was operational. LLMs need guardrails. They need systematic evaluation, not manual spot checks. This project established practices we could reuse for future AI features.
             </p>
           </div>
-          <ul class="case-impact-list reveal">
+          <ul class="case-impact-list">
             <li>False negatives dropped significantly after switching from regex to GPT-3.5.</li>
             <li>Scientists could speak naturally instead of memorizing exact command syntax.</li>
             <li>Established LLM evaluation practices for future AI work.</li>
@@ -708,8 +708,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 
   <!-- Editorial motion -->
-  <script src="../assets/js/site.js?v=20260610"></script>
-  <script src="../assets/js/editorial.js?v=20260610"></script>
+  <script src="../assets/js/site.js?v=20260611"></script>
+  <script src="../assets/js/editorial.js?v=20260611"></script>
+  <script src="../assets/js/case.js?v=20260611b"></script>
 </body>
 
 </html>

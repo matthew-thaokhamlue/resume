@@ -197,6 +197,92 @@ test('experience.html keeps the growth-rings contract', () => {
   assert.match(ringsJs, /prefers-reduced-motion/, 'rings.js lost its reduced-motion gate');
 });
 
+test('experience.html keeps the career-spine contract', () => {
+  const experienceHtml = readText('experience.html');
+
+  // career.js builds the spine + chapter choreography inside this wrap
+  assert.match(experienceHtml, /<div class="ed-career">/, 'Missing .ed-career wrapper');
+  assert.match(experienceHtml, /assets\/js\/career\.js\?v=/, 'Missing career.js script tag');
+
+  // The five role panels live inside the wrap; Skills & Education stays outside
+  const wrapped = experienceHtml.match(/<div class="ed-career">([\s\S]*?)<\/div><!-- \/\.ed-career -->/);
+  assert.ok(wrapped, 'Could not find the ed-career wrap region');
+  for (const id of ['role-sema', 'role-labforward', 'role-labtwin', 'role-thryve', 'role-ey']) {
+    assert.match(wrapped[1], new RegExp(`id="${id}"`), `${id} left the ed-career wrap`);
+  }
+  assert.doesNotMatch(wrapped[1], /id="role-skills"/, 'role-skills must stay outside the wrap');
+
+  const careerJs = readText('assets/js/career.js');
+  assert.match(careerJs, /prefers-reduced-motion/, 'career.js lost its reduced-motion gate');
+});
+
+test('portfolio.html keeps the gallery contract', () => {
+  const portfolioHtml = readText('portfolio.html');
+
+  assert.match(portfolioHtml, /assets\/js\/folio\.js\?v=/, 'Missing folio.js script tag');
+  // Section heads reveal via CSS; folio.js staggers the cards themselves
+  const heads = portfolioHtml.match(/<div class="ed-section__head reveal">/g) ?? [];
+  assert.equal(heads.length, 2, 'Expected both section heads to carry .reveal');
+
+  const folioJs = readText('assets/js/folio.js');
+  assert.match(folioJs, /prefers-reduced-motion/, 'folio.js lost its reduced-motion gate');
+});
+
+test('case-study pages keep the evidence-reel contract', () => {
+  const casePages = fs
+    .readdirSync(path.join(repoRoot, 'portfolio'))
+    .filter((name) => name.endsWith('.html'));
+  assert.ok(casePages.length > 0);
+
+  for (const name of casePages) {
+    const html = readText(path.join('portfolio', name));
+    assert.match(
+      html,
+      /\.\.\/assets\/js\/case\.js\?v=/,
+      `portfolio/${name} is missing the case.js script tag`,
+    );
+  }
+
+  const caseJs = readText('assets/js/case.js');
+  assert.match(caseJs, /prefers-reduced-motion/, 'case.js lost its reduced-motion gate');
+});
+
+test('the motion layer fails visible', () => {
+  // Pages that hide content pre-reveal must declare the pending state...
+  const motionPages = listHtmlFiles().filter((file) => {
+    const name = relative(file);
+    return name !== 'about.html' && name !== 'cv.html';
+  });
+  for (const file of motionPages) {
+    const html = fs.readFileSync(file, 'utf8');
+    assert.match(
+      html,
+      /<body[^>]*\bdata-motion-pending\b[^>]*>/,
+      `${relative(file)} body is missing data-motion-pending`,
+    );
+  }
+
+  // ...site.js must lift it when the GSAP CDN never loaded...
+  const siteJs = readText('assets/js/site.js');
+  assert.match(
+    siteJs,
+    /removeAttribute\('data-motion-pending'\)/,
+    'site.js lost the blocked-CDN fallback',
+  );
+
+  // ...and editorial.css may only hide .reveal behind the scripting gate.
+  const editorialCss = readText('assets/css/editorial.css');
+  assert.match(
+    editorialCss,
+    /@media \(scripting: enabled\) and \(prefers-reduced-motion: no-preference\)/,
+    'editorial.css lost the scripting/motion gate',
+  );
+  assert.match(editorialCss, /\[data-motion-pending\] \.reveal/, 'editorial.css lost the gated reveal state');
+  const baseReveal = editorialCss.match(/\n {2}\.reveal \{([^}]*)\}/);
+  assert.ok(baseReveal, 'Could not find the base .reveal rule');
+  assert.doesNotMatch(baseReveal[1], /opacity:\s*0/, 'base .reveal must not hide content ungated');
+});
+
 test('AI Match prompt template exists for the configured prompt version', () => {
   const aiMatchJs = readText('assets/js/ai-match.js');
   const versionMatch = aiMatchJs.match(/const PROMPT_VERSION = ['"]([^'"]+)['"]/);

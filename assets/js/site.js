@@ -12,6 +12,14 @@
 (function () {
   'use strict';
 
+  /* Fail-visible motion gate: editorial.css hides .reveal content only
+     while <body data-motion-pending> is present. site.js loads after the
+     GSAP CDN tags, so if GSAP never arrived nothing would ever reveal —
+     drop the attribute and the page renders fully visible. */
+  if ((!window.gsap || !window.ScrollTrigger) && document.body) {
+    document.body.removeAttribute('data-motion-pending');
+  }
+
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
   window.gtag = window.gtag || gtag;
