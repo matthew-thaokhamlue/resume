@@ -393,40 +393,38 @@
   <dialog id="ai-match-modal"
     class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
     <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" data-ai-match-overlay>
-      <div class="bg-surface border border-white/10 rounded-2xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative">
-        <button id="ai-match-close" type="button"
-          class="absolute top-4 right-4 text-white/50 hover:text-white transition-colors" aria-label="Close AI picker">
-          <span class="material-symbols-outlined text-3xl">close</span>
+      <div class="ed-ai-modal">
+        <button id="ai-match-close" type="button" class="ed-ai-modal__close" aria-label="Close AI picker">
+          <span class="material-symbols-outlined text-3xl" aria-hidden="true">close</span>
         </button>
-        <div class="flex flex-col gap-5">
-          <div>
-            <h3 class="text-2xl font-bold tracking-tight text-white">Ask Your AI</h3>
-            <p class="text-white/70 mt-2">Paste a job description, then choose your AI for a real role-fit assessment.
-            </p>
-          </div>
-          <div class="flex flex-col gap-2">
-            <label for="ai-match-jd" class="text-sm font-medium text-white">Job Description (Required)</label>
-            <textarea id="ai-match-jd" rows="5"
-              class="w-full rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/45 focus:border-primary/50 focus:ring-primary/20"
-              placeholder="Paste the full job description here..."></textarea>
-            <p
-              class="rounded-lg border border-amber-300/30 bg-amber-500/10 px-3 py-2 text-xs leading-relaxed text-amber-100/90">
-              ChatGPT tip: If an error appears after you paste, your job description is usually fine. Try shortening
-              your job description first, or open ChatGPT in a private/incognito window.
-              <a id="ai-chatgpt-fallback-link" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
-                class="ml-1 text-amber-100 underline hover:text-white">
-                Link doesn&apos;t work? Click here.
-              </a>
-            </p>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button type="button" data-ai-provider="chatgpt"
-              class="h-12 rounded-lg bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white font-medium">ChatGPT</button>
-            <button type="button" data-ai-provider="claude"
-              class="h-12 rounded-lg bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-white/10 text-white font-medium">Claude</button>
-          </div>
-          <p id="ai-match-status" class="text-sm text-white/70 min-h-6"></p>
+        <div class="ed-ai-modal__head">
+          <span class="ed-eyebrow">Evaluate role fit</span>
+          <h3 class="ed-ai-modal__title">Ask your <em>AI</em>.</h3>
+          <p class="ed-ai-modal__lede">Paste a job description, then choose your AI for a real role-fit assessment.</p>
         </div>
+        <div class="ed-ai-modal__field">
+          <label for="ai-match-jd" class="ed-ai-modal__label">Job description <span>Required</span></label>
+          <textarea id="ai-match-jd" rows="6" class="ed-ai-modal__textarea"
+            placeholder="Paste the full job description here..."></textarea>
+          <p class="ed-ai-modal__tip">
+            ChatGPT tip: If an error appears after you paste, your job description is usually fine. Try shortening
+            your job description first, or open ChatGPT in a private/incognito window.
+            <a id="ai-chatgpt-fallback-link" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">
+              Link doesn&apos;t work? Click here.
+            </a>
+          </p>
+        </div>
+        <div class="ed-ai-modal__actions">
+          <button type="button" data-ai-provider="chatgpt" class="ed-btn ed-btn--accent">
+            ChatGPT
+            <span class="ed-link__arrow" aria-hidden="true">↗</span>
+          </button>
+          <button type="button" data-ai-provider="claude" class="ed-btn ed-btn--accent">
+            Claude
+            <span class="ed-link__arrow" aria-hidden="true">↗</span>
+          </button>
+        </div>
+        <p id="ai-match-status" class="ed-ai-modal__status"></p>
       </div>
     </div>
   </dialog>
@@ -443,7 +441,7 @@
   <script type="module" src="assets/js/ai-match.js?v=20260506a"></script>
 
   <!-- Living Workflow hero (canvas graph + intro choreography) -->
-  <script src="assets/js/hero.js?v=20260611a"></script>
+  <script src="assets/js/hero.js?v=20260611c"></script>
 </body>
 
 </html>

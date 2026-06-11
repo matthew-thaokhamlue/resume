@@ -1123,3 +1123,130 @@
       transition: none !important;
     }
   }
+
+/* ── editorial-ai-modal ── */
+  /* "Evaluate role fit" dialog (index.html), restyled to the editorial
+     system. ai-match.js only writes textContent into #ai-match-status,
+     so these classes are free to change. */
+  .ed-ai-modal {
+    position: relative;
+    width: 100%;
+    max-width: 36rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ed-s-4);
+    padding: var(--ed-s-5);
+    background: var(--ed-bg-soft);
+    border: 1px solid var(--ed-hairline-strong);
+    border-radius: 1rem;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+    text-align: left;
+  }
+  .ed-ai-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: var(--ed-ink-mute);
+    transition: color var(--ed-d-fast) var(--ed-ease);
+  }
+  .ed-ai-modal__close:hover {
+    color: var(--ed-ink);
+  }
+  .ed-ai-modal__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ed-s-2);
+    padding-right: 2.5rem;
+  }
+  .ed-ai-modal__title {
+    margin: 0;
+    font-size: var(--ed-fz-3xl);
+    color: var(--ed-ink);
+  }
+  .ed-ai-modal__title em {
+    font-style: italic;
+    color: var(--ed-accent-strong);
+  }
+  .ed-ai-modal__lede {
+    margin: 0;
+    color: var(--ed-ink-soft);
+    font-size: var(--ed-fz-sm);
+    line-height: 1.55;
+  }
+  .ed-ai-modal__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ed-s-2);
+  }
+  .ed-ai-modal__label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: var(--ed-fz-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ed-ink-dim);
+  }
+  .ed-ai-modal__label span {
+    color: var(--ed-accent-strong);
+    letter-spacing: 0.08em;
+  }
+  .ed-ai-modal__textarea {
+    width: 100%;
+    min-height: 8.5rem;
+    resize: vertical;
+    padding: 0.75rem 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--ed-hairline-strong);
+    border-radius: 0.5rem;
+    color: var(--ed-ink);
+    font-family: var(--ed-body);
+    font-size: var(--ed-fz-sm);
+    line-height: 1.55;
+  }
+  .ed-ai-modal__textarea::placeholder {
+    color: var(--ed-ink-mute);
+  }
+  .ed-ai-modal__textarea:focus {
+    outline: none;
+    border-color: var(--ed-accent);
+    box-shadow: 0 0 0 3px var(--ed-accent-mute);
+  }
+  .ed-ai-modal__tip {
+    margin: 0;
+    padding-left: 0.9rem;
+    border-left: 1px solid var(--ed-accent);
+    color: var(--ed-ink-dim);
+    font-size: var(--ed-fz-xs);
+    line-height: 1.6;
+  }
+  .ed-ai-modal__tip a {
+    color: var(--ed-accent-strong);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .ed-ai-modal__tip a:hover {
+    color: var(--ed-ink);
+  }
+  .ed-ai-modal__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--ed-s-2);
+  }
+  @media (min-width: 640px) {
+    .ed-ai-modal__actions { grid-template-columns: 1fr 1fr; }
+  }
+  .ed-ai-modal__actions .ed-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .ed-ai-modal__status {
+    margin: 0;
+    min-height: 1.5rem;
+    color: var(--ed-ink-dim);
+    font-size: var(--ed-fz-sm);
+  }

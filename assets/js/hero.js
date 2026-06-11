@@ -19,7 +19,9 @@
      The four labeled nodes mirror the site's four stages. */
 
   var KEY_SPECS = [
-    { label: 'DISCOVERY',    ux: 0.30, uy: 0.16 },
+    /* DISCOVERY sits right of the eyebrow row (ends ~0.25 viewport width)
+       so its label never overlaps the BUILDER · ... · BERLIN text. */
+    { label: 'DISCOVERY',    ux: 0.46, uy: 0.13 },
     { label: 'ARCHITECTURE', ux: 0.80, uy: 0.22 },
     { label: 'BUILD',        ux: 0.88, uy: 0.55 },
     { label: 'SHIP',         ux: 0.70, uy: 0.88 }
