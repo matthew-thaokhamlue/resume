@@ -174,6 +174,29 @@ test('index.html keeps the living-workflow hero contract', () => {
   assert.match(heroJs, /IntersectionObserver/, 'hero.js lost its offscreen rAF pause');
 });
 
+test('experience.html keeps the growth-rings contract', () => {
+  const experienceHtml = readText('experience.html');
+
+  // rings.js targets svg.ed-rings — one per career panel
+  const taggedSvgs = experienceHtml.match(/<svg[^>]*class="ed-rings /g) ?? [];
+  assert.equal(taggedSvgs.length, 5, 'Expected 5 svg.ed-rings panels');
+  assert.match(experienceHtml, /assets\/js\/rings\.js\?v=/, 'Missing rings.js script tag');
+
+  // Ring counts are accumulated career years (Sema=9, Labforward=8,
+  // LabTwin=7, Thryve=5, EY=2) — preserve when editing the SVGs.
+  for (const years of [9, 8, 7, 5, 2]) {
+    assert.match(
+      experienceHtml,
+      new RegExp(`${years} organic growth rings`),
+      `Missing the ${years}-ring panel`,
+    );
+  }
+
+  // rings.js must keep degrading to the static authored SVGs
+  const ringsJs = readText('assets/js/rings.js');
+  assert.match(ringsJs, /prefers-reduced-motion/, 'rings.js lost its reduced-motion gate');
+});
+
 test('AI Match prompt template exists for the configured prompt version', () => {
   const aiMatchJs = readText('assets/js/ai-match.js');
   const versionMatch = aiMatchJs.match(/const PROMPT_VERSION = ['"]([^'"]+)['"]/);
