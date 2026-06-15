@@ -21,6 +21,13 @@
   var SVG_NS = 'http://www.w3.org/2000/svg';
   var CENTER = '280 280';
 
+  /* Accent ping reads the active theme's accent from the CSS custom
+     property so it matches the light (clay) / dark (cyan) palette. */
+  function accentColor() {
+    var v = getComputedStyle(document.documentElement).getPropertyValue('--ed-accent').trim();
+    return v || '#4fb6dc';
+  }
+
   function initSvg(svg, index) {
     var group = svg.querySelector('g');
     if (!group) return;
@@ -156,7 +163,7 @@
     circle.setAttribute('cy', '280');
     circle.setAttribute('r', String(r));
     circle.setAttribute('fill', 'none');
-    circle.setAttribute('stroke', '#4fb6dc');
+    circle.setAttribute('stroke', accentColor());
     circle.setAttribute('stroke-width', '1');
     circle.setAttribute('opacity', '0.45');
     circle.setAttribute('aria-hidden', 'true');

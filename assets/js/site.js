@@ -77,6 +77,39 @@
     if (modal && modal.open) modal.close();
   }
 
+  /* Theme toggle. theme.js already applied the stored theme to <html>
+     before paint; here we sync the button face, flip + persist on click,
+     and broadcast a 'themechange' event so canvas/SVG painters re-read
+     their colors from the CSS custom properties. Light is the default. */
+  function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  }
+
+  function syncThemeButton() {
+    var dark = currentTheme() === 'dark';
+    var btns = document.querySelectorAll('[data-action="toggle-theme"]');
+    for (var i = 0; i < btns.length; i++) {
+      var icon = btns[i].querySelector('.material-symbols-outlined');
+      // Show the glyph for the theme the click switches TO.
+      if (icon) icon.textContent = dark ? 'light_mode' : 'dark_mode';
+      var label = dark ? 'Switch to light theme' : 'Switch to dark theme';
+      btns[i].setAttribute('aria-label', label);
+      btns[i].setAttribute('title', label);
+      btns[i].setAttribute('aria-pressed', dark ? 'true' : 'false');
+    }
+  }
+
+  function toggleTheme() {
+    var next = currentTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { window.localStorage.setItem('theme', next); } catch (err) { /* storage blocked */ }
+    syncThemeButton();
+    track('theme_toggled', { theme: next });
+    window.dispatchEvent(new Event('themechange'));
+  }
+
+  syncThemeButton();
+
   document.addEventListener('click', function (event) {
     var target = event.target instanceof Element ? event.target : null;
     if (!target) return;
@@ -95,6 +128,7 @@
     if (actionEl) {
       switch (actionEl.getAttribute('data-action')) {
         case 'toggle-menu': toggleMenu(); break;
+        case 'toggle-theme': toggleTheme(); break;
         case 'open-testimonial': openTestimonial(actionEl); break;
         case 'close-testimonial': closeTestimonial(); break;
       }

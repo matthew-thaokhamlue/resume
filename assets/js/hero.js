@@ -48,6 +48,22 @@
     var rafId = null;
     var lastTime = 0;
 
+    /* Canvas paint reads the active theme's colors from the CSS custom
+       properties (rgb triplets) so it flips with the light/dark toggle.
+       site.js fires 'themechange' on toggle; the rAF loop repaints with
+       the refreshed values on the next frame. */
+    function readPalette() {
+      var cs = getComputedStyle(document.documentElement);
+      function v(name, fb) { var x = cs.getPropertyValue(name).trim(); return x || fb; }
+      return {
+        edge:   v('--ed-hero-edge', '255, 255, 255'),
+        node:   v('--ed-hero-node', '139, 150, 158'),
+        accent: v('--ed-accent-rgb', '79, 182, 220')
+      };
+    }
+    var palette = readPalette();
+    window.addEventListener('themechange', function () { palette = readPalette(); });
+
     function sizeCanvas() {
       var rect = hero.getBoundingClientRect();
       width = rect.width;
@@ -265,11 +281,11 @@
         ctx.beginPath();
         ctx.moveTo(e.a.x, e.a.y);
         ctx.quadraticCurveTo(c.x, c.y, e.b.x, e.b.y);
-        ctx.strokeStyle = 'rgba(255, 255, 255, ' + (0.05 + e.glow * 0.05).toFixed(3) + ')';
+        ctx.strokeStyle = 'rgba(' + palette.edge + ', ' + (0.05 + e.glow * 0.05).toFixed(3) + ')';
         ctx.lineWidth = 1;
         ctx.stroke();
         if (e.glow > 0.02) {
-          ctx.strokeStyle = 'rgba(79, 182, 220, ' + (e.glow * 0.22).toFixed(3) + ')';
+          ctx.strokeStyle = 'rgba(' + palette.accent + ', ' + (e.glow * 0.22).toFixed(3) + ')';
           ctx.stroke();
         }
       });
@@ -280,23 +296,23 @@
         var pt = quadPoint(p.edge, c, clamp(p.t, 0, 1));
         ctx.beginPath();
         ctx.arc(pt.x, pt.y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(79, 182, 220, 0.18)';
+        ctx.fillStyle = 'rgba(' + palette.accent + ', 0.18)';
         ctx.fill();
         ctx.beginPath();
         ctx.arc(pt.x, pt.y, 1.6, 0, Math.PI * 2);
-        ctx.fillStyle = '#4fb6dc';
+        ctx.fillStyle = 'rgb(' + palette.accent + ')';
         ctx.fill();
       });
 
       nodes.forEach(function (n) {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(139, 150, 158, ' + (0.55 + n.flash * 0.4).toFixed(3) + ')';
+        ctx.fillStyle = 'rgba(' + palette.node + ', ' + (0.55 + n.flash * 0.4).toFixed(3) + ')';
         ctx.fill();
         if (n.label) {
           ctx.beginPath();
           ctx.arc(n.x, n.y, n.r + 3, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(79, 182, 220, 0.55)';
+          ctx.strokeStyle = 'rgba(' + palette.accent + ', 0.55)';
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -311,7 +327,7 @@
       ctx.font = '600 10px ui-monospace, "SF Mono", Menlo, monospace';
       ctx.letterSpacing = '0.12em';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = 'rgba(139, 150, 158, 0.9)';
+      ctx.fillStyle = 'rgba(' + palette.node + ', 0.9)';
       nodes.forEach(function (n) {
         if (!n.label) return;
         var w = ctx.measureText(n.label).width;

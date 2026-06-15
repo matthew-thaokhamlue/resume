@@ -28,7 +28,7 @@
   <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/labtwin-card.png" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="../assets/css/tailwind.css?v=20260611" />
+  <link rel="stylesheet" href="../assets/css/tailwind.css?v=20260615" />
 
   <!-- Fonts: Fraunces display, Space Grotesk body, Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
 
   <!-- Editorial design layer -->
-  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260611" />
+  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260615" />
 
 
   <style>
@@ -47,9 +47,9 @@
     }
 
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0a1014; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #4fb6dc; }
+    ::-webkit-scrollbar-track { background: var(--ed-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--ed-hairline-strong); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--ed-accent); }
 
     .case-backlink {
       display: inline-flex;
@@ -83,7 +83,7 @@
       width: min(42rem, 62vw);
       aspect-ratio: 1;
       border-radius: 50%;
-      background: radial-gradient(circle at 38% 38%, rgba(108, 199, 233, 0.18), rgba(79, 182, 220, 0.07) 42%, transparent 68%);
+      background: radial-gradient(circle at 38% 38%, rgba(var(--ed-accent-rgb), 0.18), rgba(var(--ed-accent-rgb), 0.07) 42%, transparent 68%);
       filter: blur(12px);
       pointer-events: none;
     }
@@ -291,7 +291,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 35%, rgba(10, 16, 20, 0.42));
+      background: linear-gradient(180deg, transparent 35%, rgba(var(--ed-bg-rgb), 0.42));
       pointer-events: none;
     }
 
@@ -300,9 +300,9 @@
       align-items: stretch;
       justify-content: center;
       background:
-        radial-gradient(circle at 28% 24%, rgba(108, 199, 233, 0.18), transparent 34%),
-        radial-gradient(circle at 78% 76%, rgba(108, 199, 233, 0.10), transparent 38%),
-        linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+        radial-gradient(circle at 28% 24%, rgba(var(--ed-accent-rgb), 0.18), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(var(--ed-accent-rgb), 0.10), transparent 38%),
+        linear-gradient(135deg, rgba(var(--ed-ink-rgb), 0.05), rgba(var(--ed-ink-rgb), 0.01));
     }
 
     .case-feature__media--illustration img {
@@ -445,6 +445,7 @@
       .case-fact:last-child { border-bottom: 0; }
     }
   </style>
+<script src="../assets/js/theme.js?v=20260615"></script>
 </head>
 
 <body class="ed-page" data-motion-pending>
@@ -466,6 +467,9 @@
           Let&rsquo;s talk
         </a>
       </nav>
+      <button class="ed-topbar__theme" data-action="toggle-theme" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false">
+        <span class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
+      </button>
       <button class="ed-topbar__menu" aria-label="Open menu" data-action="toggle-menu">
         <span class="material-symbols-outlined" aria-hidden="true">menu</span>
       </button>
@@ -708,8 +712,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 
   <!-- Editorial motion -->
-  <script src="../assets/js/site.js?v=20260611"></script>
-  <script src="../assets/js/editorial.js?v=20260611"></script>
+  <script src="../assets/js/site.js?v=20260615"></script>
+  <script src="../assets/js/editorial.js?v=20260615"></script>
   <script src="../assets/js/case.js?v=20260611b"></script>
 </body>
 

@@ -89,7 +89,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260611" />
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260615" />
 
   <!-- Fonts: Fraunces (display) + Space Grotesk (body) -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -99,7 +99,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
 
   <!-- Editorial design layer (loaded after Tailwind so @layer takes precedence) -->
-  <link rel="stylesheet" href="assets/css/editorial.css?v=20260611" />
+  <link rel="stylesheet" href="assets/css/editorial.css?v=20260615" />
 
   <style>
     .material-symbols-outlined {
@@ -108,14 +108,15 @@
 
     /* Custom scrollbar — keep editorial palette */
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0a1014; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #4fb6dc; }
+    ::-webkit-scrollbar-track { background: var(--ed-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--ed-hairline-strong); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--ed-accent); }
 
     /* Fix dialog display (kept from prior version for retained modals) */
     dialog:not([open]) { display: none; }
     dialog[open] { display: flex; }
   </style>
+<script src="assets/js/theme.js?v=20260615"></script>
 </head>
 
 <body class="ed-page" data-motion-pending>
@@ -137,6 +138,9 @@
           Let&rsquo;s talk
         </a>
       </nav>
+      <button class="ed-topbar__theme" data-action="toggle-theme" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false">
+        <span class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
+      </button>
       <button class="ed-topbar__menu" aria-label="Open menu" data-action="toggle-menu">
         <span class="material-symbols-outlined" aria-hidden="true">menu</span>
       </button>
@@ -434,14 +438,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 
   <!-- Editorial motion -->
-  <script src="assets/js/site.js?v=20260611"></script>
-  <script src="assets/js/editorial.js?v=20260611"></script>
+  <script src="assets/js/site.js?v=20260615"></script>
+  <script src="assets/js/editorial.js?v=20260615"></script>
 
   <!-- AI Match feature (kept) -->
   <script type="module" src="assets/js/ai-match.js?v=20260506a"></script>
 
   <!-- Living Workflow hero (canvas graph + intro choreography) -->
-  <script src="assets/js/hero.js?v=20260611c"></script>
+  <script src="assets/js/hero.js?v=20260615"></script>
 </body>
 
 </html>
