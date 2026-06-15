@@ -8,21 +8,36 @@
 
 /* ── editorial-tokens ── */
   :root {
-    /* palette — dark editorial */
-    --ed-bg:        #0a1014;
-    --ed-bg-soft:   #0f161b;
-    --ed-surface:   #131c22;
-    --ed-hairline:  rgba(255, 255, 255, 0.06);
-    --ed-hairline-strong: rgba(255, 255, 255, 0.12);
+    /* palette — light (Claude off-white), the default theme.
+       The original dark editorial palette lives in
+       :root[data-theme="dark"] below and is opt-in via the toggle. */
+    --ed-bg:        #f4f2ec;       /* warm ivory paper */
+    --ed-bg-soft:   #faf8f2;       /* raised card surface */
+    --ed-surface:   #efebe1;       /* insets, card hover */
+    --ed-hairline:  rgba(41, 38, 31, 0.10);
+    --ed-hairline-strong: rgba(41, 38, 31, 0.20);
 
-    --ed-ink:       #f3f5f7;       /* near-white primary */
-    --ed-ink-soft:  #c7cfd5;       /* secondary body */
-    --ed-ink-dim:   #8b969e;       /* tertiary captions */
-    --ed-ink-mute:  #5a656d;       /* labels, attribution */
+    --ed-ink:       #29261f;       /* warm near-black primary */
+    --ed-ink-soft:  #4a4640;       /* secondary body */
+    --ed-ink-dim:   #6e695f;       /* tertiary captions */
+    --ed-ink-mute:  #908a7e;       /* labels, attribution */
 
-    --ed-accent:        #4fb6dc;   /* desaturated cyan, editorial */
-    --ed-accent-strong: #6cc7e9;
-    --ed-accent-mute:   rgba(79, 182, 220, 0.16);
+    --ed-accent:        #c45a38;   /* Claude clay, decorative accent */
+    --ed-accent-strong: #a8431f;   /* deep terracotta, body-size accent text */
+    --ed-accent-mute:   rgba(196, 90, 56, 0.14);
+
+    /* themed surfaces (referenced where colors were once hardcoded) */
+    --ed-topbar-bg: rgba(244, 242, 236, 0.80);
+    --ed-menu-bg:   rgba(244, 242, 236, 0.97);
+    --ed-field-bg:  rgba(41, 38, 31, 0.04);
+    --ed-shadow:    0 24px 80px rgba(41, 30, 20, 0.18);
+
+    /* rgb triplets for rgba() composed in JS / inline gradients */
+    --ed-accent-rgb: 196, 90, 56;
+    --ed-bg-rgb:     244, 242, 236;
+    --ed-ink-rgb:    41, 38, 31;
+    --ed-hero-edge:  41, 38, 31;
+    --ed-hero-node:  110, 105, 95;
 
     /* type — display + body pairing */
     --ed-display: "Fraunces", "Iowan Old Style", "Source Serif Pro", Georgia, serif;
@@ -62,6 +77,36 @@
     --ed-content-max: 76rem;       /* matches existing max-w-7xl */
     --ed-prose-max:   38rem;       /* readable measure for body */
     --ed-gutter-x:    clamp(1rem, 4vw, 2.25rem);
+  }
+
+  /* Dark editorial — the site's original palette, opt-in via the
+     theme toggle (theme.js sets data-theme on <html> before paint). */
+  :root[data-theme="dark"] {
+    --ed-bg:        #0a1014;
+    --ed-bg-soft:   #0f161b;
+    --ed-surface:   #131c22;
+    --ed-hairline:  rgba(255, 255, 255, 0.06);
+    --ed-hairline-strong: rgba(255, 255, 255, 0.12);
+
+    --ed-ink:       #f3f5f7;
+    --ed-ink-soft:  #c7cfd5;
+    --ed-ink-dim:   #8b969e;
+    --ed-ink-mute:  #5a656d;
+
+    --ed-accent:        #4fb6dc;
+    --ed-accent-strong: #6cc7e9;
+    --ed-accent-mute:   rgba(79, 182, 220, 0.16);
+
+    --ed-topbar-bg: rgba(10, 16, 20, 0.78);
+    --ed-menu-bg:   rgba(10, 16, 20, 0.95);
+    --ed-field-bg:  rgba(255, 255, 255, 0.03);
+    --ed-shadow:    0 24px 80px rgba(0, 0, 0, 0.55);
+
+    --ed-accent-rgb: 79, 182, 220;
+    --ed-bg-rgb:     10, 16, 20;
+    --ed-ink-rgb:    243, 245, 247;
+    --ed-hero-edge:  255, 255, 255;
+    --ed-hero-node:  139, 150, 158;
   }
 
 /* ── editorial-base ── */
@@ -569,7 +614,7 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(10, 16, 20, 0.78);
+    background: var(--ed-topbar-bg);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--ed-hairline);
@@ -580,7 +625,7 @@
     padding: 1rem var(--ed-gutter-x);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: var(--ed-s-4);
   }
   .ed-topbar__brand {
@@ -608,6 +653,7 @@
     display: none;
     align-items: center;
     gap: var(--ed-s-5);
+    margin-inline-start: auto;     /* push the right cluster to the edge */
   }
   @media (min-width: 768px) {
     .ed-topbar__nav { display: flex; }
@@ -633,6 +679,28 @@
   @media (min-width: 768px) {
     .ed-topbar__menu { display: none; }
   }
+
+  /* Theme toggle — visible on every viewport. On mobile (nav hidden)
+     its auto margin pushes the control cluster to the right edge; on
+     desktop the nav's auto margin wins, so this just trails the links. */
+  .ed-topbar__theme {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem; height: 2.25rem;
+    margin-inline-start: auto;
+    border-radius: 999px;
+    border: 1px solid var(--ed-hairline-strong);
+    color: var(--ed-ink-soft);
+    background: transparent;
+    cursor: pointer;
+    transition: color var(--ed-d-fast) var(--ed-ease-soft),
+                border-color var(--ed-d-fast) var(--ed-ease-soft);
+  }
+  .ed-topbar__theme:hover {
+    color: var(--ed-ink);
+    border-color: var(--ed-ink-soft);
+  }
+  .ed-topbar__theme .material-symbols-outlined { font-size: 1.25rem; }
 
 /* ── editorial-motion ── */
   /* Reusable reveal hook — JS adds .is-in when ScrollTrigger fires.
@@ -1139,7 +1207,7 @@
     background: var(--ed-bg-soft);
     border: 1px solid var(--ed-hairline-strong);
     border-radius: 1rem;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+    box-shadow: var(--ed-shadow);
     text-align: left;
   }
   .ed-ai-modal__close {
@@ -1200,7 +1268,7 @@
     min-height: 8.5rem;
     resize: vertical;
     padding: 0.75rem 0.9rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--ed-field-bg);
     border: 1px solid var(--ed-hairline-strong);
     border-radius: 0.5rem;
     color: var(--ed-ink);
@@ -1250,3 +1318,44 @@
     color: var(--ed-ink-dim);
     font-size: var(--ed-fz-sm);
   }
+
+/* ── editorial-theme-bridges ── */
+  /* The few surfaces that predate the token system still carried
+     dark-only Tailwind utilities / SVG presentation attributes.
+     These rules route them through --ed-* so they flip with the theme.
+     (CSS properties beat SVG presentation attributes regardless of
+     specificity, and an ID/structural selector beats utility classes.) */
+
+  /* Mobile slide-in menu (Tailwind bg-background-dark/95 + text-white) */
+  #mobile-menu {
+    background-color: var(--ed-menu-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  #mobile-menu a,
+  #mobile-menu button { color: var(--ed-ink); }
+
+  /* experience.html chapter dividers (was border-white/5) */
+  .ed-divider { border-top: 1px solid var(--ed-hairline); }
+
+  /* experience.html tree-ring SVGs — authored with white paint */
+  .ed-rings [stroke="white"] { stroke: var(--ed-ink-soft); }
+  .ed-rings [fill="white"] { fill: var(--ed-ink-soft); }
+
+  /* index.html testimonial modal (still Tailwind primary/surface utilities) */
+  #testimonial-modal [data-testimonial-overlay] > div {
+    background: var(--ed-bg-soft);
+    border-color: var(--ed-hairline-strong);
+    box-shadow: var(--ed-shadow);
+  }
+  #modal-name { color: var(--ed-ink); }
+  #modal-text { color: var(--ed-ink-soft); }
+  #modal-role { color: var(--ed-accent-strong); }
+  #modal-image { border-color: var(--ed-accent-mute); }
+  #modal-initials {
+    background: var(--ed-accent-mute);
+    color: var(--ed-accent-strong);
+  }
+  #testimonial-modal [data-action="close-testimonial"] { color: var(--ed-ink-mute); }
+  #testimonial-modal [data-action="close-testimonial"]:hover { color: var(--ed-ink); }
+  #testimonial-modal .text-primary\/20 { color: var(--ed-accent); opacity: 0.28; }

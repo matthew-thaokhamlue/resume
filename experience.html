@@ -31,8 +31,8 @@
     <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260611" />
-    <link rel="stylesheet" href="assets/css/editorial.css?v=20260611" />
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260615" />
+    <link rel="stylesheet" href="assets/css/editorial.css?v=20260615" />
 
     <!-- Fonts: Fraunces (display) + Space Grotesk (body) -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -51,16 +51,16 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a1014;
+            background: var(--ed-bg);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--ed-hairline-strong);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #4fb6dc;
+            background: var(--ed-accent);
         }
 
         .experience-role-title {
@@ -154,7 +154,7 @@
 
         .card-hover:hover {
             transform: translateY(-4px);
-            background-color: rgba(255, 255, 255, 0.08);
+            background-color: var(--ed-hairline-strong);
         }
 
         /* Reveal directional variants (additive to .reveal in editorial.css).
@@ -176,9 +176,10 @@
             transition-duration: 1100ms;
         }
     </style>
+<script src="assets/js/theme.js?v=20260615"></script>
 </head>
 
-<body class="ed-page font-display bg-background-dark text-white antialiased selection:bg-primary selection:text-white" data-motion-pending>
+<body class="ed-page" data-motion-pending>
     <div class="relative flex min-h-screen w-full flex-col">
 
         <!-- TopNavBar -->
@@ -199,6 +200,9 @@
                         Let&rsquo;s talk
                     </a>
                 </nav>
+                <button class="ed-topbar__theme" data-action="toggle-theme" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false">
+                  <span class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
+                </button>
                 <button class="ed-topbar__menu" aria-label="Open menu" data-action="toggle-menu">
                     <span class="material-symbols-outlined" aria-hidden="true">menu</span>
                 </button>
@@ -253,7 +257,7 @@
             <div class="ed-career">
 
             <!-- ── Panel 1: Sema Technologies (9 rings accumulated) ── -->
-            <section class="w-full py-20 md:py-28 border-t border-white/5" id="role-sema">
+            <section class="w-full py-20 md:py-28 ed-divider" id="role-sema">
                 <!-- Split layout — nav-aligned container -->
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-14">
                     <!-- Left: 9 rings = current accumulated chapter -->
@@ -335,7 +339,7 @@
             </section>
 
             <!-- ── Panel 2: Labforward (8 rings accumulated) ── -->
-            <section class="w-full py-20 md:py-28 border-t border-white/5" id="role-labforward">
+            <section class="w-full py-20 md:py-28 ed-divider" id="role-labforward">
                 <!-- Split layout — alternated: content left, SVG right on desktop -->
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-14">
                     <!-- SVG: 8 rings — sits right on md+, first on mobile -->
@@ -396,7 +400,7 @@
             </section>
 
             <!-- ── Panel 3: LabTwin (7 rings accumulated) ── -->
-            <section class="w-full py-20 md:py-28 border-t border-white/5" id="role-labtwin">
+            <section class="w-full py-20 md:py-28 ed-divider" id="role-labtwin">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-14">
                     <div class="flex items-center justify-center md:pr-6 reveal reveal-left">
                         <svg viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg"
@@ -453,7 +457,7 @@
             </section>
 
             <!-- ── Panel 4: Thryve (5 rings accumulated) ── -->
-            <section class="w-full py-20 md:py-28 border-t border-white/5" id="role-thryve">
+            <section class="w-full py-20 md:py-28 ed-divider" id="role-thryve">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-14">
                     <div class="flex items-center justify-center md:order-2 md:pl-6 reveal reveal-right">
                         <svg viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg"
@@ -507,7 +511,7 @@
             </section>
 
             <!-- ── Panel 5: Ernst & Young (2 rings — start of career) ── -->
-            <section class="w-full py-20 md:py-28 border-t border-white/5" id="role-ey">
+            <section class="w-full py-20 md:py-28 ed-divider" id="role-ey">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-14">
                     <div class="flex items-center justify-center md:pr-6 reveal reveal-left">
                         <svg viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg"
@@ -556,7 +560,7 @@
             </div><!-- /.ed-career -->
 
             <!-- ── Panel 6: Skills & Education (editorial ledger) ── -->
-            <section class="w-full py-20 md:py-28 border-t border-white/5" id="role-skills">
+            <section class="w-full py-20 md:py-28 ed-divider" id="role-skills">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="ed-howitworks__heading">
                         <div style="grid-column: 1 / -1;">
@@ -638,9 +642,9 @@
     <!-- GSAP scroll-driven motion (mirrors index.html) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-    <script src="assets/js/site.js?v=20260611"></script>
-    <script src="assets/js/editorial.js?v=20260611"></script>
-    <script src="assets/js/rings.js?v=20260611a"></script>
+    <script src="assets/js/site.js?v=20260615"></script>
+    <script src="assets/js/editorial.js?v=20260615"></script>
+    <script src="assets/js/rings.js?v=20260615"></script>
     <script src="assets/js/career.js?v=20260611b"></script>
 </body>
 
