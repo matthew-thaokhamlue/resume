@@ -1,12 +1,12 @@
 # Matthew Thaokhamlue - Senior AI Product Manager
 
-> Matthew Thaokhamlue is a Senior AI Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
+> Matthew Thaokhamlue is a Senior AI Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership, and owns daily AI cost governance for a live LLM platform, cutting spend while protecting the product experience.
 
 ## Key Information
 
 - **Current Role**: Senior AI Product Manager at Sema Technologies Inc. (Mar 2026 - Present)
 - **Location**: Berlin, Germany
-- **Specializations**: AI/ML Product Management, B2B SaaS, Health Analytics, Laboratory Informatics, Voice AI, API/SDK Platforms
+- **Specializations**: AI/ML Product Management, AI Cost Governance / FinOps, B2B SaaS, Health Analytics, Laboratory Informatics, Voice AI, API/SDK Platforms
 - **Languages**: English (IELTS 7.5), German (B1), Thai (Native)
 - **Education**: Master of International and Development Economics (HTW Berlin, DAAD Scholar), Bachelor's in Economics (Chiang Mai University)
 
