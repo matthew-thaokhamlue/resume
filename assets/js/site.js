@@ -1,12 +1,15 @@
 /*
  * Site-wide behavior shared by every content page:
- *   1. Google Analytics bootstrap (moved out of inline <head> scripts so the
- *      Content-Security-Policy can drop 'unsafe-inline' for scripts).
+ *   1. Cookie-consent banner + consent-gated Google Analytics: gtag.js is
+ *      injected only after an explicit "Accept" (GDPR opt-in). The choice
+ *      ('accepted' | 'dismissed') lives in localStorage; the footer
+ *      "Cookie preferences" control clears it to re-open the banner.
  *   2. Delegated GA event tracking via [data-ga-event] / [data-ga-params].
  *   3. Mobile menu + testimonial modal glue (formerly inline onclick handlers).
  *
  * DOM contract (verified by tests/site-contract.test.mjs):
- *   [data-action="toggle-menu" | "open-testimonial" | "close-testimonial"]
+ *   [data-action="toggle-menu" | "open-testimonial" | "close-testimonial"
+ *     | "cookie-accept" | "cookie-dismiss" | "cookie-preferences"]
  *   [data-testimonial-overlay] closes the modal on backdrop clicks.
  */
 (function () {
@@ -20,11 +23,93 @@
     document.body.removeAttribute('data-motion-pending');
   }
 
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  window.gtag = window.gtag || gtag;
-  window.gtag('js', new Date());
-  window.gtag('config', 'G-D11HKMWFB4');
+  /* window.gtag stays undefined until the visitor accepts, so every track()
+     call here (and the identical guard in ai-match.js) is a no-op before
+     consent — nothing is queued and later flushed to GA. Withdrawing consent
+     only blocks future loads; an already-loaded gtag persists until the next
+     page load. */
+  var CONSENT_KEY = 'resume_cookie_consent';
+  var CONSENT_EVENT = 'resume_cookie_consent_change';
+  var GA_ID = 'G-D11HKMWFB4';
+  var gaLoaded = false;
+
+  function readConsent() {
+    try { return window.localStorage.getItem(CONSENT_KEY); } catch (err) { return null; }
+  }
+
+  function writeConsent(value) {
+    try {
+      if (value) window.localStorage.setItem(CONSENT_KEY, value);
+      else window.localStorage.removeItem(CONSENT_KEY);
+    } catch (err) { /* storage blocked: treated as no choice, banner re-shows */ }
+    window.dispatchEvent(new Event(CONSENT_EVENT));
+  }
+
+  function loadAnalytics() {
+    if (gaLoaded || readConsent() !== 'accepted') return;
+    gaLoaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_ID);
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(script);
+  }
+
+  function renderConsentBanner() {
+    var banner = document.getElementById('cookie-consent-banner');
+    if (readConsent()) {
+      if (banner) banner.remove();
+      return;
+    }
+    if (banner) return;
+
+    banner = document.createElement('div');
+    banner.id = 'cookie-consent-banner';
+    banner.className = 'cookie-consent';
+    banner.setAttribute('role', 'region');
+    banner.setAttribute('aria-label', 'Cookie consent');
+
+    var text = document.createElement('p');
+    text.className = 'cookie-consent__text';
+    text.textContent = 'This site only sets Google Analytics cookies if you accept. ' +
+      'Your choice is saved in this browser and can be changed anytime via ' +
+      '“Cookie preferences” in the footer.';
+
+    var actions = document.createElement('div');
+    actions.className = 'cookie-consent__actions';
+
+    var accept = document.createElement('button');
+    accept.type = 'button';
+    accept.className = 'cookie-consent__btn cookie-consent__btn--accept';
+    accept.setAttribute('data-action', 'cookie-accept');
+    accept.textContent = 'Accept';
+
+    var dismiss = document.createElement('button');
+    dismiss.type = 'button';
+    dismiss.className = 'cookie-consent__btn';
+    dismiss.setAttribute('data-action', 'cookie-dismiss');
+    dismiss.textContent = 'Dismiss';
+
+    actions.appendChild(accept);
+    actions.appendChild(dismiss);
+    banner.appendChild(text);
+    banner.appendChild(actions);
+    document.body.appendChild(banner);
+  }
+
+  function onConsentChange() {
+    renderConsentBanner();
+    loadAnalytics();
+  }
+
+  window.addEventListener(CONSENT_EVENT, onConsentChange);
+  window.addEventListener('storage', function (event) {
+    if (!event.key || event.key === CONSENT_KEY) onConsentChange();
+  });
+  onConsentChange();
 
   function track(eventName, params) {
     if (typeof window.gtag === 'function' && eventName) {
@@ -131,6 +216,9 @@
         case 'toggle-theme': toggleTheme(); break;
         case 'open-testimonial': openTestimonial(actionEl); break;
         case 'close-testimonial': closeTestimonial(); break;
+        case 'cookie-accept': writeConsent('accepted'); break;
+        case 'cookie-dismiss': writeConsent('dismissed'); break;
+        case 'cookie-preferences': writeConsent(null); break;
       }
       return;
     }
