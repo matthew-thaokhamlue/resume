@@ -84,8 +84,23 @@ test('content pages carry the required head metadata', () => {
   assert.deepEqual(failures, []);
 });
 
-test('content pages carry the GA tag', () => {
-  const missing = contentPages().filter((page) => !readText(page).includes('G-D11HKMWFB4'));
+test('GA is consent-gated: no static gtag.js loader, site.js gates on accepted', () => {
+  const offenders = contentPages().filter((page) =>
+    readText(page).includes('googletagmanager.com/gtag/js'),
+  );
+  assert.deepEqual(offenders, [], 'pages must not load gtag.js unconditionally');
+
+  const siteJs = readText('assets/js/site.js');
+  assert.ok(siteJs.includes('G-D11HKMWFB4'), 'site.js lost the GA measurement ID');
+  assert.ok(siteJs.includes("'resume_cookie_consent'"), 'site.js lost the consent storage key');
+  assert.ok(siteJs.includes("'resume_cookie_consent_change'"), 'site.js lost the consent change event');
+  assert.ok(siteJs.includes("readConsent() !== 'accepted'"), 'site.js no longer gates gtag.js on accepted consent');
+});
+
+test('every content page offers the footer cookie-preferences control', () => {
+  const missing = contentPages().filter(
+    (page) => !readText(page).includes('data-action="cookie-preferences"'),
+  );
   assert.deepEqual(missing, []);
 });
 

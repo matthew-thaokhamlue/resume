@@ -1359,3 +1359,61 @@
   #testimonial-modal [data-action="close-testimonial"] { color: var(--ed-ink-mute); }
   #testimonial-modal [data-action="close-testimonial"]:hover { color: var(--ed-ink); }
   #testimonial-modal .text-primary\/20 { color: var(--ed-accent); opacity: 0.28; }
+
+  /* ────────────────  COOKIE CONSENT  ──────────────── */
+  /* Banner DOM is built by site.js (CSP forbids inline scripts). Sits below
+     the mobile menu overlay (z-100) so an open menu still covers it. */
+  .cookie-consent {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 90;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ed-s-3) var(--ed-s-4);
+    padding: var(--ed-s-3) var(--ed-gutter-x);
+    background: var(--ed-bg-soft);
+    border-top: 1px solid var(--ed-hairline-strong);
+    color: var(--ed-ink-soft);
+    font-size: var(--ed-fz-sm);
+  }
+  .cookie-consent__text {
+    max-width: 42rem;
+    line-height: 1.5;
+  }
+  .cookie-consent__actions {
+    display: flex;
+    gap: var(--ed-s-2);
+    flex-shrink: 0;
+  }
+  .cookie-consent__btn {
+    padding: var(--ed-s-1) var(--ed-s-3);
+    border: 1px solid var(--ed-hairline-strong);
+    border-radius: 9999px;
+    color: var(--ed-ink-soft);
+    font-size: var(--ed-fz-sm);
+  }
+  .cookie-consent__btn:hover {
+    color: var(--ed-ink);
+    border-color: var(--ed-ink-mute);
+  }
+  .cookie-consent__btn--accept {
+    background: var(--ed-accent);
+    border-color: var(--ed-accent);
+    color: var(--ed-bg);
+  }
+  .cookie-consent__btn--accept:hover {
+    background: var(--ed-accent-strong);
+    border-color: var(--ed-accent-strong);
+    color: var(--ed-bg);
+  }
+  .ed-foot__consent {
+    margin-top: 0.25rem;
+    color: var(--ed-ink-mute);
+    font-size: var(--ed-fz-xs);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .ed-foot__consent:hover { color: var(--ed-ink); }
