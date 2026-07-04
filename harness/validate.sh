@@ -22,7 +22,7 @@ reject_phrase() {
   fi
 }
 
-# Content pages that must carry GA tracking.
+# Content pages served with consent-gated GA tracking.
 # Excludes about.html (redirect to index) and cv.html (generated export file).
 CONTENT_PAGES=(
   index.html experience.html certificates.html portfolio.html
@@ -31,14 +31,20 @@ CONTENT_PAGES=(
   portfolio/mcp-server.html portfolio/thryve.html
 )
 
+# GA is GDPR opt-in: no page may load gtag.js statically, and every page must
+# offer the footer control that re-opens the consent banner.
 for page in "${CONTENT_PAGES[@]}"; do
-  require_phrase "$page" "G-D11HKMWFB4"
+  reject_phrase "$page" "googletagmanager.com/gtag/js"
+  require_phrase "$page" 'data-action="cookie-preferences"'
 done
 
-# GA lives in site.js (delegated [data-ga-event] tracking): the gtag guard and
-# config must stay there, and pages must load it. Brand positioning stays on index.
+# GA lives in site.js (consent gate + delegated [data-ga-event] tracking): the
+# gtag guard, config, and consent gating must stay there, and pages must load
+# it. Brand positioning stays on index.
 require_phrase assets/js/site.js "typeof window.gtag === 'function'"
 require_phrase assets/js/site.js "G-D11HKMWFB4"
+require_phrase assets/js/site.js "resume_cookie_consent"
+require_phrase assets/js/site.js "readConsent() !== 'accepted'"
 for page in "${CONTENT_PAGES[@]}"; do
   require_phrase "$page" "assets/js/site.js"
 done
