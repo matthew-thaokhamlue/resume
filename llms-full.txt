@@ -84,6 +84,7 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 - Stakeholder Management
 - Automation (Python/n8n)
 - AI Implementation
+- AI Opportunity Discovery & ROI Advisory
 - Rapid Prototyping
 - Cross-functional Team Leadership
 - Data-driven Decision Making
