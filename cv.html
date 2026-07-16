@@ -81,6 +81,22 @@
     margin: 10px 0 1px;
   }
 
+  /* Sub-role heading inside a grouped company block (e.g. LabTwin under Labforward) */
+  .doc h4 {
+    font-family: var(--sans);
+    font-size: 10.6pt;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 9px 0 1px;
+  }
+  .doc h4 em {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 0.9em;
+    font-style: italic;
+    color: var(--muted);
+  }
+
   .doc p { margin: 0 0 8px; }
   .doc p em { color: var(--muted); font-style: italic; }
 
@@ -108,6 +124,7 @@
     .doc h1 { font-size: 18pt; }
     .doc h2 { font-size: 10.4pt; break-after: avoid; page-break-after: avoid; }
     .doc h3 { font-size: 11.4pt; break-after: avoid; page-break-after: avoid; }
+    .doc h4 { font-size: 10.6pt; break-after: avoid; page-break-after: avoid; }
     .doc ul, .doc li { break-inside: avoid; page-break-inside: avoid; }
     .doc p { orphans: 3; widows: 3; }
     a { color: var(--accent); }
@@ -150,18 +167,20 @@
 <li>Built the platform layer that makes Liz enterprise-sellable: org-wide document grounding for AI answers, role-based access with audit trail, per-role insight assignment without duplicating compute, customer-facing AI cost guardrails, and Microsoft Teams ingestion, the readiness gates for tiered, usage-based pricing</li>
 </ul>
 
-<h3 class="cv-page-break-before">Senior Product Manager · Labforward GmbH</h3>
-<p><em>Nov 2024, Nov 2025 · Berlin, Germany</em><br><em>Electronic lab notebook and lab-operations software that helps R&amp;D scientists record, standardize, and run experiments.</em></p>
-<p>Led delivery of the core products following the LabTwin acquisition, with direct ownership of customer-critical accounts and AI workspace expansion.</p>
+<h3 class="cv-page-break-before">Labforward GmbH <em style="font-weight:normal;font-size:0.85em;">(incl. LabTwin, acquired)</em></h3>
+<p><em>Jan 2023, Nov 2025 · Berlin, Germany</em></p>
+<p>One continuous chapter across two lab-software products and the acquisition that joined them: joined LabTwin's voice-AI lab assistant as Technical PM, then owned Labforward's core lab-operations products through and after the acquisition, with roadmap ownership, delivery, and customer-critical accounts throughout.</p>
+
+<h4>Senior Product Manager · Labforward <em>Nov 2024 – Nov 2025</em></h4>
+<p><em>Electronic lab notebook and lab-operations software that helps R&amp;D scientists record, standardize, and run experiments.</em></p>
 <ul>
 <li>Rebuilt team collaboration and customer engagement loops, directly contributing to a $500K enterprise contract renewal, coordinating Product, Engineering, and customer teams for the at-risk account</li>
 <li>Introduced rapid prototyping cycles, reducing validation time from days to hours and accelerating customer feedback into the roadmap</li>
 <li>Owned BI automation of internal reporting and data pipelines; the automated reports replaced ad-hoc requests and became a daily leadership decision input</li>
 </ul>
 
-<h3>Technical Product Manager · LabTwin GmbH <em style="font-weight:normal;font-size:0.85em;">(acquired by Labforward)</em></h3>
-<p><em>Jan 2023, Nov 2024 · Berlin, Germany</em><br><em>The world's first voice-powered AI lab assistant, letting scientists capture data and pull up information hands-free at the bench.</em></p>
-<p>Owned the voice-agent and integration roadmap, driving the AI from demo surface into daily production workflow across global pharmaceutical and biotech customers.</p>
+<h4>Technical Product Manager · LabTwin <em>Jan 2023 – Nov 2024</em></h4>
+<p><em>The world's first voice-powered AI lab assistant, letting scientists capture data and pull up information hands-free at the bench.</em></p>
 <ul>
 <li>Spearheaded migrating the product's intent recognition to GPT-3.5, shipping LLM-powered understanding into a production voice pipeline for pharma and biotech customers in 2023</li>
 <li>Tripled deployment frequency from 4 to 12 production releases per year by streamlining release coordination with engineering</li>

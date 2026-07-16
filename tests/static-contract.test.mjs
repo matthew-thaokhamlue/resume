@@ -131,8 +131,12 @@ test('experience.html frames Sema around Liz observability story beats', () => {
   assert.match(experienceHtml, /Sema(?:'|&rsquo;)s AI-native observability platform/);
   assert.match(experienceHtml, /Jira, GitHub, Slack, Zoom, Linear, and document/);
 
+  // Scope to the Sema section — other panels (e.g. the Labforward group)
+  // now reuse the .sema-story vocabulary for their own sub-role beats.
+  const semaSection = experienceHtml.match(/id="role-sema"[\s\S]*?<\/section>/);
+  assert.ok(semaSection, 'role-sema section not found');
   const storyBeatLabels = [
-    ...experienceHtml.matchAll(/<span class="sema-story__label">([^<]+)<\/span>/g),
+    ...semaSection[0].matchAll(/<span class="sema-story__label">([^<]+)<\/span>/g),
   ].map((match) => match[1]);
   assert.deepEqual(storyBeatLabels, ['Ingest', 'Clarify', 'Close the loop']);
 });
@@ -140,8 +144,7 @@ test('experience.html frames Sema around Liz observability story beats', () => {
 test('experience.html frames earlier roles as the career spine behind Liz', () => {
   const experienceHtml = readText('experience.html');
   const expectedStoryPhrases = [
-    'Turned lab operations and GenAI ambiguity into shipped product direction',
-    'Moved AI from demo surface to daily lab workflow',
+    'One continuous chapter across two lab-software products and the merger that joined them',
     'Built the integration muscle underneath health-data products at scale',
     'Learned where organizations fracture first: risk, process, controls, and change',
   ];
@@ -179,12 +182,13 @@ test('experience.html keeps the growth-rings contract', () => {
 
   // rings.js targets svg.ed-rings — one per career panel
   const taggedSvgs = experienceHtml.match(/<svg[^>]*class="ed-rings /g) ?? [];
-  assert.equal(taggedSvgs.length, 5, 'Expected 5 svg.ed-rings panels');
+  assert.equal(taggedSvgs.length, 4, 'Expected 4 svg.ed-rings panels');
   assert.match(experienceHtml, /assets\/js\/rings\.js\?v=/, 'Missing rings.js script tag');
 
-  // Ring counts are accumulated career years (Sema=9, Labforward=8,
-  // LabTwin=7, Thryve=5, EY=2) — preserve when editing the SVGs.
-  for (const years of [9, 8, 7, 5, 2]) {
+  // Ring counts are accumulated career years (Sema=9, Labforward group=8,
+  // Thryve=5, EY=2) — preserve when editing the SVGs. LabTwin (was 7) is
+  // folded into the Labforward group panel, so there is no 7-ring panel.
+  for (const years of [9, 8, 5, 2]) {
     assert.match(
       experienceHtml,
       new RegExp(`${years} organic growth rings`),
@@ -204,7 +208,9 @@ test('experience.html keeps the career-spine contract', () => {
   assert.match(experienceHtml, /<div class="ed-career">/, 'Missing .ed-career wrapper');
   assert.match(experienceHtml, /assets\/js\/career\.js\?v=/, 'Missing career.js script tag');
 
-  // The five role panels live inside the wrap; Skills & Education stays outside
+  // Four role panels live inside the wrap (LabTwin is folded into the
+  // Labforward group panel as an inner #role-labtwin anchor); Skills &
+  // Education stays outside. All five role anchors still resolve here.
   const wrapped = experienceHtml.match(/<div class="ed-career">([\s\S]*?)<\/div><!-- \/\.ed-career -->/);
   assert.ok(wrapped, 'Could not find the ed-career wrap region');
   for (const id of ['role-sema', 'role-labforward', 'role-labtwin', 'role-thryve', 'role-ey']) {
