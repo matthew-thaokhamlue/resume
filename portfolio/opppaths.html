@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Opportunity Paths - Matthew Thaokhamlue</title>
+  <meta name="description" content="Opportunity Paths case study by Matthew Thaokhamlue: an AI-powered scholarship platform, built solo through a personal AI agent workflow and live at opppaths.com." />
+  <meta name="author" content="Matthew Thaokhamlue" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://matthew-thaokhamlue.github.io/resume/portfolio/opppaths.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Opportunity Paths - Matthew Thaokhamlue" />
+  <meta property="og:description" content="An AI-powered scholarship platform that matches students to funding and helps them build winning applications." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://matthew-thaokhamlue.github.io/resume/portfolio/opppaths.html" />
+  <meta property="og:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Opportunity Paths - Matthew Thaokhamlue" />
+  <meta name="twitter:description" content="An AI-powered scholarship platform that matches students to funding and helps them build winning applications." />
+  <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
+
+  <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
+  <link rel="stylesheet" href="../assets/css/tailwind.css?v=20260704" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
+  <link rel="stylesheet" href="../assets/css/editorial.css?v=20260704" />
+
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--ed-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--ed-hairline-strong); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--ed-accent); }
+
+    .case-backlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--ed-ink-dim);
+      font-size: var(--ed-fz-sm);
+      text-decoration: none;
+      margin-bottom: var(--ed-s-4);
+      transition: color var(--ed-d-fast) var(--ed-ease-soft), transform var(--ed-d-fast) var(--ed-ease-soft);
+    }
+
+    .case-backlink:hover {
+      color: var(--ed-accent-strong);
+      transform: translateX(-2px);
+    }
+
+    .case-hero {
+      position: relative;
+      min-height: 100svh;
+      padding-block: clamp(6rem, 14vh, 10rem) var(--ed-s-7);
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .case-hero::before {
+      content: "";
+      position: absolute;
+      inset: 12% -10% auto auto;
+      width: min(42rem, 62vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, rgba(var(--ed-accent-rgb), 0.18), rgba(var(--ed-accent-rgb), 0.07) 42%, transparent 68%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .case-hero__inner {
+      position: relative;
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: var(--ed-s-6);
+      width: 100%;
+    }
+
+    .case-hero__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-mute);
+    }
+
+    .case-hero__meta::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-hero__display {
+      font-family: var(--ed-display);
+      font-size: clamp(4rem, 11vw, 8.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+      font-weight: 320;
+      color: var(--ed-ink);
+      margin: 0;
+      will-change: font-variation-settings, letter-spacing, transform;
+    }
+
+    .case-hero__display em,
+    .case-section__title em,
+    .case-quote em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      color: var(--ed-accent-strong);
+      letter-spacing: -0.045em;
+    }
+
+    .case-hero__support {
+      max-width: 42rem;
+      color: var(--ed-ink-soft);
+      font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+      line-height: 1.55;
+      margin-top: var(--ed-s-4);
+    }
+
+    .case-hero__facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--ed-hairline);
+      border-bottom: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact {
+      padding: var(--ed-s-4) var(--ed-s-4) var(--ed-s-4) 0;
+      border-right: 1px solid var(--ed-hairline);
+    }
+
+    .case-fact:last-child { border-right: 0; }
+    .case-fact__label {
+      display: block;
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-2);
+    }
+
+    .case-fact__value {
+      color: var(--ed-ink);
+      font-size: var(--ed-fz-base);
+      line-height: 1.35;
+    }
+
+    .case-section {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-section__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+      gap: clamp(3rem, 8vw, 7rem);
+      align-items: start;
+    }
+
+    .case-section__eyebrow {
+      color: var(--ed-ink-mute);
+      font-size: var(--ed-fz-xs);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: var(--ed-s-3);
+    }
+
+    .case-section__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      font-weight: 340;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-prose {
+      display: grid;
+      gap: var(--ed-s-4);
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+    }
+
+    .case-prose p { margin: 0; }
+
+    .case-prose strong {
+      color: var(--ed-ink);
+      font-weight: 600;
+    }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      gap: 1px;
+      background: var(--ed-hairline);
+    }
+
+    .case-metric {
+      background: var(--ed-bg);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      min-height: 12rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    .case-metric__value {
+      font-family: var(--ed-display);
+      font-size: clamp(2.75rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+    }
+
+    .case-metric__label {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-sm);
+      line-height: 1.5;
+    }
+
+    .case-feature {
+      padding-block: clamp(5rem, 12vw, 9rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-feature__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: center;
+    }
+
+    .case-feature__media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      border: 1px solid var(--ed-hairline);
+      background: var(--ed-surface);
+      min-height: clamp(18rem, 42vw, 31rem);
+    }
+
+    .case-feature__media img {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.88) contrast(1.02);
+      opacity: 0.92;
+      transform: scale(1.015);
+    }
+
+    .case-feature__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(var(--ed-bg-rgb), 0.42));
+      pointer-events: none;
+    }
+
+    .case-feature__media--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(var(--ed-accent-rgb), 0.16), transparent 36%),
+        linear-gradient(135deg, rgba(var(--ed-ink-rgb), 0.04), rgba(var(--ed-ink-rgb), 0.01));
+    }
+
+    .case-feature__media--icon .material-symbols-outlined {
+      font-size: clamp(5rem, 14vw, 11rem);
+      color: rgba(var(--ed-accent-rgb), 0.58);
+      filter: drop-shadow(0 24px 80px rgba(var(--ed-accent-rgb), 0.16));
+    }
+
+
+    .case-feature__content {
+      display: grid;
+      gap: var(--ed-s-4);
+    }
+
+    .case-feature__title {
+      font-family: var(--ed-display);
+      font-size: clamp(2.4rem, 4.7vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin: 0;
+      color: var(--ed-ink);
+    }
+
+    .case-feature__title em {
+      font-style: italic;
+      color: var(--ed-accent-strong);
+      font-variation-settings: "opsz" 144, "SOFT" 90, "WONK" 1;
+    }
+
+    .case-feature__text {
+      color: var(--ed-ink-soft);
+      font-size: var(--ed-fz-lg);
+      line-height: 1.65;
+      display: grid;
+      gap: var(--ed-s-3);
+    }
+
+    .case-impact-list {
+      list-style: none;
+      display: grid;
+      gap: var(--ed-s-3);
+      padding: 0;
+      margin: var(--ed-s-3) 0 0;
+    }
+
+    .case-impact-list li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--ed-s-3);
+      color: var(--ed-ink-soft);
+      line-height: 1.55;
+    }
+
+    .case-impact-list li::before {
+      content: "→";
+      color: var(--ed-accent-strong);
+      margin-top: 0.05em;
+    }
+
+    .case-quote {
+      padding-block: clamp(5rem, 12vw, 10rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-quote__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+    }
+
+    .case-quote blockquote {
+      max-width: 56rem;
+      font-family: var(--ed-display);
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      color: var(--ed-ink);
+      margin: 0;
+    }
+
+    .case-quote cite {
+      display: block;
+      margin-top: var(--ed-s-5);
+      color: var(--ed-ink-mute);
+      font-style: normal;
+      font-size: var(--ed-fz-sm);
+    }
+
+    .case-next {
+      padding-block: clamp(4rem, 10vw, 7rem);
+      border-top: 1px solid var(--ed-hairline);
+    }
+
+    .case-next__inner {
+      max-width: var(--ed-content-max);
+      margin-inline: auto;
+      padding-inline: var(--ed-gutter-x);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ed-s-4);
+    }
+
+    @media (max-width: 900px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .case-fact:nth-child(2) { border-right: 0; }
+      .case-fact:nth-child(-n+2) { border-bottom: 1px solid var(--ed-hairline); }
+
+      .case-section__inner,
+      .case-feature__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .case-feature__media { order: -1; }
+    }
+
+    @media (max-width: 640px) {
+      .case-hero__facts,
+      .case-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .case-fact,
+      .case-fact:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--ed-hairline);
+      }
+
+      .case-fact:last-child { border-bottom: 0; }
+    }
+  </style>
+<script src="../assets/js/theme.js?v=20260615"></script>
+</head>
+
+<body class="ed-page" data-motion-pending>
+  <header class="ed-topbar">
+    <div class="ed-topbar__inner">
+      <a class="ed-topbar__brand" href="../index.html"><span class="ed-topbar__brand-mark">M</span><span>Matthew Thaokhamlue</span></a>
+      <nav class="ed-topbar__nav" aria-label="Primary">
+        <a class="ed-topbar__link" href="../index.html">Home</a>
+        <a class="ed-topbar__link" href="../experience.html">Experience</a>
+        <a class="ed-topbar__link" href="../portfolio.html" aria-current="page">Portfolio</a>
+        <a class="ed-topbar__link" href="../certificates.html">Certifications</a>
+        <a class="ed-btn ed-btn--accent" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer" data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"linkedin","link_type":"cta_button","location":"nav_bar","page":"opppaths"}'>Let&rsquo;s talk</a>
+      </nav>
+      <button class="ed-topbar__theme" data-action="toggle-theme" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false">
+        <span class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
+      </button>
+      <button class="ed-topbar__menu" aria-label="Open menu" data-action="toggle-menu"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+    </div>
+  </header>
+
+  <div id="mobile-menu" class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+    <a class="text-2xl font-medium text-white" href="../index.html" data-action="toggle-menu">Home</a>
+    <a class="text-2xl font-medium text-white" href="../experience.html" data-action="toggle-menu">Experience</a>
+    <a class="text-2xl font-medium text-white" href="../portfolio.html" data-action="toggle-menu">Portfolio</a>
+    <a class="text-2xl font-medium text-white" href="../certificates.html" data-action="toggle-menu">Certifications</a>
+    <button class="absolute top-6 right-6 p-2 text-white hover:opacity-80" data-action="toggle-menu" aria-label="Close menu"><span class="material-symbols-outlined text-3xl">close</span></button>
+  </div>
+
+  <main>
+    <section class="case-hero ed-hero" id="top">
+      <div class="case-hero__inner">
+        <div>
+          <a class="case-backlink" href="../portfolio.html"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span><span>Back to portfolio</span></a>
+          <div class="case-hero__meta"><span class="ed-eyebrow">Personal project · Founder &amp; builder</span></div>
+        </div>
+        <div>
+          <h1 class="case-hero__display ed-hero__display">A scholarship opened my door. This one is for <em>everyone</em>.</h1>
+          <p class="case-hero__support">Opportunity Paths matches students to scholarships and helps them build the applications to win them: profile matching, gap analysis, document drafting, and interview preparation, localized in English and Thai. Live at opppaths.com.</p>
+        </div>
+        <div class="case-hero__facts"><div class="case-fact">
+            <span class="case-fact__label">Type</span>
+            <span class="case-fact__value">AI scholarship platform</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Role</span>
+            <span class="case-fact__value">Founder &amp; sole human builder</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Timeline</span>
+            <span class="case-fact__value">Jan 2026 &ndash; present</span>
+          </div>
+          <div class="case-fact">
+            <span class="case-fact__label">Status</span>
+            <span class="case-fact__value">Live, early-access waitlist</span>
+          </div></div>
+      </div>
+    </section>
+
+    <section class="case-section"><div class="case-section__inner"><div class="reveal"><p class="case-section__eyebrow">Why this exists</p><h2 class="case-section__title">Scholarships change lives. Finding them shouldn&rsquo;t take <em>luck</em>.</h2></div><div class="case-prose ed-philosophy__body"><p>In 2018 a DAAD scholarship changed the direction of my life: it took me from Bangkok to Berlin and into the career I have now. Winning it meant navigating scattered listings, opaque requirements, and application advice that mostly costs money students don&rsquo;t have.</p><p><strong>Opportunity Paths makes that path affordable.</strong> It matches a student&rsquo;s profile to scholarships, shows the gaps between where they are and what a scholarship asks for, drafts the application documents with them, and rehearses the interview, in English and Thai.</p></div></div></section>
+    <section class="case-section" aria-label="Opportunity Paths build metrics"><div class="case-metrics"><div class="case-metric reveal"><span class="case-metric__value">1</span><span class="case-metric__label">human in the loop; an AI agent workflow of my own design does the drafting</span></div><div class="case-metric reveal"><span class="case-metric__value">396</span><span class="case-metric__label">commits shipped in the first six months of building</span></div><div class="case-metric reveal"><span class="case-metric__value">2</span><span class="case-metric__label">languages localized end to end, English and Thai</span></div><div class="case-metric reveal"><span class="case-metric__value">4</span><span class="case-metric__label">core capabilities: matching, gap analysis, document drafting, interview prep</span></div></div></section>
+    <section class="case-feature"><div class="case-feature__inner"><div class="case-feature__media reveal"><img src="../images/portfolio-opppaths.svg" alt="Abstract map of scattered opportunities aligning into a lit path toward a doorway of light" loading="lazy" decoding="async" /></div><div class="case-feature__content"><p class="case-section__eyebrow reveal">How it was built</p><h2 class="case-feature__title reveal">One human, a team of <em>agents</em>.</h2><div class="case-feature__text ed-philosophy__body"><p>I built Opportunity Paths as the sole human owner, working through a personal multi-agent AI workflow I designed: agents draft, I review and decide. The same operating system I use to run my PM job built a production web product alongside it.</p><p>The platform is live with an early-access waitlist, shipped from first commit to production configuration in six months of nights and weekends.</p></div><ul class="case-impact-list"><li>Shipped roughly 396 commits in six months as the sole human owner.</li><li>Localized in English and Thai, aimed first at students in the Mekong region.</li><li>Live at opppaths.com with an early-access waitlist.</li></ul><div class="ed-hero__cta-row" style="margin-top: var(--ed-s-4);"><a class="ed-btn ed-btn--accent" href="https://opppaths.com/" target="_blank" rel="noopener noreferrer" data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"opppaths","link_type":"cta_button","location":"case_feature","page":"opppaths"}'>Visit opppaths.com <span class="ed-link__arrow" aria-hidden="true">→</span></a></div></div></div></section>
+    <section class="case-next"><div class="case-next__inner reveal"><div><p class="ed-eyebrow" style="margin-bottom: var(--ed-s-2);">Next project</p><h2 class="case-feature__title" style="font-size: clamp(2rem, 4vw, 3.75rem);">Project docs, generated by agents.</h2></div><div class="ed-hero__cta-row"><a class="ed-btn" href="mcp-server.html">Read MCP server case study <span class="ed-link__arrow" aria-hidden="true">→</span></a><a class="ed-link" href="../portfolio.html"><span>Back to all portfolio</span><span class="ed-link__arrow" aria-hidden="true">→</span></a></div></div></section>
+  </main>
+
+  <footer class="ed-foot">
+    <div class="ed-foot__inner">
+      <div><p>&copy; 2026 Matthew Thaokhamlue.</p><p style="color: var(--ed-ink-mute); font-size: var(--ed-fz-xs); margin-top: 0.25rem;">Builder · AI Workflow Architect · Berlin, Germany</p><button type="button" class="ed-foot__consent" data-action="cookie-preferences">Cookie preferences</button></div>
+      <div class="ed-foot__icons">
+        <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer" data-ga-event="social_profile_link_clicked" data-ga-params='{"platform":"linkedin","page":"opppaths","link_position":"footer"}' aria-label="LinkedIn"><i class="fab fa-linkedin text-2xl"></i></a>
+        <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer" data-ga-event="social_profile_link_clicked" data-ga-params='{"platform":"github","page":"opppaths","link_position":"footer"}' aria-label="GitHub"><i class="fab fa-github text-2xl"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
+  <script src="../assets/js/site.js?v=20260704"></script>
+  <script src="../assets/js/editorial.js?v=20260704"></script>
+  <script src="../assets/js/case.js?v=20260611b"></script>
+</body>
+
+</html>

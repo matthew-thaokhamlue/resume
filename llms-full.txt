@@ -14,7 +14,7 @@
 
 ## Professional Summary
 
-Senior Product Manager with 7+ years of experience building and scaling B2B SaaS products at the intersection of AI, health analytics, and laboratory informatics. Proven track record of taking products from 0 to 1M+ users, driving revenue growth from €0 to €1M ARR, and leading cross-functional teams across engineering, design, data, and customer success. Deep technical fluency across cloud architectures (AWS, Azure), AI/ML systems, API platforms, and voice AI. Known for bridging technical complexity with human-centered design, rapid prototyping, and data-driven decision making. Now also governs daily AI/LLM cost for a production platform, turning runaway model spend into a managed, ROI-positive line item.
+Senior Product Manager with 7+ years of experience building and scaling B2B SaaS products at the intersection of AI, health analytics, and laboratory informatics. Proven track record of taking products from 0 to 1M+ users, driving revenue growth from €0 to €1M ARR, and leading cross-functional teams across engineering, design, data, and customer success. Deep technical fluency across cloud architectures (AWS, Azure), AI/ML systems, API platforms, and voice AI. Known for bridging technical complexity with human-centered design, rapid prototyping, and data-driven decision making. Now also governs daily AI/LLM cost for a production platform, turning runaway model spend into a managed, ROI-positive line item. Runs his own PM practice through a personal multi-agent AI operating system he built: agents that work like colleagues across web, Slack, and Teams, with human review on everything that ships.
 
 ## Work Experience
 
@@ -43,7 +43,8 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 
 - Drove roadmap for voice and integration features supporting scientists in real lab environments.
 - Led the effort to streamline release processes with engineering, tripling deployment frequency (4 → 12 per year).
-- Spearheaded retraining strategies for speech recognition, keeping scientific term accuracy at 95%.
+- Spearheaded migrating the product's intent recognition to GPT-3.5, shipping LLM-powered understanding into a production voice pipeline for pharma and biotech customers in 2023.
+- Co-led speech recognition retraining on customer-specific glossaries and real voice data, reaching 95% scientific-term accuracy for key customers, and designed the retraining cadence to cut its cost.
 - Mentored a junior PM, encouraging autonomy and strong product intuition.
 - Key skills: Voice AI, Release Management, Speech Recognition, ML Retraining
 
@@ -53,7 +54,7 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 - Owned and scaled APIs and SDKs powering 1M+ users across 100+ B2B partners in digital health.
 - Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and more).
 - Contributed to company growth from €0 → €1M ARR and from 7 → 35 people.
-- Founded "Thryve Academy," a learning program that onboarded and aligned new hires in record time.
+- Founded and led the Customer Success function alongside Product, and built "Thryve Academy," a self-recorded video library plus dual-audience release notes that onboarded every team as the company scaled.
 - Key skills: API/SDK, Wearable Integrations, B2B Partnerships, Digital Health
 
 ### Senior Risk Consultant — Ernst & Young
@@ -63,6 +64,15 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 - Developed risk management frameworks and control testing procedures for digital transformation initiatives.
 - Led market research on emerging technologies (RPA) and competitive risk practices.
 - Key skills: Risk Management, Process Improvement, Digital Transformation
+
+## Personal Projects
+
+### Opportunity Paths (opppaths.com) — Founder & Builder
+**Jan 2026 - Present**
+
+- AI-powered scholarship platform that matches students to funding and helps them build winning applications: profile-to-scholarship matching, gap analysis, document drafting, and interview preparation, localized in English and Thai.
+- Built as the sole human owner through a personal multi-agent AI workflow of his own design; roughly 396 commits in the first six months, live in production configuration with an early-access waitlist.
+- Inspired by the DAAD scholarship that changed his own path in 2018; aimed first at students in the Mekong region.
 
 ## Education
 

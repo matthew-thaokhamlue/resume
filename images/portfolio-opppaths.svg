@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Abstract map of scattered opportunities aligning into a lit path toward a doorway">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e1013"/>
+      <stop offset="1" stop-color="#171b21"/>
+    </linearGradient>
+    <linearGradient id="door2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2e2c4" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#c8a86a" stop-opacity="0.5"/>
+    </linearGradient>
+    <radialGradient id="glow2" cx="0.78" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="#e8d3a8" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#e8d3a8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg2)"/>
+  <rect width="1200" height="900" fill="url(#glow2)"/>
+  <!-- scattered opportunity nodes, left field -->
+  <g fill="#ffffff">
+    <circle cx="120" cy="180" r="2.2" opacity="0.30"/>
+    <circle cx="240" cy="320" r="1.8" opacity="0.24"/>
+    <circle cx="150" cy="520" r="2.0" opacity="0.26"/>
+    <circle cx="320" cy="640" r="1.6" opacity="0.20"/>
+    <circle cx="90" cy="720" r="1.4" opacity="0.18"/>
+    <circle cx="380" cy="200" r="1.6" opacity="0.22"/>
+    <circle cx="430" cy="460" r="2.2" opacity="0.30"/>
+  </g>
+  <!-- threads connecting nodes into the path -->
+  <g fill="none" stroke="#ffffff" stroke-linecap="round">
+    <path d="M 120 180 C 300 260, 480 330, 700 380" stroke-width="0.9" opacity="0.16"/>
+    <path d="M 240 320 C 420 360, 560 380, 720 395" stroke-width="0.9" opacity="0.18"/>
+    <path d="M 150 520 C 360 480, 560 440, 730 410" stroke-width="0.9" opacity="0.18"/>
+    <path d="M 320 640 C 500 560, 620 480, 740 425" stroke-width="0.9" opacity="0.16"/>
+    <path d="M 90 720 C 340 640, 580 520, 745 435" stroke-width="0.9" opacity="0.14"/>
+  </g>
+  <!-- the lit path -->
+  <path d="M -40 860 C 320 760, 620 560, 860 405" fill="none" stroke="#e8d3a8" stroke-width="1.8" opacity="0.42" stroke-linecap="round"/>
+  <path d="M 60 900 C 400 780, 660 590, 866 420" fill="none" stroke="#e8d3a8" stroke-width="1.0" opacity="0.22" stroke-linecap="round"/>
+  <!-- doorway -->
+  <rect x="856" y="300" width="86" height="180" rx="4" fill="url(#door2)"/>
+  <rect x="845" y="289" width="108" height="202" rx="6" fill="none" stroke="#e8d3a8" stroke-opacity="0.28" stroke-width="1.2"/>
+  <line x1="620" y1="480" x2="845" y2="480" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1"/>
+  <line x1="953" y1="480" x2="1140" y2="480" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1"/>
+</svg>
