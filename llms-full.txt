@@ -23,10 +23,10 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 
 - Own the integration strategy behind Liz's sensory system, giving Sema's AI-native observability platform the reliable work signals it needs to reason across Product, Engineering, and CS.
 - Took ownership of the platform's daily LLM cost: built re-run cadence controls (daily, weekly, quarterly) and moved the six most expensive AI insights to weekly, cutting daily AI spend ~39% (~$3,250/month) with no loss of coverage; disabled 71 dormant subscriptions across four orgs and caught a duplicate-run billing bug, reporting results directly to the CEO.
-- As Product Owner across two squads (Integrations, then App Experience), authored 168 tickets and 34 epics and shipped 78; shipped Slack v2 (bi-directional Liz chat), Email v1 (CC/forward ingestion), Confluence read+write, Jira write-back, and Linear alignment scoring to production.
+- As Product Owner across two squads (Integrations, then App Experience), authored 168 tickets and 34 epics and shipped 78. Turned Liz from read-only analytics into a colleague that acts inside the org's own tools: bi-directional Slack chat, email ingestion, Confluence read+write, governed Jira write-back (draft-then-confirm, bulk operations), and full Linear parity, all shipped to production.
 - Designed the integration layer across Jira, GitHub, Slack, Zoom, Linear, and document sources into the observability stack feeding Chat, Preset Insights, and action workflows, with 5 enterprise rollouts in the first 60 days.
 - Built automated product practices for AI-first development (release notes, ticket cleanup, recurring PM operations), turning SOC 2 documentation from an enterprise deal blocker into trusted organizational signal Liz can reason on.
-- On App Experience, drove chat-first UX, platform connectors, product tiers, and multi-tenant Product Groups scoping, designing for a mobile-first executive persona.
+- On App Experience, built the platform layer that makes Liz enterprise-sellable: org-wide document grounding for AI answers, role-based access with audit trail, per-role insight assignment without duplicating compute, customer-facing AI cost guardrails, and Microsoft Teams ingestion, the readiness gates for tiered, usage-based pricing.
 - Key skills: AI Product Strategy, AI Cost Governance, LLM Cost Optimization, Integration Strategy, Organizational Observability
 
 ### Senior Product Manager — Labforward GmbH
