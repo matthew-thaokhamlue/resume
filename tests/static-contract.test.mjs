@@ -126,7 +126,7 @@ test('experience.html frames Sema around Liz observability story beats', () => {
 
   assert.match(
     experienceHtml,
-    /Owned the integration strategy behind Liz(?:'|&rsquo;)s sensory system/,
+    /Designed Liz(?:'|&rsquo;)s sensory system/,
   );
   assert.match(experienceHtml, /Sema(?:'|&rsquo;)s AI-native observability platform/);
   assert.match(experienceHtml, /Jira, GitHub, Slack, Zoom, Linear, and document/);
