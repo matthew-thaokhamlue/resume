@@ -152,6 +152,7 @@
       border-right: 1px solid var(--ed-hairline);
     }
 
+    .case-fact:not(:first-child) { padding-left: var(--ed-s-4); }
     .case-fact:last-child { border-right: 0; }
     .case-fact__label {
       display: block;
@@ -419,6 +420,7 @@
 
       .case-fact:nth-child(2) { border-right: 0; }
       .case-fact:nth-child(-n+2) { border-bottom: 1px solid var(--ed-hairline); }
+      .case-fact:nth-child(odd) { padding-left: 0; }
 
       .case-section__inner,
       .case-feature__inner {
@@ -438,9 +440,11 @@
       .case-fact:nth-child(2) {
         border-right: 0;
         border-bottom: 1px solid var(--ed-hairline);
+        padding-left: 0;
       }
 
       .case-fact:last-child { border-bottom: 0; }
+      .case-hero__facts .case-fact { padding-left: 0; }
     }
   </style>
 <script src="../assets/js/theme.js?v=20260615"></script>
