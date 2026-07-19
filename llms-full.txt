@@ -40,6 +40,7 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 
 ### Technical Product Manager — LabTwin GmbH
 **Jan 2023 - Nov 2024 | Berlin, Germany**
+LabTwin was acquired by Labforward; Matthew's product ownership continued through the acquisition into his Labforward role above.
 
 - Drove roadmap for voice and integration features supporting scientists in real lab environments.
 - Led the effort to streamline release processes with engineering, tripling deployment frequency (4 → 12 per year).
@@ -160,7 +161,7 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 
 ## About
 
-Matthew's background spans economics, technology, and product management. He started with a degree in Economics from Chiang Mai University in Thailand, then received a DAAD scholarship to study International and Development Economics at HTW Berlin. His career journey took him from risk consulting at Ernst & Young in Bangkok to building digital health products at Thryve (employee #7), leading voice AI products at LabTwin, and managing lab management platforms at Labforward.
+Matthew's background spans economics, technology, and product management. He started with a degree in Economics from Chiang Mai University in Thailand, then received a DAAD scholarship to study International and Development Economics at HTW Berlin. His career journey took him from risk consulting at Ernst & Young in Bangkok to building digital health products at Thryve (employee #7), leading voice AI products at LabTwin, and continuing product ownership after LabTwin was acquired by Labforward, where he managed lab management platforms.
 
 He is known for bridging technical complexity with human needs, having helped scale products from a few thousand users to over 1 million, and growing companies from €0 to €1M ARR. His approach focuses on user-centric design, rapid iteration, and data-informed decision making.
 
