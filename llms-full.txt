@@ -22,13 +22,13 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 **Mar 2026 - Present | Dresden & Berlin, Germany**
 
 - Own the integration strategy behind Liz's sensory system, giving Sema's AI-native observability platform the reliable work signals it needs to reason across Product, Engineering, and CS.
-- Took ownership of the platform's daily LLM cost: built re-run cadence controls (daily, weekly, quarterly) and moved the six most expensive AI insights to weekly, cutting daily AI spend ~39% (~$3,250/month) with no loss of coverage; retired dormant subscriptions across multiple customer orgs and caught a duplicate-run billing bug, reporting results directly to the CEO.
-- As Product Owner across two squads (Integrations, then App Experience), owned the delivery backlog end to end. Turned Liz from read-only analytics into a colleague that acts inside the org's own tools: bi-directional Slack chat, email ingestion, Confluence read+write, governed Jira write-back (draft-then-confirm, bulk operations), and full Linear parity, all shipped to production.
+- Took ownership of the platform's daily LLM cost: built auto-scaling driven by per-user tracking events, cutting inefficient daily AI spend ~39% (~$3,250/month) with no loss of coverage; retired dormant subscriptions across multiple customer orgs and caught a duplicate-run billing bug, reporting results directly to the CEO.
+- As product manager across two squads (Integrations, then Chat Experience, including the chat tools), owned the delivery backlog end to end. Turned Liz from read-only analytics into a colleague that acts inside the org's own tools: bi-directional Slack chat, email ingestion, Confluence read+write, governed Jira write-back with policy enforcement and a human check on every write-back, and full Linear parity, all shipped to production.
 - Designed the integration layer across Jira, GitHub, Slack, Zoom, Linear, and document sources into the observability stack feeding Chat, Preset Insights, and action workflows.
 - Removed a recurring enterprise deal blocker: proposed the SOC 2-compliant release-note process in the first weeks after joining, drove the compliance requirement to a decision, and built it out alongside ticket cleanup and recurring PM operations as automated, AI-first product practices.
 - Protected engineering capacity by validating feasibility against real system behaviour before engineering effort was committed: an in-flight spike was stopped once measurement showed the ceiling was architectural, and an enterprise integration request was answered the same day using an already-shipped capability.
 - Gave leadership and stakeholders a weekly basis for go/hold decisions on engineering delivery, used to hold production changes for review and escalate customer-blocking issues; AI-automated the executive delivery report from narrative status into measured, ticket-traceable delivery, and widened its coverage from a single squad to engineering-wide.
-- On App Experience, built the platform layer that makes Liz enterprise-sellable: org-wide document grounding for AI answers, role-based access with audit trail, per-role insight assignment without duplicating compute, customer-facing AI cost guardrails, and Microsoft Teams ingestion, the readiness gates for tiered, usage-based pricing.
+- On Chat Experience, built the platform layer that makes Liz enterprise-sellable: org-wide document grounding for AI answers, role-based access with audit trail, per-role insight assignment without duplicating compute, customer-facing AI cost guardrails, and Microsoft Teams ingestion, the readiness gates for tiered, usage-based pricing.
 - Key skills: AI Product Strategy, AI Cost Governance, LLM Cost Optimization, Integration Strategy, Organizational Observability
 
 ### Senior Product Manager — Labforward GmbH
@@ -47,7 +47,7 @@ LabTwin was acquired by Labforward; Matthew's product ownership continued throug
 - Drove roadmap for voice and integration features supporting scientists in real lab environments.
 - Led the effort to streamline release processes with engineering, tripling deployment frequency (4 → 12 per year).
 - Spearheaded migrating the product's intent recognition to GPT-3.5, shipping LLM-powered understanding into a production voice pipeline for pharma and biotech customers in 2023.
-- Co-led speech recognition retraining on customer-specific glossaries and real voice data, reaching 95% scientific-term accuracy for key customers, and designed the retraining cadence to cut its cost.
+- Co-led speech recognition retraining on customer-specific glossaries and real voice data, reaching 95% scientific-term accuracy for key customers with Azure custom speech training, and designed the training strategy to cut its cost.
 - Mentored a junior PM, encouraging autonomy and strong product intuition.
 - Key skills: Voice AI, Release Management, Speech Recognition, ML Retraining
 
@@ -75,6 +75,8 @@ LabTwin was acquired by Labforward; Matthew's product ownership continued throug
 
 - AI-powered scholarship platform that matches students to funding and helps them build winning applications: profile-to-scholarship matching, gap analysis, document drafting, and interview preparation, localized in English and Thai.
 - Built as the sole human owner through a personal multi-agent AI workflow of his own design; roughly 396 commits in the first six months, live in production configuration with an early-access waitlist.
+- Built the eval harness that gates every model change: each candidate does the same jobs as production, an AI judge compares the six riskiest, and each candidate's own price is counted. It chose the model now shipping - 24 comparisons, no losses, 11.3x cheaper, faster on every job.
+- Built a second eval for the step that reads scholarship pages, which was inventing dates. Twelve hand-checked pages showed a bigger model was no better - both invented a date 17% of the time - so a two-sentence prompt fix, not a costlier model, took it to zero. Those checks now guard the live data.
 - Inspired by the DAAD scholarship that changed his own path in 2018; aimed first at students in the Mekong region.
 
 ## Education

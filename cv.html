@@ -116,14 +116,14 @@
   @media print {
     html, body { background: #fff; }
     body {
-      font-size: 9.7pt;
+      font-size: 9.2pt;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
     .sheet { max-width: none; margin: 0; padding: 0; box-shadow: none; }
-    .doc h1 { font-size: 18pt; }
-    .doc h2 { font-size: 10.4pt; break-after: avoid; page-break-after: avoid; }
-    .doc h3 { font-size: 11.4pt; break-after: avoid; page-break-after: avoid; }
+    .doc h1 { font-size: 17.5pt; }
+    .doc h2 { font-size: 9.9pt; break-after: avoid; page-break-after: avoid; }
+    .doc h3 { font-size: 10.9pt; break-after: avoid; page-break-after: avoid; }
     .doc h4 { font-size: 10.6pt; break-after: avoid; page-break-after: avoid; }
     .doc ul, .doc li { break-inside: avoid; page-break-inside: avoid; }
     .doc p { orphans: 3; widows: 3; }
@@ -140,9 +140,14 @@
 <p><a href="mailto:matthew.thaokhamlue@gmail.com">matthew.thaokhamlue@gmail.com</a> &nbsp;·&nbsp; Dresden &amp; Berlin, Germany &nbsp;·&nbsp; <a href="https://matthew-thaokhamlue.github.io/resume" rel="nofollow">matthew-thaokhamlue.github.io/resume</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/matthewthaokhamlue" rel="nofollow">LinkedIn</a> &nbsp;·&nbsp; <a href="https://github.com/matthew-thaokhamlue">GitHub</a></p>
 <hr>
 
-<h2>Highlights</h2>
+<h2>Profile</h2>
+<p>Product practitioner with 6+ years owning AI and integration-heavy B2B SaaS from scoping to production. I pair technical depth (AI/ML, APIs, data flows) with consulting-grade stakeholder work: mapping business workflows, surfacing high-value AI opportunities, and shipping deployed solutions with proven ROI, now including daily AI cost governance for a live LLM platform. I run my own PM practice through a personal multi-agent AI operating system I built: agents that work like colleagues across web, Slack, and Teams, with human review on everything that ships.</p>
+<hr>
+
+<h2>Career Highlights</h2>
 <ul>
-<li><strong>Governs AI cost:</strong> cut daily AI spend ~39% (~$3,250/month) while preserving customer coverage (Sema)</li>
+<li><strong>The right model for each job, proven by measurement:</strong> built an eval harness that scores every AI operation separately &mdash; drafting, extraction, analysis &mdash; instead of judging a model on overall feel, then used it to choose the model now running in production (OppPaths)</li>
+<li><strong>Governs AI cost:</strong> cut inefficient daily AI spend ~39% (~$3,250/month) while preserving customer coverage (Sema)</li>
 <li><strong>Ships AI to production:</strong> Slack, Email, Confluence, Jira, and Microsoft Teams integrations shipped into a live enterprise AI agent platform (Sema)</li>
 <li><strong>Builds integration platforms:</strong> primary technical interface for partner integrations, behind APIs and SDKs serving 1M+ users across 100+ B2B partners (Thryve)</li>
 <li><strong>Protects revenue through delivery:</strong> contributed to a $500K enterprise contract renewal by rebuilding customer engagement loops (Labforward)</li>
@@ -150,20 +155,17 @@
 </ul>
 <hr>
 
-<h2>Profile</h2>
-<p>Product practitioner with 6+ years owning AI and integration-heavy B2B SaaS from scoping to production. I pair technical depth (AI/ML, APIs, data flows) with consulting-grade stakeholder work: mapping business workflows, surfacing high-value AI opportunities, and shipping deployed solutions with proven ROI, now including daily AI cost governance for a live LLM platform. I run my own PM practice through a personal multi-agent AI operating system I built: agents that work like colleagues across web, Slack, and Teams, with human review on everything that ships.</p>
-<hr>
-
 <h2>Experience</h2>
 
 <h3>Senior AI Product Manager · Sema Technologies Inc.</h3>
 <p><em>Mar 2026, Present · Dresden, Germany</em><br><em>Liz: an AI agent that gives engineering leaders live visibility into software-delivery health, risk, and status across their tools.</em></p>
-<p>PM across two squads (Integrations, then App Experience), leading end-to-end delivery from customer scoping to production and owning daily AI cost governance, working directly with Product, Engineering, Customer Success, and the CEO.</p>
+<p>PM across two squads (Integrations, then Chat Experience, including the chat tools), leading end-to-end delivery from customer scoping to production and owning daily AI cost governance, working directly with Product, Engineering, Customer Success, and the CEO.</p>
 <ul>
-<li>Reduced daily AI spend by ~39% (~$3,250/month) through data-driven cost governance: continuous monitoring of per-insight usage and spend, re-run cadences redesigned around real demand, and billing anomaly detection, while preserving customer coverage</li>
-<li>Turned Liz from read-only analytics into a colleague that acts inside the org's own tools: shipped bi-directional Slack chat, email ingestion, Confluence read+write, governed Jira write-back (draft-then-confirm, bulk operations), and full Linear parity to production</li>
+<li>Reduced inefficient daily AI spend by ~39% (~$3,250/month) through data-driven cost governance: auto-scaling driven by per-user tracking events, continuous monitoring of per-insight usage and spend, and billing anomaly detection, while preserving customer coverage</li>
+<li>Turned Liz from read-only analytics into a colleague that acts inside the org's own tools: shipped bi-directional Slack chat, email ingestion, Confluence read+write, governed Jira write-back with policy enforcement and a human check on every write-back, and full Linear parity to production</li>
 <li>Built the platform layer that makes Liz enterprise-sellable: org-wide document grounding for AI answers, role-based access with audit trail, per-role insight assignment without duplicating compute, customer-facing AI cost guardrails, and Microsoft Teams ingestion, the readiness gates for tiered, usage-based pricing</li>
-<li>Removed a recurring enterprise deal blocker: proposed the SOC 2-compliant release-note process in the first weeks after joining, drove the compliance requirement to a decision, and built it out alongside ticket cleanup and recurring PM operations as automated, AI-first product practices</li>
+<li>Led the build of the guardrail rules for the agent's write actions and maintains them per customer organisation: which rule wins when several apply, and what an administrator can change without an engineer</li>
+<li>Built an AI-native product harness so strategy and delivery stay in step: roadmap from KPIs and research, built with engineers on kanban, UAT run with AI, then telemetry and user events traced back to the KPI to show whether the plan landed. It removed a recurring enterprise deal blocker: the SOC 2-compliant release-note process, proposed in the first weeks after joining and driven to a compliance decision</li>
 <li>Protected engineering capacity by validating feasibility against real system behaviour before engineering effort was committed: an in-flight spike was stopped once measurement showed the ceiling was architectural, and an enterprise integration request was answered the same day using an already-shipped capability</li>
 <li>Gave leadership and stakeholders a weekly basis for go/hold decisions on engineering delivery, used to hold production changes for review and escalate customer-blocking issues; AI-automated the executive delivery report from narrative status into measured, ticket-traceable delivery, and widened its coverage from a single squad to engineering-wide</li>
 </ul>
@@ -185,9 +187,17 @@
 <ul>
 <li>Spearheaded migrating the product's intent recognition to GPT-3.5, shipping LLM-powered understanding into a production voice pipeline for pharma and biotech customers in 2023</li>
 <li>Tripled deployment frequency from 4 to 12 production releases per year by streamlining release coordination with engineering</li>
-<li>Drove speech recognition to 95% scientific-term accuracy for key customers by co-leading retraining on customer-specific glossaries and real voice data, and designed the retraining cadence to cut its cost</li>
+<li>Drove speech recognition to 95% scientific-term accuracy for key customers by co-leading retraining on customer-specific glossaries and real voice data with Azure custom speech training, and designed the training strategy to cut its cost</li>
 <li>Drove an SAP integration workstream to a customer pilot that tested transferring LabTwin-captured lab data into the customer's SAP environment via the SAP API</li>
 <li>Mentored a junior PM to full independence; they went on to own their own product area</li>
+</ul>
+
+<h3>Founder &amp; Builder · Opportunity Paths (opppaths.com)</h3>
+<p><em>Jan 2026, Present · independent side project</em><br><em>An early-access product that matches students to scholarships and drafts their application documents.</em></p>
+<ul>
+<li>Sole builder, shipped alongside a full-time role: scholarship matching with gap analysis, an AI document builder and multi-student workspaces, on Next.js, Supabase and the Vercel AI SDK</li>
+<li>Built the eval harness that gates every model change: each candidate does the same jobs as production, an AI judge compares the six riskiest, and each candidate's own price is counted. It chose the model now shipping &mdash; 24 comparisons, no losses, 11.3x cheaper, faster on every job</li>
+<li>Built a second eval for the step that reads scholarship pages, which was inventing dates. Twelve hand-checked pages showed a bigger model was no better &mdash; both invented a date 17% of the time &mdash; so a two-sentence prompt fix, not a costlier model, took it to zero. Those checks now guard the live data</li>
 </ul>
 
 <h3>Product Owner · Thryve GmbH</h3>
