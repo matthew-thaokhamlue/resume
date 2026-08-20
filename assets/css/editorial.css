@@ -40,7 +40,7 @@
     --ed-hero-node:  110, 105, 95;
 
     /* type — display + body pairing */
-    --ed-display: "Fraunces", "Iowan Old Style", "Source Serif Pro", Georgia, serif;
+    --ed-display: "Source Serif 4", "Iowan Old Style", "Source Serif Pro", Georgia, serif;
     --ed-body:    "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
     --ed-mono:    ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
 
@@ -132,11 +132,10 @@
     color: var(--ed-ink);
   }
 
-  /* Display headlines render Fraunces with a refined optical size by default. */
+  /* Display headlines let the browser pick Source Serif 4's optical cut by size. */
   .ed-page :where(h1, h2, h3, .ed-display) {
     font-family: var(--ed-display);
     font-feature-settings: "ss01", "ss02";
-    font-variation-settings: "opsz" 96, "SOFT" 25, "WONK" 0;
     letter-spacing: -0.02em;
     line-height: 1.04;
   }
@@ -206,8 +205,7 @@
     font-size: var(--ed-fz-display);
     line-height: 0.96;
     letter-spacing: -0.04em;
-    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
-    font-weight: 320;
+    font-weight: 600;
     color: var(--ed-ink);
     margin: 0;
     /* GSAP scrubs `font-variation-settings` and `letter-spacing` on this element */
@@ -216,7 +214,6 @@
 
   .ed-hero__display em {
     font-style: italic;
-    font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
     color: var(--ed-accent-strong);
     letter-spacing: -0.045em;
   }
@@ -326,7 +323,6 @@
   }
   .ed-philosophy__lede {
     font-family: var(--ed-display);
-    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
     font-size: var(--ed-fz-4xl);
     line-height: 1.05;
     letter-spacing: -0.03em;
@@ -335,7 +331,6 @@
   }
   .ed-philosophy__lede em {
     font-style: italic;
-    font-variation-settings: "opsz" 144, "SOFT" 75, "WONK" 1;
     color: var(--ed-accent-strong);
   }
   .ed-philosophy__body {
@@ -405,7 +400,6 @@
   }
   .ed-stage__title {
     font-family: var(--ed-display);
-    font-variation-settings: "opsz" 96, "SOFT" 0;
     font-size: var(--ed-fz-2xl);
     line-height: 1.05;
     letter-spacing: -0.02em;
@@ -455,7 +449,6 @@
   }
   .ed-signature__word {
     font-family: var(--ed-display);
-    font-variation-settings: "opsz" 144, "SOFT" 0;
     font-size: var(--ed-fz-display);
     line-height: 0.92;
     letter-spacing: -0.04em;
@@ -468,7 +461,6 @@
   }
   .ed-signature__word--accent {
     font-style: italic;
-    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
     color: var(--ed-accent-strong);
   }
   .ed-signature__caption {
@@ -506,7 +498,6 @@
   }
   .ed-quote__text {
     font-family: var(--ed-display);
-    font-variation-settings: "opsz" 144, "SOFT" 25;
     font-style: italic;
     font-size: var(--ed-fz-3xl);
     line-height: 1.18;
@@ -566,7 +557,6 @@
   }
   .ed-cta__line {
     font-family: var(--ed-display);
-    font-variation-settings: "opsz" 144, "SOFT" 0;
     font-size: var(--ed-fz-4xl);
     line-height: 1.05;
     letter-spacing: -0.03em;
@@ -575,7 +565,6 @@
   }
   .ed-cta__line em {
     font-style: italic;
-    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
     color: var(--ed-accent-strong);
   }
   .ed-cta__row {
@@ -635,7 +624,6 @@
     color: var(--ed-ink);
     text-decoration: none;
     font-family: var(--ed-display);
-    font-variation-settings: "opsz" 96, "SOFT" 25;
     font-weight: 500;
     font-size: var(--ed-fz-lg);
     letter-spacing: -0.01em;
@@ -792,7 +780,7 @@
   }
 
   /* Headline split spans (added/removed at runtime by hero.js).
-     No overflow masks — Fraunces italic overhangs clip badly. */
+     No overflow masks — the italic overhangs clip badly. */
   .ed-hero__word { display: inline-block; white-space: nowrap; }
   .ed-hero__char { display: inline-block; will-change: transform, opacity; }
 
@@ -880,7 +868,6 @@
   }
   .ed-section__title {
     font-family: var(--ed-display);
-    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
     font-size: var(--ed-fz-3xl);
     line-height: 1.05;
     letter-spacing: -0.02em;
@@ -889,7 +876,6 @@
   }
   .ed-section__title em {
     font-style: italic;
-    font-variation-settings: "opsz" 144, "SOFT" 75, "WONK" 1;
     color: var(--ed-accent-strong);
   }
 
@@ -978,7 +964,6 @@
   }
   .ed-card__title {
     font-family: var(--ed-display);
-    font-variation-settings: "opsz" 96, "SOFT" 25, "WONK" 0;
     font-size: var(--ed-fz-xl);
     line-height: 1.18;
     letter-spacing: -0.01em;
@@ -1145,7 +1130,7 @@
   }
 
   /* Word spans for the split-and-restore headline intros (career.js,
-     folio.js, case.js). No overflow masks — Fraunces italics overhang. */
+     folio.js, case.js). No overflow masks — the italics overhang. */
   .ed-word {
     display: inline-block;
   }
