@@ -33,19 +33,17 @@
     var display = document.querySelector('.ed-hero__display');
     if (!display) return;
     if (prefersReducedMotion) {
-      display.style.fontVariationSettings = '"opsz" 144, "SOFT" 0, "WONK" 0, "wght" 600';
+      display.style.fontVariationSettings = '"wght" 600';
       display.style.letterSpacing = '-0.04em';
       return;
     }
 
-    var startState = { wght: 280, track: 0.02, opsz: 144, scale: 0.985 };
-    var endState   = { wght: 640, track: -0.045, opsz: 144, scale: 1 };
+    var startState = { wght: 400, track: 0.02, scale: 0.985 };
+    var endState   = { wght: 640, track: -0.045, scale: 1 };
 
     var obj = Object.assign({}, startState);
     function apply() {
-      display.style.fontVariationSettings =
-        '"opsz" ' + obj.opsz.toFixed(0) +
-        ', "SOFT" 0, "WONK" 0, "wght" ' + obj.wght.toFixed(0);
+      display.style.fontVariationSettings = '"wght" ' + obj.wght.toFixed(0);
       display.style.letterSpacing = obj.track.toFixed(4) + 'em';
       display.style.transform = 'scale(' + obj.scale.toFixed(4) + ')';
     }
