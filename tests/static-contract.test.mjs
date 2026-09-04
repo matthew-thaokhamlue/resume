@@ -167,7 +167,7 @@ test('index.html keeps the living-workflow hero contract', () => {
   // target this exact h1 markup.
   assert.match(
     indexHtml,
-    /I build AI <em>workflows<\/em>,<br \/>not AI features\./,
+    /Multi-agent workflows<br \/>that do <em>product work<\/em>\./,
     'Hero h1 markup changed — hero.js splitHeadline and the scrub depend on it',
   );
 
