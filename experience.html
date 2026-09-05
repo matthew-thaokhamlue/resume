@@ -29,8 +29,8 @@
     <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260905" />
-    <link rel="stylesheet" href="assets/css/editorial.css?v=20260905" />
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260906" />
+    <link rel="stylesheet" href="assets/css/editorial.css?v=20260906" />
 
     <!-- Fonts: Fraunces (display) + Space Grotesk (body) -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -226,16 +226,29 @@
         <main class="relative z-10 flex flex-1 flex-col">
 
             <!-- ── Hero ── -->
-            <section class="ed-hero" id="top">
+            <section class="ed-hero ed-hero--experience" id="top">
                 <div class="ed-hero__inner">
                     <div class="ed-hero__meta">
                         <span class="ed-eyebrow">Experience · Career arc · Berlin</span>
                     </div>
-                    <div>
+                    <div class="ed-experience__copy">
                         <h1 class="ed-hero__display">Almost a decade of building <em>lovable</em> products.</h1>
                         <p class="ed-hero__support">
                             From Bangkok consulting rooms to Berlin AI labs, the work has stayed the same: turn ambiguous business problems into product systems people trust.
                         </p>
+                    </div>
+                    <div class="ed-experience__mark-home" aria-hidden="true">
+                        <svg class="ed-motion-mark" viewBox="0 0 100 58" focusable="false" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="ed-experience-star-trail" gradientUnits="userSpaceOnUse" x1="50" y1="29" x2="20" y2="45">
+                                    <stop offset="0" stop-color="#c45a38" />
+                                    <stop offset="1" stop-color="#c45a38" stop-opacity="0" />
+                                </linearGradient>
+                            </defs>
+                            <path class="ed-motion-mark__stroke" d="M4 51 C17 45 28 26 40 8 C47 19 54 35 66 43"></path>
+                            <path class="ed-motion-mark__stroke" d="M25 51 C39 45 52 25 63 8 C72 20 84 43 96 51"></path>
+                            <path class="ed-motion-mark__head" d="M0 -11 L3.2 -4.4 L10.5 -3.4 L5.2 1.7 L6.5 8.9 L0 5.5 L-6.5 8.9 L-5.2 1.7 L-10.5 -3.4 L-3.2 -4.4 Z" transform="translate(50 29)" />
+                        </svg>
                     </div>
                     <div class="ed-hero__cta-row">
                         <a class="ed-btn ed-btn--accent" href="cv.html" target="_blank" rel="noopener noreferrer"
@@ -301,7 +314,7 @@
                             <p>
                                 Lead product on Liz across two squads &mdash; Integrations, then App Experience &mdash; taking Sema&rsquo;s AI-native observability platform from customer scoping to production, and governing its daily LLM cost.
                             </p>
-                            <p>
+                            <p data-star-stop data-star-side="left">
                                 Cut AI spending <strong class="text-[var(--ed-ink)]">~39% (~$3,250/month)</strong> through data-driven cost governance: continuous monitoring of per-insight usage and spend, re-run cadences redesigned around real demand, and billing anomaly detection &mdash; without reducing active customer coverage.
                             </p>
                         </div>
@@ -390,7 +403,7 @@
                                     <strong class="text-[var(--ed-ink)]">Electronic lab notebook &amp; lab-operations software</strong> that helps R&amp;D scientists record, standardize, and run experiments. Rebuilt customer engagement loops to protect the $500K renewal, and introduced rapid-prototyping cycles that cut validation from days to hours.
                                 </p>
                             </div>
-                            <div class="sema-story__item" id="role-labtwin">
+                            <div class="sema-story__item" id="role-labtwin" data-star-stop data-star-side="right">
                                 <span class="sema-story__label">Technical PM<br>LabTwin<br>2023–24</span>
                                 <p class="sema-story__text">
                                     The world&rsquo;s first <strong class="text-[var(--ed-ink)]">voice-powered AI lab assistant</strong> &mdash; hands-free data capture and lookup at the bench. Migrated intent recognition to GPT-3.5 in production, tripled releases from 4 to 12 per year, and drove speech recognition to 95% accuracy on customers&rsquo; scientific language.
@@ -455,7 +468,7 @@
                             <p style="font-style: italic; color: var(--ed-ink-mute)">
                                 A health-data API that unifies wearables and health apps &mdash; Fitbit, Garmin, Apple Health, and more &mdash; into one trusted stream for digital-health products.
                             </p>
-                            <p>
+                            <p data-star-stop data-star-side="left">
                                 Built the integration muscle underneath health-data products at scale. Owned APIs and SDKs powering <strong class="text-[var(--ed-ink)]">1M+ users</strong> across 100+ B2B partners, led 10+ wearable integrations, and helped grow the company from <strong class="text-[var(--ed-ink)]">€0 → €1M ARR</strong>.
                             </p>
                         </div>
@@ -549,7 +562,7 @@
                             <span class="ed-stage__line" aria-hidden="true"></span>
                         </div>
 
-                        <div class="ed-stage">
+                        <div class="ed-stage" data-star-stop data-star-side="right">
                             <span class="ed-stage__num">02</span>
                             <h3 class="ed-stage__title">AI Implementation</h3>
                             <p class="ed-stage__desc">
@@ -609,10 +622,11 @@
     <!-- GSAP scroll-driven motion (mirrors index.html) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-    <script src="assets/js/site.js?v=20260905"></script>
-    <script src="assets/js/editorial.js?v=20260905"></script>
+    <script src="assets/js/site.js?v=20260906"></script>
+    <script src="assets/js/editorial.js?v=20260906"></script>
     <script src="assets/js/rings.js?v=20260615"></script>
-    <script src="assets/js/career.js?v=20260611b"></script>
+    <script src="assets/js/motion-star.js?v=20260906"></script>
+    <script src="assets/js/career.js?v=20260906"></script>
 </body>
 
 </html>
