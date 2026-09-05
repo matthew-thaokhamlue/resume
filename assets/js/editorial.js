@@ -31,7 +31,7 @@
 
   function initHeroScrub() {
     var display = document.querySelector('.ed-hero__display');
-    if (!display) return;
+    if (!display || display.closest('.ed-hero--product')) return;
     if (prefersReducedMotion) {
       display.style.fontVariationSettings = '"wght" 600';
       display.style.letterSpacing = '-0.04em';
@@ -91,69 +91,6 @@
     });
   }
 
-  function initSignature() {
-    var stage = document.querySelector('.ed-signature__stage');
-    if (!stage) return;
-    var words = stage.querySelectorAll('.ed-signature__word');
-    if (!words.length) return;
-
-    if (prefersReducedMotion) {
-      words.forEach(function (w) {
-        w.style.opacity = 1;
-        w.style.transform = 'none';
-      });
-      return;
-    }
-
-    /* Each word starts off-position via CSS variables.
-       GSAP scrubs them into a stacked composition as user scrolls past the section. */
-    var positions = [
-      { x: '-22vw', y: '-6vh' },
-      { x: '18vw', y: '-2vh' },
-      { x: '-12vw', y: '8vh' },
-      { x: '24vw', y: '14vh' },
-    ];
-    words.forEach(function (w, i) {
-      var p = positions[i % positions.length];
-      w.style.setProperty('--ed-sig-x', p.x);
-      w.style.setProperty('--ed-sig-y', p.y);
-    });
-
-    var tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.ed-signature',
-        start: 'top 70%',
-        end: 'bottom 30%',
-        scrub: 0.8,
-      }
-    });
-    tl.to(words, {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      scale: 1,
-      ease: 'power2.out',
-      stagger: { each: 0.08, from: 'start' },
-      duration: 1
-    });
-
-    /* Velocity hint — slight extra rotation when user scrolls fast. */
-    var velQuickSetters = Array.prototype.map.call(words, function (w) {
-      return gsap.quickTo(w, 'rotate', { duration: 0.4, ease: 'power3' });
-    });
-    ScrollTrigger.create({
-      trigger: '.ed-signature',
-      start: 'top bottom',
-      end: 'bottom top',
-      onUpdate: function (self) {
-        var v = Math.max(-1.6, Math.min(1.6, self.getVelocity() / 1500));
-        velQuickSetters.forEach(function (set, i) {
-          set(v * (i % 2 === 0 ? 1 : -1));
-        });
-      }
-    });
-  }
-
   function initPhilosophy() {
     var lede = document.querySelector('.ed-philosophy__lede');
     if (lede) {
@@ -203,7 +140,6 @@
     initBaseReveal();
     initHeroScrub();
     initStages();
-    initSignature();
     initPhilosophy();
     initInlineQuotes();
     refreshOnFontsLoaded();
