@@ -170,7 +170,7 @@ test('index.html keeps the product-hero and loop-ring contract', () => {
   // Exactly six ring stations, KPIs in front by default (the no-JS state)
   const cards = indexHtml.match(/<li class="ed-loop__card(?: is-front)?">/g) ?? [];
   assert.equal(cards.length, 6, 'Expected six loop cards');
-  assert.match(indexHtml, /<li class="ed-loop__card is-front">KPIs<\/li>/);
+  assert.match(indexHtml, /<li class="ed-loop__card is-front"><span class="ed-loop__kicker">Strategy<\/span>KPIs and strategy<\/li>/);
 
   // Fail-visible guards
   const loopJs = readText('assets/js/loop.js');

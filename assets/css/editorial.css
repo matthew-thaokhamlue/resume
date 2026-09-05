@@ -784,7 +784,7 @@
     padding-inline: var(--ed-gutter-x);
     width: 100%;
   }
-  .ed-loop__head { max-width: 40rem; }
+  .ed-loop__head { max-width: 44rem; }
   .ed-loop__title {
     font-size: var(--ed-fz-4xl);
     margin: 0;
@@ -832,6 +832,7 @@
     padding: var(--ed-s-4);
     min-height: 7rem;
     display: grid;
+    gap: var(--ed-s-2);
     place-content: center;
     text-align: center;
     font-family: var(--ed-display);
@@ -853,6 +854,16 @@
   .ed-loop__card:nth-child(4) { --ed-loop-a: 180deg; }
   .ed-loop__card:nth-child(5) { --ed-loop-a: 240deg; }
   .ed-loop__card:nth-child(6) { --ed-loop-a: 300deg; }
+  .ed-loop__kicker {
+    display: block;
+    font-family: var(--ed-body);
+    font-size: var(--ed-fz-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--ed-ink-mute);
+  }
+  .ed-loop__card.is-front .ed-loop__kicker { color: var(--ed-accent-strong); }
   .ed-loop__card.is-front {
     color: var(--ed-ink);
     border-color: var(--ed-hairline-strong);
