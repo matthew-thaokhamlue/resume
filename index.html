@@ -87,7 +87,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260704" />
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260905" />
 
   <!-- Fonts: Fraunces (display) + Space Grotesk (body) -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -97,7 +97,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
 
   <!-- Editorial design layer (loaded after Tailwind so @layer takes precedence) -->
-  <link rel="stylesheet" href="assets/css/editorial.css?v=20260704" />
+  <link rel="stylesheet" href="assets/css/editorial.css?v=20260905" />
 
   <style>
     .material-symbols-outlined {
@@ -159,19 +159,33 @@
 
   <main>
     <!-- ────────────────  HERO  ──────────────── -->
-    <section class="ed-hero ed-hero--living" id="top" data-intro-pending>
-      <canvas class="ed-hero__canvas" aria-hidden="true"></canvas>
+    <section class="ed-hero ed-hero--product" id="top">
       <div class="ed-hero__inner">
-        <div class="ed-hero__meta">
-          <span class="ed-eyebrow">Builder · AI Workflow Architect · Berlin</span>
+        <div class="ed-hero__mark-home" aria-hidden="true">
+          <svg class="ed-motion-mark" viewBox="0 0 100 58" focusable="false" aria-hidden="true">
+            <defs>
+              <linearGradient id="ed-star-trail" gradientUnits="userSpaceOnUse" x1="50" y1="29" x2="20" y2="45">
+                <stop offset="0" stop-color="#c45a38" />
+                <stop offset="1" stop-color="#c45a38" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path class="ed-motion-mark__stroke" d="M4 51 C17 45 28 26 40 8 C47 19 54 35 66 43"></path>
+            <path class="ed-motion-mark__stroke" d="M25 51 C39 45 52 25 63 8 C72 20 84 43 96 51"></path>
+            <path class="ed-motion-mark__head" d="M0 -11 L3.2 -4.4 L10.5 -3.4 L5.2 1.7 L6.5 8.9 L0 5.5 L-6.5 8.9 L-5.2 1.7 L-10.5 -3.4 L-3.2 -4.4 Z" transform="translate(50 29)" />
+          </svg>
         </div>
-        <div>
-          <h1 class="ed-hero__display">Multi-agent workflows<br />that do <em>product work</em>.</h1>
-          <p class="ed-hero__support">
-            Senior product manager and AI systems builder. I own GenAI roadmaps from LLM evaluation to
-            production, and design multi-agent Claude Code workflows that ship work without me in the loop.
-          </p>
-        </div>
+        <h1 class="ed-hero__display">
+          <span class="ed-hero__product">Product</span>
+          <span class="ed-hero__role" aria-hidden="true">
+            <span class="ed-hero__role-word">builder</span>
+            <span class="ed-hero__role-word">manager</span>
+            <span class="ed-hero__role-word">designer</span>
+            <span class="ed-hero__role-word">owner</span>
+            <span class="ed-hero__role-word">tester</span>
+            <span class="ed-hero__role-word">builder</span>
+          </span>
+          <span class="ed-sr-only">builder</span>
+        </h1>
         <div class="ed-hero__cta-row">
           <button id="ai-match-trigger" type="button" class="ed-btn ed-btn--accent">
             <span>Evaluate role fit with my evidence</span>
@@ -188,93 +202,47 @@
           </a>
         </div>
       </div>
-      <div class="ed-hero__scroll-cue" aria-hidden="true"></div>
     </section>
 
-    <!-- ────────────────  PRODUCT PHILOSOPHY  ──────────────── -->
-    <section class="ed-philosophy" id="philosophy">
-      <div class="ed-philosophy__inner">
-        <div class="reveal">
-          <p class="ed-eyebrow" style="margin-bottom: var(--ed-s-3);">Product philosophy</p>
-          <h2 class="ed-philosophy__lede">Great products are not about the <em>technology stack</em>. They&rsquo;re about the human on the other side of the screen.</h2>
+    <!-- ────────────────  THE LOOP  ──────────────── -->
+    <section class="ed-loop" id="loop" aria-labelledby="loop-title">
+      <div class="ed-loop__inner">
+        <div class="ed-loop__head reveal">
+          <h2 class="ed-loop__title" id="loop-title">The loop</h2>
+          <p class="ed-loop__lede">Strategy sets the KPIs. Delivery ships against them. Telemetry traces the result back to the KPI, and the bottom line says whether it worked.</p>
         </div>
-        <div class="ed-philosophy__body">
-          <p>
-            The stack matters. The model matters. The API, the data pipeline, the integration layer &mdash; all of it matters.
-          </p>
-          <p>
-            But none of it is the product.
-          </p>
-          <p>
-            The product is the human moment on the other side: the scientist trying to log an experiment without breaking focus, the healthcare analyst who needs reliable data without chasing five systems, the customer team trying to understand what matters before the next account conversation.
-          </p>
-          <p>
-            That is the human I build for.
-          </p>
-          <p>
-            At Sema, I&rsquo;m building AI-native product workflows around that belief. The hard part is not adding AI to a screen. It is turning scattered customer signal, business priorities, and technical reality into something teams can trust and act on. AI is only valuable when it helps people make better decisions, faster, with less noise.
-          </p>
-          <p>
-            I&rsquo;ve seen the same pattern across Thryve, LabTwin, Labforward, and now Sema: great products do not win because they expose more technology. They win because they hide the right complexity, respect the user&rsquo;s context, and make the next step feel obvious.
-          </p>
-          <p>
-            Start with the human. Understand the workflow. Make the hard thing feel simple.
-          </p>
+        <div class="ed-loop__stage">
+          <svg class="ed-loop__galaxy" viewBox="-600 -300 1200 600" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <g class="ed-loop__orbits">
+              <ellipse rx="270" ry="100" transform="rotate(-18)" />
+              <ellipse rx="340" ry="130" transform="rotate(-18)" />
+              <ellipse rx="420" ry="170" transform="rotate(-18)" />
+            </g>
+            <g class="ed-loop__spiral">
+              <path d="M0 0 C35-45 125-50 160-15 C220 65 65 120-115 115 C-275 110-330 40-310-10" />
+              <path d="M0 0 C-35 45-125 50-160 15 C-220-65-65-120 115-115 C275-110 330-40 310 10" />
+              <circle r="3" />
+            </g>
+            <g class="ed-loop__stars">
+              <circle cx="-485" cy="-185" r="2" /><circle cx="-360" cy="-80" r="1.5" />
+              <circle cx="-235" cy="-195" r="2.5" /><circle cx="-135" cy="-35" r="1.5" />
+              <circle cx="-65" cy="165" r="2" /><circle cx="90" cy="-115" r="2" />
+              <circle cx="215" cy="-200" r="1.5" /><circle cx="315" cy="-40" r="2.5" />
+              <circle cx="480" cy="-170" r="2" /><circle cx="510" cy="140" r="1.5" />
+              <circle cx="285" cy="190" r="2" /><circle cx="-410" cy="180" r="1.5" />
+              <path d="M-190 75v12m-6-6h12M165 95v10m-5-5h10M380-150v10m-5-5h10" />
+            </g>
+          </svg>
+          <div class="ed-loop__track" aria-hidden="true"></div>
+          <ol class="ed-loop__ring">
+            <li class="ed-loop__card is-front"><span class="ed-loop__kicker">Strategy</span>KPIs and strategy</li>
+            <li class="ed-loop__card"><span class="ed-loop__kicker">Planning</span>Roadmap from the KPIs</li>
+            <li class="ed-loop__card"><span class="ed-loop__kicker">Delivery</span>Built with engineers</li>
+            <li class="ed-loop__card"><span class="ed-loop__kicker">Delivery</span>UAT run with AI</li>
+            <li class="ed-loop__card"><span class="ed-loop__kicker">Feedback</span>Telemetry and user events</li>
+            <li class="ed-loop__card"><span class="ed-loop__kicker">Outcome</span>Bottom-line profitability</li>
+          </ol>
         </div>
-      </div>
-    </section>
-
-    <!-- ────────────────  HOW IT WORKS (Abstract)  ──────────────── -->
-    <section class="ed-howitworks" id="how-it-works">
-      <div class="ed-howitworks__inner">
-        <div class="ed-howitworks__heading">
-          <p class="ed-eyebrow reveal">The system</p>
-          <h2 class="ed-display reveal" style="font-size: var(--ed-fz-3xl); line-height: 1.1; letter-spacing: -0.025em; margin: 0;">
-            Four stages I run, again and again, until the workflow ships itself.
-          </h2>
-        </div>
-        <div class="ed-stages">
-          <div class="ed-stage">
-            <span class="ed-stage__num">01</span>
-            <h3 class="ed-stage__title">Discovery</h3>
-            <p class="ed-stage__desc">Five whys until the real problem surfaces. Talk to the human on the other side of the screen, not the persona deck.</p>
-            <span class="ed-stage__line" aria-hidden="true"></span>
-          </div>
-          <div class="ed-stage">
-            <span class="ed-stage__num">02</span>
-            <h3 class="ed-stage__title">Architecture</h3>
-            <p class="ed-stage__desc">Design the workflow, not the feature. LLM evaluation, model boundaries, fail-safe paths, evals before launch.</p>
-            <span class="ed-stage__line" aria-hidden="true"></span>
-          </div>
-          <div class="ed-stage">
-            <span class="ed-stage__num">03</span>
-            <h3 class="ed-stage__title">Build</h3>
-            <p class="ed-stage__desc">Multi-agent Claude Code pipelines, MCP servers, prototypes that ship to staging in days, not quarters.</p>
-            <span class="ed-stage__line" aria-hidden="true"></span>
-          </div>
-          <div class="ed-stage">
-            <span class="ed-stage__num">04</span>
-            <h3 class="ed-stage__title">Ship</h3>
-            <p class="ed-stage__desc">Production deployment, observability, the boring parts that make AI products trustworthy and recover gracefully.</p>
-            <span class="ed-stage__line" aria-hidden="true"></span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ────────────────  SIGNATURE ANIMATION  ──────────────── -->
-    <section class="ed-signature" id="signature" aria-label="Brand signature">
-      <div class="ed-signature__inner">
-        <p class="ed-eyebrow reveal" style="text-align:center; margin-bottom: var(--ed-s-5);">A composition</p>
-        <div class="ed-signature__stage">
-          <div class="ed-signature__words">
-            <p class="ed-signature__word">Builder.</p>
-            <p class="ed-signature__word ed-signature__word--accent">Workflow.</p>
-            <p class="ed-signature__word">Architect.</p>
-            <p class="ed-signature__word ed-signature__word--accent">AI.</p>
-          </div>
-        </div>
-        <p class="ed-signature__caption reveal">What I am, and what I do, in four words.</p>
       </div>
     </section>
 
@@ -437,14 +405,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 
   <!-- Editorial motion -->
-  <script src="assets/js/site.js?v=20260704"></script>
-  <script src="assets/js/editorial.js?v=20260704"></script>
+  <script src="assets/js/site.js?v=20260905"></script>
+  <script src="assets/js/editorial.js?v=20260905"></script>
 
   <!-- AI Match feature (kept) -->
   <script type="module" src="assets/js/ai-match.js?v=20260506a"></script>
 
-  <!-- Living Workflow hero (canvas graph + intro choreography) -->
-  <script src="assets/js/hero.js?v=20260615"></script>
+  <!-- Hero word swap + loop ring (index only) -->
+  <script src="assets/js/loop.js?v=20260905"></script>
 </body>
 
 </html>

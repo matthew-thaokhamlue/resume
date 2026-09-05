@@ -154,27 +154,30 @@ test('experience.html frames earlier roles as the career spine behind Liz', () =
   }
 });
 
-test('index.html keeps the living-workflow hero contract', () => {
+test('index.html keeps the product-hero and loop-ring contract', () => {
   const indexHtml = readText('index.html');
 
-  // Markup hooks hero.js depends on
-  for (const hook of ['ed-hero--living', 'ed-hero__canvas', 'ed-hero__scroll-cue', 'data-intro-pending']) {
+  // Markup hooks loop.js depends on
+  for (const hook of ['ed-hero--product', 'ed-hero__mark-home', 'ed-motion-mark', 'ed-motion-mark__stroke', 'ed-hero__role', 'ed-hero__role-word', 'ed-loop__ring', 'ed-loop__card']) {
     assert.match(indexHtml, new RegExp(escapeRegExp(hook)), `Missing ${hook}`);
   }
-  assert.match(indexHtml, /assets\/js\/hero\.js\?v=/, 'Missing hero.js script tag');
+  assert.match(indexHtml, /assets\/js\/loop\.js\?v=/, 'Missing loop.js script tag');
+  assert.doesNotMatch(indexHtml, /hero\.js/, 'hero.js was deleted; index.html must not load it');
 
-  // The headline split/restore round-trip and editorial.js's scrub both
-  // target this exact h1 markup.
-  assert.match(
-    indexHtml,
-    /Multi-agent workflows<br \/>that do <em>product work<\/em>\./,
-    'Hero h1 markup changed — hero.js splitHeadline and the scrub depend on it',
-  );
+  // The role stack: builder first and last, the last step recolours to ink
+  const roles = [...indexHtml.matchAll(/<span class="ed-hero__role-word">([^<]+)<\/span>/g)].map((m) => m[1]);
+  assert.deepEqual(roles, ['builder', 'manager', 'designer', 'owner', 'tester', 'builder']);
+  // Exactly six ring stations, KPIs in front by default (the no-JS state)
+  const cards = indexHtml.match(/<li class="ed-loop__card(?: is-front)?">/g) ?? [];
+  assert.equal(cards.length, 6, 'Expected six loop cards');
+  assert.match(indexHtml, /<li class="ed-loop__card is-front"><span class="ed-loop__kicker">Strategy<\/span>KPIs and strategy<\/li>/);
 
-  // Cheap guards that the perf/a11y gates survive refactors
-  const heroJs = readText('assets/js/hero.js');
-  assert.match(heroJs, /prefers-reduced-motion/, 'hero.js lost its reduced-motion gate');
-  assert.match(heroJs, /IntersectionObserver/, 'hero.js lost its offscreen rAF pause');
+  // Fail-visible guards
+  const loopJs = readText('assets/js/loop.js');
+  assert.match(loopJs, /prefers-reduced-motion/, 'loop.js lost its reduced-motion gate');
+  assert.match(loopJs, /if \(!window\.gsap \|\| !window\.ScrollTrigger\) return;/, 'loop.js lost its GSAP guard');
+  const editorialCss = readText('assets/css/editorial.css');
+  assert.doesNotMatch(editorialCss, /\.ed-hero__role-word:first-child[^}]*opacity:\s*0/, 'the first role word must stay visible without JS');
 });
 
 test('experience.html keeps the growth-rings contract', () => {

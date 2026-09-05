@@ -208,8 +208,7 @@
     font-weight: 600;
     color: var(--ed-ink);
     margin: 0;
-    /* GSAP scrubs `font-variation-settings` and `letter-spacing` on this element */
-    will-change: font-variation-settings, letter-spacing, transform;
+    text-wrap: balance;
   }
 
   .ed-hero__display em {
@@ -420,55 +419,6 @@
   }
   @media (min-width: 720px) {
     .ed-stage__line { display: block; min-width: 4rem; }
-  }
-
-  /* ─── Signature animation section ──────────────────────── */
-  .ed-signature {
-    position: relative;
-    padding-block: var(--ed-s-9);
-    border-top: 1px solid var(--ed-hairline);
-    overflow: hidden;
-  }
-  .ed-signature__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-  }
-  .ed-signature__stage {
-    position: relative;
-    min-height: 70svh;
-    display: grid;
-    place-items: center;
-  }
-  .ed-signature__words {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-    text-align: center;
-    width: 100%;
-  }
-  .ed-signature__word {
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-display);
-    line-height: 0.92;
-    letter-spacing: -0.04em;
-    color: var(--ed-ink);
-    margin: 0;
-    /* GSAP scrubs each word's transform/opacity */
-    opacity: 0;
-    transform: translate3d(var(--ed-sig-x, 0), var(--ed-sig-y, 32px), 0) scale(0.92);
-    will-change: transform, opacity;
-  }
-  .ed-signature__word--accent {
-    font-style: italic;
-    color: var(--ed-accent-strong);
-  }
-  .ed-signature__caption {
-    text-align: center;
-    color: var(--ed-ink-mute);
-    margin-top: var(--ed-s-5);
-    font-size: var(--ed-fz-sm);
-    letter-spacing: 0.04em;
   }
 
   /* ─── Inline quotes ────────────────────────────────────── */
@@ -723,7 +673,6 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal,
     .ed-hero__display,
-    .ed-signature__word,
     .ed-stage__line {
       opacity: 1 !important;
       transform: none !important;
@@ -732,99 +681,247 @@
     }
   }
 
-/* ── editorial-living-hero ── */
-  /* index.html "Living Workflow" hero: canvas graph layer,
-     load-choreography states, scroll cue. Driven by hero.js. */
-  .ed-hero__canvas {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    pointer-events: none;
+/* ── editorial-product-hero ── */
+  /* index.html hero: M mark, "Product" + a role word that loop.js swaps
+     under a scroll pin. Without JS or with reduced motion the first word
+     stays visible in the accent; all further hiding is JS-applied. */
+  .ed-hero--product .ed-hero__inner {
+    grid-template-rows: none;
+    grid-template-areas: "mark" "title" "cta";
+    align-content: center;
+    gap: var(--ed-s-5);
   }
-  .ed-hero--living .ed-hero__inner {
+  .ed-hero__mark-home {
+    grid-area: mark;
+    width: clamp(9rem, 28vw, 22rem);
+    aspect-ratio: 100 / 58;
     position: relative;
-    z-index: 1;
+  }
+  .ed-motion-mark {
+    width: 100%;
+    height: auto;
+    display: block;
+    z-index: 45;
+    overflow: visible;
+    pointer-events: none;
+    filter: drop-shadow(0 1.25rem 2rem rgba(196, 90, 56, 0.16));
+    will-change: transform, opacity;
+  }
+  .ed-motion-mark__stroke {
+    fill: none;
+    stroke: #c45a38;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ed-motion-mark__head {
+    fill: #c45a38;
+    stroke: #c45a38;
+    stroke-width: 0.7;
+    stroke-linejoin: round;
+    opacity: 0;
+  }
+  .ed-hero--product .ed-hero__display {
+    grid-area: title;
+    display: grid;
+    gap: 0;
+  }
+  .ed-hero--product .ed-hero__cta-row {
+    grid-area: cta;
+  }
+  .ed-hero__product {
+    display: block;
+    color: var(--ed-ink);
+  }
+  .ed-hero__role {
+    --ed-role-mix: 0;
+    position: relative;
+    display: block;
+    height: 1em;
+    line-height: 1;
+    color: var(--ed-accent-strong);
+    color: color-mix(in oklab, var(--ed-accent-strong), var(--ed-ink) calc(var(--ed-role-mix) * 100%));
+    font-style: italic;
+    letter-spacing: -0.045em;
+    /* Clip the swapping words to the line, with room for ascenders/descenders. */
+    clip-path: inset(-0.18em -0.15em -0.28em -0.1em);
+  }
+  .ed-hero__role-word {
+    position: absolute;
+    inset: 0 auto auto 0;
+    white-space: nowrap;
+    will-change: transform, opacity;
+  }
+  .ed-hero__role-word:not(:first-child) { opacity: 0; }
+  @media (min-width: 1024px) {
+    .ed-hero--product .ed-hero__inner {
+      grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 2fr);
+      grid-template-areas: "mark title" "mark cta";
+      column-gap: clamp(2rem, 6vw, 6rem);
+      align-items: center;
+    }
+    .ed-hero__mark-home { align-self: center; width: 100%; max-width: 24rem; }
+  }
+  @media (max-width: 699px) {
+    .ed-hero--product .ed-hero__display { font-size: var(--ed-fz-5xl); }
+  }
+  .ed-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
-  /* Scroll cue — hairline with a falling accent dot */
-  .ed-hero__scroll-cue {
+  /* ─── The loop: a ring of six stations, rotated by scroll ─── */
+  .ed-loop {
+    min-height: 100svh;
+    padding-block: var(--ed-s-7);
+    border-top: 1px solid var(--ed-hairline);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .ed-loop__inner {
+    max-width: var(--ed-content-max);
+    margin-inline: auto;
+    padding-inline: var(--ed-gutter-x);
+    width: 100%;
+  }
+  .ed-loop__head { max-width: 44rem; }
+  .ed-loop__title {
+    font-size: var(--ed-fz-4xl);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .ed-loop__lede {
+    margin: var(--ed-s-3) 0 0;
+    color: var(--ed-ink-soft);
+    font-size: var(--ed-fz-lg);
+  }
+  .ed-loop__stage {
+    /* Six stations on one flat ellipse; loop.js walks the highlight. */
+    --ed-loop-rx: clamp(6.5rem, 30vw, 27rem);
+    --ed-loop-ry: clamp(9.5rem, 12vw, 10rem);
+    --ed-loop-w: clamp(8.5rem, 24vw, 14rem);
+    position: relative;
+    height: calc(var(--ed-loop-ry) * 2 + 8rem);
+    margin-top: var(--ed-s-6);
+  }
+  .ed-loop__track {
     position: absolute;
     left: 50%;
-    bottom: var(--ed-s-4);
-    z-index: 1;
-    width: 1px;
-    height: 44px;
-    background: var(--ed-hairline-strong);
-    transform: translateX(-50%);
+    top: 50%;
+    width: calc(var(--ed-loop-rx) * 2);
+    height: calc(var(--ed-loop-ry) * 2);
+    border: 1px solid var(--ed-hairline-strong);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
     pointer-events: none;
   }
-  .ed-hero__scroll-cue::after {
+  .ed-loop__stage::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: -1px;
-    width: 3px;
-    height: 3px;
-    border-radius: 999px;
-    background: var(--ed-accent);
-    animation: ed-cue-drop 2.4s var(--ed-ease-soft) infinite;
+    inset: -10% 8%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(196, 90, 56, 0.2), rgba(141, 117, 168, 0.1) 34%, transparent 68%);
+    pointer-events: none;
   }
-  @keyframes ed-cue-drop {
-    0%   { top: 0; opacity: 0; }
-    15%  { opacity: 1; }
-    85%  { opacity: 1; }
-    100% { top: calc(100% - 3px); opacity: 0; }
+  .ed-loop__galaxy {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
   }
-
-  /* Headline split spans (added/removed at runtime by hero.js).
-     No overflow masks — the italic overhangs clip badly. */
-  .ed-hero__word { display: inline-block; white-space: nowrap; }
-  .ed-hero__char { display: inline-block; will-change: transform, opacity; }
-
-  /* Hairline draw-in next to the eyebrow. .is-intro-armed (set by JS
-     alongside inline initial states) holds it collapsed until the
-     timeline adds .is-intro; order matters — .is-intro wins. */
-  .ed-hero--living .ed-hero__meta::after { transform-origin: left center; }
-  .ed-hero--living.is-intro-armed .ed-hero__meta::after { transform: scaleX(0); }
-  .ed-hero--living.is-intro .ed-hero__meta::after {
-    transform: scaleX(1);
-    transition: transform 900ms var(--ed-ease) 120ms;
+  .ed-loop__orbits {
+    fill: none;
+    stroke: var(--ed-accent);
+    stroke-width: 0.8;
+    opacity: 0.24;
   }
-
-  /* Magnetic CTAs — GSAP owns transform; CSS keeps color transitions. */
-  .ed-hero--living .ed-btn--magnetic {
-    transition-property: background-color, color, border-color;
-  }
-  .ed-hero--living .ed-btn--magnetic:hover,
-  .ed-hero--living .ed-btn--magnetic:active { transform: none; }
-
-  /* Intro initial states — only when scripting is on and motion allowed.
-     hero.js removes [data-intro-pending] on its first run, so a blocked
-     CDN, disabled JS, an old browser, or reduced motion all fail visible. */
+  .ed-loop__orbits ellipse:nth-child(2) { stroke-dasharray: 2 10; }
+  .ed-loop__orbits ellipse:last-child { opacity: 0.55; }
+  .ed-loop__stars { fill: var(--ed-accent-strong); opacity: 0.5; }
+  .ed-loop__stars path { fill: none; stroke: var(--ed-accent-strong); stroke-width: 1.3; }
+  .ed-loop__spiral { fill: none; stroke: var(--ed-accent); stroke-width: 1; opacity: 0.3; }
+  .ed-loop__spiral circle { fill: var(--ed-accent); stroke: none; }
   @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-    .ed-hero--living[data-intro-pending] .ed-eyebrow,
-    .ed-hero--living[data-intro-pending] .ed-hero__display,
-    .ed-hero--living[data-intro-pending] .ed-hero__support,
-    .ed-hero--living[data-intro-pending] .ed-hero__cta-row,
-    .ed-hero--living[data-intro-pending] .ed-hero__scroll-cue {
-      opacity: 0;
-    }
-    .ed-hero--living[data-intro-pending] .ed-hero__meta::after {
-      transform: scaleX(0);
-    }
+    .ed-loop.is-in-view .ed-loop__stars circle { animation: ed-star-twinkle 4s ease-in-out infinite alternate; }
+    .ed-loop.is-in-view .ed-loop__stars circle:nth-child(3n) { animation-delay: -2s; }
+    .ed-loop.is-in-view .ed-loop__stars circle:nth-child(3n + 1) { animation-delay: -1s; }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ed-hero__scroll-cue::after { animation: none !important; }
+  @keyframes ed-star-twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+  .ed-loop__ring {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-
-  @media (max-width: 767px) {
-    .ed-hero__canvas { opacity: 0.85; }
-    /* CTA stack fills the hero bottom on small screens */
-    .ed-hero__scroll-cue { display: none; }
+  .ed-loop__card {
+    --ed-loop-a: -90deg;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--ed-loop-w);
+    margin: -3.25rem 0 0 calc(var(--ed-loop-w) / -2);
+    padding: var(--ed-s-3) var(--ed-s-4);
+    min-height: 6.5rem;
+    display: grid;
+    gap: var(--ed-s-2);
+    place-content: center;
+    text-align: center;
+    font-family: var(--ed-display);
+    font-size: var(--ed-fz-lg);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ed-ink-soft);
+    background: var(--ed-bg-soft);
+    border: 1px solid var(--ed-hairline);
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 28px rgba(var(--ed-ink-rgb), 0.06);
+    transform: translate(calc(cos(var(--ed-loop-a)) * var(--ed-loop-rx)), calc(sin(var(--ed-loop-a)) * var(--ed-loop-ry))) scale(0.92);
+    opacity: 0.7;
+    transition: transform var(--ed-d-base) var(--ed-ease), opacity var(--ed-d-base) var(--ed-ease-soft),
+                color var(--ed-d-base) var(--ed-ease-soft), border-color var(--ed-d-base) var(--ed-ease-soft),
+                box-shadow var(--ed-d-base) var(--ed-ease-soft), background var(--ed-d-base) var(--ed-ease-soft);
+  }
+  .ed-loop__card:nth-child(2) { --ed-loop-a: -30deg; }
+  .ed-loop__card:nth-child(3) { --ed-loop-a: 30deg; }
+  .ed-loop__card:nth-child(4) { --ed-loop-a: 90deg; }
+  .ed-loop__card:nth-child(5) { --ed-loop-a: 150deg; }
+  .ed-loop__card:nth-child(6) { --ed-loop-a: 210deg; }
+  @media (max-width: 699px) {
+    .ed-loop__stage { --ed-loop-rx: 5.5rem; --ed-loop-ry: 12rem; }
+    .ed-loop__stars circle { r: 4; }
+    .ed-loop__card { font-size: var(--ed-fz-base); padding: var(--ed-s-2) var(--ed-s-3); min-height: 5.5rem; margin-top: -2.75rem; }
+  }
+  .ed-loop__kicker {
+    display: block;
+    font-family: var(--ed-body);
+    font-size: var(--ed-fz-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--ed-ink-mute);
+  }
+  .ed-loop__card.is-front .ed-loop__kicker { color: var(--ed-accent-strong); }
+  .ed-loop__card.is-front {
+    color: var(--ed-ink);
+    background: color-mix(in oklab, var(--ed-bg-soft), var(--ed-accent) 8%);
+    border-color: var(--ed-accent);
+    box-shadow: var(--ed-shadow);
+    opacity: 1;
+    z-index: 1;
+    transform: translate(calc(cos(var(--ed-loop-a)) * var(--ed-loop-rx)), calc(sin(var(--ed-loop-a)) * var(--ed-loop-ry))) scale(1.06);
   }
 
 /* ── editorial-content-pages ── */
