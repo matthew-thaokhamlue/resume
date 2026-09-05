@@ -117,6 +117,123 @@
     });
   }
 
+  /* ── M-to-star evidence guide ───────────────────────────── */
+
+  function initExperienceStar() {
+    if (!window.createShootingStar) return;
+
+    var hero = document.querySelector('.ed-hero');
+    var wrap = document.querySelector('.ed-career');
+    var skills = document.querySelector('#role-skills');
+    var home = hero && hero.querySelector('.ed-experience__mark-home');
+    var mark = hero && hero.querySelector('.ed-motion-mark');
+    var strokes = mark ? Array.prototype.slice.call(mark.querySelectorAll('.ed-motion-mark__stroke')) : [];
+    var head = mark && mark.querySelector('.ed-motion-mark__head');
+    var gradient = mark && mark.querySelector('#ed-experience-star-trail');
+    var stops = Array.prototype.slice.call(document.querySelectorAll('[data-star-stop]'));
+    if (!hero || !wrap || !skills || !home || !mark || !head || !gradient || strokes.length !== 2 || !stops.length) return;
+
+    var homeRect = home.getBoundingClientRect();
+    document.body.appendChild(mark);
+    var flight = window.createShootingStar(mark, strokes, head, gradient, homeRect);
+    gsap.set(mark, {
+      position: 'fixed',
+      left: 0,
+      top: 0,
+      width: homeRect.width,
+      height: homeRect.height,
+      x: homeRect.left,
+      y: homeRect.top,
+      opacity: 1,
+      transformOrigin: '50% 50%'
+    });
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function setActive(active) {
+      stops.forEach(function (stop) {
+        stop.classList.toggle('is-star-active', stop === active);
+      });
+    }
+
+    function smooth(value) {
+      return value * value * (3 - 2 * value);
+    }
+
+    function render() {
+      var scroll = window.scrollY || 0;
+      var height = window.innerHeight;
+      var width = window.innerWidth;
+      var compact = width < 720;
+      var size = compact ? 30 : 42;
+      var scale = size / (homeRect.width * 0.36);
+      var rect = home.getBoundingClientRect();
+      var homeX = rect.left + rect.width / 2;
+      var homeY = rect.top + rect.height / 2 + scroll;
+      var launch = Math.max(0, homeY - height * 0.45);
+      var resolved = launch + height * 0.24;
+      var morph = smooth(clamp((scroll - launch) / (resolved - launch), 0, 1));
+      flight.morph.v = morph;
+
+      // Resolve the M before flying, as on the home page.
+      if (scroll <= resolved) {
+        setActive(null);
+        var homeScale = rect.width / homeRect.width;
+        flight.move(homeX, homeY - Math.min(scroll, launch), homeScale + (scale - homeScale) * morph, 1);
+        return;
+      }
+
+      var previous = { x: homeX, y: homeY - launch, scroll: resolved };
+      for (var i = 0; i < stops.length; i++) {
+        var stop = stops[i];
+        var stopRect = stop.getBoundingClientRect();
+        var anchorY = stopRect.top + scroll + Math.min(stopRect.height / 2, 24);
+        var gap = compact ? 26 : 36;
+        var right = stop.dataset.starSide === 'right';
+        if (right && width - stopRect.right < gap + size / 2) right = false;
+        if (!right && stopRect.left < gap + size / 2) right = true;
+        var x = clamp(right ? stopRect.right + gap : stopRect.left - gap, size / 2 + 10, width - size / 2 - 10);
+        var arrival = Math.max(previous.scroll + 1, anchorY - height * 0.60);
+        var departure = Math.max(arrival + 1, anchorY - height * 0.38);
+
+        if (scroll < arrival) {
+          setActive(null);
+          var t = clamp((scroll - previous.scroll) / (arrival - previous.scroll), 0, 1);
+          var u = 1 - t;
+          var tx = compact && i === 0 ? smooth(Math.min(t * 2, 1)) : t;
+          var ux = 1 - tx;
+          var endY = anchorY - arrival;
+          var bend = compact ? 8 : Math.min(100, width * 0.08);
+          bend *= (previous.x + x) / 2 < width / 2 ? 1 : -1;
+          // A continuous curve joins each hold; reversing scroll retraces it.
+          flight.move(
+            clamp(previous.x * ux * ux * ux + 3 * (previous.x + bend) * ux * ux * tx + 3 * (x + bend) * ux * tx * tx + x * tx * tx * tx, size / 2 + 10, width - size / 2 - 10),
+            previous.y * u * u * u + 3 * (previous.y - height * 0.24) * u * u * t + 3 * (endY + height * 0.24) * u * t * t + endY * t * t * t,
+            scale, 1
+          );
+          return;
+        }
+        if (scroll <= departure) {
+          setActive(stop);
+          flight.move(x, anchorY - scroll, scale, 1);
+          return;
+        }
+        previous = { x: x, y: anchorY - departure, scroll: departure };
+      }
+
+      var exit = smooth(clamp((scroll - previous.scroll) / (height * 0.45), 0, 1));
+      setActive(null);
+      flight.move(previous.x, previous.y - exit * height * 0.25, scale, 1 - exit);
+    }
+
+    // One owner prevents hero and career callbacks from fighting on reverse scroll.
+    ScrollTrigger.create({ start: 0, end: 'max', onUpdate: render, onRefresh: render });
+    render();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(render);
+  }
+
   /* ── Per-panel chapter choreography ─────────────────────────
      The right column of each role panel: index number + eyebrow,
      word-split title, company line, story beats, skill chips,
@@ -267,6 +384,7 @@
 
   ready(function () {
     initHeroIntro();
+    initExperienceStar();
     var wrap = document.querySelector('.ed-career');
     if (!wrap) return;
     var panels = Array.prototype.slice.call(wrap.querySelectorAll(':scope > section'));

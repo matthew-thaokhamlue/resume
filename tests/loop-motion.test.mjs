@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-const source = fs.readFileSync(new URL('../assets/js/loop.js', import.meta.url), 'utf8');
+const source = [
+  fs.readFileSync(new URL('../assets/js/motion-star.js', import.meta.url), 'utf8'),
+  fs.readFileSync(new URL('../assets/js/loop.js', import.meta.url), 'utf8'),
+].join('\n');
 
 // Execute the production scroll callbacks and frame updates with a controlled clock.
 function scene(reduced = false) {

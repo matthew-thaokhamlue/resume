@@ -765,6 +765,40 @@
   @media (max-width: 699px) {
     .ed-hero--product .ed-hero__display { font-size: var(--ed-fz-5xl); }
   }
+
+  /* experience.html hero: the M starts on the right before career.js
+     reuses it as the scroll pointer. */
+  .ed-hero--experience .ed-hero__inner {
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: minmax(0, 1.5fr) minmax(10rem, 0.5fr);
+    grid-template-areas:
+      "meta meta"
+      "copy mark"
+      "cta cta";
+    align-items: center;
+  }
+  .ed-hero--experience .ed-hero__meta { grid-area: meta; }
+  .ed-experience__copy { grid-area: copy; }
+  .ed-hero--experience .ed-hero__display { font-size: clamp(3rem, 6.8vw, 6rem); }
+  .ed-experience__mark-home {
+    grid-area: mark;
+    justify-self: end;
+    width: clamp(10rem, 20vw, 18rem);
+    aspect-ratio: 100 / 58;
+  }
+  .ed-hero--experience .ed-hero__cta-row { grid-area: cta; }
+  @media (max-width: 699px) {
+    .ed-hero--experience .ed-hero__inner {
+      grid-template-rows: auto auto 1fr auto;
+      grid-template-columns: 1fr;
+      grid-template-areas: "meta" "mark" "copy" "cta";
+      gap: var(--ed-s-5);
+    }
+    .ed-experience__mark-home {
+      width: clamp(8rem, 42vw, 11rem);
+    }
+    .ed-hero--experience .ed-hero__display { font-size: var(--ed-fz-5xl); }
+  }
   .ed-sr-only {
     position: absolute;
     width: 1px;
@@ -1170,6 +1204,21 @@
      Shown only where the container leaves a real left gutter. */
   .ed-career {
     position: relative;
+  }
+  [data-star-stop] {
+    position: relative;
+    border-radius: 0.45rem;
+    transition: background-color 240ms var(--ed-ease),
+                box-shadow 240ms var(--ed-ease);
+  }
+  [data-star-stop].is-star-active {
+    background: color-mix(in oklab, var(--ed-accent), transparent 91%);
+    box-shadow: 0 0 0 8px color-mix(in oklab, var(--ed-accent), transparent 90%);
+  }
+  @media (max-width: 719px) {
+    .ed-career > section > div,
+    #role-skills > div { padding-left: 3.25rem; }
+    #role-skills .ed-stage__desc { grid-column: 2; }
   }
   .ed-spine {
     position: absolute;
