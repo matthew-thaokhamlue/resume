@@ -796,21 +796,23 @@
     font-size: var(--ed-fz-lg);
   }
   .ed-loop__stage {
-    --ed-loop-r: clamp(9rem, 24vw, 19rem);
+    /* Six stations on one flat ellipse; loop.js walks the highlight. */
+    --ed-loop-rx: clamp(6.5rem, 30vw, 27rem);
+    --ed-loop-ry: clamp(9.5rem, 12vw, 10rem);
+    --ed-loop-w: clamp(8.5rem, 24vw, 14rem);
     position: relative;
-    height: clamp(20rem, 56svh, 32rem);
+    height: calc(var(--ed-loop-ry) * 2 + 8rem);
     margin-top: var(--ed-s-6);
-    perspective: 2600px;
   }
   .ed-loop__track {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: calc(var(--ed-loop-r) * 2.6);
-    height: calc(var(--ed-loop-r) * 0.8);
+    width: calc(var(--ed-loop-rx) * 2);
+    height: calc(var(--ed-loop-ry) * 2);
     border: 1px solid var(--ed-hairline-strong);
     border-radius: 50%;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -50%);
     pointer-events: none;
   }
   .ed-loop__ring {
@@ -819,41 +821,44 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    transform-style: preserve-3d;
-    will-change: transform;
   }
   .ed-loop__card {
-    --ed-loop-a: 0deg;
+    --ed-loop-a: -90deg;
     position: absolute;
     left: 50%;
     top: 50%;
-    width: clamp(9rem, 26vw, 15rem);
-    margin: -3.5rem 0 0 calc(clamp(9rem, 26vw, 15rem) / -2);
-    padding: var(--ed-s-4);
-    min-height: 7rem;
+    width: var(--ed-loop-w);
+    margin: -3.25rem 0 0 calc(var(--ed-loop-w) / -2);
+    padding: var(--ed-s-3) var(--ed-s-4);
+    min-height: 6.5rem;
     display: grid;
     gap: var(--ed-s-2);
     place-content: center;
     text-align: center;
     font-family: var(--ed-display);
-    font-size: var(--ed-fz-xl);
-    line-height: 1.1;
+    font-size: var(--ed-fz-lg);
+    line-height: 1.15;
     letter-spacing: -0.02em;
     color: var(--ed-ink-soft);
     background: var(--ed-bg-soft);
     border: 1px solid var(--ed-hairline);
     border-radius: 0.75rem;
-    box-shadow: var(--ed-shadow);
-    backface-visibility: hidden;
-    transform: rotateY(var(--ed-loop-a)) translateZ(var(--ed-loop-r)) scale(0.88);
-    opacity: 0.55;
-    transition: opacity var(--ed-d-base) var(--ed-ease-soft), color var(--ed-d-base) var(--ed-ease-soft);
+    box-shadow: 0 8px 28px rgba(var(--ed-ink-rgb), 0.06);
+    transform: translate(calc(cos(var(--ed-loop-a)) * var(--ed-loop-rx)), calc(sin(var(--ed-loop-a)) * var(--ed-loop-ry))) scale(0.92);
+    opacity: 0.7;
+    transition: transform var(--ed-d-base) var(--ed-ease), opacity var(--ed-d-base) var(--ed-ease-soft),
+                color var(--ed-d-base) var(--ed-ease-soft), border-color var(--ed-d-base) var(--ed-ease-soft),
+                box-shadow var(--ed-d-base) var(--ed-ease-soft);
   }
-  .ed-loop__card:nth-child(2) { --ed-loop-a: 60deg; }
-  .ed-loop__card:nth-child(3) { --ed-loop-a: 120deg; }
-  .ed-loop__card:nth-child(4) { --ed-loop-a: 180deg; }
-  .ed-loop__card:nth-child(5) { --ed-loop-a: 240deg; }
-  .ed-loop__card:nth-child(6) { --ed-loop-a: 300deg; }
+  .ed-loop__card:nth-child(2) { --ed-loop-a: -30deg; }
+  .ed-loop__card:nth-child(3) { --ed-loop-a: 30deg; }
+  .ed-loop__card:nth-child(4) { --ed-loop-a: 90deg; }
+  .ed-loop__card:nth-child(5) { --ed-loop-a: 150deg; }
+  .ed-loop__card:nth-child(6) { --ed-loop-a: 210deg; }
+  @media (max-width: 699px) {
+    .ed-loop__stage { --ed-loop-rx: 6.75rem; --ed-loop-ry: 12rem; }
+    .ed-loop__card { font-size: var(--ed-fz-base); padding: var(--ed-s-2) var(--ed-s-3); min-height: 5.5rem; margin-top: -2.75rem; }
+  }
   .ed-loop__kicker {
     display: block;
     font-family: var(--ed-body);
@@ -866,9 +871,11 @@
   .ed-loop__card.is-front .ed-loop__kicker { color: var(--ed-accent-strong); }
   .ed-loop__card.is-front {
     color: var(--ed-ink);
-    border-color: var(--ed-hairline-strong);
+    border-color: var(--ed-accent);
+    box-shadow: var(--ed-shadow);
     opacity: 1;
-    transform: rotateY(var(--ed-loop-a)) translateZ(var(--ed-loop-r)) scale(1);
+    z-index: 1;
+    transform: translate(calc(cos(var(--ed-loop-a)) * var(--ed-loop-rx)), calc(sin(var(--ed-loop-a)) * var(--ed-loop-ry))) scale(1.06);
   }
 
 /* ── editorial-content-pages ── */

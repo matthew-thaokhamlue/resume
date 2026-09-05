@@ -4,8 +4,8 @@
      1. Hero: "Product <role>" where the role word swaps one step per
         scroll span (builder, manager, designer, owner, tester, builder)
         and the last step recolours the word to the ink colour.
-     2. The loop: a ring of six station cards rotates one full turn under
-        the scroll; the card facing the viewer is marked .is-front.
+     2. The loop: six station cards on one flat ellipse; the scroll walks
+        the .is-front highlight around them, back to the first, then holds.
    Bails without GSAP or under reduced motion. Every hidden state is
    applied by this script, so the page fails visible.
    ───────────────────────────────────────────────────────────── */
@@ -36,7 +36,7 @@
       scrollTrigger: {
         trigger: hero,
         start: 'top top',
-        end: '+=' + (steps * 80) + '%',
+        end: '+=' + ((steps + 1) * 80) + '%',
         pin: true,
         scrub: 0.5,
         anticipatePin: 1
@@ -55,15 +55,18 @@
       ease: 'none',
       onUpdate: function () { role.style.setProperty('--ed-role-mix', mix.v.toFixed(3)); }
     }, (steps - 1) + 0.4);
+    /* Hold the resolved "Product builder" for one step before the page moves on. */
+    tl.to({}, { duration: 1 });
   }
 
   function initLoopRing() {
     var section = document.querySelector('.ed-loop');
-    var ring = section && section.querySelector('.ed-loop__ring');
-    var cards = ring ? Array.prototype.slice.call(ring.querySelectorAll('.ed-loop__card')) : [];
+    var cards = section ? Array.prototype.slice.call(section.querySelectorAll('.ed-loop__card')) : [];
     if (!section || cards.length < 2) return;
 
     var n = cards.length;
+    /* n highlight steps, one step back to the first station, one held step. */
+    var slots = n + 2;
     var front = 0;
     function setFront(i) {
       if (i === front) return;
@@ -73,19 +76,16 @@
     }
     cards.forEach(function (c, i) { c.classList.toggle('is-front', i === 0); });
 
-    gsap.to(ring, {
-      rotateY: -360,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '+=400%',
-        pin: true,
-        scrub: 0.6,
-        anticipatePin: 1,
-        onUpdate: function (self) {
-          setFront(Math.round(self.progress * n) % n);
-        }
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: '+=' + (slots * 70) + '%',
+      pin: true,
+      anticipatePin: 1,
+      onUpdate: function (self) {
+        var slot = Math.min(Math.floor(self.progress * slots), slots - 1);
+        /* Slots n and n+1 both show the first station: the return, then the hold. */
+        setFront(Math.min(slot, n) % n);
       }
     });
   }
