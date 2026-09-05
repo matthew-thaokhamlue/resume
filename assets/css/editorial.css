@@ -691,15 +691,35 @@
     align-content: center;
     gap: var(--ed-s-5);
   }
-  .ed-hero__mark {
+  .ed-hero__mark-wrap {
     grid-area: mark;
     width: clamp(9rem, 28vw, 22rem);
+    position: relative;
+  }
+  .ed-hero__mark {
+    width: 100%;
     height: auto;
     display: block;
-    stroke: var(--ed-accent);
-    stroke-width: 7;
+    filter: drop-shadow(0 1.25rem 2rem rgba(196, 90, 56, 0.16));
+  }
+  .ed-hero__orbit {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 42%;
+    aspect-ratio: 1;
+    overflow: visible;
+    transform: translate(-50%, -50%) rotate(-90deg);
+  }
+  .ed-hero__orbit-circle {
+    fill: none;
+    stroke: #c45a38;
+    stroke-width: 4;
     stroke-linecap: round;
-    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+    vector-effect: non-scaling-stroke;
   }
   .ed-hero--product .ed-hero__display {
     grid-area: title;
@@ -740,21 +760,20 @@
       column-gap: clamp(2rem, 6vw, 6rem);
       align-items: center;
     }
-    .ed-hero__mark { align-self: center; width: 100%; max-width: 24rem; }
+    .ed-hero__mark-wrap { align-self: center; width: 100%; max-width: 24rem; }
   }
   @media (max-width: 699px) {
     .ed-hero--product .ed-hero__display { font-size: var(--ed-fz-5xl); }
   }
-  /* The mark draws itself on load; pathLength="1" normalises the dash. */
+  /* The painted mark drops into the hero before it becomes the loop guide. */
   @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-    .ed-hero__mark path {
-      stroke-dasharray: 1;
-      stroke-dashoffset: 1;
-      animation: ed-mark-draw 1.1s var(--ed-ease) forwards;
-    }
-    .ed-hero__mark path + path { animation-delay: 180ms; }
+    .ed-hero__mark-wrap { animation: ed-mark-arrive 900ms var(--ed-ease) both; }
   }
-  @keyframes ed-mark-draw { to { stroke-dashoffset: 0; } }
+  @keyframes ed-mark-arrive {
+    from { opacity: 0; transform: translateY(-2rem) rotate(-4deg) scale(0.92); }
+    70% { opacity: 1; transform: translateY(0.35rem) rotate(1.5deg) scale(1.02); }
+    to { opacity: 1; transform: none; }
+  }
 
   .ed-sr-only {
     position: absolute;
@@ -813,11 +832,27 @@
     border: 1px solid var(--ed-hairline-strong);
     border-radius: 50%;
     transform: translate(-50%, -50%);
+    z-index: 0;
     pointer-events: none;
+  }
+  .ed-loop__cursor {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: clamp(2.75rem, 5vw, 4.25rem);
+    height: 0.3rem;
+    z-index: 1;
+    pointer-events: none;
+    transform: translate(-50%, calc(-50% - var(--ed-loop-ry) - 3.5rem));
+    border-radius: 999px;
+    background: #c45a38;
+    box-shadow: 0 0.35rem 1rem rgba(196, 90, 56, 0.32);
+    will-change: transform, opacity;
   }
   .ed-loop__ring {
     position: absolute;
     inset: 0;
+    z-index: 2;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -848,7 +883,7 @@
     opacity: 0.7;
     transition: transform var(--ed-d-base) var(--ed-ease), opacity var(--ed-d-base) var(--ed-ease-soft),
                 color var(--ed-d-base) var(--ed-ease-soft), border-color var(--ed-d-base) var(--ed-ease-soft),
-                box-shadow var(--ed-d-base) var(--ed-ease-soft);
+                box-shadow var(--ed-d-base) var(--ed-ease-soft), background var(--ed-d-base) var(--ed-ease-soft);
   }
   .ed-loop__card:nth-child(2) { --ed-loop-a: -30deg; }
   .ed-loop__card:nth-child(3) { --ed-loop-a: 30deg; }
@@ -871,6 +906,7 @@
   .ed-loop__card.is-front .ed-loop__kicker { color: var(--ed-accent-strong); }
   .ed-loop__card.is-front {
     color: var(--ed-ink);
+    background: color-mix(in oklab, var(--ed-bg-soft), var(--ed-accent) 8%);
     border-color: var(--ed-accent);
     box-shadow: var(--ed-shadow);
     opacity: 1;

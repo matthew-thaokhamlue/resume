@@ -158,7 +158,7 @@ test('index.html keeps the product-hero and loop-ring contract', () => {
   const indexHtml = readText('index.html');
 
   // Markup hooks loop.js depends on
-  for (const hook of ['ed-hero--product', 'ed-hero__mark', 'ed-hero__role', 'ed-hero__role-word', 'ed-loop__ring', 'ed-loop__card']) {
+  for (const hook of ['ed-hero--product', 'ed-hero__mark', 'ed-hero__orbit-circle', 'ed-hero__role', 'ed-hero__role-word', 'ed-loop__cursor', 'ed-loop__ring', 'ed-loop__card']) {
     assert.match(indexHtml, new RegExp(escapeRegExp(hook)), `Missing ${hook}`);
   }
   assert.match(indexHtml, /assets\/js\/loop\.js\?v=/, 'Missing loop.js script tag');

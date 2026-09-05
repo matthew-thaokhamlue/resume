@@ -161,10 +161,13 @@
     <!-- ────────────────  HERO  ──────────────── -->
     <section class="ed-hero ed-hero--product" id="top">
       <div class="ed-hero__inner">
-        <svg class="ed-hero__mark" viewBox="0 0 600 340" fill="none" aria-hidden="true" focusable="false">
-          <path pathLength="1" d="M88 280 C150 200 200 120 246 62 C280 110 315 165 348 210" />
-          <path pathLength="1" d="M174 272 C220 200 268 125 310 62 C360 130 430 200 498 266" />
-        </svg>
+        <div class="ed-hero__mark-wrap" aria-hidden="true">
+          <img class="ed-hero__mark" src="images/m-mark-creative.png" alt=""
+            width="1672" height="941" decoding="async" />
+          <svg class="ed-hero__orbit" viewBox="0 0 100 100" focusable="false">
+            <circle class="ed-hero__orbit-circle" cx="50" cy="50" r="44" pathLength="1"></circle>
+          </svg>
+        </div>
         <h1 class="ed-hero__display">
           <span class="ed-hero__product">Product</span>
           <span class="ed-hero__role" aria-hidden="true">
@@ -203,6 +206,7 @@
           <p class="ed-loop__lede">Strategy sets the KPIs. Delivery ships against them. Telemetry traces the result back to the KPI, and the bottom line says whether it worked.</p>
         </div>
         <div class="ed-loop__stage">
+          <span class="ed-loop__cursor" aria-hidden="true"></span>
           <div class="ed-loop__track" aria-hidden="true"></div>
           <ol class="ed-loop__ring">
             <li class="ed-loop__card is-front"><span class="ed-loop__kicker">Strategy</span>KPIs and strategy</li>
