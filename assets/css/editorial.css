@@ -691,35 +691,28 @@
     align-content: center;
     gap: var(--ed-s-5);
   }
-  .ed-hero__mark-wrap {
+  .ed-hero__mark-home {
     grid-area: mark;
     width: clamp(9rem, 28vw, 22rem);
+    aspect-ratio: 100 / 58;
     position: relative;
   }
-  .ed-hero__mark {
+  .ed-motion-mark {
     width: 100%;
     height: auto;
     display: block;
-    filter: drop-shadow(0 1.25rem 2rem rgba(196, 90, 56, 0.16));
-  }
-  .ed-hero__orbit {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 42%;
-    aspect-ratio: 1;
+    z-index: 45;
     overflow: visible;
-    transform: translate(-50%, -50%) rotate(-90deg);
+    pointer-events: none;
+    filter: drop-shadow(0 1.25rem 2rem rgba(196, 90, 56, 0.16));
+    will-change: transform, opacity;
   }
-  .ed-hero__orbit-circle {
+  .ed-motion-mark__stroke {
     fill: none;
     stroke: #c45a38;
-    stroke-width: 4;
+    stroke-width: 2.4;
     stroke-linecap: round;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    opacity: 0;
-    vector-effect: non-scaling-stroke;
+    stroke-linejoin: round;
   }
   .ed-hero--product .ed-hero__display {
     grid-area: title;
@@ -760,21 +753,11 @@
       column-gap: clamp(2rem, 6vw, 6rem);
       align-items: center;
     }
-    .ed-hero__mark-wrap { align-self: center; width: 100%; max-width: 24rem; }
+    .ed-hero__mark-home { align-self: center; width: 100%; max-width: 24rem; }
   }
   @media (max-width: 699px) {
     .ed-hero--product .ed-hero__display { font-size: var(--ed-fz-5xl); }
   }
-  /* The painted mark drops into the hero before it becomes the loop guide. */
-  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-    .ed-hero__mark-wrap { animation: ed-mark-arrive 900ms var(--ed-ease) both; }
-  }
-  @keyframes ed-mark-arrive {
-    from { opacity: 0; transform: translateY(-2rem) rotate(-4deg) scale(0.92); }
-    70% { opacity: 1; transform: translateY(0.35rem) rotate(1.5deg) scale(1.02); }
-    to { opacity: 1; transform: none; }
-  }
-
   .ed-sr-only {
     position: absolute;
     width: 1px;
@@ -835,20 +818,6 @@
     z-index: 0;
     pointer-events: none;
   }
-  .ed-loop__cursor {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: clamp(2.75rem, 5vw, 4.25rem);
-    height: 0.3rem;
-    z-index: 1;
-    pointer-events: none;
-    transform: translate(-50%, calc(-50% - var(--ed-loop-ry) - 3.5rem));
-    border-radius: 999px;
-    background: #c45a38;
-    box-shadow: 0 0.35rem 1rem rgba(196, 90, 56, 0.32);
-    will-change: transform, opacity;
-  }
   .ed-loop__ring {
     position: absolute;
     inset: 0;
@@ -891,7 +860,7 @@
   .ed-loop__card:nth-child(5) { --ed-loop-a: 150deg; }
   .ed-loop__card:nth-child(6) { --ed-loop-a: 210deg; }
   @media (max-width: 699px) {
-    .ed-loop__stage { --ed-loop-rx: 6.75rem; --ed-loop-ry: 12rem; }
+    .ed-loop__stage { --ed-loop-rx: 5.5rem; --ed-loop-ry: 12rem; }
     .ed-loop__card { font-size: var(--ed-fz-base); padding: var(--ed-s-2) var(--ed-s-3); min-height: 5.5rem; margin-top: -2.75rem; }
   }
   .ed-loop__kicker {

@@ -20,9 +20,18 @@ function classList(initial = []) {
   };
 }
 
-test('the hero M closes into a complete circle before the hero releases', () => {
-  const mark = {};
-  const orbit = {};
+test('the hero M paths merge into one open circular stroke without fading the mark', () => {
+  const strokes = [{}, {}];
+  const mark = {
+    querySelectorAll(selector) {
+      return selector === '.ed-motion-mark__stroke' ? strokes : [];
+    },
+  };
+  const home = {
+    getBoundingClientRect() {
+      return { left: 20, top: 40, width: 300, height: 169 };
+    },
+  };
   const words = Array.from({ length: 6 }, () => ({}));
   const role = {
     style: { setProperty() {} },
@@ -33,8 +42,8 @@ test('the hero M closes into a complete circle before the hero releases', () => 
   const hero = {
     querySelector(selector) {
       return {
-        '.ed-hero__mark': mark,
-        '.ed-hero__orbit-circle': orbit,
+        '.ed-hero__mark-home': home,
+        '.ed-motion-mark': mark,
         '.ed-hero__role': role,
       }[selector] ?? null;
     },
@@ -50,6 +59,8 @@ test('the hero M closes into a complete circle before the hero releases', () => 
   const document = {
     readyState: 'complete',
     fonts: null,
+    body: { appendChild() {} },
+    documentElement: { classList: { add() {} } },
     querySelector(selector) {
       return selector === '.ed-hero--product' ? hero : null;
     },
@@ -70,20 +81,45 @@ test('the hero M closes into a complete circle before the hero releases', () => 
     },
   });
 
-  assert.equal(sets.some(({ target, values }) => target === orbit && values.strokeDashoffset === 1), true);
-  assert.equal(tweens.some(({ target, values }) => target === mark && values.opacity === 0), true);
-  assert.equal(tweens.some(({ target, values }) => target === orbit && values.strokeDashoffset === 0 && values.opacity === 1), true);
+  const morphs = tweens.filter(({ target, values }) => strokes.includes(target) && values.attr?.d);
+  assert.equal(morphs.length, 2, 'both M strokes must reshape into the open circle');
+  assert.equal(tweens.some(({ target, values }) => target === mark && values.opacity === 0), false);
 });
 
-test('the loop cursor visits Planning, returns to Strategy, then exits upward', () => {
+test('the same open-circle mark lands above Strategy and travels outside the loop rim', () => {
+  const strokes = [{}, {}];
+  const mark = {
+    querySelectorAll(selector) {
+      return selector === '.ed-motion-mark__stroke' ? strokes : [];
+    },
+  };
+  const homeRect = { left: 20, top: 40, width: 300, height: 169 };
+  const home = { getBoundingClientRect: () => homeRect };
+  const words = Array.from({ length: 6 }, () => ({}));
+  const role = {
+    style: { setProperty() {} },
+    querySelectorAll(selector) {
+      return selector === '.ed-hero__role-word' ? words : [];
+    },
+  };
+  const hero = {
+    querySelector(selector) {
+      return {
+        '.ed-hero__mark-home': home,
+        '.ed-motion-mark': mark,
+        '.ed-hero__role': role,
+      }[selector] ?? null;
+    },
+  };
   const cards = Array.from({ length: 6 }, (_, index) => ({
+    offsetWidth: 200,
     offsetHeight: 100,
     classList: classList(index === 0 ? ['is-front'] : []),
   }));
-  const cursor = { offsetWidth: 64, offsetHeight: 4 };
   const stage = { clientHeight: 500 };
-  const track = { offsetWidth: 1000, offsetHeight: 300 };
-  const cursorUpdates = [];
+  const trackRect = { left: 100, top: 200, width: 1000, height: 300 };
+  const track = { getBoundingClientRect: () => trackRect };
+  const markUpdates = [];
   const scrollTriggers = [];
   const section = {
     querySelectorAll(selector) {
@@ -91,7 +127,6 @@ test('the loop cursor visits Planning, returns to Strategy, then exits upward', 
     },
     querySelector(selector) {
       return {
-        '.ed-loop__cursor': cursor,
         '.ed-loop__stage': stage,
         '.ed-loop__track': track,
       }[selector] ?? null;
@@ -100,7 +135,9 @@ test('the loop cursor visits Planning, returns to Strategy, then exits upward', 
   const document = {
     readyState: 'complete',
     fonts: null,
+    body: { appendChild() {} },
     querySelector(selector) {
+      if (selector === '.ed-hero--product') return hero;
       if (selector === '.ed-loop') return section;
       return null;
     },
@@ -108,7 +145,11 @@ test('the loop cursor visits Planning, returns to Strategy, then exits upward', 
   const gsap = {
     registerPlugin() {},
     set(target, values) {
-      if (target === cursor) cursorUpdates.push(values);
+      if (target === mark) markUpdates.push(values);
+    },
+    timeline() {
+      const timeline = { to() { return timeline; } };
+      return timeline;
     },
   };
   const ScrollTrigger = {
@@ -116,33 +157,60 @@ test('the loop cursor visits Planning, returns to Strategy, then exits upward', 
   };
 
   const source = fs.readFileSync(path.join(repoRoot, 'assets/js/loop.js'), 'utf8');
-  vm.runInNewContext(source, {
-    document,
-    window: {
-      gsap,
-      ScrollTrigger,
-      matchMedia: () => ({ matches: false }),
-    },
-  });
+  const browserWindow = {
+    gsap,
+    ScrollTrigger,
+    innerHeight: 800,
+    innerWidth: 1280,
+    matchMedia: () => ({ matches: false }),
+  };
+  vm.runInNewContext(source, { document, window: browserWindow });
 
-  assert.equal(scrollTriggers.length, 1);
-  const update = scrollTriggers[0].onUpdate;
+  assert.equal(scrollTriggers.length, 2);
+  const handoff = scrollTriggers.find(({ start }) => start === 'top bottom');
+  const loop = scrollTriggers.find(({ start }) => start === 'top top');
+  handoff.onUpdate({ progress: 1 });
+  const stagedState = markUpdates.at(-1);
+  const stagedCenterY = stagedState.y + homeRect.height / 2;
+  loop.onUpdate({ progress: 0.0625 });
+  const descendingState = markUpdates.at(-1);
+  assert.ok(descendingState.y + homeRect.height / 2 > stagedCenterY, 'the mark did not move down to Strategy');
+
+  const update = loop.onUpdate;
+
+  update({ progress: 0.125 });
+  const strategyState = markUpdates.at(-1);
+  const strategyCenter = {
+    x: strategyState.x + homeRect.width / 2,
+    y: strategyState.y + homeRect.height / 2,
+  };
+  assert.ok(Math.abs(strategyCenter.x - 600) < 1, 'the mark did not land over Strategy');
+  assert.ok(strategyCenter.y < trackRect.top, 'the mark did not land outside the top rim');
 
   update({ progress: 0.25 });
-  assert.ok(cursorUpdates.length > 0, 'the travelling cursor was not positioned');
   assert.equal(cards[1].classList.contains('is-front'), true, 'Planning was not highlighted');
-  const planningCursorState = cursorUpdates.at(-1);
-  const planningCardTop = (Math.sin(-30 * Math.PI / 180) * track.offsetHeight / 2) - cards[1].offsetHeight / 2;
-  assert.ok(
-    planningCursorState.y + cursor.offsetHeight / 2 < planningCardTop - 24,
-    'the cursor does not clear the active card',
-  );
+  const planningState = markUpdates.at(-1);
+  const planningCenter = {
+    x: planningState.x + homeRect.width / 2,
+    y: planningState.y + homeRect.height / 2,
+  };
+  const planningCardRight = 600 + Math.cos(-30 * Math.PI / 180) * 500 + cards[1].offsetWidth / 2;
+  assert.ok(planningCenter.x > planningCardRight, 'the mark overlapped the Planning card');
+  const normalizedDistance = ((planningCenter.x - 600) / 500) ** 2 + ((planningCenter.y - 350) / 150) ** 2;
+  assert.ok(normalizedDistance > 1, 'the mark travelled inside the loop rim');
+
+  Object.assign(trackRect, { left: 107, top: 200, width: 176, height: 384 });
+  browserWindow.innerWidth = 390;
+  update({ progress: 0.3125 });
+  const mobileState = markUpdates.at(-1);
+  const mobileCenterX = mobileState.x + homeRect.width / 2;
+  assert.ok(mobileCenterX <= 361, 'the pointer left the mobile viewport');
 
   update({ progress: 0.875 });
   assert.equal(cards[0].classList.contains('is-front'), true, 'Strategy was not highlighted on return');
 
   update({ progress: 1 });
-  const finalCursorState = cursorUpdates.at(-1);
-  assert.equal(finalCursorState.opacity, 0);
-  assert.ok(finalCursorState.y < -stage.clientHeight / 2, 'the cursor did not exit upward');
+  const finalMarkState = markUpdates.at(-1);
+  assert.equal(finalMarkState.opacity, 0);
+  assert.ok(finalMarkState.y < strategyState.y, 'the mark did not exit upward');
 });
