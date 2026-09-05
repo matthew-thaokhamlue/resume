@@ -1,216 +1,159 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import path from 'node:path';
 import vm from 'node:vm';
-import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const source = fs.readFileSync(new URL('../assets/js/loop.js', import.meta.url), 'utf8');
 
-function classList(initial = []) {
-  const values = new Set(initial);
-  return {
-    add(value) { values.add(value); },
-    remove(value) { values.delete(value); },
-    toggle(value, force) {
-      if (force) values.add(value);
-      else values.delete(value);
+// Execute the production scroll callbacks and frame updates with a controlled clock.
+function scene(reduced = false) {
+  function element(attributes = {}) {
+    return {
+      style: {}, attributes, state: {},
+      getAttribute: key => attributes[key],
+      setAttribute(key, value) { attributes[key] = String(value); },
+    };
+  }
+  const strokes = [
+    element({ d: 'M4 51 C17 45 28 26 40 8 C47 19 54 35 66 43' }),
+    element({ d: 'M25 51 C39 45 52 25 63 8 C72 20 84 43 96 51' }),
+  ];
+  const head = element();
+  const gradient = element();
+  const mark = element();
+  mark.querySelectorAll = () => strokes;
+  mark.querySelector = selector => selector === '.ed-motion-mark__head' ? head : gradient;
+  const home = { left: 20, top: 40, width: 300, height: 174 };
+  const role = { querySelectorAll: () => Array.from({ length: 6 }, element), style: { setProperty() {} } };
+  const hero = { getBoundingClientRect: () => ({ top: 0 }), querySelector: selector => ({
+    '.ed-hero__role': role,
+    '.ed-hero__mark-home': { getBoundingClientRect: () => home },
+    '.ed-motion-mark': mark,
+  })[selector] };
+  const cards = Array.from({ length: 6 }, () => {
+    const classes = new Set();
+    return { offsetWidth: 200, offsetHeight: 100, classList: {
+      add: value => classes.add(value),
+      remove: value => classes.delete(value),
+      contains: value => classes.has(value),
+      toggle: (value, force) => force ? classes.add(value) : classes.delete(value),
+    } };
+  });
+  const track = { left: 100, top: 200, width: 1000, height: 300 };
+  const section = {
+    querySelectorAll: () => cards,
+    querySelector: selector => selector === '.ed-loop__stage'
+      ? { clientHeight: 500 } : { getBoundingClientRect: () => track },
+  };
+  const tickers = new Set();
+  const tweens = [];
+  const triggers = [];
+  let heroTimeline;
+  const appended = [];
+  const gsap = {
+    registerPlugin() {},
+    set(target, values) { Object.assign(target.state, values); },
+    ticker: { add: fn => tickers.add(fn), remove: fn => tickers.delete(fn) },
+    timeline(config) {
+      heroTimeline = config;
+      const timeline = { to(target, values) { tweens.push({ target, values }); return timeline; } };
+      return timeline;
     },
-    contains(value) { return values.has(value); },
+  };
+  const window = {
+    gsap, innerWidth: 1280, innerHeight: 800,
+    ScrollTrigger: { create: config => triggers.push(config) },
+    matchMedia: () => ({ matches: reduced }),
+  };
+  const document = {
+    readyState: 'complete',
+    body: { appendChild: node => appended.push(node) },
+    querySelector: selector => selector === '.ed-hero--product' ? hero : section,
+  };
+  vm.runInNewContext(source, { document, window });
+  let time = 0;
+  function frames(count = 120) {
+    for (let i = 0; i < count; i++) {
+      time += 1 / 60;
+      [...tickers].forEach(tick => tick(time, 1000 / 60));
+    }
+  }
+  return {
+    mark, head, strokes, home, track, cards, window, tickers, appended, frames, triggers, heroTimeline,
+    morph(progress) {
+      const tween = tweens.find(({ values }) => values.duration === 0.75 && values.onUpdate);
+      assert.ok(tween, 'the M-to-star morph is missing');
+      tween.target.v = progress;
+      tween.values.onUpdate();
+      frames();
+    },
+    move(progress, count = 120) {
+      triggers.find(({ start }) => start === 'top top').onUpdate({ progress });
+      frames(count);
+    },
+    center: () => ({ x: mark.state.x + home.width / 2, y: mark.state.y + home.height / 2 }),
   };
 }
 
-test('the hero M paths merge into one open circular stroke without fading the mark', () => {
-  const strokes = [{}, {}];
-  const mark = {
-    querySelectorAll(selector) {
-      return selector === '.ed-motion-mark__stroke' ? strokes : [];
-    },
-  };
-  const home = {
-    getBoundingClientRect() {
-      return { left: 20, top: 40, width: 300, height: 169 };
-    },
-  };
-  const words = Array.from({ length: 6 }, () => ({}));
-  const role = {
-    style: { setProperty() {} },
-    querySelectorAll(selector) {
-      return selector === '.ed-hero__role-word' ? words : [];
-    },
-  };
-  const hero = {
-    querySelector(selector) {
-      return {
-        '.ed-hero__mark-home': home,
-        '.ed-motion-mark': mark,
-        '.ed-hero__role': role,
-      }[selector] ?? null;
-    },
-  };
-  const sets = [];
-  const tweens = [];
-  const timeline = {
-    to(target, values, at) {
-      tweens.push({ target, values, at });
-      return timeline;
-    },
-  };
-  const document = {
-    readyState: 'complete',
-    fonts: null,
-    body: { appendChild() {} },
-    documentElement: { classList: { add() {} } },
-    querySelector(selector) {
-      return selector === '.ed-hero--product' ? hero : null;
-    },
-  };
-  const gsap = {
-    registerPlugin() {},
-    set(target, values) { sets.push({ target, values }); },
-    timeline() { return timeline; },
-  };
-
-  const source = fs.readFileSync(path.join(repoRoot, 'assets/js/loop.js'), 'utf8');
-  vm.runInNewContext(source, {
-    document,
-    window: {
-      gsap,
-      ScrollTrigger: { refresh() {} },
-      matchMedia: () => ({ matches: false }),
-    },
-  });
-
-  const morphs = tweens.filter(({ target, values }) => strokes.includes(target) && values.attr?.d);
-  assert.equal(morphs.length, 2, 'both M strokes must reshape into the open circle');
-  assert.equal(tweens.some(({ target, values }) => target === mark && values.opacity === 0), false);
+test('the M becomes a star whose head turns and tail stretches, curves and settles after movement', () => {
+  const s = scene();
+  const original = s.strokes.map(stroke => stroke.getAttribute('d'));
+  s.morph(0.5);
+  assert.ok(Number(s.head.style.opacity) > 0 && Number(s.head.style.opacity) < 1);
+  s.strokes.forEach((stroke, i) => assert.notEqual(stroke.getAttribute('d'), original[i]));
+  s.morph(1);
+  assert.equal(Number(s.head.style.opacity), 1);
+  assert.equal(s.appended.length, 1, 'the star must reuse the hero SVG');
+  assert.equal(s.mark.state.opacity, 1);
+  s.move(0.25);
+  s.heroTimeline.onUpdate();
+  s.frames();
+  assert.ok(Math.abs(s.center().x - 170) < 1, 'a later trigger must not pull the star away from the pinned hero');
+  s.move(0.125);
+  s.move(0.24, 5);
+  const movingTrail = s.strokes[0].getAttribute('d');
+  const forward = s.head.getAttribute('transform');
+  s.move(0.30, 5);
+  assert.notEqual(s.strokes[0].getAttribute('d'), movingTrail, 'the tail must deform while turning');
+  s.frames(180);
+  assert.notEqual(s.strokes[0].getAttribute('d'), movingTrail, 'the tail must settle after scrolling stops');
+  assert.equal(s.tickers.size, 0, 'idle animation must release the frame callback');
+  s.move(0.20, 8);
+  assert.notEqual(s.head.getAttribute('transform'), forward, 'the head must turn when scrolling reverses');
+  s.morph(0);
+  assert.equal(Number(s.head.style.opacity), 0);
+  assert.deepEqual(s.strokes.map(stroke => stroke.getAttribute('d')), original);
 });
 
-test('the same open-circle mark lands above Strategy and travels outside the loop rim', () => {
-  const strokes = [{}, {}];
-  const mark = {
-    querySelectorAll(selector) {
-      return selector === '.ed-motion-mark__stroke' ? strokes : [];
-    },
-  };
-  const homeRect = { left: 20, top: 40, width: 300, height: 169 };
-  const home = { getBoundingClientRect: () => homeRect };
-  const words = Array.from({ length: 6 }, () => ({}));
-  const role = {
-    style: { setProperty() {} },
-    querySelectorAll(selector) {
-      return selector === '.ed-hero__role-word' ? words : [];
-    },
-  };
-  const hero = {
-    querySelector(selector) {
-      return {
-        '.ed-hero__mark-home': home,
-        '.ed-motion-mark': mark,
-        '.ed-hero__role': role,
-      }[selector] ?? null;
-    },
-  };
-  const cards = Array.from({ length: 6 }, (_, index) => ({
-    offsetWidth: 200,
-    offsetHeight: 100,
-    classList: classList(index === 0 ? ['is-front'] : []),
-  }));
-  const stage = { clientHeight: 500 };
-  const trackRect = { left: 100, top: 200, width: 1000, height: 300 };
-  const track = { getBoundingClientRect: () => trackRect };
-  const markUpdates = [];
-  const scrollTriggers = [];
-  const section = {
-    querySelectorAll(selector) {
-      return selector === '.ed-loop__card' ? cards : [];
-    },
-    querySelector(selector) {
-      return {
-        '.ed-loop__stage': stage,
-        '.ed-loop__track': track,
-      }[selector] ?? null;
-    },
-  };
-  const document = {
-    readyState: 'complete',
-    fonts: null,
-    body: { appendChild() {} },
-    querySelector(selector) {
-      if (selector === '.ed-hero--product') return hero;
-      if (selector === '.ed-loop') return section;
-      return null;
-    },
-  };
-  const gsap = {
-    registerPlugin() {},
-    set(target, values) {
-      if (target === mark) markUpdates.push(values);
-    },
-    timeline() {
-      const timeline = { to() { return timeline; } };
-      return timeline;
-    },
-  };
-  const ScrollTrigger = {
-    create(config) { scrollTriggers.push(config); },
-  };
+test('the star follows the outer loop, stays on mobile and exits after returning to Strategy', () => {
+  const s = scene();
+  s.morph(1);
+  s.triggers.find(({ start }) => start === 'top bottom').onUpdate({ progress: 1 });
+  s.frames();
+  const staged = s.center().y;
+  s.move(0.0625);
+  assert.ok(s.center().y > staged, 'the star must descend to Strategy');
+  s.move(0.125);
+  assert.ok(Math.abs(s.center().x - 600) < 1);
+  assert.ok(s.center().y < s.track.top);
+  s.move(0.25);
+  assert.ok(s.cards[1].classList.contains('is-front'));
+  assert.ok(s.center().x > 1133, 'the star must clear the Planning card');
+  Object.assign(s.track, { left: 107, top: 200, width: 176, height: 384 });
+  s.window.innerWidth = 390;
+  s.move(0.3125);
+  assert.ok(s.center().x <= 362, 'the star left the mobile viewport');
+  s.move(0.875);
+  assert.ok(s.cards[0].classList.contains('is-front'));
+  const strategyY = s.center().y;
+  s.move(1);
+  assert.equal(s.mark.state.opacity, 0);
+  assert.ok(s.center().y < strategyY);
+});
 
-  const source = fs.readFileSync(path.join(repoRoot, 'assets/js/loop.js'), 'utf8');
-  const browserWindow = {
-    gsap,
-    ScrollTrigger,
-    innerHeight: 800,
-    innerWidth: 1280,
-    matchMedia: () => ({ matches: false }),
-  };
-  vm.runInNewContext(source, { document, window: browserWindow });
-
-  assert.equal(scrollTriggers.length, 2);
-  const handoff = scrollTriggers.find(({ start }) => start === 'top bottom');
-  const loop = scrollTriggers.find(({ start }) => start === 'top top');
-  handoff.onUpdate({ progress: 1 });
-  const stagedState = markUpdates.at(-1);
-  const stagedCenterY = stagedState.y + homeRect.height / 2;
-  loop.onUpdate({ progress: 0.0625 });
-  const descendingState = markUpdates.at(-1);
-  assert.ok(descendingState.y + homeRect.height / 2 > stagedCenterY, 'the mark did not move down to Strategy');
-
-  const update = loop.onUpdate;
-
-  update({ progress: 0.125 });
-  const strategyState = markUpdates.at(-1);
-  const strategyCenter = {
-    x: strategyState.x + homeRect.width / 2,
-    y: strategyState.y + homeRect.height / 2,
-  };
-  assert.ok(Math.abs(strategyCenter.x - 600) < 1, 'the mark did not land over Strategy');
-  assert.ok(strategyCenter.y < trackRect.top, 'the mark did not land outside the top rim');
-
-  update({ progress: 0.25 });
-  assert.equal(cards[1].classList.contains('is-front'), true, 'Planning was not highlighted');
-  const planningState = markUpdates.at(-1);
-  const planningCenter = {
-    x: planningState.x + homeRect.width / 2,
-    y: planningState.y + homeRect.height / 2,
-  };
-  const planningCardRight = 600 + Math.cos(-30 * Math.PI / 180) * 500 + cards[1].offsetWidth / 2;
-  assert.ok(planningCenter.x > planningCardRight, 'the mark overlapped the Planning card');
-  const normalizedDistance = ((planningCenter.x - 600) / 500) ** 2 + ((planningCenter.y - 350) / 150) ** 2;
-  assert.ok(normalizedDistance > 1, 'the mark travelled inside the loop rim');
-
-  Object.assign(trackRect, { left: 107, top: 200, width: 176, height: 384 });
-  browserWindow.innerWidth = 390;
-  update({ progress: 0.3125 });
-  const mobileState = markUpdates.at(-1);
-  const mobileCenterX = mobileState.x + homeRect.width / 2;
-  assert.ok(mobileCenterX <= 361, 'the pointer left the mobile viewport');
-
-  update({ progress: 0.875 });
-  assert.equal(cards[0].classList.contains('is-front'), true, 'Strategy was not highlighted on return');
-
-  update({ progress: 1 });
-  const finalMarkState = markUpdates.at(-1);
-  assert.equal(finalMarkState.opacity, 0);
-  assert.ok(finalMarkState.y < strategyState.y, 'the mark did not exit upward');
+test('reduced motion leaves the static M in place without animation work', () => {
+  const s = scene(true);
+  assert.equal(s.appended.length, 0);
+  assert.equal(s.triggers.length, 0);
+  assert.equal(s.tickers.size, 0);
 });
