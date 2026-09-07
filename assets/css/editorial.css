@@ -714,6 +714,8 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
+  /* The brush image is the M at rest; the strokes only draw the star trail. */
+  .ed-motion-mark__brush ~ .ed-motion-mark__stroke { opacity: 0; }
   .ed-motion-mark__head {
     fill: #c45a38;
     stroke: #c45a38;
