@@ -7,6 +7,7 @@
     var original = strokes.map(function (stroke) {
       return stroke.getAttribute('d').match(/-?\d*\.?\d+/g).map(Number);
     });
+    var brush = mark.querySelector('.ed-motion-mark__brush');
     var gradientId = gradient.getAttribute('id') || 'ed-star-trail';
     var morph = { v: 0 };
     var target = { x: home.left + home.width / 2, y: home.top + home.height / 2, scale: 1, opacity: 1 };
@@ -63,8 +64,10 @@
         });
         stroke.setAttribute('d', 'M' + blended.slice(0, 2).join(' ') + ' C' + blended.slice(2, 8).join(' ') + ' C' + blended.slice(8).join(' '));
         stroke.style.stroke = morph.v > 0.98 ? 'url(#' + gradientId + ')' : '#c45a38';
-        stroke.style.opacity = 1 - (i ? 0.4 : 0) * morph.v;
+        // With a brush image at rest, the strokes only appear as the star forms.
+        stroke.style.opacity = (brush ? morph.v : 1) * (1 - (i ? 0.4 : 0) * morph.v);
       });
+      if (brush) brush.style.opacity = 1 - morph.v;
       gradient.setAttribute('x2', localTrail[5].x);
       gradient.setAttribute('y2', localTrail[5].y);
       var stretch = Math.min(speed / 1200, 0.22) * morph.v;
