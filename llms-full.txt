@@ -79,6 +79,13 @@ LabTwin was acquired by Labforward; Matthew's product ownership continued throug
 - Built a second eval for the step that reads scholarship pages, which was inventing dates. Twelve hand-checked pages showed a bigger model was no better - both invented a date 17% of the time - so a two-sentence prompt fix, not a costlier model, took it to zero. Those checks now guard the live data.
 - Inspired by the DAAD scholarship that changed his own path in 2018; aimed first at students in the Mekong region.
 
+### Remarcable Living (remarcableliving.co) — Design and build
+**Sep 2026**
+
+- Bangkok condo-rental website for exchange students and interns: pick a neighbourhood first, then the home, with dedicated pages for residences, neighbourhoods, student housing, about, and contact.
+- Took over a half-finished build that was broken in production (dead navigation, a 404ing student-housing link, missing-media errors, homepage-anchor menus, a hero that spilled its frame on tablets) and turned it into a production-grade site: real routes, a build-time media manifest with honest fallbacks, full-page navigation, tablet fixes, a branded 404, sitemap and robots rules.
+- Designed and shipped a scroll-driven cinematic hero that hands off into the live residence collection, plus a design-token system with shared navigation and footer; every change shipped with a rendered-HTML test run and headless-browser QA evidence, driven through his Claude Code workflow.
+
 ## Education
 
 ### Master of International and Development Economics
