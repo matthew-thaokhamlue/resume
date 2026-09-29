@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -290,6 +291,14 @@ test('the motion layer fails visible', () => {
   const baseReveal = editorialCss.match(/\n {2}\.reveal \{([^}]*)\}/);
   assert.ok(baseReveal, 'Could not find the base .reveal rule');
   assert.doesNotMatch(baseReveal[1], /opacity:\s*0/, 'base .reveal must not hide content ungated');
+});
+
+test('design documents stay out of the public repo', () => {
+  const ignore = readText('.gitignore');
+  assert.match(ignore, /^docs\/plans\/$/m, '.gitignore must list docs/plans/');
+  assert.match(ignore, /^docs\/research\/$/m, '.gitignore must list docs/research/');
+  const tracked = execFileSync('git', ['ls-files', 'docs/plans', 'docs/research'], { cwd: repoRoot, encoding: 'utf8' }).trim();
+  assert.equal(tracked, '', `design documents are tracked:\n${tracked}`);
 });
 
 test('AI Match prompt template exists for the configured prompt version', () => {
