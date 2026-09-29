@@ -60,9 +60,7 @@
     mode = m;
     if (entering) flourish();
     applyLabel();
-    labelText.style.setProperty('--pop', '0.55');
-    void labelText.offsetWidth;   // restart the pop transition
-    labelText.style.setProperty('--pop', '1');
+    labelText.animate([{ transform: 'translate(22px, -50%) scale(0.55)' }, { transform: 'translate(22px, -50%) scale(1)' }], { duration: 280, easing: 'cubic-bezier(0.2, 0.9, 0.3, 1.35)' });   // the pill pops in on each mode change
     wake();
   }
 
