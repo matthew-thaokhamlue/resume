@@ -212,6 +212,12 @@ test('the drag hint shows only while the ring answers a drag', () => {
   assert.ok(add > handlers, 'the class comes after the pointer handlers');
 });
 
+test('a lost WebGL context hides the dead canvas and the drag hint', () => {
+  const js = readText('assets/js/loop-hero.js');
+  assert.match(js, /'webglcontextlost'[\s\S]{0,400}canvas\.style\.display = 'none'/, 'a dead canvas paints over the ellipse');
+  assert.match(js, /'webglcontextlost'[\s\S]{0,400}classList\.remove\('is-draggable'\)/, 'the ring no longer answers a drag');
+});
+
 test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {

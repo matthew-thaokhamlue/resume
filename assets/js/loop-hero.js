@@ -192,6 +192,7 @@
     window.addEventListener('scroll', () => { if (!active) return; const r = stage.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; scrollFlow = window.scrollY / 1400; render(); }, { passive: true });
     canvas.addEventListener('webglcontextlost', (e) => {
       e.preventDefault(); active = false; orbit.style.visibility = 'visible';
+      canvas.style.display = 'none'; section.classList.remove('is-draggable');   // the dead canvas would cover the ellipse
       writeFrom = tourFrom = null; writePending = tourPending = false;   // the loop stops here, so show the end state now
       drawMark(1); progress = 1; hoverIdx = -1; highlight();
     });
