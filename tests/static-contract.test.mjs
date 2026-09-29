@@ -284,6 +284,30 @@ test('every reveal target opens a dialog in the same page', () => {
   assert.match(css, /\.star-on \.ed-reveal__close:not\(:focus-visible\) \{ opacity: 0; \}/, 'the close button hides for the star only, and shows on keyboard focus');
 });
 
+test('the star cursor guards on a fine pointer and reduced motion, and stays on top', () => {
+  const js = readText('assets/js/star-cursor.js');
+  assert.match(js, /matchMedia\('\(pointer: fine\)'\)/);
+  assert.match(js, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+  assert.match(js, /classList\.add\('no-star'\)/, 'without a working canvas the native cursor must stay');
+  const ctxAt = js.indexOf("getContext('2d')");
+  const starOnAt = js.indexOf("classList.add('star-on')");
+  assert.ok(ctxAt > 0 && starOnAt > ctxAt, 'star-on (which hides the native cursor) must come after the canvas check');
+  assert.match(js, /attributeFilter: \['open'\]/, 'the star must follow any dialog into the top layer');
+  assert.match(js, /\n\s*follow\(\);/, 'the star must join a reveal that opened before this script ran (a deep link)');
+
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /\.star-on, \.star-on \* \{ cursor: none !important; \}/);
+  assert.match(css, /\.star-on input, \.star-on textarea, \.star-on select, \.star-on \[contenteditable="true"\] \{ cursor: text !important; \}/);
+  const z = css.match(/\.ed-star-layer \{[^}]*z-index: (\d+);/);
+  assert.ok(z && Number(z[1]) > 100, 'the star layer must sit above the cookie banner and the mobile menu');
+
+  for (const file of listHtmlFiles()) {
+    const name = relative(file);
+    if (NON_CONTENT.has(name) || name === 'index.html') continue;   // the home page joins in PR B
+    assert.match(fs.readFileSync(file, 'utf8'), /assets\/js\/star-cursor\.js\?v=20260929/, `${name} must load star-cursor.js`);
+  }
+});
+
 test('AI Match prompt template exists for the configured prompt version', () => {
   const aiMatchJs = readText('assets/js/ai-match.js');
   const versionMatch = aiMatchJs.match(/const PROMPT_VERSION = ['"]([^'"]+)['"]/);
