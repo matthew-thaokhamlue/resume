@@ -41,7 +41,7 @@ const NON_CONTENT = new Set([
 ]);
 const FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap';
 
-test('content pages share one fonts link with the Instrument Sans width axis', () => {
+test('content pages share one fonts link with the Instrument Sans width and italic axes', () => {
   const failures = [];
   for (const file of listHtmlFiles()) {
     const name = relative(file);
@@ -57,11 +57,14 @@ test('editorial.css carries the neutral tokens and the clay accent', () => {
   const light = css.match(/\n {2}:root \{([\s\S]*?)\n {2}\}/);
   const dark = css.match(/:root\[data-theme="dark"\] \{([\s\S]*?)\n {2}\}/);
   assert.ok(light && dark, 'token blocks not found');
-  for (const [name, value] of [['--ed-bg', '#ffffff'], ['--ed-ink', '#111111'], ['--ed-ink-mute', '#767672'], ['--ed-accent', '#c45a38'], ['--ed-panel', '#f1f1ef'], ['--ed-field', '#c9cdd4']]) {
-    assert.match(light[1], new RegExp(`${name}:\\s*${value};`), `light ${name}`);
+  const escape = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  for (const [name, value] of [['--ed-bg', '#ffffff'], ['--ed-ink', '#111111'], ['--ed-ink-mute', '#767672'], ['--ed-accent', '#c45a38'], ['--ed-panel', '#f1f1ef'], ['--ed-field', '#c9cdd4'],
+    ['--ed-panel-hover', '#e9e9e6'], ['--ed-accent-strong', '#a8431f'], ['--ed-accent-tint', '#f6e9e3'], ['--ed-card-shadow', '0 10px 30px rgba(17, 17, 17, 0.07)']]) {
+    assert.match(light[1], new RegExp(`${name}:\\s*${escape(value)};`), `light ${name}`);
   }
-  for (const [name, value] of [['--ed-bg', '#0c0c0d'], ['--ed-ink', '#f4f4f2'], ['--ed-ink-mute', '#7c7c78'], ['--ed-accent', '#e0764f'], ['--ed-panel', '#18181a'], ['--ed-field', '#1b1e23']]) {
-    assert.match(dark[1], new RegExp(`${name}:\\s*${value};`), `dark ${name}`);
+  for (const [name, value] of [['--ed-bg', '#0c0c0d'], ['--ed-ink', '#f4f4f2'], ['--ed-ink-mute', '#7c7c78'], ['--ed-accent', '#e0764f'], ['--ed-panel', '#18181a'], ['--ed-field', '#1b1e23'],
+    ['--ed-panel-hover', '#1f1f22'], ['--ed-accent-strong', '#eb8a66'], ['--ed-accent-tint', '#2a1b15'], ['--ed-card-shadow', '0 10px 30px rgba(0, 0, 0, 0.5)']]) {
+    assert.match(dark[1], new RegExp(`${name}:\\s*${escape(value)};`), `dark ${name}`);
   }
   assert.match(light[1], /--ed-display:\s*"Instrument Sans"/);
   assert.match(light[1], /--ed-mono:\s*"IBM Plex Mono"/);
@@ -277,7 +280,18 @@ test('index.html shows four results with receipts and the How I work band', () =
   assert.doesNotMatch(html, /Seven more recommendations/, 'the testimonials link carries no count');
   assert.match(html, /<h2 class="ed-cta__line">Contact<\/h2>/, 'the contact heading is plain');
   assert.doesNotMatch(html, /Have ideas worth/, 'the old contact slogan leaves the page');
-  assert.doesNotMatch(html, /dialog:not\(\[open\]\)/, 'an inline dialog:not([open]) rule hides the receipts without scripts');
+});
+
+test('no inline style block overrides the no-script reveal fallback', () => {
+  for (const file of listHtmlFiles()) {
+    const name = relative(file);
+    if (NON_CONTENT.has(name)) continue;
+    const inline = [...fs.readFileSync(file, 'utf8').matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n');
+    // A later author rule wins the tie with the no-script rule in editorial.css, so the reveals would stay hidden.
+    assert.doesNotMatch(inline, /dialog:not\(\[open\]\)/, `${name}: an inline dialog:not([open]) rule hides the reveals without scripts`);
+    assert.doesNotMatch(inline, /(^|[\s,{}])dialog\[open\]/, `${name}: an inline dialog[open] rule restyles every open reveal`);
+  }
+  assert.match(readText('index.html'), /#ai-match-modal\[open\], #testimonial-modal\[open\] \{ display: flex; \}/, 'the home modals keep their flex layout');
 });
 
 test('tiles and panels take their names from the visible text (WCAG 2.5.3)', () => {
@@ -352,6 +366,7 @@ test('every reveal target opens a dialog in the same page', () => {
   const siteJs = readText('assets/js/site.js');
   assert.match(siteJs, /case 'open-reveal':/);
   assert.match(siteJs, /closest\('dialog\.ed-reveal\[open\]'\)/, 'a click inside an open reveal must close it');
+  assert.match(siteJs, /target\.closest\('\.ed-reveal__close'\) \|\| \(!target\.closest\('a'\)/, 'the close button closes the reveal even with text selected; a link click does not close it');
   assert.match(siteJs, /'hashchange'/, 'a URL fragment must open its reveal');
 
   const css = readText('assets/css/editorial.css');
@@ -401,7 +416,22 @@ test('the home page head carries the headline', () => {
   // The footer line keeps the old headline on every page until a later review, so this assert reads only the head.
   const headEnd = html.indexOf('</head>');
   assert.ok(headEnd > 0, 'index.html has a </head>');
-  assert.doesNotMatch(html.slice(0, headEnd), /Builder · AI Workflow Architect/, 'the old headline leaves the head');
+  const head = html.slice(0, headEnd);
+  assert.doesNotMatch(head, /Builder · AI Workflow Architect/, 'the old headline leaves the head');
+  assert.doesNotMatch(head, /[Bb]uilder and AI workflow architect/, 'the old description leaves the head');
+
+  const TITLE = 'Matthew Thaokhamlue – Senior AI Product Manager';
+  const DESC = 'Senior AI Product Manager at Sema, and product manager for Liz, Sema’s AI agent. Earlier roles at Labforward, LabTwin, Thryve and EY.';
+  const q = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  for (const attr of ['property="og:title"', 'name="twitter:title"']) {
+    assert.match(head, new RegExp(`<meta ${attr}\\s+content="${q(TITLE)}"`), `${attr} carries the headline`);
+  }
+  for (const attr of ['name="description"', 'property="og:description"', 'name="twitter:description"']) {
+    assert.match(head, new RegExp(`<meta ${attr}\\s+content="${q(DESC)}"`), `${attr} carries the approved description`);
+  }
+  const ld = JSON.parse(head.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  assert.equal(ld.description, DESC, 'the JSON-LD description');
+  assert.equal(ld.hasOccupation[0].name, 'Senior AI Product Manager', 'the JSON-LD occupation follows the job title');
 });
 
 test('experience.html keeps the AI Match hooks inside the role reveals', () => {
@@ -416,6 +446,7 @@ test('experience.html keeps the AI Match hooks inside the role reveals', () => {
   }
   assert.match(html, /id="role-skills"/);
   assert.ok((html.match(/class="ed-stage[ "]/g) || []).length >= 4, 'the skills section keeps its .ed-stage rows');
+  assert.match(readText('assets/css/editorial.css'), /#role-skills \.experience-role-title \{ font-family: var\(--ed-display\); font-size: clamp\(2rem, 4vw, 3rem\);/, 'the Skills and Education heading keeps its display size');
   assert.match(html, /<a class="ed-page-head__link" href="cv\.html"[^>]*data-ga-event="resume_downloaded"/, 'the Experience page keeps its View CV link');
   const aiMatch = readText('assets/js/ai-match.js');
   for (const hook of ['[data-role-company]', '[data-role-title]', '[data-role-meta]', '[data-role-summary]', '[data-role-skill]']) {
@@ -423,13 +454,21 @@ test('experience.html keeps the AI Match hooks inside the role reveals', () => {
   }
 });
 
-test('every logo mask the markup references exists', () => {
+test('every logo mask the markup references exists, in both the prefixed and the standard property', () => {
   const missing = [];
+  let masks = 0;
   for (const file of listHtmlFiles()) {
-    for (const m of fs.readFileSync(file, 'utf8').matchAll(/(?<!-webkit-)mask-image:url\('([^']+)'\)/g)) {
-      if (!fs.existsSync(path.resolve(path.dirname(file), m[1]))) missing.push(`${relative(file)} -> ${m[1]}`);
+    const html = fs.readFileSync(file, 'utf8');
+    const plain = [...html.matchAll(/(?<!-webkit-)mask-image:url\('([^']+)'\)/g)].length;
+    for (const m of html.matchAll(/-webkit-mask-image:url\('([^']+)'\);mask-image:url\('([^']+)'\)/g)) {
+      masks += 1;
+      if (m[1] !== m[2]) missing.push(`${relative(file)}: -webkit- ${m[1]} differs from ${m[2]}`);
+      if (!fs.existsSync(path.resolve(path.dirname(file), m[2]))) missing.push(`${relative(file)} -> ${m[2]}`);
     }
+    const pairs = [...html.matchAll(/-webkit-mask-image:url\('[^']+'\);mask-image:url\('[^']+'\)/g)].length;
+    if (plain !== pairs) missing.push(`${relative(file)}: ${plain - pairs} mask(s) without a -webkit- twin`);
   }
+  assert.ok(masks > 0, 'the pages carry logo masks');
   assert.deepEqual(missing, []);
 });
 
@@ -439,8 +478,11 @@ test('portfolio.html is a mosaic of eight tiles over five project reveals', () =
   const reveals = [...html.matchAll(/<dialog class="ed-reveal" id="(project-[a-z]+)"/g)].map((m) => m[1]);
   assert.deepEqual(reveals, ['project-labforward', 'project-labtwin', 'project-thryve', 'project-opppaths', 'project-remarcable']);
   assert.doesNotMatch(html, /mcp-server|automation-tools|interview-prep/, 'retired projects stay off the portfolio');
-  for (const m of html.matchAll(/<a class="ed-reveal__link" href="([^"]+)"/g)) {
-    assert.match(m[1], /^portfolio\/[a-z-]+\.html$/, `case-study link should be relative: ${m[1]}`);
+  const caseLinks = [...html.matchAll(/<a class="ed-reveal__link" href="([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(caseLinks.length, 5, 'each project reveal links its case page');
+  for (const link of caseLinks) {
+    assert.match(link, /^portfolio\/[a-z-]+\.html$/, `case-study link should be relative: ${link}`);
+    assert.ok(fs.existsSync(path.join(repoRoot, link)), `the case page ${link} exists`);
   }
 });
 
@@ -471,8 +513,16 @@ test('certificates.html shows all 14 credentials, each with a verify link', () =
   assert.equal((html.match(/<button class="ed-tile ed-ct /g) || []).length, 14, 'expected 14 credential tiles');
   const dialogs = [...html.matchAll(/<dialog class="ed-reveal" id="credential-(\d+)"[\s\S]*?<\/dialog>/g)];
   assert.equal(dialogs.length, 14, 'expected 14 credential reveals');
+  const decode = (v) => v.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
   for (const [block, n] of dialogs) {
-    assert.match(block, /<a class="ed-reveal__link" href="https:\/\/[^"]+" target="_blank" rel="noopener" data-ga-event="credential_verified" data-ga-params='\{"credential_issuer":"[^"]+","credential_name":"[^"]+"\}'>Verify the credential →<\/a>/, `credential-${n} lost its verify link or its analytics`);
+    const link = block.match(/<a class="ed-reveal__link" href="https:\/\/[^"]+" target="_blank" rel="noopener" data-ga-event="credential_verified" data-ga-params='(\{"credential_issuer":"[^"]+","credential_name":"[^"]+"\})'>Verify the credential →<\/a>/);
+    assert.ok(link, `credential-${n} lost its verify link or its analytics`);
+    const params = JSON.parse(decode(link[1]));
+    const title = decode(block.match(/<h2 class="ed-reveal__title" id="credential-\d+-title">([^<]+)<\/h2>/)[1]);
+    assert.equal(params.credential_name, title, `credential-${n}: the analytics name must equal the reveal title`);
+    const tile = html.match(new RegExp(`data-reveal="credential-${n}"[^>]*>\\s*<span class="ed-ct__issuer">([^<]+)</span>`));
+    assert.ok(tile, `credential-${n} has a tile with an issuer line`);
+    assert.equal(params.credential_issuer, decode(tile[1]), `credential-${n}: the analytics issuer must equal the tile issuer`);
   }
 });
 
