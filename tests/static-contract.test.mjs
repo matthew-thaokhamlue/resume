@@ -175,8 +175,21 @@ test('index.html keeps the loop hero contract', () => {
   assert.match(js, /if \(reduceMotion\) return api;/, 'reduced motion keeps the static loop');
   assert.match(js, /'webglcontextlost'[\s\S]{0,400}drawMark\(1\)/, 'a lost context completes the M');
   assert.match(js, /out\.cancel\(\)/, 'the finished fade-out is cancelled, or the role word stays hidden');
+});
+
+test('the loop ring is the default CSS layout, and layout() writes what the card transforms assume', () => {
   const css = readText('assets/css/editorial.css');
-  assert.match(css, /@media \(scripting: none\) \{\s*\.ed-loop-orbit \{/, 'without scripts the ring takes its positions from CSS');
+  const js = readText('assets/js/loop-hero.js');
+  // The ring holds before loop-hero.js runs, when it fails to load, and with scripts off, so no scripting query wraps it.
+  assert.match(css, /\n {2}\.ed-loop-orbit \{[^}]*left: calc\(50% - min\(40%, 470px\)\); top: 14%; width: calc\(2 \* min\(40%, 470px\)\); height: 72%;/, 'the ellipse has a default box');
+  const ring = css.indexOf('.ed-loop-card { --a: calc(-90deg + 60deg * var(--k)); left: calc(50% + min(40%, 470px) * cos(var(--a))); top: calc(50% + 36% * sin(var(--a))); transform: translate(-50%, -50%); }');
+  assert.ok(ring > 0, 'the cards have a default ring');
+  const phone = css.indexOf('.ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }');
+  assert.ok(phone > ring, 'the phone ring comes after the default ring, so it wins at equal specificity');
+  assert.match(css, /@media \(max-width: 671px\) \{[^@]*\.ed-loop-orbit \{ left: 16%; top: 10%; width: 68%; height: 80%; \}/, 'the phone ellipse is tall');
+  assert.doesNotMatch(css, /@media \(scripting: none\)[^{]*\{\s*\.ed-loop/, 'the ring does not depend on a scripting query');
+  // The pixels from layout() replace the percentages, so each card gets the corner that its transform counts from.
+  assert.match(js, /function layout\(\) \{[\s\S]*?c\.style\.left = '0px'; c\.style\.top = '0px';[\s\S]*?placeCards\(\);/, 'layout() gives every card left 0 and top 0 before it places the cards');
 });
 
 test('loop-hero.js lays the ring out again on every resize, in the static branches too', () => {

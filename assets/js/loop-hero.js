@@ -39,6 +39,7 @@
       for (let i = 0; i < N; i++) { const j = (i + 1) % N, k = (i + 2) % N; rl[i] = Math.hypot(rest[2 * j] - rest[2 * i], rest[2 * j + 1] - rest[2 * i + 1]); rl2[i] = Math.hypot(rest[2 * k] - rest[2 * i], rest[2 * k + 1] - rest[2 * i + 1]); }
       x.set(rest); v.fill(0);
       Object.assign(orbit.style, { left: `${cx - rx}px`, top: `${cy - ry}px`, width: `${2 * rx}px`, height: `${2 * ry}px` });
+      cards.forEach((c) => { c.style.left = '0px'; c.style.top = '0px'; });   // the CSS ring sets left and top; the transforms below count from the stage corner
       placeCards();
       return true;
     }
