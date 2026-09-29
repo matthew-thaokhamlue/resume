@@ -198,6 +198,23 @@ test('the loop ring is the default CSS layout, and layout() writes what the card
   assert.match(js, /function layout\(\) \{[\s\S]*?c\.style\.left = '0px'; c\.style\.top = '0px';[\s\S]*?placeCards\(\);/, 'layout() gives every card left 0 and top 0 before it places the cards');
 });
 
+test('the tall ring follows the stage width through a container query, and the viewport rule stays as the fallback', () => {
+  const css = readText('assets/css/editorial.css');
+  const js = readText('assets/js/loop-hero.js');
+  // layout() chooses the tall ring for a stage narrower than 640 px; 639.98 px is the query's largest width below that
+  assert.match(js, /const narrow = W < 640;/, 'layout() switches at a stage width of 640 px');
+  assert.match(css, /\n {2}\.ed-loop-stage \{[^}]*container-type: inline-size;/, 'the stage is the query container');
+  const query = css.indexOf('@container (max-width: 639.98px) {');
+  assert.ok(query > 0, 'the query limit is 639.98 px');
+  assert.ok(query > css.indexOf('.ed-loop-card { --a:'), 'the query follows the default ring, so it wins at equal specificity');
+  assert.match(css, /@container \(max-width: 639\.98px\) \{\s*\.ed-loop-orbit \{ left: 16%; top: 10%; width: 68%; height: 80%; \}\s*\.ed-loop-card \{ left: calc\(50% \+ 34% \* cos\(var\(--a\)\)\); top: calc\(50% \+ 40% \* sin\(var\(--a\)\)\); \}\s*\}/, 'the query holds the two phone rules');
+  // the viewport rule keeps the same two rules for a browser without container queries
+  for (const rule of ['.ed-loop-orbit { left: 16%; top: 10%; width: 68%; height: 80%; }', '.ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }']) {
+    assert.equal(css.split(rule).length - 1, 2, `one copy in the viewport rule and one in the query: ${rule}`);
+  }
+  assert.match(css, /@media \(max-width: 671px\) \{[^@]*\.ed-loop-orbit \{ left: 16%;/, 'the viewport rule stays as the fallback');
+});
+
 test('loop-hero.js lays the ring out again on every resize, in the static branches too', () => {
   const js = readText('assets/js/loop-hero.js');
   assert.equal((js.match(/new ResizeObserver\(/g) || []).length, 1, 'one resize observer');
