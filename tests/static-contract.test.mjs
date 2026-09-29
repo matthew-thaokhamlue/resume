@@ -348,9 +348,19 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
 
   for (const file of listHtmlFiles()) {
     const name = relative(file);
-    if (NON_CONTENT.has(name) || name === 'index.html') continue;   // the home page joins in PR B
+    if (NON_CONTENT.has(name)) continue;
     assert.match(fs.readFileSync(file, 'utf8'), /assets\/js\/star-cursor\.js\?v=20260929/, `${name} must load star-cursor.js`);
   }
+});
+
+test('the home page head carries the headline', () => {
+  const html = readText('index.html');
+  assert.match(html, /<title>Matthew Thaokhamlue – Senior AI Product Manager<\/title>/);
+  assert.match(html, /"jobTitle": "Senior AI Product Manager"/);
+  // The footer line keeps the old headline on every page until a later review, so this assert reads only the head.
+  const headEnd = html.indexOf('</head>');
+  assert.ok(headEnd > 0, 'index.html has a </head>');
+  assert.doesNotMatch(html.slice(0, headEnd), /Builder · AI Workflow Architect/, 'the old headline leaves the head');
 });
 
 test('experience.html keeps the AI Match hooks inside the role reveals', () => {
