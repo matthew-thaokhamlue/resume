@@ -1719,7 +1719,7 @@
   .ed-result { position: relative; display: grid; align-content: start; gap: 6px; padding: 28px 20px 8px 0; border: 0; background: none; color: var(--ed-ink); font: inherit; text-align: left; cursor: pointer; }
   .ed-result + .ed-result { padding-left: 20px; border-left: 1px solid var(--ed-hairline); }
   .ed-result b { font-family: var(--ed-display); font-size: clamp(2.4rem, 4.6vw, 3.8rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
-  .ed-result span { font-size: 0.98rem; }
+  .ed-result span:not(.ed-chip) { font-size: 0.98rem; }   /* the Info chip keeps its own size */
   .ed-result small { font-family: var(--ed-mono); font-size: 0.78rem; color: var(--ed-ink-mute); }
   .ed-result:hover b { color: var(--ed-accent); }
   .ed-result .ed-chip { position: static; justify-self: start; margin-top: 8px; }
