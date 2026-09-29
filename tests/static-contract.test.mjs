@@ -155,6 +155,30 @@ test('index.html keeps the AI Match DOM contract used by assets/js/ai-match.js',
   assert.deepEqual(unsupportedProviders, []);
 });
 
+test('index.html keeps the loop hero contract', () => {
+  const html = readText('index.html');
+  const js = readText('assets/js/loop-hero.js');
+  assert.equal((html.match(/<div class="ed-loop-card" style="--k:\d"><small>/g) || []).length, 6, 'six station cards');
+  assert.match(html, /<div class="ed-loop-orbit" aria-hidden="true"><\/div>/, 'the CSS ellipse fallback');
+  assert.match(html, /<p class="ed-role-line">Product <span class="ed-role-word">builder<\/span><\/p>/);
+  const paths = [...html.matchAll(/<path class="ed-mark-reveal" d="([^"]+)"><\/path>/g)].map((m) => m[1]);
+  assert.equal(paths.length, 2, 'two mask strokes');
+  assert.ok(paths[0].startsWith('M0.6 48 C1.8 47.3') && paths[0].endsWith('55.5 43.7 56 44'), 'stroke A is the fitted path');
+  assert.ok(paths[1].startsWith('M32 44 C32.2 43.5') && paths[1].endsWith('97.8 48.7 98.9 49'), 'stroke B is the fitted path');
+  assert.match(html, /<image href="images\/m-mark-brush\.png"/);
+  assert.match(html, /<button id="ai-match-trigger" type="button"/, 'the AI Match trigger stays in the hero');
+  assert.match(html, /assets\/js\/loop-hero\.js\?v=20260929/);
+  assert.match(js, /const WORDS = \['builder', 'manager', 'designer', 'tester', 'owner', 'builder'\];/);
+  const d = js.match(/const WRITE_S = ([\d.]+), TOUR_S = ([\d.]+);/);
+  assert.ok(d && Number(d[1]) + Number(d[2]) <= 5, 'the first-view sequence must stay within 5 seconds (WCAG 2.2.2)');
+  assert.match(js, /getContext\('webgl2'/, 'WebGL 2 guard');
+  assert.match(js, /if \(reduceMotion\) return api;/, 'reduced motion keeps the static loop');
+  assert.match(js, /'webglcontextlost'[\s\S]{0,400}drawMark\(1\)/, 'a lost context completes the M');
+  assert.match(js, /out\.cancel\(\)/, 'the finished fade-out is cancelled, or the role word stays hidden');
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /@media \(scripting: none\) \{\s*\.ed-loop-orbit \{/, 'without scripts the ring takes its positions from CSS');
+});
+
 test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {
@@ -170,6 +194,9 @@ test('no page loads GSAP or the old motion scripts', () => {
   }
   assert.doesNotMatch(readText('assets/js/site.js'), /data-motion-pending/, 'site.js keeps no GSAP fallback');
   assert.doesNotMatch(readText('assets/css/editorial.css'), /\[data-motion-pending\]/, 'editorial.css keeps no motion gate');
+  const baseReveal = readText('assets/css/editorial.css').match(/\n {2}\.reveal \{([^}]*)\}/);
+  assert.ok(baseReveal, 'base .reveal rule not found');
+  assert.doesNotMatch(baseReveal[1], /opacity:\s*0/, 'base .reveal must not hide content: no script un-hides it');
 });
 
 test('design documents stay out of the public repo', () => {

@@ -159,93 +159,45 @@
 
   <main>
     <!-- ────────────────  HERO  ──────────────── -->
-    <section class="ed-hero ed-hero--product" id="top">
-      <div class="ed-hero__inner">
-        <div class="ed-hero__mark-home" aria-hidden="true">
-          <svg class="ed-motion-mark" viewBox="0 0 100 58" focusable="false" aria-hidden="true">
-            <defs>
-              <linearGradient id="ed-star-trail" gradientUnits="userSpaceOnUse" x1="50" y1="29" x2="20" y2="45">
-                <stop offset="0" stop-color="#c45a38" />
-                <stop offset="1" stop-color="#c45a38" stop-opacity="0" />
-              </linearGradient>
-            </defs>
-            <image class="ed-motion-mark__brush" href="images/m-mark-brush.png" x="0" y="0" width="100" height="58" preserveAspectRatio="xMidYMid meet" />
-            <path class="ed-motion-mark__stroke" d="M4 51 C17 45 28 26 40 8 C47 19 54 35 66 43"></path>
-            <path class="ed-motion-mark__stroke" d="M25 51 C39 45 52 25 63 8 C72 20 84 43 96 51"></path>
-            <path class="ed-motion-mark__head" d="M0 -11 L3.2 -4.4 L10.5 -3.4 L5.2 1.7 L6.5 8.9 L0 5.5 L-6.5 8.9 L-5.2 1.7 L-10.5 -3.4 L-3.2 -4.4 Z" transform="translate(50 29)" />
-          </svg>
-        </div>
-        <h1 class="ed-hero__display">
-          <span class="ed-hero__product">Product</span>
-          <span class="ed-hero__role" aria-hidden="true">
-            <span class="ed-hero__role-word">builder</span>
-            <span class="ed-hero__role-word">manager</span>
-            <span class="ed-hero__role-word">designer</span>
-            <span class="ed-hero__role-word">owner</span>
-            <span class="ed-hero__role-word">tester</span>
-            <span class="ed-hero__role-word">builder</span>
-          </span>
-          <span class="ed-sr-only">builder</span>
-        </h1>
-        <div class="ed-hero__cta-row">
-          <button id="ai-match-trigger" type="button" class="ed-btn ed-btn--accent">
-            <span>Evaluate role fit with my evidence</span>
-            <span class="ed-link__arrow" aria-hidden="true">→</span>
-          </button>
-          <a class="ed-btn ed-btn--ghost" href="cv.html" target="_blank" rel="noopener noreferrer"
-            data-ga-event="resume_downloaded" data-ga-params='{"file_name":"cv.html","page_location":"index"}'>
-            View CV
-            <span class="ed-link__arrow" aria-hidden="true">↓</span>
-          </a>
-          <a class="ed-link" href="portfolio.html">
-            <span>Or skim the portfolio</span>
-            <span class="ed-link__arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="ed-home-hero" id="top">
+      <h1 class="ed-home-title">Senior AI Product Manager</h1>
+      <p class="ed-home-sub">Product manager for Liz, Sema’s AI agent</p>
+      <div class="ed-home-actions">
+        <button id="ai-match-trigger" type="button" class="ed-home-action ed-home-action--primary">Evaluate role fit with my evidence</button>
+        <a class="ed-home-action" href="cv.html" target="_blank" rel="noopener noreferrer"
+          data-ga-event="resume_downloaded" data-ga-params='{"file_name":"cv.html","page_location":"index"}'>View CV</a>
+        <a class="ed-home-action" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
+          data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"linkedin","link_type":"hero_link","location":"hero"}'>LinkedIn</a>
       </div>
     </section>
 
-    <!-- ────────────────  THE LOOP  ──────────────── -->
-    <section class="ed-loop" id="loop" aria-labelledby="loop-title">
-      <div class="ed-loop__inner">
-        <div class="ed-loop__head reveal">
-          <h2 class="ed-loop__title" id="loop-title">The loop</h2>
-          <p class="ed-loop__lede">Strategy sets the KPIs. Delivery ships against them. Telemetry traces the result back to the KPI, and the bottom line says whether it worked.</p>
-        </div>
-        <div class="ed-loop__stage">
-          <svg class="ed-loop__galaxy" viewBox="-600 -300 1200 600" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <g class="ed-loop__orbits">
-              <ellipse rx="270" ry="100" transform="rotate(-18)" />
-              <ellipse rx="340" ry="130" transform="rotate(-18)" />
-              <ellipse rx="420" ry="170" transform="rotate(-18)" />
-            </g>
-            <g class="ed-loop__spiral">
-              <path d="M0 0 C35-45 125-50 160-15 C220 65 65 120-115 115 C-275 110-330 40-310-10" />
-              <path d="M0 0 C-35 45-125 50-160 15 C-220-65-65-120 115-115 C275-110 330-40 310 10" />
-              <circle r="3" />
-            </g>
-            <g class="ed-loop__stars">
-              <circle cx="-485" cy="-185" r="2" /><circle cx="-360" cy="-80" r="1.5" />
-              <circle cx="-235" cy="-195" r="2.5" /><circle cx="-135" cy="-35" r="1.5" />
-              <circle cx="-65" cy="165" r="2" /><circle cx="90" cy="-115" r="2" />
-              <circle cx="215" cy="-200" r="1.5" /><circle cx="315" cy="-40" r="2.5" />
-              <circle cx="480" cy="-170" r="2" /><circle cx="510" cy="140" r="1.5" />
-              <circle cx="285" cy="190" r="2" /><circle cx="-410" cy="180" r="1.5" />
-              <path d="M-190 75v12m-6-6h12M165 95v10m-5-5h10M380-150v10m-5-5h10" />
-            </g>
+    <section class="ed-loop-hero" id="loop" aria-labelledby="loop-title">
+      <h2 class="ed-sr-only" id="loop-title">The loop</h2>
+      <div class="ed-loop-stage" id="loop-stage">
+        <div class="ed-loop-orbit" aria-hidden="true"></div>
+        <canvas aria-hidden="true"></canvas>
+        <div class="ed-loop-core">
+          <svg class="ed-loop-mark" viewBox="0 0 100 58" role="img" aria-label="The M mark">
+            <defs><mask id="mark-mask" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="78">
+              <path class="ed-mark-reveal" d="M0.6 48 C1.8 47.3 5.6 45.5 7.9 44 C10.2 42.5 12.5 40.8 14.6 39 C16.7 37.2 18.6 35 20.3 33 C22 31 23.7 28.7 25 27 C26.3 25.3 26.6 24.6 28 23 C29.4 21.4 32.4 18.3 33.3 17.4 C33.5 18.2 34.2 20.9 34.6 22.5 C35 24.1 35.3 25.6 35.6 27 C35.9 28.4 35.8 29.7 36.4 30.8 C37 31.9 37.8 32.9 39 33.6 C40.2 34.4 42.5 34.6 43.8 35.3 C45.1 36 45.8 37.1 46.9 38 C48 38.9 49.3 39.8 50.3 40.5 C51.3 41.2 52.1 41.4 53.1 42 C54.1 42.6 55.5 43.7 56 44"></path>
+              <path class="ed-mark-reveal" d="M32 44 C32.2 43.5 32.5 42 33 41 C33.5 40 34.1 39 34.7 38 C35.3 37 35.8 36.2 36.8 35 C37.8 33.8 39.9 32.2 40.8 31 C41.7 29.8 41.6 29 42.3 28 C43 27 44 26 44.9 25 C45.8 24 46.5 23 47.4 22 C48.2 21 48.9 20.3 50 19 C51.1 17.7 52.6 15.8 54 14.3 C55.4 12.8 57.8 10.7 58.6 10 C58.9 10.6 59.9 12.3 60.4 13.5 C60.9 14.7 61.1 15.9 61.5 17 C61.9 18.1 62.3 18.7 63 20 C63.7 21.3 64.6 23.3 65.6 25 C66.6 26.7 67.7 28.3 69 30 C70.3 31.7 71.6 33.3 73.3 35 C75 36.7 77 38.5 79.1 40 C81.1 41.5 83.4 42.8 85.6 44 C87.8 45.2 90.3 46.2 92.5 47 C94.7 47.8 97.8 48.7 98.9 49"></path>
+            </mask></defs>
+            <image href="images/m-mark-brush.png" x="0" y="0" width="100" height="58" preserveAspectRatio="xMidYMid meet" mask="url(#mark-mask)"></image>
+            <path class="ed-mark-star" d="M0 -11 L3.2 -4.4 L10.5 -3.4 L5.2 1.7 L6.5 8.9 L0 5.5 L-6.5 8.9 L-5.2 1.7 L-10.5 -3.4 L-3.2 -4.4 Z"></path>
           </svg>
-          <div class="ed-loop__track" aria-hidden="true"></div>
-          <ol class="ed-loop__ring">
-            <li class="ed-loop__card is-front"><span class="ed-loop__kicker">Strategy</span>KPIs and strategy</li>
-            <li class="ed-loop__card"><span class="ed-loop__kicker">Planning</span>Roadmap from the KPIs</li>
-            <li class="ed-loop__card"><span class="ed-loop__kicker">Delivery</span>Built with engineers</li>
-            <li class="ed-loop__card"><span class="ed-loop__kicker">Delivery</span>UAT run with AI</li>
-            <li class="ed-loop__card"><span class="ed-loop__kicker">Feedback</span>Telemetry and user events</li>
-            <li class="ed-loop__card"><span class="ed-loop__kicker">Outcome</span>Bottom-line profitability</li>
-          </ol>
+          <p class="ed-role-line">Product <span class="ed-role-word">builder</span></p>
         </div>
+        <div class="ed-loop-card" style="--k:0"><small>Strategy</small><span>KPIs and strategy</span></div>
+        <div class="ed-loop-card" style="--k:1"><small>Planning</small><span>Roadmap from the KPIs</span></div>
+        <div class="ed-loop-card" style="--k:2"><small>Delivery</small><span>Built with engineers</span></div>
+        <div class="ed-loop-card" style="--k:3"><small>Delivery</small><span>UAT run with AI</span></div>
+        <div class="ed-loop-card" style="--k:4"><small>Feedback</small><span>Telemetry and user events</span></div>
+        <div class="ed-loop-card" style="--k:5"><small>Outcome</small><span>Bottom-line profitability</span></div>
       </div>
+      <p class="ed-loop-hint">Grab a station and pull. The ring springs back.</p>
     </section>
+    </div>
 
     <!-- ────────────────  INLINE QUOTES  ──────────────── -->
     <section class="ed-quotes" id="recommendations">
@@ -401,14 +353,12 @@
     </div>
   </dialog>
 
-
   <!-- Editorial motion -->
   <script src="assets/js/site.js?v=20260929"></script>
+  <script src="assets/js/loop-hero.js?v=20260929"></script>
 
   <!-- AI Match feature (kept) -->
   <script type="module" src="assets/js/ai-match.js?v=20260929"></script>
-
-  <!-- Shared shooting-star motion + home-page loop -->
 </body>
 
 </html>
