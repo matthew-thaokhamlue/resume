@@ -197,6 +197,21 @@ test('loop-hero.js hides the M before the first paint, in the live path only', (
   assert.ok(hide < js.indexOf('new IntersectionObserver'), 'and it runs before the observer starts, which reports after the first paint');
 });
 
+test('the drag hint shows only while the ring answers a drag', () => {
+  const css = readText('assets/css/editorial.css');
+  const js = readText('assets/js/loop-hero.js');
+  // visibility, not display: the class rule outranks the touch rule, and display: none still wins over any visibility
+  assert.match(css, /\n {2}\.ed-loop-hint \{[^}]*visibility: hidden;/, 'the hint is invisible by default and keeps its line');
+  assert.match(css, /\n {2}\.ed-loop-hero\.is-draggable \.ed-loop-hint \{ visibility: visible; \}/, 'the class turns the hint on');
+  assert.match(css, /@media \(hover: none\) \{ \.ed-loop-hint \{ display: none; \} \}/, 'a touch device never shows the hint');
+  // the pointer handlers attach in the live path only, so the class follows them
+  const lastStaticReturn = js.indexOf('if (!dust || !line) return api;');
+  const handlers = js.indexOf("addEventListener('pointerdown'");
+  const add = js.indexOf("classList.add('is-draggable')");
+  assert.ok(lastStaticReturn > 0 && handlers > lastStaticReturn, 'the pointer handlers sit in the live path');
+  assert.ok(add > handlers, 'the class comes after the pointer handlers');
+});
+
 test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {

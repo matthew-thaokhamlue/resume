@@ -21,6 +21,7 @@
 
   function LoopHero() {
     const canvas = stage.querySelector('canvas');
+    const section = stage.closest('.ed-loop-hero');
     const orbit = stage.querySelector('.ed-loop-orbit');
     const cards = [...stage.querySelectorAll('.ed-loop-card')];
     const api = { show() {}, hide() {}, theme() {} };
@@ -197,6 +198,7 @@
     api.show = () => { active = true; layout(); render(); if (!toured) { toured = true; drawMark(0); writePending = true; } wake(); };
     api.hide = () => { active = false; };
     api.theme = () => { if (active) render(); };
+    section.classList.add('is-draggable');   // the pointer handlers are attached: the CSS shows the drag hint
     drawMark(0);   // live path only: the first paint must not show the full M before show() starts the write
     return api;
   }
