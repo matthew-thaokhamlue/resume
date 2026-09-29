@@ -188,6 +188,15 @@ test('loop-hero.js lays the ring out again on every resize, in the static branch
   assert.match(js, /if \(reduceMotion\) return api;[\s\S]*if \(!gl\) return api;[\s\S]*if \(!dust \|\| !line\) return api;/, 'three static branches return early');
 });
 
+test('loop-hero.js hides the M before the first paint, in the live path only', () => {
+  const js = readText('assets/js/loop-hero.js');
+  const lastStaticReturn = js.indexOf('if (!dust || !line) return api;');
+  const hide = js.search(/\n\s*drawMark\(0\);[^\n]*\n\s*return api;/);
+  assert.ok(lastStaticReturn > 0, 'the last static return exists');
+  assert.ok(hide > lastStaticReturn, 'drawMark(0) ends the live path, so the static branches keep the full M');
+  assert.ok(hide < js.indexOf('new IntersectionObserver'), 'and it runs before the observer starts, which reports after the first paint');
+});
+
 test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {

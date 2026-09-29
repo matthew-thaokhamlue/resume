@@ -197,6 +197,7 @@
     api.show = () => { active = true; layout(); render(); if (!toured) { toured = true; drawMark(0); writePending = true; } wake(); };
     api.hide = () => { active = false; };
     api.theme = () => { if (active) render(); };
+    drawMark(0);   // live path only: the first paint must not show the full M before show() starts the write
     return api;
   }
 
