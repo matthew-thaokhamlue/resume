@@ -34,7 +34,7 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-// Not content pages: a redirect stub and a generated export, plus the three retired case pages (stubs from Task 9).
+// Not content pages: a redirect stub, a generated export, and the three retired case pages, now redirect stubs.
 const NON_CONTENT = new Set([
   'about.html', 'cv.html',
   'portfolio/mcp-server.html', 'portfolio/automation-tools.html', 'portfolio/interview-prep.html',
@@ -263,6 +263,17 @@ test('portfolio.html is a mosaic of eight tiles over five project reveals', () =
   for (const m of html.matchAll(/<a class="ed-reveal__link" href="([^"]+)"/g)) {
     assert.match(m[1], /^portfolio\/[a-z-]+\.html$/, `case-study link should be relative: ${m[1]}`);
   }
+});
+
+test('the three retired case pages redirect to the portfolio and stay out of the sitemap', () => {
+  const sitemap = readText('sitemap.xml');
+  for (const name of ['mcp-server', 'automation-tools', 'interview-prep']) {
+    const html = readText(`portfolio/${name}.html`);
+    assert.match(html, /<meta http-equiv="refresh" content="0; url=\.\.\/portfolio\.html" \/>/, `${name} must redirect`);
+    assert.match(html, /<meta name="robots" content="noindex" \/>/, `${name} must be noindex`);
+    assert.ok(!sitemap.includes(`portfolio/${name}.html`), `${name} must leave the sitemap`);
+  }
+  assert.doesNotMatch(readText('portfolio/opppaths.html'), /mcp-server\.html/, 'the OppPaths next-project link must skip the retired page');
 });
 
 test('AI Match prompt template exists for the configured prompt version', () => {

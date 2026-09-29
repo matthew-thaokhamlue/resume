@@ -24,11 +24,10 @@ reject_phrase() {
 
 # Content pages served with consent-gated GA tracking.
 # Excludes about.html (redirect to index) and cv.html (generated export file).
+# The three retired case pages are redirect stubs, like about.html.
 CONTENT_PAGES=(
   index.html experience.html certificates.html portfolio.html
-  portfolio/automation-tools.html portfolio/interview-prep.html
-  portfolio/labforward.html portfolio/labtwin.html
-  portfolio/mcp-server.html portfolio/thryve.html
+  portfolio/labforward.html portfolio/labtwin.html portfolio/thryve.html
   portfolio/opppaths.html portfolio/remarcable-living.html
 )
 
