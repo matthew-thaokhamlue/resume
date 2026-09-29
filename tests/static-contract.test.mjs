@@ -263,6 +263,27 @@ test('design documents stay out of the public repo', () => {
   assert.equal(tracked, '', `design documents are tracked:\n${tracked}`);
 });
 
+test('every reveal target opens a dialog in the same page', () => {
+  const failures = [];
+  for (const file of listHtmlFiles()) {
+    const html = fs.readFileSync(file, 'utf8');
+    const dialogs = new Set([...html.matchAll(/<dialog class="ed-reveal" id="([^"]+)"/g)].map((m) => m[1]));
+    for (const m of html.matchAll(/data-action="open-reveal" data-reveal="([^"]+)"/g)) {
+      if (!dialogs.has(m[1])) failures.push(`${relative(file)}: no dialog for ${m[1]}`);
+    }
+  }
+  assert.deepEqual(failures, []);
+
+  const siteJs = readText('assets/js/site.js');
+  assert.match(siteJs, /case 'open-reveal':/);
+  assert.match(siteJs, /closest\('dialog\.ed-reveal\[open\]'\)/, 'a click inside an open reveal must close it');
+  assert.match(siteJs, /'hashchange'/, 'a URL fragment must open its reveal');
+
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /@media \(scripting: none\) \{\s*dialog\.ed-reveal \{[^}]*display: block;/, 'without scripts, reveal content shows in the page');
+  assert.match(css, /\.star-on \.ed-reveal__close:not\(:focus-visible\) \{ opacity: 0; \}/, 'the close button hides for the star only, and shows on keyboard focus');
+});
+
 test('AI Match prompt template exists for the configured prompt version', () => {
   const aiMatchJs = readText('assets/js/ai-match.js');
   const versionMatch = aiMatchJs.match(/const PROMPT_VERSION = ['"]([^'"]+)['"]/);

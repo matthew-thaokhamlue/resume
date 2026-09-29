@@ -1558,3 +1558,40 @@
     text-underline-offset: 2px;
   }
   .ed-foot__consent:hover { color: var(--ed-ink); }
+
+/* ── editorial-reveal ── */
+  /* A full-screen <dialog> that site.js opens with showModal().
+     With the star cursor on, the star's "Close ×" pill acts as the close button.
+     The button stays in the tab order and shows on keyboard focus.
+     Without the star (touch, reduced motion), the button stays visible. */
+  html:has(dialog.ed-reveal[open]) { overflow: hidden; }
+  dialog.ed-reveal { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--ed-bg); color: var(--ed-ink); overflow-y: auto; }
+  dialog.ed-reveal::backdrop { background: var(--ed-bg); }
+  .ed-reveal__close { position: fixed; top: 20px; right: 24px; z-index: 2; border: 1px solid var(--ed-hairline); background: var(--ed-bg); color: var(--ed-ink); border-radius: 999px; padding: 8px 16px; font: inherit; font-size: 0.9rem; cursor: pointer; }
+  .star-on .ed-reveal__close:not(:focus-visible) { opacity: 0; }
+  .ed-reveal__inner { max-width: 1180px; margin: 0 auto; padding: 16vh 32px 12vh; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 40px 72px; }
+  .ed-reveal__head { grid-column: 1 / -1; }
+  .ed-reveal__kicker { margin: 0; font-size: 1.3rem; color: var(--ed-ink); }
+  .ed-reveal__title { margin: 6px 0 12px; font-family: var(--ed-display); font-size: clamp(2.4rem, 5.6vw, 5rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.02; color: var(--ed-ink); }
+  .ed-reveal__meta { margin: 0; font-family: var(--ed-mono); font-size: 0.9rem; color: var(--ed-ink-mute); }
+  .ed-reveal__body p, .ed-reveal__list li { font-size: clamp(1.1rem, 1.6vw, 1.32rem); line-height: 1.5; }
+  .ed-reveal__body > p { margin: 0 0 24px; color: var(--ed-ink-soft); }
+  .ed-reveal__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 18px; }
+  .ed-reveal__list li { padding-top: 18px; border-top: 1px solid var(--ed-hairline); color: var(--ed-ink); }
+  .ed-reveal__side h3 { margin: 0 0 10px; font-size: clamp(1.1rem, 1.6vw, 1.32rem); font-weight: 500; color: var(--ed-ink); }
+  .ed-reveal__side ul { margin: 0; padding: 0; list-style: none; }
+  .ed-reveal__side li { font-size: clamp(1.1rem, 1.6vw, 1.32rem); line-height: 1.6; color: var(--ed-ink-mute); }
+  .ed-reveal__link { display: inline-block; margin-top: 28px; font-size: 1.05rem; color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
+  dialog.ed-reveal[open] .ed-reveal__inner { animation: ed-reveal-rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  @keyframes ed-reveal-rise { from { opacity: 0; transform: translateY(18px); } }
+  /* The "Info" chip shows only when there is no star (touch, reduced motion). */
+  .ed-chip { position: absolute; right: 22px; bottom: 20px; display: none; padding: 6px 14px; border-radius: 999px; background: var(--ed-ink); color: var(--ed-bg); font-size: 0.85rem; font-weight: 500; }
+  .no-star .ed-chip { display: block; }
+  @media (prefers-reduced-motion: reduce) { dialog.ed-reveal[open] .ed-reveal__inner { animation: none; } }
+  @media (max-width: 760px) { .ed-reveal__inner { grid-template-columns: 1fr; padding-inline: 16px; } }
+  /* Without scripts, every reveal shows in the page flow. */
+  @media (scripting: none) {
+    dialog.ed-reveal { display: block; position: static; width: auto; height: auto; overflow: visible; background: transparent; }
+    .ed-reveal__close { display: none; }
+    .ed-reveal__inner { padding: 32px 0 48px; }
+  }

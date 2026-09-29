@@ -10,6 +10,7 @@
  * DOM contract (verified by tests/site-contract.test.mjs):
  *   [data-action="toggle-menu" | "open-testimonial" | "close-testimonial"
  *     | "cookie-accept" | "cookie-dismiss" | "cookie-preferences"]
+ *   [data-action="open-reveal"][data-reveal] opens the dialog with that id.
  *   [data-testimonial-overlay] closes the modal on backdrop clicks.
  */
 (function () {
@@ -193,6 +194,29 @@
     window.dispatchEvent(new Event('themechange'));
   }
 
+  /* Reveals: [data-action="open-reveal"][data-reveal="<id>"] opens
+     <dialog class="ed-reveal" id="<id>"> with showModal(). A click anywhere
+     in an open reveal closes it, except on a link or while text is selected.
+     Esc closes it natively, and the browser returns focus to the opener.
+     A URL fragment that names a reveal, or an element inside one, opens it. */
+  function openReveal(id) {
+    var dialog = id ? document.getElementById(id) : null;
+    if (!dialog || dialog.open || typeof dialog.showModal !== 'function') return;
+    dialog.showModal();
+    track('reveal_opened', { reveal_id: id });
+  }
+
+  function openRevealFromHash() {
+    var id = '';
+    try { id = decodeURIComponent(window.location.hash.slice(1)); } catch (err) { return; }
+    var el = id ? document.getElementById(id) : null;
+    var dialog = el ? el.closest('dialog.ed-reveal') : null;
+    if (dialog) openReveal(dialog.id);
+  }
+
+  openRevealFromHash();
+  window.addEventListener('hashchange', openRevealFromHash);
+
   syncThemeButton();
 
   document.addEventListener('click', function (event) {
@@ -209,6 +233,12 @@
       track(tracked.getAttribute('data-ga-event'), params);
     }
 
+    var openedReveal = target.closest('dialog.ed-reveal[open]');
+    if (openedReveal) {
+      if (!target.closest('a') && !String(window.getSelection() || '').trim()) openedReveal.close();
+      return;
+    }
+
     var actionEl = target.closest('[data-action]');
     if (actionEl) {
       switch (actionEl.getAttribute('data-action')) {
@@ -216,6 +246,7 @@
         case 'toggle-theme': toggleTheme(); break;
         case 'open-testimonial': openTestimonial(actionEl); break;
         case 'close-testimonial': closeTestimonial(); break;
+        case 'open-reveal': openReveal(actionEl.getAttribute('data-reveal')); break;
         case 'cookie-accept': writeConsent('accepted'); break;
         case 'cookie-dismiss': writeConsent('dismissed'); break;
         case 'cookie-preferences': writeConsent(null); break;
