@@ -254,6 +254,17 @@ test('every logo mask the markup references exists', () => {
   assert.deepEqual(missing, []);
 });
 
+test('portfolio.html is a mosaic of eight tiles over five project reveals', () => {
+  const html = readText('portfolio.html');
+  assert.equal((html.match(/<button class="ed-tile[ "]/g) || []).length, 8, 'expected eight tiles');
+  const reveals = [...html.matchAll(/<dialog class="ed-reveal" id="(project-[a-z]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(reveals, ['project-labforward', 'project-labtwin', 'project-thryve', 'project-opppaths', 'project-remarcable']);
+  assert.doesNotMatch(html, /mcp-server|automation-tools|interview-prep/, 'retired projects stay off the portfolio');
+  for (const m of html.matchAll(/<a class="ed-reveal__link" href="([^"]+)"/g)) {
+    assert.match(m[1], /^portfolio\/[a-z-]+\.html$/, `case-study link should be relative: ${m[1]}`);
+  }
+});
+
 test('AI Match prompt template exists for the configured prompt version', () => {
   const aiMatchJs = readText('assets/js/ai-match.js');
   const versionMatch = aiMatchJs.match(/const PROMPT_VERSION = ['"]([^'"]+)['"]/);
