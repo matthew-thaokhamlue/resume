@@ -163,14 +163,20 @@ test('index.html keeps the loop hero contract', () => {
   assert.match(html, /<p class="ed-role-line">Product <span class="ed-role-word">builder<\/span><\/p>/);
   const paths = [...html.matchAll(/<path class="ed-mark-reveal" d="([^"]+)"><\/path>/g)].map((m) => m[1]);
   assert.equal(paths.length, 2, 'two mask strokes');
-  assert.ok(paths[0].startsWith('M0.6 48 C1.8 47.3') && paths[0].endsWith('55.5 43.7 56 44'), 'stroke A is the fitted path');
-  assert.ok(paths[1].startsWith('M32 44 C32.2 43.5') && paths[1].endsWith('97.8 48.7 98.9 49'), 'stroke B is the fitted path');
+  const strokes = [
+    'M0.6 48 C1.8 47.3 5.6 45.5 7.9 44 C10.2 42.5 12.5 40.8 14.6 39 C16.7 37.2 18.6 35 20.3 33 C22 31 23.7 28.7 25 27 C26.3 25.3 26.6 24.6 28 23 C29.4 21.4 32.4 18.3 33.3 17.4 C33.5 18.2 34.2 20.9 34.6 22.5 C35 24.1 35.3 25.6 35.6 27 C35.9 28.4 35.8 29.7 36.4 30.8 C37 31.9 37.8 32.9 39 33.6 C40.2 34.4 42.5 34.6 43.8 35.3 C45.1 36 45.8 37.1 46.9 38 C48 38.9 49.3 39.8 50.3 40.5 C51.3 41.2 52.1 41.4 53.1 42 C54.1 42.6 55.5 43.7 56 44',
+    'M32 44 C32.2 43.5 32.5 42 33 41 C33.5 40 34.1 39 34.7 38 C35.3 37 35.8 36.2 36.8 35 C37.8 33.8 39.9 32.2 40.8 31 C41.7 29.8 41.6 29 42.3 28 C43 27 44 26 44.9 25 C45.8 24 46.5 23 47.4 22 C48.2 21 48.9 20.3 50 19 C51.1 17.7 52.6 15.8 54 14.3 C55.4 12.8 57.8 10.7 58.6 10 C58.9 10.6 59.9 12.3 60.4 13.5 C60.9 14.7 61.1 15.9 61.5 17 C61.9 18.1 62.3 18.7 63 20 C63.7 21.3 64.6 23.3 65.6 25 C66.6 26.7 67.7 28.3 69 30 C70.3 31.7 71.6 33.3 73.3 35 C75 36.7 77 38.5 79.1 40 C81.1 41.5 83.4 42.8 85.6 44 C87.8 45.2 90.3 46.2 92.5 47 C94.7 47.8 97.8 48.7 98.9 49',
+  ];
+  assert.deepEqual(paths, strokes, 'both mask strokes are the fitted paths, character for character');
   assert.match(html, /<image href="images\/m-mark-brush\.png"/);
   assert.match(html, /<button id="ai-match-trigger" type="button"/, 'the AI Match trigger stays in the hero');
   assert.match(html, /assets\/js\/loop-hero\.js\?v=20260929/);
   assert.match(js, /const WORDS = \['builder', 'manager', 'designer', 'tester', 'owner', 'builder'\];/);
   const d = js.match(/const WRITE_S = ([\d.]+), TOUR_S = ([\d.]+);/);
   assert.ok(d && Number(d[1]) + Number(d[2]) <= 5, 'the first-view sequence must stay within 5 seconds (WCAG 2.2.2)');
+  assert.match(js, /\(now - writeFrom\) \/ WRITE_S\)/, 'the write phase runs on WRITE_S');
+  assert.match(js, /\(now - tourFrom\) \/ TOUR_S\)/, 'the tour runs on TOUR_S');
+  assert.doesNotMatch(js, /\(now - (?:writeFrom|tourFrom)\) \/ \d/, 'a literal duration would bypass the 5 second check');
   assert.match(js, /getContext\('webgl2'/, 'WebGL 2 guard');
   assert.match(js, /if \(reduceMotion\) return api;/, 'reduced motion keeps the static loop');
   assert.match(js, /'webglcontextlost'[\s\S]{0,400}drawMark\(1\)/, 'a lost context completes the M');
