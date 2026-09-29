@@ -8,41 +8,44 @@
 
 /* ── editorial-tokens ── */
   :root {
-    /* palette — light (Claude off-white), the default theme.
-       The original dark editorial palette lives in
-       :root[data-theme="dark"] below and is opt-in via the toggle. */
-    --ed-bg:        #f4f2ec;       /* warm ivory paper */
-    --ed-bg-soft:   #faf8f2;       /* raised card surface */
-    --ed-surface:   #efebe1;       /* insets, card hover */
-    --ed-hairline:  rgba(41, 38, 31, 0.10);
-    --ed-hairline-strong: rgba(41, 38, 31, 0.20);
+    /* palette — neutral light, the default theme. Dark is opt-in via the toggle. */
+    color-scheme: light;
+    --ed-bg:        #ffffff;
+    --ed-bg-soft:   #f7f7f5;
+    --ed-surface:   #f1f1ef;
+    --ed-panel:     #f1f1ef;       /* Experience panels, How I work */
+    --ed-panel-hover: #e9e9e6;
+    --ed-field:     #c9cdd4;       /* the mosaic ground */
+    --ed-hairline:  rgba(17, 17, 17, 0.10);
+    --ed-hairline-strong: rgba(17, 17, 17, 0.22);
 
-    --ed-ink:       #29261f;       /* warm near-black primary */
-    --ed-ink-soft:  #4a4640;       /* secondary body */
-    --ed-ink-dim:   #6e695f;       /* tertiary captions */
-    --ed-ink-mute:  #908a7e;       /* labels, attribution */
+    --ed-ink:       #111111;
+    --ed-ink-soft:  #3d3d3b;
+    --ed-ink-dim:   #62625e;
+    --ed-ink-mute:  #767672;       /* 4.6:1 on white: small text passes WCAG AA */
 
-    --ed-accent:        #c45a38;   /* Claude clay, decorative accent */
-    --ed-accent-strong: #a8431f;   /* deep terracotta, body-size accent text */
+    --ed-accent:        #c45a38;   /* clay: the star and active states */
+    --ed-accent-strong: #a8431f;   /* small accent text, 5.9:1 on white */
     --ed-accent-mute:   rgba(196, 90, 56, 0.14);
+    --ed-accent-tint:   #f6e9e3;
 
-    /* themed surfaces (referenced where colors were once hardcoded) */
-    --ed-topbar-bg: rgba(244, 242, 236, 0.80);
-    --ed-menu-bg:   rgba(244, 242, 236, 0.97);
-    --ed-field-bg:  rgba(41, 38, 31, 0.04);
-    --ed-shadow:    0 24px 80px rgba(41, 30, 20, 0.18);
+    --ed-topbar-bg: rgba(255, 255, 255, 0.86);
+    --ed-menu-bg:   rgba(255, 255, 255, 0.97);
+    --ed-field-bg:  rgba(17, 17, 17, 0.04);
+    --ed-shadow:    0 24px 80px rgba(17, 17, 17, 0.14);
+    --ed-card-shadow: 0 10px 30px rgba(17, 17, 17, 0.07);
 
     /* rgb triplets for rgba() composed in JS / inline gradients */
     --ed-accent-rgb: 196, 90, 56;
-    --ed-bg-rgb:     244, 242, 236;
-    --ed-ink-rgb:    41, 38, 31;
-    --ed-hero-edge:  41, 38, 31;
-    --ed-hero-node:  110, 105, 95;
+    --ed-bg-rgb:     255, 255, 255;
+    --ed-ink-rgb:    17, 17, 17;
+    --ed-hero-edge:  17, 17, 17;
+    --ed-hero-node:  118, 118, 114;
 
-    /* type — display + body pairing */
-    --ed-display: "Source Serif 4", "Iowan Old Style", "Source Serif Pro", Georgia, serif;
-    --ed-body:    "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
-    --ed-mono:    ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
+    /* type — one sans for display and body, one mono for dates and data */
+    --ed-display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --ed-body:    "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --ed-mono:    "IBM Plex Mono", ui-monospace, Menlo, monospace;
 
     --ed-fz-xs:    0.75rem;
     --ed-fz-sm:    0.875rem;
@@ -79,34 +82,39 @@
     --ed-gutter-x:    clamp(1rem, 4vw, 2.25rem);
   }
 
-  /* Dark editorial — the site's original palette, opt-in via the
-     theme toggle (theme.js sets data-theme on <html> before paint). */
+  /* Dark — opt-in via the theme toggle (theme.js sets data-theme on <html> before paint). */
   :root[data-theme="dark"] {
-    --ed-bg:        #0a1014;
-    --ed-bg-soft:   #0f161b;
-    --ed-surface:   #131c22;
-    --ed-hairline:  rgba(255, 255, 255, 0.06);
-    --ed-hairline-strong: rgba(255, 255, 255, 0.12);
+    color-scheme: dark;
+    --ed-bg:        #0c0c0d;
+    --ed-bg-soft:   #121214;
+    --ed-surface:   #18181a;
+    --ed-panel:     #18181a;
+    --ed-panel-hover: #1f1f22;
+    --ed-field:     #1b1e23;
+    --ed-hairline:  rgba(255, 255, 255, 0.10);
+    --ed-hairline-strong: rgba(255, 255, 255, 0.22);
 
-    --ed-ink:       #f3f5f7;
-    --ed-ink-soft:  #c7cfd5;
-    --ed-ink-dim:   #8b969e;
-    --ed-ink-mute:  #5a656d;
+    --ed-ink:       #f4f4f2;
+    --ed-ink-soft:  #c9c9c5;
+    --ed-ink-dim:   #9a9a95;
+    --ed-ink-mute:  #7c7c78;
 
-    --ed-accent:        #4fb6dc;
-    --ed-accent-strong: #6cc7e9;
-    --ed-accent-mute:   rgba(79, 182, 220, 0.16);
+    --ed-accent:        #e0764f;
+    --ed-accent-strong: #eb8a66;
+    --ed-accent-mute:   rgba(224, 118, 79, 0.16);
+    --ed-accent-tint:   #2a1b15;
 
-    --ed-topbar-bg: rgba(10, 16, 20, 0.78);
-    --ed-menu-bg:   rgba(10, 16, 20, 0.95);
-    --ed-field-bg:  rgba(255, 255, 255, 0.03);
+    --ed-topbar-bg: rgba(12, 12, 13, 0.82);
+    --ed-menu-bg:   rgba(12, 12, 13, 0.96);
+    --ed-field-bg:  rgba(255, 255, 255, 0.04);
     --ed-shadow:    0 24px 80px rgba(0, 0, 0, 0.55);
+    --ed-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
-    --ed-accent-rgb: 79, 182, 220;
-    --ed-bg-rgb:     10, 16, 20;
-    --ed-ink-rgb:    243, 245, 247;
+    --ed-accent-rgb: 224, 118, 79;
+    --ed-bg-rgb:     12, 12, 13;
+    --ed-ink-rgb:    244, 244, 242;
     --ed-hero-edge:  255, 255, 255;
-    --ed-hero-node:  139, 150, 158;
+    --ed-hero-node:  124, 124, 120;
   }
 
 /* ── editorial-base ── */

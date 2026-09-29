@@ -34,6 +34,39 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// Not content pages: a redirect stub and a generated export, plus the three retired case pages (stubs from Task 9).
+const NON_CONTENT = new Set([
+  'about.html', 'cv.html',
+  'portfolio/mcp-server.html', 'portfolio/automation-tools.html', 'portfolio/interview-prep.html',
+]);
+const FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap';
+
+test('content pages share one fonts link with the Instrument Sans width axis', () => {
+  const failures = [];
+  for (const file of listHtmlFiles()) {
+    const name = relative(file);
+    if (NON_CONTENT.has(name)) continue;
+    const links = [...fs.readFileSync(file, 'utf8').matchAll(/href="(https:\/\/fonts\.googleapis\.com\/css2\?[^"]+)"/g)].map((m) => m[1]);
+    if (links.length !== 1 || links[0] !== FONTS_HREF) failures.push(`${name}: ${links.join(' | ') || 'no fonts link'}`);
+  }
+  assert.deepEqual(failures, []);
+});
+
+test('editorial.css carries the neutral tokens and the clay accent', () => {
+  const css = readText('assets/css/editorial.css');
+  const light = css.match(/\n {2}:root \{([\s\S]*?)\n {2}\}/);
+  const dark = css.match(/:root\[data-theme="dark"\] \{([\s\S]*?)\n {2}\}/);
+  assert.ok(light && dark, 'token blocks not found');
+  for (const [name, value] of [['--ed-bg', '#ffffff'], ['--ed-ink', '#111111'], ['--ed-ink-mute', '#767672'], ['--ed-accent', '#c45a38'], ['--ed-panel', '#f1f1ef'], ['--ed-field', '#c9cdd4']]) {
+    assert.match(light[1], new RegExp(`${name}:\\s*${value};`), `light ${name}`);
+  }
+  for (const [name, value] of [['--ed-bg', '#0c0c0d'], ['--ed-ink', '#f4f4f2'], ['--ed-ink-mute', '#7c7c78'], ['--ed-accent', '#e0764f'], ['--ed-panel', '#18181a'], ['--ed-field', '#1b1e23']]) {
+    assert.match(dark[1], new RegExp(`${name}:\\s*${value};`), `dark ${name}`);
+  }
+  assert.match(light[1], /--ed-display:\s*"Instrument Sans"/);
+  assert.match(light[1], /--ed-mono:\s*"IBM Plex Mono"/);
+});
+
 function localTargetForReference(reference, sourceFile) {
   const trimmed = reference.trim();
   if (!trimmed || trimmed.startsWith('#')) return null;
