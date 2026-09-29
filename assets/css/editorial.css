@@ -1599,6 +1599,7 @@
   .ed-page-head h1 { margin: 0; font-family: var(--ed-display); font-size: clamp(2.6rem, 6vw, 4.4rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--ed-ink); }
   .ed-page-head p { margin: 12px 0 0; max-width: 48ch; color: var(--ed-ink-mute); }
   .ed-page-head__link { color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
+  #role-skills .experience-role-title { font-family: var(--ed-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; color: var(--ed-ink); }   /* The old inline style block used to size this heading. */
 
 /* ── editorial-mark ── */
   /* a one-colour logo: the PNG or SVG alpha is the mask, currentColor the ink. The markup sets
