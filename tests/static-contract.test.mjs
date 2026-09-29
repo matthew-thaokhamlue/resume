@@ -155,39 +155,6 @@ test('index.html keeps the AI Match DOM contract used by assets/js/ai-match.js',
   assert.deepEqual(unsupportedProviders, []);
 });
 
-test('experience.html frames Sema around Liz observability story beats', () => {
-  const experienceHtml = readText('experience.html');
-
-  assert.match(
-    experienceHtml,
-    /Designed Liz(?:'|&rsquo;)s sensory system/,
-  );
-  assert.match(experienceHtml, /Sema(?:'|&rsquo;)s AI-native observability platform/);
-  assert.match(experienceHtml, /Jira, GitHub, Slack, Zoom, Linear, and document/);
-
-  // Scope to the Sema section — other panels (e.g. the Labforward group)
-  // now reuse the .sema-story vocabulary for their own sub-role beats.
-  const semaSection = experienceHtml.match(/id="role-sema"[\s\S]*?<\/section>/);
-  assert.ok(semaSection, 'role-sema section not found');
-  const storyBeatLabels = [
-    ...semaSection[0].matchAll(/<span class="sema-story__label">([^<]+)<\/span>/g),
-  ].map((match) => match[1]);
-  assert.deepEqual(storyBeatLabels, ['Ingest', 'Clarify', 'Close the loop']);
-});
-
-test('experience.html frames earlier roles as the career spine behind Liz', () => {
-  const experienceHtml = readText('experience.html');
-  const expectedStoryPhrases = [
-    'One continuous chapter across two lab-software products and the merger that joined them',
-    'Built the integration muscle underneath health-data products at scale',
-    'Learned where organizations fracture first: risk, process, controls, and change',
-  ];
-
-  for (const phrase of expectedStoryPhrases) {
-    assert.match(experienceHtml, new RegExp(escapeRegExp(phrase)));
-  }
-});
-
 test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {
@@ -256,6 +223,35 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
     if (NON_CONTENT.has(name) || name === 'index.html') continue;   // the home page joins in PR B
     assert.match(fs.readFileSync(file, 'utf8'), /assets\/js\/star-cursor\.js\?v=20260929/, `${name} must load star-cursor.js`);
   }
+});
+
+test('experience.html keeps the AI Match hooks inside the role reveals', () => {
+  const html = readText('experience.html');
+  const roles = [...html.matchAll(/<section class="ed-reveal__inner" id="(role-[a-z]+)">([\s\S]*?)<\/section>\s*<\/dialog>/g)];
+  assert.deepEqual(roles.map((m) => m[1]), ['role-sema', 'role-labforward', 'role-labtwin', 'role-thryve', 'role-ey']);
+  for (const [, id, body] of roles) {
+    for (const hook of ['data-role-company', 'data-role-title', 'data-role-meta', 'data-role-summary', 'data-role-skill']) {
+      assert.ok(body.includes(hook), `${id} lost ${hook}`);
+    }
+    assert.ok(body.includes('<section class="ed-how" aria-label="How I work">'), `${id} lost its How I work block`);
+  }
+  assert.match(html, /id="role-skills"/);
+  assert.ok((html.match(/class="ed-stage[ "]/g) || []).length >= 4, 'the skills section keeps its .ed-stage rows');
+  assert.match(html, /<a class="ed-page-head__link" href="cv\.html"[^>]*data-ga-event="resume_downloaded"/, 'the Experience page keeps its View CV link');
+  const aiMatch = readText('assets/js/ai-match.js');
+  for (const hook of ['[data-role-company]', '[data-role-title]', '[data-role-meta]', '[data-role-summary]', '[data-role-skill]']) {
+    assert.ok(aiMatch.includes(hook), `ai-match.js no longer reads ${hook}`);
+  }
+});
+
+test('every logo mask the markup references exists', () => {
+  const missing = [];
+  for (const file of listHtmlFiles()) {
+    for (const m of fs.readFileSync(file, 'utf8').matchAll(/(?<!-webkit-)mask-image:url\('([^']+)'\)/g)) {
+      if (!fs.existsSync(path.resolve(path.dirname(file), m[1]))) missing.push(`${relative(file)} -> ${m[1]}`);
+    }
+  }
+  assert.deepEqual(missing, []);
 });
 
 test('AI Match prompt template exists for the configured prompt version', () => {

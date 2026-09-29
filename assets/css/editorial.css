@@ -1593,3 +1593,31 @@
   .ed-star-label { position: fixed; left: 0; top: 0; z-index: 2147483647; pointer-events: none; opacity: 0; transition: opacity 0.16s ease; }
   .ed-star-label.is-visible { opacity: 1; }
   .ed-star-label__text { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 16px; border-radius: 999px; white-space: nowrap; background: var(--ed-ink); color: var(--ed-bg); font-family: var(--ed-body); font-size: 0.9rem; font-weight: 500; transform: translate(22px, -50%); }
+
+/* ── editorial-page-head ── */
+  .ed-page-head { padding: clamp(3rem, 8vw, 6rem) 0 2rem; }
+  .ed-page-head h1 { margin: 0; font-family: var(--ed-display); font-size: clamp(2.6rem, 6vw, 4.4rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--ed-ink); }
+  .ed-page-head p { margin: 12px 0 0; max-width: 48ch; color: var(--ed-ink-mute); }
+  .ed-page-head__link { color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
+
+/* ── editorial-mark ── */
+  /* a one-colour logo: the PNG or SVG alpha is the mask, currentColor the ink. The markup sets
+     mask-image in its style attribute, so the URL resolves against the page, not this stylesheet. */
+  .ed-mark { display: block; height: var(--h, 64px); aspect-ratio: var(--ratio, 1); max-width: 70%; background: currentColor; -webkit-mask-position: center; mask-position: center; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+
+/* ── editorial-panels (Experience) ── */
+  .ed-panels { display: grid; gap: 20px; padding-bottom: clamp(3rem, 8vw, 6rem); }
+  .ed-panel { position: relative; display: grid; place-items: center; width: 100%; min-height: clamp(260px, 32vw, 400px); padding: 28px; border: 0; border-radius: 28px; background: var(--ed-panel); color: var(--ed-ink); font: inherit; cursor: pointer; transition: background-color 0.25s ease; }
+  .ed-panel:hover { background: var(--ed-panel-hover); }
+  .ed-panel__foot { position: absolute; left: 28px; bottom: 24px; display: grid; gap: 2px; text-align: left; }
+  .ed-panel__title { font-weight: 500; }
+  .ed-panel__dates { font-family: var(--ed-mono); font-size: 0.82rem; color: var(--ed-ink-dim); }   /* on --ed-panel, ink-mute is below AA */
+
+/* ── editorial-how ── */
+  .ed-how { margin: 0 0 30px; padding: 22px 24px; border-radius: 18px; background: var(--ed-panel); }
+  .ed-how h3 { margin: 0 0 14px; font-family: var(--ed-mono); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ed-accent-strong); }
+  .ed-how__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .ed-how h4 { margin: 0 0 8px; font-size: 1.05rem; font-weight: 600; color: var(--ed-ink); }
+  .ed-how p, .ed-how li { margin: 0 0 10px; font-size: 1.02rem; line-height: 1.5; color: var(--ed-ink-soft); }
+  .ed-how ol { margin: 0 0 10px; padding-left: 1.3em; }
+  @media (max-width: 760px) { .ed-how__cols { grid-template-columns: 1fr; } }

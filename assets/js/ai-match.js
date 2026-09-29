@@ -30,14 +30,16 @@ function parseProfileContext(html) {
   const portfolioLines = [];
 
   doc.querySelectorAll('section[id^="role-"]:not(#role-skills)').forEach((section) => {
-    const eyebrow = section.querySelector('.ed-eyebrow');
-    const titleEl = section.querySelector('.experience-role-title');
-    const descEl = section.querySelector('.ed-philosophy__body p');
-    const skillEls = section.querySelectorAll('.experience-skill');
+    const companyEl = section.querySelector('[data-role-company]');
+    const metaEl = section.querySelector('[data-role-meta]');
+    const titleEl = section.querySelector('[data-role-title]');
+    const descEl = section.querySelector('[data-role-summary]');
+    const skillEls = section.querySelectorAll('[data-role-skill]');
 
-    if (!eyebrow || !titleEl) return;
+    if (!companyEl || !titleEl) return;
 
-    const eyebrowText = normalize(eyebrow.textContent);
+    // "Company · dates · place", as the old eyebrow line read
+    const eyebrowText = [companyEl, metaEl].filter(Boolean).map((el) => normalize(el.textContent)).join(' · ');
     const titleText = normalize(titleEl.textContent);
     const descText = descEl ? normalize(descEl.textContent) : '';
     const skills = Array.from(skillEls)
