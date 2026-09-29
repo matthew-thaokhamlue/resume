@@ -235,7 +235,7 @@
 
     var openedReveal = target.closest('dialog.ed-reveal[open]');
     if (openedReveal) {
-      if (!target.closest('a') && !String(window.getSelection() || '').trim()) openedReveal.close();
+      if (target.closest('.ed-reveal__close') || (!target.closest('a') && !String(window.getSelection() || '').trim())) openedReveal.close();
       return;
     }
 
