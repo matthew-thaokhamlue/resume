@@ -91,6 +91,8 @@
       markStar.style.opacity = w < 0.92 ? '1' : String(Math.max(0, (1 - w) / 0.08));
     }
     layout(); highlight();
+    let active = false;   // the observer reads it before the static branches return, and they never set it
+    new ResizeObserver(() => { if (layout() && active) render(); }).observe(stage);
     if (reduceMotion) return api;
     let gl = null;
     try { gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: true }); } catch (e) { gl = null; }
@@ -159,7 +161,7 @@
       gl.bindVertexArray(emptyVao);
       if (!shown) { shown = true; orbit.style.visibility = 'hidden'; }
     }
-    let active = false, running = false, lastT = 0, tourFrom = null, tourPending = false, toured = false, settleT = 0, scrollFlow = 0, writeFrom = null, writePending = false;
+    let running = false, lastT = 0, tourFrom = null, tourPending = false, toured = false, settleT = 0, scrollFlow = 0, writeFrom = null, writePending = false;
     function frame(ts) {
       if (!active) { running = false; return; }
       const now = ts / 1000, dt = lastT ? Math.min(1 / 30, Math.max(1 / 240, now - lastT)) : 1 / 60; lastT = now;
@@ -187,7 +189,6 @@
       c.addEventListener('pointerup', rel); c.addEventListener('pointercancel', rel);
     });
     window.addEventListener('scroll', () => { if (!active) return; const r = stage.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; scrollFlow = window.scrollY / 1400; render(); }, { passive: true });
-    new ResizeObserver(() => { if (layout() && active) render(); }).observe(stage);
     canvas.addEventListener('webglcontextlost', (e) => {
       e.preventDefault(); active = false; orbit.style.visibility = 'visible';
       writeFrom = tourFrom = null; writePending = tourPending = false;   // the loop stops here, so show the end state now

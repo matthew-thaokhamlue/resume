@@ -179,6 +179,15 @@ test('index.html keeps the loop hero contract', () => {
   assert.match(css, /@media \(scripting: none\) \{\s*\.ed-loop-orbit \{/, 'without scripts the ring takes its positions from CSS');
 });
 
+test('loop-hero.js lays the ring out again on every resize, in the static branches too', () => {
+  const js = readText('assets/js/loop-hero.js');
+  assert.equal((js.match(/new ResizeObserver\(/g) || []).length, 1, 'one resize observer');
+  assert.equal((js.match(/\blet active\b/g) || []).length, 1, 'one declaration of active');
+  // The static branches return before the live setup, so the observer starts first and reads a variable that already exists.
+  assert.match(js, /let active = false;[\s\S]*new ResizeObserver\([\s\S]*if \(reduceMotion\) return api;/, 'active, then the observer, then the first static return');
+  assert.match(js, /if \(reduceMotion\) return api;[\s\S]*if \(!gl\) return api;[\s\S]*if \(!dust \|\| !line\) return api;/, 'three static branches return early');
+});
+
 test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {
