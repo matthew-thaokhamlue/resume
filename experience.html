@@ -155,16 +155,6 @@
             background-color: var(--ed-hairline-strong);
         }
 
-        /* Reveal directional variants (additive to .reveal in editorial.css).
-           Pre-reveal transforms apply only while the body carries the
-           motion-pending attribute and scripting + motion are available,
-           matching the gated base .reveal state. .is-in resets win by
-           source order. */
-        @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-            [data-motion-pending] .reveal.reveal-left { transform: translate3d(-44px, 0, 0); }
-            [data-motion-pending] .reveal.reveal-right { transform: translate3d(44px, 0, 0); }
-            [data-motion-pending] .reveal.reveal-up-lg { transform: translate3d(0, 36px, 0); }
-        }
         .reveal.reveal-left.is-in,
         .reveal.reveal-right.is-in,
         .reveal.reveal-up-lg.is-in { transform: translate3d(0, 0, 0); }
@@ -177,7 +167,7 @@
 <script src="assets/js/theme.js?v=20260615"></script>
 </head>
 
-<body class="ed-page" data-motion-pending>
+<body class="ed-page">
     <div class="relative flex min-h-screen w-full flex-col">
 
         <!-- TopNavBar -->
@@ -265,7 +255,6 @@
                 </div>
             </section>
 
-            <!-- career.js: spine + chapter choreography hook -->
             <div class="ed-career">
 
             <!-- ── Panel 1: Sema Technologies (9 rings accumulated) ── -->
@@ -620,14 +609,7 @@
         </footer>
 
     </div>
-    <!-- GSAP scroll-driven motion (mirrors index.html) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
     <script src="assets/js/site.js?v=20260929"></script>
-    <script src="assets/js/editorial.js?v=20260929"></script>
-    <script src="assets/js/rings.js?v=20260615"></script>
-    <script src="assets/js/motion-star.js?v=20260907"></script>
-    <script src="assets/js/career.js?v=20260907"></script>
 </body>
 
 </html>

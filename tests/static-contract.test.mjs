@@ -214,96 +214,9 @@ test('index.html keeps the product-hero and loop-ring contract', () => {
   assert.doesNotMatch(editorialCss, /\.ed-hero__role-word:first-child[^}]*opacity:\s*0/, 'the first role word must stay visible without JS');
 });
 
-test('experience.html keeps the growth-rings contract', () => {
-  const experienceHtml = readText('experience.html');
-
-  // rings.js targets svg.ed-rings — one per career panel
-  const taggedSvgs = experienceHtml.match(/<svg[^>]*class="ed-rings /g) ?? [];
-  assert.equal(taggedSvgs.length, 4, 'Expected 4 svg.ed-rings panels');
-  assert.match(experienceHtml, /assets\/js\/rings\.js\?v=/, 'Missing rings.js script tag');
-
-  // Ring counts are accumulated career years (Sema=9, Labforward group=8,
-  // Thryve=5, EY=2) — preserve when editing the SVGs. LabTwin (was 7) is
-  // folded into the Labforward group panel, so there is no 7-ring panel.
-  for (const years of [9, 8, 5, 2]) {
-    assert.match(
-      experienceHtml,
-      new RegExp(`${years} organic growth rings`),
-      `Missing the ${years}-ring panel`,
-    );
-  }
-
-  // rings.js must keep degrading to the static authored SVGs
-  const ringsJs = readText('assets/js/rings.js');
-  assert.match(ringsJs, /prefers-reduced-motion/, 'rings.js lost its reduced-motion gate');
-});
-
-test('experience.html keeps the career-spine contract', () => {
-  const experienceHtml = readText('experience.html');
-
-  // career.js builds the spine + chapter choreography inside this wrap
-  assert.match(experienceHtml, /<div class="ed-career">/, 'Missing .ed-career wrapper');
-  assert.match(experienceHtml, /assets\/js\/career\.js\?v=/, 'Missing career.js script tag');
-
-  // Four role panels live inside the wrap (LabTwin is folded into the
-  // Labforward group panel as an inner #role-labtwin anchor); Skills &
-  // Education stays outside. All five role anchors still resolve here.
-  const wrapped = experienceHtml.match(/<div class="ed-career">([\s\S]*?)<\/div><!-- \/\.ed-career -->/);
-  assert.ok(wrapped, 'Could not find the ed-career wrap region');
-  for (const id of ['role-sema', 'role-labforward', 'role-labtwin', 'role-thryve', 'role-ey']) {
-    assert.match(wrapped[1], new RegExp(`id="${id}"`), `${id} left the ed-career wrap`);
-  }
-  assert.doesNotMatch(wrapped[1], /id="role-skills"/, 'role-skills must stay outside the wrap');
-
-  const careerJs = readText('assets/js/career.js');
-  assert.match(careerJs, /prefers-reduced-motion/, 'career.js lost its reduced-motion gate');
-});
-
-test('portfolio.html keeps the gallery contract', () => {
-  const portfolioHtml = readText('portfolio.html');
-
-  assert.match(portfolioHtml, /assets\/js\/folio\.js\?v=/, 'Missing folio.js script tag');
-  // Section heads reveal via CSS; folio.js staggers the cards themselves
-  const heads = portfolioHtml.match(/<div class="ed-section__head reveal">/g) ?? [];
-  assert.equal(heads.length, 2, 'Expected both section heads to carry .reveal');
-
-  const folioJs = readText('assets/js/folio.js');
-  assert.match(folioJs, /prefers-reduced-motion/, 'folio.js lost its reduced-motion gate');
-});
-
-test('case-study pages keep the evidence-reel contract', () => {
-  const casePages = fs
-    .readdirSync(path.join(repoRoot, 'portfolio'))
-    .filter((name) => name.endsWith('.html'));
-  assert.ok(casePages.length > 0);
-
-  for (const name of casePages) {
-    const html = readText(path.join('portfolio', name));
-    assert.match(
-      html,
-      /\.\.\/assets\/js\/case\.js\?v=/,
-      `portfolio/${name} is missing the case.js script tag`,
-    );
-  }
-
-  const caseJs = readText('assets/js/case.js');
-  assert.match(caseJs, /prefers-reduced-motion/, 'case.js lost its reduced-motion gate');
-});
-
-test('the motion layer fails visible', () => {
-  // Pages that hide content pre-reveal must declare the pending state...
-  const motionPages = listHtmlFiles().filter((file) => {
-    const name = relative(file);
-    return name !== 'about.html' && name !== 'cv.html';
-  });
-  for (const file of motionPages) {
-    const html = fs.readFileSync(file, 'utf8');
-    assert.match(
-      html,
-      /<body[^>]*\bdata-motion-pending\b[^>]*>/,
-      `${relative(file)} body is missing data-motion-pending`,
-    );
-  }
+test('the home motion layer fails visible', () => {
+  // Only the home page keeps the GSAP layer until its rebuild.
+  assert.match(readText('index.html'), /<body[^>]*\bdata-motion-pending\b[^>]*>/, 'index.html body is missing data-motion-pending');
 
   // ...site.js must lift it when the GSAP CDN never loaded...
   const siteJs = readText('assets/js/site.js');
@@ -324,6 +237,22 @@ test('the motion layer fails visible', () => {
   const baseReveal = editorialCss.match(/\n {2}\.reveal \{([^}]*)\}/);
   assert.ok(baseReveal, 'Could not find the base .reveal rule');
   assert.doesNotMatch(baseReveal[1], /opacity:\s*0/, 'base .reveal must not hide content ungated');
+});
+
+test('only the home page loads GSAP and the scroll-motion scripts', () => {
+  const offenders = [];
+  for (const file of listHtmlFiles()) {
+    const name = relative(file);
+    if (name === 'index.html') continue;
+    const html = fs.readFileSync(file, 'utf8');
+    for (const needle of ['gsap', 'ScrollTrigger', 'editorial.js', 'rings.js', 'career.js', 'folio.js', 'case.js', 'motion-star.js', 'data-motion-pending']) {
+      if (html.includes(needle)) offenders.push(`${name}: ${needle}`);
+    }
+  }
+  assert.deepEqual(offenders, []);
+  for (const gone of ['career.js', 'rings.js', 'folio.js', 'case.js']) {
+    assert.ok(!fs.existsSync(path.join(repoRoot, 'assets/js', gone)), `assets/js/${gone} should be deleted`);
+  }
 });
 
 test('design documents stay out of the public repo', () => {
