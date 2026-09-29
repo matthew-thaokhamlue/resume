@@ -237,6 +237,8 @@ test('a lost WebGL context hides the dead canvas and the drag hint', () => {
   const js = readText('assets/js/loop-hero.js');
   assert.match(js, /'webglcontextlost'[\s\S]{0,400}canvas\.style\.display = 'none'/, 'a dead canvas paints over the ellipse');
   assert.match(js, /'webglcontextlost'[\s\S]{0,400}classList\.remove\('is-draggable'\)/, 'the ring no longer answers a drag');
+  // the observer calls loop.show() when the stage re-enters the viewport, which would revive the loop on the dead context
+  assert.match(js, /'webglcontextlost'[\s\S]{0,600}api\.show = \(\) => \{\};/, 'a lost context is final: show() does nothing afterwards');
 });
 
 test('no page loads GSAP or the old motion scripts', () => {

@@ -196,6 +196,7 @@
       canvas.style.display = 'none'; section.classList.remove('is-draggable');   // the dead canvas would cover the ellipse
       writeFrom = tourFrom = null; writePending = tourPending = false;   // the loop stops here, so show the end state now
       drawMark(1); progress = 1; hoverIdx = -1; highlight();
+      api.show = () => {};   // the loss is final: re-entering the viewport must not revive the loop on a dead context
     });
     api.show = () => { active = true; layout(); render(); if (!toured) { toured = true; drawMark(0); writePending = true; } wake(); };
     api.hide = () => { active = false; };
