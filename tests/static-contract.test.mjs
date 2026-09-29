@@ -188,71 +188,21 @@ test('experience.html frames earlier roles as the career spine behind Liz', () =
   }
 });
 
-test('index.html keeps the product-hero and loop-ring contract', () => {
-  const indexHtml = readText('index.html');
-
-  // Markup hooks loop.js depends on
-  for (const hook of ['ed-hero--product', 'ed-hero__mark-home', 'ed-motion-mark', 'ed-motion-mark__stroke', 'ed-hero__role', 'ed-hero__role-word', 'ed-loop__ring', 'ed-loop__card']) {
-    assert.match(indexHtml, new RegExp(escapeRegExp(hook)), `Missing ${hook}`);
-  }
-  assert.match(indexHtml, /assets\/js\/loop\.js\?v=/, 'Missing loop.js script tag');
-  assert.doesNotMatch(indexHtml, /hero\.js/, 'hero.js was deleted; index.html must not load it');
-
-  // The role stack: builder first and last, the last step recolours to ink
-  const roles = [...indexHtml.matchAll(/<span class="ed-hero__role-word">([^<]+)<\/span>/g)].map((m) => m[1]);
-  assert.deepEqual(roles, ['builder', 'manager', 'designer', 'owner', 'tester', 'builder']);
-  // Exactly six ring stations, KPIs in front by default (the no-JS state)
-  const cards = indexHtml.match(/<li class="ed-loop__card(?: is-front)?">/g) ?? [];
-  assert.equal(cards.length, 6, 'Expected six loop cards');
-  assert.match(indexHtml, /<li class="ed-loop__card is-front"><span class="ed-loop__kicker">Strategy<\/span>KPIs and strategy<\/li>/);
-
-  // Fail-visible guards
-  const loopJs = readText('assets/js/loop.js');
-  assert.match(loopJs, /prefers-reduced-motion/, 'loop.js lost its reduced-motion gate');
-  assert.match(loopJs, /if \(!window\.gsap \|\| !window\.ScrollTrigger\) return;/, 'loop.js lost its GSAP guard');
-  const editorialCss = readText('assets/css/editorial.css');
-  assert.doesNotMatch(editorialCss, /\.ed-hero__role-word:first-child[^}]*opacity:\s*0/, 'the first role word must stay visible without JS');
-});
-
-test('the home motion layer fails visible', () => {
-  // Only the home page keeps the GSAP layer until its rebuild.
-  assert.match(readText('index.html'), /<body[^>]*\bdata-motion-pending\b[^>]*>/, 'index.html body is missing data-motion-pending');
-
-  // ...site.js must lift it when the GSAP CDN never loaded...
-  const siteJs = readText('assets/js/site.js');
-  assert.match(
-    siteJs,
-    /removeAttribute\('data-motion-pending'\)/,
-    'site.js lost the blocked-CDN fallback',
-  );
-
-  // ...and editorial.css may only hide .reveal behind the scripting gate.
-  const editorialCss = readText('assets/css/editorial.css');
-  assert.match(
-    editorialCss,
-    /@media \(scripting: enabled\) and \(prefers-reduced-motion: no-preference\)/,
-    'editorial.css lost the scripting/motion gate',
-  );
-  assert.match(editorialCss, /\[data-motion-pending\] \.reveal/, 'editorial.css lost the gated reveal state');
-  const baseReveal = editorialCss.match(/\n {2}\.reveal \{([^}]*)\}/);
-  assert.ok(baseReveal, 'Could not find the base .reveal rule');
-  assert.doesNotMatch(baseReveal[1], /opacity:\s*0/, 'base .reveal must not hide content ungated');
-});
-
-test('only the home page loads GSAP and the scroll-motion scripts', () => {
+test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {
     const name = relative(file);
-    if (name === 'index.html') continue;
     const html = fs.readFileSync(file, 'utf8');
-    for (const needle of ['gsap', 'ScrollTrigger', 'editorial.js', 'rings.js', 'career.js', 'folio.js', 'case.js', 'motion-star.js', 'data-motion-pending']) {
-      if (html.includes(needle)) offenders.push(`${name}: ${needle}`);
+    for (const needle of ['gsap', 'ScrollTrigger', 'editorial.js', 'rings.js', 'career.js', 'folio.js', 'case.js', 'motion-star.js', 'loop.js', 'data-motion-pending']) {
+      if (html.toLowerCase().includes(needle.toLowerCase())) offenders.push(`${name}: ${needle}`);
     }
   }
   assert.deepEqual(offenders, []);
-  for (const gone of ['career.js', 'rings.js', 'folio.js', 'case.js']) {
+  for (const gone of ['career.js', 'rings.js', 'folio.js', 'case.js', 'editorial.js', 'loop.js', 'motion-star.js']) {
     assert.ok(!fs.existsSync(path.join(repoRoot, 'assets/js', gone)), `assets/js/${gone} should be deleted`);
   }
+  assert.doesNotMatch(readText('assets/js/site.js'), /data-motion-pending/, 'site.js keeps no GSAP fallback');
+  assert.doesNotMatch(readText('assets/css/editorial.css'), /\[data-motion-pending\]/, 'editorial.css keeps no motion gate');
 });
 
 test('design documents stay out of the public repo', () => {

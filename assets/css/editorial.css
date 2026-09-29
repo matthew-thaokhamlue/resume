@@ -649,23 +649,10 @@
   .ed-topbar__theme .material-symbols-outlined { font-size: 1.25rem; }
 
 /* ── editorial-motion ── */
-  /* Reusable reveal hook — JS adds .is-in when ScrollTrigger fires.
-     The hidden state only applies while <body data-motion-pending> is
-     present AND scripting + motion are available, so no-JS, blocked-CDN
-     (site.js removes the attribute when GSAP is missing), old browsers,
-     and reduced motion all render the content visible. */
+  /* Legacy reveal hook: pages no longer hide content before motion; the class is inert. */
   .reveal {
     transition: opacity var(--ed-d-slow) var(--ed-ease),
                 transform var(--ed-d-slow) var(--ed-ease);
-  }
-  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-    [data-motion-pending] .reveal {
-      opacity: 0;
-      transform: translate3d(0, 18px, 0);
-    }
-    [data-motion-pending] .ed-stage__line {
-      transform: scaleX(0);
-    }
   }
   .reveal.is-in {
     opacity: 1;
