@@ -41,10 +41,19 @@
   const isDark = () => root.getAttribute('data-theme') === 'dark';
   const openDialog = () => document.querySelector('dialog[open]');
   const openReveal = () => { const d = openDialog(); return d && d.classList.contains('ed-reveal') ? d : null; };
-  const modeAt = (el) => (openReveal() ? 'close' : el && el.closest('[data-action="open-reveal"]') ? 'info' : 'idle');
+  // A link click inside an open reveal follows the link and leaves the reveal open (site.js), so no "Close" pill there.
+  const modeAt = (el) => {
+    if (openReveal()) return el && el.closest('a') ? 'idle' : 'close';
+    return el && el.closest('[data-action="open-reveal"]') ? 'info' : 'idle';
+  };
+  // Text-like fields keep the native caret; the star hides over them.
+  const TEXT_FIELD = 'textarea, [contenteditable="true"], input:not([type]), input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="tel"], input[type="password"], input[type="number"]';
 
+  let shown = '';   // the mode that the pill text shows; the pill keeps it while it fades out
   function applyLabel() {
     label.classList.toggle('is-visible', visible && mode !== 'idle');
+    if (mode === 'idle' || mode === shown) return;
+    shown = mode;
     labelText.innerHTML = mode === 'close' ? 'Close <span aria-hidden="true">×</span>' : 'Info';
   }
   function flourish() {
@@ -56,11 +65,12 @@
   }
   function setMode(m, force) {
     if (m === mode && !force) return;
-    const entering = (m === 'info' && mode === 'idle') || (m === 'close' && mode !== 'close');
+    const entering = (m === 'info' && mode === 'idle') || (m === 'close' && mode === 'info');   // a tile, or the reveal it opens
     mode = m;
     if (entering) flourish();
     applyLabel();
-    labelText.animate([{ transform: 'translate(22px, -50%) scale(0.55)' }, { transform: 'translate(22px, -50%) scale(1)' }], { duration: 280, easing: 'cubic-bezier(0.2, 0.9, 0.3, 1.35)' });   // the pill pops in on each mode change
+    // The pill pops in on each change to a visible mode; a fading pill keeps its size.
+    if (m !== 'idle') labelText.animate([{ transform: 'translate(22px, -50%) scale(0.55)' }, { transform: 'translate(22px, -50%) scale(1)' }], { duration: 280, easing: 'cubic-bezier(0.2, 0.9, 0.3, 1.35)' });
     wake();
   }
 
@@ -89,7 +99,7 @@
     if (!seen) { seen = true; star.x = px; star.y = py; trail.forEach((p) => { p.x = px; p.y = py; }); }
     visible = true;
     const t = e.target instanceof Element ? e.target : null;
-    overField = !!(t && t.closest('input, textarea, select, [contenteditable="true"]'));   // the caret takes over in text fields
+    overField = !!(t && t.closest(TEXT_FIELD));
     overLink = !!(t && t.closest('a, button, label, summary'));
     const m = modeAt(t);
     if (m !== mode) setMode(m); else applyLabel();

@@ -1588,7 +1588,8 @@
      motion. The layer sits above every fixed overlay (cookie banner 90,
      mobile menu 60); inside an open dialog it follows into the top layer. */
   .star-on, .star-on * { cursor: none !important; }
-  .star-on input, .star-on textarea, .star-on select, .star-on [contenteditable="true"] { cursor: text !important; }
+  /* the same text-like fields as TEXT_FIELD in star-cursor.js */
+  .star-on :is(textarea, [contenteditable="true"], input:not([type]), input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="tel"], input[type="password"], input[type="number"]) { cursor: text !important; }
   .ed-star-layer { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 2147483646; }
   .ed-star-label { position: fixed; left: 0; top: 0; z-index: 2147483647; pointer-events: none; opacity: 0; transition: opacity 0.16s ease; }
   .ed-star-label.is-visible { opacity: 1; }

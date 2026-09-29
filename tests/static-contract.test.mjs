@@ -339,17 +339,28 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
   assert.ok(ctxAt > 0 && starOnAt > ctxAt, 'star-on (which hides the native cursor) must come after the canvas check');
   assert.match(js, /attributeFilter: \['open'\]/, 'the star must follow any dialog into the top layer');
   assert.match(js, /\n\s*follow\(\);/, 'the star must join a reveal that opened before this script ran (a deep link)');
+  assert.match(js, /if \(openReveal\(\)\) return el && el\.closest\('a'\) \? 'idle' : 'close';/, 'a link inside an open reveal does not close it, so no "Close" pill there');
+  assert.match(js, /if \(m !== 'idle'\) labelText\.animate\(/, 'a fading pill must not pop');
+  assert.match(js, /if \(mode === 'idle' \|\| mode === shown\) return;/, 'the pill text changes only when its mode changes');
 
   const css = readText('assets/css/editorial.css');
   assert.match(css, /\.star-on, \.star-on \* \{ cursor: none !important; \}/);
-  assert.match(css, /\.star-on input, \.star-on textarea, \.star-on select, \.star-on \[contenteditable="true"\] \{ cursor: text !important; \}/);
+  const jsFields = js.match(/const TEXT_FIELD = '([^']+)';/);
+  const cssFields = css.match(/\.star-on :is\(([^)]*(?:\([^)]*\)[^)]*)*)\) \{ cursor: text !important; \}/);
+  assert.ok(jsFields && cssFields, 'the text-field list exists in star-cursor.js and editorial.css');
+  assert.equal(cssFields[1], jsFields[1], 'the CSS caret rule and the script use the same text-field list');
+  for (const cls of ['ed-star-layer', 'ed-star-label']) {
+    assert.match(css, new RegExp(`\\.${cls} \\{[^}]*pointer-events: none;`), `.${cls} must let every click through`);
+  }
   const z = css.match(/\.ed-star-layer \{[^}]*z-index: (\d+);/);
   assert.ok(z && Number(z[1]) > 100, 'the star layer must sit above the cookie banner and the mobile menu');
 
   for (const file of listHtmlFiles()) {
     const name = relative(file);
     if (NON_CONTENT.has(name)) continue;
-    assert.match(fs.readFileSync(file, 'utf8'), /assets\/js\/star-cursor\.js\?v=20260929/, `${name} must load star-cursor.js`);
+    const html = fs.readFileSync(file, 'utf8');
+    assert.equal((html.match(/star-cursor\.js/g) || []).length, 1, `${name} must load star-cursor.js once`);
+    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260929"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260929"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
   }
 });
 
