@@ -276,6 +276,16 @@ test('the three retired case pages redirect to the portfolio and stay out of the
   assert.doesNotMatch(readText('portfolio/opppaths.html'), /mcp-server\.html/, 'the OppPaths next-project link must skip the retired page');
 });
 
+test('certificates.html shows all 14 credentials, each with a verify link', () => {
+  const html = readText('certificates.html');
+  assert.equal((html.match(/<button class="ed-tile ed-ct /g) || []).length, 14, 'expected 14 credential tiles');
+  const dialogs = [...html.matchAll(/<dialog class="ed-reveal" id="credential-(\d+)"[\s\S]*?<\/dialog>/g)];
+  assert.equal(dialogs.length, 14, 'expected 14 credential reveals');
+  for (const [block, n] of dialogs) {
+    assert.match(block, /<a class="ed-reveal__link" href="https:\/\/[^"]+" target="_blank" rel="noopener" data-ga-event="credential_verified" data-ga-params='\{"credential_issuer":"[^"]+","credential_name":"[^"]+"\}'>Verify the credential →<\/a>/, `credential-${n} lost its verify link or its analytics`);
+  }
+});
+
 test('AI Match prompt template exists for the configured prompt version', () => {
   const aiMatchJs = readText('assets/js/ai-match.js');
   const versionMatch = aiMatchJs.match(/const PROMPT_VERSION = ['"]([^'"]+)['"]/);
