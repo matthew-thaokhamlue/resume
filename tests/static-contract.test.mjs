@@ -446,13 +446,24 @@ test('portfolio.html is a mosaic of eight tiles over five project reveals', () =
 
 test('the three retired case pages redirect to the portfolio and stay out of the sitemap', () => {
   const sitemap = readText('sitemap.xml');
-  for (const name of ['mcp-server', 'automation-tools', 'interview-prep']) {
+  const retired = ['mcp-server', 'automation-tools', 'interview-prep'];
+  for (const name of retired) {
     const html = readText(`portfolio/${name}.html`);
     assert.match(html, /<meta http-equiv="refresh" content="0; url=\.\.\/portfolio\.html" \/>/, `${name} must redirect`);
-    assert.match(html, /<meta name="robots" content="noindex" \/>/, `${name} must be noindex`);
+    assert.match(html, /window\.location\.replace\('\.\.\/portfolio\.html'\)/, `${name} must redirect with scripts on`);
+    assert.match(html, /<link rel="canonical" href="https:\/\/matthew-thaokhamlue\.github\.io\/resume\/portfolio\.html" \/>/, `${name} must name the portfolio as canonical`);
+    assert.doesNotMatch(html, /noindex/, `${name}: noindex beside a canonical to another page sends mixed signals (about.html has none)`);
+    assert.match(html, /<a href="\.\.\/portfolio\.html">portfolio<\/a>/, `${name} must keep the fallback link`);
     assert.ok(!sitemap.includes(`portfolio/${name}.html`), `${name} must leave the sitemap`);
   }
-  assert.doesNotMatch(readText('portfolio/opppaths.html'), /mcp-server\.html/, 'the OppPaths next-project link must skip the retired page');
+  for (const file of listHtmlFiles()) {
+    const page = relative(file);
+    if (NON_CONTENT.has(page)) continue;
+    const hrefs = [...fs.readFileSync(file, 'utf8').matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+    for (const name of retired) {
+      assert.ok(!hrefs.some((h) => h.split(/[?#]/)[0].endsWith(`${name}.html`)), `${page} links the retired page ${name}.html`);
+    }
+  }
 });
 
 test('certificates.html shows all 14 credentials, each with a verify link', () => {
