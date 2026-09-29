@@ -29,17 +29,17 @@
   <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
-  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260907" />
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=20260929" />
 
-  <!-- Fonts: Fraunces (display) + Space Grotesk (body) + Material Symbols -->
+  <!-- Fonts: Instrument Sans (display and body), IBM Plex Mono, Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
 
   <!-- Editorial design layer -->
-  <link rel="stylesheet" href="assets/css/editorial.css?v=20260907" />
+  <link rel="stylesheet" href="assets/css/editorial.css?v=20260929" />
 
   <style>
     .material-symbols-outlined {
@@ -51,14 +51,11 @@
     ::-webkit-scrollbar-track { background: var(--ed-bg); }
     ::-webkit-scrollbar-thumb { background: var(--ed-hairline-strong); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--ed-accent); }
-
-    dialog:not([open]) { display: none; }
-    dialog[open] { display: flex; }
   </style>
 <script src="assets/js/theme.js?v=20260615"></script>
 </head>
 
-<body class="ed-page" data-motion-pending>
+<body class="ed-page ed-fit">
   <!-- Top bar -->
   <header class="ed-topbar">
     <div class="ed-topbar__inner">
@@ -99,184 +96,86 @@
   </div>
 
   <main>
-    <!-- ────────────────  HERO  ──────────────── -->
-    <section class="ed-hero ed-hero--page" id="top">
-      <div class="ed-hero__inner">
-        <div class="ed-hero__meta">
-          <span class="ed-eyebrow">Selected works · 2018 — present</span>
-        </div>
-        <div>
-          <h1 class="ed-hero__display">Portfolio &amp; <em>projects</em>.</h1>
-          <p class="ed-hero__support">
-            A selected collection of professional case studies and personal AI projects, products I led from
-            discovery to production across health tech, lab intelligence, and developer tooling.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ────────────────  CAREER PORTFOLIO  ──────────────── -->
-    <section class="ed-section">
-      <div class="ed-section__inner">
-        <div class="ed-section__head reveal">
-          <span class="ed-section__eyebrow">Career portfolio</span>
-          <h2 class="ed-section__title">Products I led from <em>discovery</em> to production.</h2>
-        </div>
-        <div class="ed-cards">
-
-          <!-- Thryve -->
-          <a class="ed-card" href="portfolio/thryve.html">
-            <div class="ed-card__media">
-              <img src="images/thryve-card.png" alt="Thryve" />
-            </div>
-            <div class="ed-card__body">
-              <p class="ed-card__kicker">Health Data Platform · Product Owner</p>
-              <h3 class="ed-card__title">Thryve GmbH</h3>
-              <p class="ed-card__lede">Unified SDK for wearable data integration, scaled from launch to 1M+ users and €0&rarr;€1M ARR.</p>
-            </div>
-            <div class="ed-card__tags">
-              <span class="ed-tag">API Product</span>
-              <span class="ed-tag">Health Tech</span>
-              <span class="ed-tag">Wearable Devices</span>
-            </div>
-          </a>
-
-          <!-- LabTwin -->
-          <a class="ed-card" href="portfolio/labtwin.html">
-            <div class="ed-card__media">
-              <img src="images/labtwin-card.png" alt="LabTwin" />
-            </div>
-            <div class="ed-card__body">
-              <p class="ed-card__kicker">Voice AI for Labs · Technical PM</p>
-              <h3 class="ed-card__title">LabTwin GmbH</h3>
-              <p class="ed-card__lede">Led AI integration strategy for voice assistants and LLM-powered workflows across laboratory instrumentation.</p>
-            </div>
-            <div class="ed-card__tags">
-              <span class="ed-tag">Voice AI</span>
-              <span class="ed-tag">AI Integration</span>
-              <span class="ed-tag">LLM</span>
-            </div>
-          </a>
-
-          <!-- Labforward -->
-          <a class="ed-card" href="portfolio/labforward.html">
-            <div class="ed-card__media">
-              <img src="images/labforward-card.png" alt="Labforward" />
-            </div>
-            <div class="ed-card__body">
-              <p class="ed-card__kicker">Lab Intelligence Platform · Senior PM</p>
-              <h3 class="ed-card__title">Labforward GmbH</h3>
-              <p class="ed-card__lede">Owned the GenAI roadmap end-to-end, from LLM evaluation to production deployment of AI-powered experiment search.</p>
-            </div>
-            <div class="ed-card__tags">
-              <span class="ed-tag">GenAI</span>
-              <span class="ed-tag">LLM</span>
-              <span class="ed-tag">AI Strategy</span>
-            </div>
-          </a>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ────────────────  PERSONAL PROJECTS  ──────────────── -->
-    <section class="ed-section">
-      <div class="ed-section__inner">
-        <div class="ed-section__head reveal">
-          <span class="ed-section__eyebrow">Personal projects</span>
-          <h2 class="ed-section__title">Things I build on <em>weekends</em> when no one&rsquo;s watching.</h2>
-        </div>
-        <div class="ed-cards">
-
-          <!-- Remarcable Living -->
-          <a class="ed-card" href="portfolio/remarcable-living.html">
-            <div class="ed-card__media">
-              <img src="images/portfolio-remarcable-living-card.svg" alt="Abstract Bangkok skyline at dusk with one lit window, suggesting your own corner of a new city" loading="lazy" decoding="async" />
-            </div>
-            <div class="ed-card__body">
-              <p class="ed-card__kicker">Live product · Rental discovery website</p>
-              <h3 class="ed-card__title">Remarcable Living</h3>
-              <p class="ed-card__lede">Bangkok condo-rental website for exchange students and interns. I took over a half-finished, broken build and turned it into a production-grade site, live at remarcableliving.co.</p>
-            </div>
-            <div class="ed-card__tags">
-              <span class="ed-tag">Design &amp; Build</span>
-              <span class="ed-tag">Web Product</span>
-              <span class="ed-tag">Live Product</span>
-            </div>
-          </a>
-
-          <!-- Opportunity Paths -->
-          <a class="ed-card" href="portfolio/opppaths.html">
-            <div class="ed-card__media">
-              <img src="images/portfolio-opppaths-card.svg" alt="Abstract doorway of light at the end of converging paths, suggesting a scholarship opening a way forward" loading="lazy" decoding="async" />
-            </div>
-            <div class="ed-card__body">
-              <p class="ed-card__kicker">Live product · AI scholarship platform</p>
-              <h3 class="ed-card__title">Opportunity Paths</h3>
-              <p class="ed-card__lede">AI-powered platform that matches students to scholarships and helps them build winning applications, built solo through a personal AI agent workflow and live at opppaths.com.</p>
-            </div>
-            <div class="ed-card__tags">
-              <span class="ed-tag">Founder &amp; Builder</span>
-              <span class="ed-tag">AI Agents</span>
-              <span class="ed-tag">Live Product</span>
-            </div>
-          </a>
-
-          <!-- MCP Server -->
-          <a class="ed-card" href="portfolio/mcp-server.html">
-            <div class="ed-card__media">
-              <img src="images/portfolio-mcp-server-card.png" alt="Abstract vertical folio-like aperture with scattered fragments converging into structure" loading="lazy" decoding="async" />
-            </div>
-            <div class="ed-card__body">
-              <p class="ed-card__kicker">Open source · MCP server</p>
-              <h3 class="ed-card__title">Fast Project Docs MCP Server</h3>
-              <p class="ed-card__lede">Open-source MCP server that connects AI agents to a structured spec-generation workflow, enabling autonomous, context-aware project documentation.</p>
-            </div>
-            <div class="ed-card__tags">
-              <span class="ed-tag">MCP</span>
-              <span class="ed-tag">AI Agents</span>
-              <span class="ed-tag">Open Source</span>
-            </div>
-          </a>
-
-          <!-- Automation Tools -->
-          <a class="ed-card" href="portfolio/automation-tools.html">
-            <div class="ed-card__media">
-              <img src="images/portfolio-automation-tools-card.png" alt="Abstract horizontal chamber-like aperture with fine streams compressing into one clean flow" loading="lazy" decoding="async" />
-            </div>
-            <div class="ed-card__body">
-              <p class="ed-card__kicker">Personal · LLM workflow automation</p>
-              <h3 class="ed-card__title">AI-Powered Automation Tools</h3>
-              <p class="ed-card__lede">Multi-LLM Python suite (OpenAI, Claude, Gemini), orchestrates agentic PM workflows to eliminate 12+ hrs/week of manual release notes, ticket creation, and API testing.</p>
-            </div>
-            <div class="ed-card__tags">
-              <span class="ed-tag">LLM Orchestration</span>
-              <span class="ed-tag">Agentic Workflows</span>
-              <span class="ed-tag">Python</span>
-            </div>
-          </a>
-
-          <!-- Interview Prep -->
-          <a class="ed-card" href="portfolio/interview-prep.html">
-            <div class="ed-card__media">
-              <img src="images/portfolio-interview-prep-card.png" alt="Abstract distant threshold at the end of a corridor, suggesting guided progression toward clarity" loading="lazy" decoding="async" />
-            </div>
-            <div class="ed-card__body">
-              <p class="ed-card__kicker">Open source · Multi-agent framework</p>
-              <h3 class="ed-card__title">AI Interview Prep Framework</h3>
-              <p class="ed-card__lede">Multi-agent Claude Code system, paste your CV once, name a company, and autonomous agents research it and generate stage-specific prep docs across a 5-stage pipeline.</p>
-            </div>
-            <div class="ed-card__tags">
-              <span class="ed-tag">Multi-Agent</span>
-              <span class="ed-tag">Claude Code</span>
-              <span class="ed-tag">Open Source</span>
-            </div>
-          </a>
-
-        </div>
-      </div>
-    </section>
-
+    <!-- ────────────────  PAGE HEAD AND TILES  ──────────────── -->
+    <div class="ed-shell">
+<section class="ed-page-head" id="top" aria-labelledby="page-title"><h1 id="page-title">Portfolio</h1><p>Career case studies and independent products.</p></section>
+<div class="ed-mosaic ed-mosaic--portfolio" style="--rows:7">
+<button class="ed-tile" type="button" data-action="open-reveal" data-reveal="project-labforward" aria-haspopup="dialog" style="grid-column:1 / span 5;grid-row:1 / span 3">
+  <img src="images/mosaic/labforward-workspace.jpg" alt="" decoding="async"><span class="ed-tile__logo"><span class="ed-mark" style="-webkit-mask-image:url('images/logos/labforward.png');mask-image:url('images/logos/labforward.png');--ratio:1.562;--h:58px"></span></span>
+  <span class="ed-tile__cap"><span>Labforward · 2024–2025</span></span><span class="ed-chip" aria-hidden="true">Info</span>
+</button>
+<button class="ed-tile" type="button" data-action="open-reveal" data-reveal="project-labtwin" aria-haspopup="dialog" style="grid-column:8 / span 3;grid-row:1 / span 2">
+  <img src="images/mosaic/labtwin-voice.jpg" alt="" decoding="async"><span class="ed-tile__logo"><span class="ed-mark" style="-webkit-mask-image:url('images/logos/labtwin.png');mask-image:url('images/logos/labtwin.png');--ratio:4.161;--h:24px"></span></span>
+  <span class="ed-tile__cap"><span>LabTwin · 2023–2024</span></span><span class="ed-chip" aria-hidden="true">Info</span>
+</button>
+<button class="ed-tile" type="button" data-action="open-reveal" data-reveal="project-opppaths" aria-haspopup="dialog" style="grid-column:11 / span 2;grid-row:1 / span 4">
+  <img src="images/portfolio-opppaths-card.svg" alt="" decoding="async"><span class="ed-tile__logo"><span class="ed-mark" style="-webkit-mask-image:url('images/logos/opppaths.png');mask-image:url('images/logos/opppaths.png');--ratio:0.799;--h:34px"></span></span>
+  <span class="ed-tile__cap"><span>Opportunity Paths · 2026</span></span><span class="ed-chip" aria-hidden="true">Info</span>
+</button>
+<button class="ed-tile" type="button" data-action="open-reveal" data-reveal="project-remarcable" aria-haspopup="dialog" style="grid-column:6 / span 2;grid-row:3 / span 3">
+  <img src="images/portfolio-remarcable-living-card.svg" alt="" decoding="async"><span class="ed-tile__logo"><span class="ed-mark" style="-webkit-mask-image:url('images/logos/remarcable.png');mask-image:url('images/logos/remarcable.png');--ratio:0.848;--h:34px"></span></span>
+  <span class="ed-tile__cap"><span>Remarcable Living · 2026</span></span><span class="ed-chip" aria-hidden="true">Info</span>
+</button>
+<button class="ed-tile" type="button" data-action="open-reveal" data-reveal="project-thryve" aria-haspopup="dialog" style="grid-column:8 / span 3;grid-row:3 / span 3">
+  <img src="images/mosaic/thryve-api.jpg" alt="" decoding="async"><span class="ed-tile__logo"><span class="ed-mark" style="-webkit-mask-image:url('images/logos/thryve.png');mask-image:url('images/logos/thryve.png');--ratio:2.942;--h:26px"></span></span>
+  <span class="ed-tile__cap"><span>Thryve · 2019–2022</span></span><span class="ed-chip" aria-hidden="true">Info</span>
+</button>
+<button class="ed-tile ed-tile--light" type="button" data-action="open-reveal" data-reveal="project-thryve" aria-haspopup="dialog" style="grid-column:1 / span 3;grid-row:5 / span 2">
+  <img src="images/mosaic/thryve-corona.jpg" alt="" decoding="async"><span class="ed-tile__logo"><span class="ed-mark" style="-webkit-mask-image:url('images/logos/thryve.png');mask-image:url('images/logos/thryve.png');--ratio:2.942;--h:26px"></span></span>
+  <span class="ed-tile__cap"><span>Thryve · Corona-Datenspende</span></span><span class="ed-chip" aria-hidden="true">Info</span>
+</button>
+<button class="ed-tile" type="button" data-action="open-reveal" data-reveal="project-labforward" aria-haspopup="dialog" style="grid-column:4 / span 2;grid-row:6 / span 2">
+  <img src="images/mosaic/labforward-loop.jpg" alt="" decoding="async"><span class="ed-tile__logo"><span class="ed-mark" style="-webkit-mask-image:url('images/logos/labforward.png');mask-image:url('images/logos/labforward.png');--ratio:1.562;--h:58px"></span></span>
+  <span class="ed-tile__cap"><span>Labforward · Validation loop</span></span><span class="ed-chip" aria-hidden="true">Info</span>
+</button>
+<button class="ed-tile" type="button" data-action="open-reveal" data-reveal="project-labtwin" aria-haspopup="dialog" style="grid-column:11 / span 2;grid-row:6 / span 2">
+  <img src="images/mosaic/labtwin-language.jpg" alt="" decoding="async"><span class="ed-tile__logo"><span class="ed-mark" style="-webkit-mask-image:url('images/logos/labtwin.png');mask-image:url('images/logos/labtwin.png');--ratio:4.161;--h:24px"></span></span>
+  <span class="ed-tile__cap"><span>LabTwin · Natural language</span></span><span class="ed-chip" aria-hidden="true">Info</span>
+</button>
+</div>
+<div class="ed-reveals">
+<dialog class="ed-reveal" id="project-labforward" aria-labelledby="project-labforward-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">Labforward GmbH · Case study</p><h2 class="ed-reveal__title" id="project-labforward-title">Lab software to an AI-powered workflow</h2><p class="ed-reveal__meta">Senior Product Manager · Nov 2024 – Nov 2025</p></header>
+    <div class="ed-reveal__body"><p>Electronic lab notebook and lab-operations software that helps R&amp;D scientists record, standardise and run experiments. Led delivery of Laboperator after the LabTwin acquisition, with direct ownership of customer-critical accounts and AI workspace expansion.</p><ul class="ed-reveal__list"><li>Contributed to a <b>$500K</b> enterprise contract renewal by rebuilding the collaboration between Product, Engineering and the customer on deliverables, timelines and SLAs for the at-risk account.</li><li>Cut prototype validation <b>from days to hours</b> by introducing rapid prototyping cycles.</li><li>Turned internal reporting into a <b>daily leadership decision input</b> by owning the BI automation of reports and data pipelines.</li></ul><a class="ed-reveal__link" href="portfolio/labforward.html">Read the case study →</a></div>
+    <aside class="ed-reveal__side" aria-label="Scope"><h3>Scope</h3><ul><li>Enterprise accounts</li><li>Rapid prototyping</li><li>BI automation</li><li>AI workspace</li></ul></aside>
+  </div>
+</dialog>
+<dialog class="ed-reveal" id="project-labtwin" aria-labelledby="project-labtwin-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">LabTwin GmbH · Case study</p><h2 class="ed-reveal__title" id="project-labtwin-title">A voice agent in production</h2><p class="ed-reveal__meta">Technical Product Manager · Jan 2023 – Nov 2024</p></header>
+    <div class="ed-reveal__body"><p>The world’s first voice-powered AI lab assistant, which lets scientists capture data and pull up information hands-free at the bench. Owned the roadmap for the voice agent and the integrations.</p><ul class="ed-reveal__list"><li>Tripled deployment frequency <b>from 4 to 12 production releases a year</b> through release coordination.</li><li>Maintained <b>95% scientific-term accuracy (5% WER)</b> in production for specific customers by running the speech-recognition retraining programme with data scientists.</li><li>Led the migration of the product’s intent recognition to GPT-3.5 in 2023, putting an LLM into the production speech pipeline for pharma and biotech customers.</li></ul><a class="ed-reveal__link" href="portfolio/labtwin.html">Read the case study →</a></div>
+    <aside class="ed-reveal__side" aria-label="Scope"><h3>Scope</h3><ul><li>Voice AI</li><li>LLM in production</li><li>Integrations</li><li>Release coordination</li></ul></aside>
+  </div>
+</dialog>
+<dialog class="ed-reveal" id="project-thryve" aria-labelledby="project-thryve-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">Thryve GmbH · Case study</p><h2 class="ed-reveal__title" id="project-thryve-title">One API for health data</h2><p class="ed-reveal__meta">Product Owner · Feb 2019 – Dec 2022</p></header>
+    <div class="ed-reveal__body"><p>A health-data API that unifies wearables and health apps into one stream for digital-health products. Built the integration backbone from early stage to scaled product.</p><ul class="ed-reveal__list"><li>Scaled APIs and SDKs to <b>1M+ users across 100+ B2B partners</b> in digital health.</li><li>Contributed to company growth <b>from €0 to €1M ARR</b>.</li><li>Led <b>10+ wearable and health-system integrations</b>: Fitbit, Garmin, Withings, Oura, Apple Health.</li></ul><a class="ed-reveal__link" href="portfolio/thryve.html">Read the case study →</a></div>
+    <aside class="ed-reveal__side" aria-label="Scope"><h3>Scope</h3><ul><li>APIs and SDKs</li><li>Partner integrations</li><li>Onboarding programme</li><li>QA systems</li></ul></aside>
+  </div>
+</dialog>
+<dialog class="ed-reveal" id="project-opppaths" aria-labelledby="project-opppaths-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">Opportunity Paths · Founder &amp; Builder</p><h2 class="ed-reveal__title" id="project-opppaths-title">Scholarship applications, with AI</h2><p class="ed-reveal__meta">Independent product · Jan 2026 – Present</p></header>
+    <div class="ed-reveal__body"><p>An AI platform that helps students find scholarships and write their applications, in English and Thai.</p><ul class="ed-reveal__list"><li>Live early access: <b>50+ applications</b>, and <b>10 students reached interview rounds</b>.</li><li>Built the test that decides which AI model runs in production. It moved OppPaths to a model <b>11.3× cheaper and ~8× faster</b> that passed all 23 AI jobs.</li><li>Added a second AI layer that checks the first. It found <b>54 weak apply links in 137 scholarships</b>, against 36 found by string matching.</li><li>Keeps AI cost to a fraction of a cent per generated document (median <b>~$0.0023</b>, Aug 2026).</li></ul><a class="ed-reveal__link" href="portfolio/opppaths.html">Read the case study →</a></div>
+    <aside class="ed-reveal__side" aria-label="Stack and scope"><h3>Stack and scope</h3><ul><li>Next.js, TypeScript</li><li>Supabase</li><li>Vercel AI SDK</li><li>PostHog</li><li>Stripe</li></ul></aside>
+  </div>
+</dialog>
+<dialog class="ed-reveal" id="project-remarcable" aria-labelledby="project-remarcable-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">Remarcable Living · Partner</p><h2 class="ed-reveal__title" id="project-remarcable-title">Student housing platform</h2><p class="ed-reveal__meta">Independent product · Sep 2026 – Present</p></header>
+    <div class="ed-reveal__body"><p>A student housing platform in Bangkok for university study-abroad offices and students moving to Bangkok.</p><ul class="ed-reveal__list"><li>Rebuilt the design system and the main public pages of the live site: home, residences, neighbourhoods, About us and contact.</li><li>Added agent bulk listing imports with admin review, MCP and OAuth (Sep 2026).</li></ul><a class="ed-reveal__link" href="portfolio/remarcable-living.html">Read the case study →</a></div>
+    <aside class="ed-reveal__side" aria-label="Stack and scope"><h3>Stack and scope</h3><ul><li>Design system</li><li>Front end</li><li>Listing imports</li><li>MCP and OAuth</li></ul></aside>
+  </div>
+</dialog>
+</div>
+</div>
   </main>
 
   <!-- Footer -->
@@ -304,14 +203,8 @@
     </div>
   </footer>
 
-  <!-- GSAP (pinned) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-
-  <!-- Editorial motion (reveal hooks) -->
-  <script src="assets/js/site.js?v=20260907"></script>
-  <script src="assets/js/editorial.js?v=20260907"></script>
-  <script src="assets/js/folio.js?v=20260611b"></script>
+  <script src="assets/js/site.js?v=20260929"></script>
+  <script src="assets/js/star-cursor.js?v=20260929"></script>
 </body>
 
 </html>

@@ -5,44 +5,46 @@
    Namespaced .ed-* classes avoid collisions with Tailwind utilities.
    ───────────────────────────────────────────────────────────── */
 
-
 /* ── editorial-tokens ── */
   :root {
-    /* palette — light (Claude off-white), the default theme.
-       The original dark editorial palette lives in
-       :root[data-theme="dark"] below and is opt-in via the toggle. */
-    --ed-bg:        #f4f2ec;       /* warm ivory paper */
-    --ed-bg-soft:   #faf8f2;       /* raised card surface */
-    --ed-surface:   #efebe1;       /* insets, card hover */
-    --ed-hairline:  rgba(41, 38, 31, 0.10);
-    --ed-hairline-strong: rgba(41, 38, 31, 0.20);
+    /* palette — neutral light, the default theme. Dark is opt-in via the toggle. */
+    color-scheme: light;
+    --ed-bg:        #ffffff;
+    --ed-bg-soft:   #f7f7f5;
+    --ed-surface:   #f1f1ef;
+    --ed-panel:     #f1f1ef;       /* Experience panels, How I work */
+    --ed-panel-hover: #e9e9e6;
+    --ed-field:     #c9cdd4;       /* the mosaic ground */
+    --ed-hairline:  rgba(17, 17, 17, 0.10);
+    --ed-hairline-strong: rgba(17, 17, 17, 0.22);
 
-    --ed-ink:       #29261f;       /* warm near-black primary */
-    --ed-ink-soft:  #4a4640;       /* secondary body */
-    --ed-ink-dim:   #6e695f;       /* tertiary captions */
-    --ed-ink-mute:  #908a7e;       /* labels, attribution */
+    --ed-ink:       #111111;
+    --ed-ink-soft:  #3d3d3b;
+    --ed-ink-dim:   #62625e;
+    --ed-ink-mute:  #767672;       /* 4.6:1 on white: small text passes WCAG AA */
 
-    --ed-accent:        #c45a38;   /* Claude clay, decorative accent */
-    --ed-accent-strong: #a8431f;   /* deep terracotta, body-size accent text */
+    --ed-accent:        #c45a38;   /* clay: the star and active states */
+    --ed-accent-strong: #a8431f;   /* small accent text, 5.9:1 on white */
     --ed-accent-mute:   rgba(196, 90, 56, 0.14);
+    --ed-accent-tint:   #f6e9e3;
 
-    /* themed surfaces (referenced where colors were once hardcoded) */
-    --ed-topbar-bg: rgba(244, 242, 236, 0.80);
-    --ed-menu-bg:   rgba(244, 242, 236, 0.97);
-    --ed-field-bg:  rgba(41, 38, 31, 0.04);
-    --ed-shadow:    0 24px 80px rgba(41, 30, 20, 0.18);
+    --ed-topbar-bg: rgba(255, 255, 255, 0.86);
+    --ed-menu-bg:   rgba(255, 255, 255, 0.97);
+    --ed-field-bg:  rgba(17, 17, 17, 0.04);
+    --ed-shadow:    0 24px 80px rgba(17, 17, 17, 0.14);
+    --ed-card-shadow: 0 10px 30px rgba(17, 17, 17, 0.07);
 
     /* rgb triplets for rgba() composed in JS / inline gradients */
     --ed-accent-rgb: 196, 90, 56;
-    --ed-bg-rgb:     244, 242, 236;
-    --ed-ink-rgb:    41, 38, 31;
-    --ed-hero-edge:  41, 38, 31;
-    --ed-hero-node:  110, 105, 95;
+    --ed-bg-rgb:     255, 255, 255;
+    --ed-ink-rgb:    17, 17, 17;
+    --ed-hero-edge:  17, 17, 17;
+    --ed-hero-node:  118, 118, 114;
 
-    /* type — display + body pairing */
-    --ed-display: "Source Serif 4", "Iowan Old Style", "Source Serif Pro", Georgia, serif;
-    --ed-body:    "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
-    --ed-mono:    ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
+    /* type — one sans for display and body, one mono for dates and data */
+    --ed-display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --ed-body:    "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --ed-mono:    "IBM Plex Mono", ui-monospace, Menlo, monospace;
 
     --ed-fz-xs:    0.75rem;
     --ed-fz-sm:    0.875rem;
@@ -74,39 +76,44 @@
     --ed-d-slow:    640ms;
 
     /* layout */
-    --ed-content-max: 76rem;       /* matches existing max-w-7xl */
+    --ed-content-max: 76rem;       /* the top bar and .ed-shell */
     --ed-prose-max:   38rem;       /* readable measure for body */
     --ed-gutter-x:    clamp(1rem, 4vw, 2.25rem);
   }
 
-  /* Dark editorial — the site's original palette, opt-in via the
-     theme toggle (theme.js sets data-theme on <html> before paint). */
+  /* Dark — opt-in via the theme toggle (theme.js sets data-theme on <html> before paint). */
   :root[data-theme="dark"] {
-    --ed-bg:        #0a1014;
-    --ed-bg-soft:   #0f161b;
-    --ed-surface:   #131c22;
-    --ed-hairline:  rgba(255, 255, 255, 0.06);
-    --ed-hairline-strong: rgba(255, 255, 255, 0.12);
+    color-scheme: dark;
+    --ed-bg:        #0c0c0d;
+    --ed-bg-soft:   #121214;
+    --ed-surface:   #18181a;
+    --ed-panel:     #18181a;
+    --ed-panel-hover: #1f1f22;
+    --ed-field:     #1b1e23;
+    --ed-hairline:  rgba(255, 255, 255, 0.10);
+    --ed-hairline-strong: rgba(255, 255, 255, 0.22);
 
-    --ed-ink:       #f3f5f7;
-    --ed-ink-soft:  #c7cfd5;
-    --ed-ink-dim:   #8b969e;
-    --ed-ink-mute:  #5a656d;
+    --ed-ink:       #f4f4f2;
+    --ed-ink-soft:  #c9c9c5;
+    --ed-ink-dim:   #9a9a95;
+    --ed-ink-mute:  #7c7c78;
 
-    --ed-accent:        #4fb6dc;
-    --ed-accent-strong: #6cc7e9;
-    --ed-accent-mute:   rgba(79, 182, 220, 0.16);
+    --ed-accent:        #e0764f;
+    --ed-accent-strong: #eb8a66;
+    --ed-accent-mute:   rgba(224, 118, 79, 0.16);
+    --ed-accent-tint:   #2a1b15;
 
-    --ed-topbar-bg: rgba(10, 16, 20, 0.78);
-    --ed-menu-bg:   rgba(10, 16, 20, 0.95);
-    --ed-field-bg:  rgba(255, 255, 255, 0.03);
+    --ed-topbar-bg: rgba(12, 12, 13, 0.82);
+    --ed-menu-bg:   rgba(12, 12, 13, 0.96);
+    --ed-field-bg:  rgba(255, 255, 255, 0.04);
     --ed-shadow:    0 24px 80px rgba(0, 0, 0, 0.55);
+    --ed-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
-    --ed-accent-rgb: 79, 182, 220;
-    --ed-bg-rgb:     10, 16, 20;
-    --ed-ink-rgb:    243, 245, 247;
+    --ed-accent-rgb: 224, 118, 79;
+    --ed-bg-rgb:     12, 12, 13;
+    --ed-ink-rgb:    244, 244, 242;
     --ed-hero-edge:  255, 255, 255;
-    --ed-hero-node:  139, 150, 158;
+    --ed-hero-node:  124, 124, 120;
   }
 
 /* ── editorial-base ── */
@@ -132,7 +139,7 @@
     color: var(--ed-ink);
   }
 
-  /* Display headlines let the browser pick Source Serif 4's optical cut by size. */
+  /* Headings and .ed-display share the display face, its stylistic sets and tight tracking. */
   .ed-page :where(h1, h2, h3, .ed-display) {
     font-family: var(--ed-display);
     font-feature-settings: "ss01", "ss02";
@@ -153,14 +160,10 @@
     font-weight: 500;
   }
 
-  .ed-rule {
-    height: 1px;
-    background: var(--ed-hairline);
-    border: 0;
-    margin: 0;
-  }
-
+  /* The page content wrapper: the same width and gutter as the top bar. The width
+     keeps it full width inside a flex column, where auto margins would shrink it. */
   .ed-shell {
+    width: 100%;
     max-width: var(--ed-content-max);
     margin-inline: auto;
     padding-inline: var(--ed-gutter-x);
@@ -175,29 +178,6 @@
     display: flex;
     align-items: stretch;
     overflow: hidden;
-  }
-
-  .ed-hero__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: var(--ed-s-6);
-    width: 100%;
-  }
-
-  .ed-hero__meta {
-    display: flex;
-    align-items: center;
-    gap: var(--ed-s-4);
-    color: var(--ed-ink-mute);
-  }
-  .ed-hero__meta::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--ed-hairline);
   }
 
   .ed-hero__display {
@@ -215,13 +195,6 @@
     font-style: italic;
     color: var(--ed-accent-strong);
     letter-spacing: -0.045em;
-  }
-
-  .ed-hero__support {
-    max-width: 36rem;
-    color: var(--ed-ink-soft);
-    font-size: var(--ed-fz-lg);
-    line-height: 1.55;
   }
 
   .ed-hero__cta-row {
@@ -259,15 +232,6 @@
   .ed-btn:hover { transform: translateY(-1px); }
   .ed-btn:active { transform: translateY(0); }
 
-  .ed-btn--ghost {
-    --ed-btn-bg: transparent;
-    --ed-btn-fg: var(--ed-ink);
-    --ed-btn-bd: var(--ed-hairline-strong);
-  }
-  .ed-btn--ghost:hover {
-    --ed-btn-bd: var(--ed-ink-soft);
-  }
-
   .ed-btn--accent {
     --ed-btn-bg: transparent;
     --ed-btn-fg: var(--ed-accent-strong);
@@ -302,36 +266,6 @@
   }
 
   /* ─── Philosophy ───────────────────────────────────────── */
-  .ed-philosophy {
-    padding-block: var(--ed-s-8);
-    border-top: 1px solid var(--ed-hairline);
-  }
-  .ed-philosophy__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--ed-s-7);
-  }
-  @media (min-width: 900px) {
-    .ed-philosophy__inner {
-      grid-template-columns: 1fr 1.4fr;
-      gap: clamp(3rem, 8vw, 7rem);
-    }
-  }
-  .ed-philosophy__lede {
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-4xl);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    color: var(--ed-ink);
-    margin: 0;
-  }
-  .ed-philosophy__lede em {
-    font-style: italic;
-    color: var(--ed-accent-strong);
-  }
   .ed-philosophy__body {
     display: flex;
     flex-direction: column;
@@ -347,29 +281,7 @@
     color: var(--ed-ink);
   }
 
-  /* ─── How It Works (Abstract) ──────────────────────────── */
-  .ed-howitworks {
-    padding-block: var(--ed-s-8);
-    border-top: 1px solid var(--ed-hairline);
-  }
-  .ed-howitworks__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-  }
-  .ed-howitworks__heading {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--ed-s-3);
-    margin-bottom: var(--ed-s-7);
-  }
-  @media (min-width: 900px) {
-    .ed-howitworks__heading {
-      grid-template-columns: 1fr 2fr;
-      align-items: end;
-      gap: var(--ed-s-7);
-    }
-  }
+  /* ─── Stages: numbered rows (the Education reveal, the case pages) ─── */
   .ed-stages {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -415,7 +327,6 @@
     height: 1px;
     background: var(--ed-hairline-strong);
     transform-origin: left center;
-    /* Hidden (scaleX(0)) state lives in the gated editorial-motion block. */
   }
   @media (min-width: 720px) {
     .ed-stage__line { display: block; min-width: 4rem; }
@@ -641,33 +552,10 @@
   .ed-topbar__theme .material-symbols-outlined { font-size: 1.25rem; }
 
 /* ── editorial-motion ── */
-  /* Reusable reveal hook — JS adds .is-in when ScrollTrigger fires.
-     The hidden state only applies while <body data-motion-pending> is
-     present AND scripting + motion are available, so no-JS, blocked-CDN
-     (site.js removes the attribute when GSAP is missing), old browsers,
-     and reduced motion all render the content visible. */
+  /* Legacy reveal hook: pages no longer hide content before motion; the class is inert. */
   .reveal {
     transition: opacity var(--ed-d-slow) var(--ed-ease),
                 transform var(--ed-d-slow) var(--ed-ease);
-  }
-  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-    [data-motion-pending] .reveal {
-      opacity: 0;
-      transform: translate3d(0, 18px, 0);
-    }
-    [data-motion-pending] .ed-stage__line {
-      transform: scaleX(0);
-    }
-  }
-  .reveal.is-in {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-
-  /* Stages line draw */
-  .ed-stage.is-in .ed-stage__line {
-    transform: scaleX(1);
-    transition: transform var(--ed-d-slow) var(--ed-ease);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -681,126 +569,8 @@
     }
   }
 
-/* ── editorial-product-hero ── */
-  /* index.html hero: M mark, "Product" + a role word that loop.js swaps
-     under a scroll pin. Without JS or with reduced motion the first word
-     stays visible in the accent; all further hiding is JS-applied. */
-  .ed-hero--product .ed-hero__inner {
-    grid-template-rows: none;
-    grid-template-areas: "mark" "title" "cta";
-    align-content: center;
-    gap: var(--ed-s-5);
-  }
-  .ed-hero__mark-home {
-    grid-area: mark;
-    width: clamp(9rem, 28vw, 22rem);
-    aspect-ratio: 100 / 58;
-    position: relative;
-  }
-  .ed-motion-mark {
-    width: 100%;
-    height: auto;
-    display: block;
-    z-index: 45;
-    overflow: visible;
-    pointer-events: none;
-    filter: drop-shadow(0 1.25rem 2rem rgba(196, 90, 56, 0.16));
-    will-change: transform, opacity;
-  }
-  .ed-motion-mark__stroke {
-    fill: none;
-    stroke: #c45a38;
-    stroke-width: 2.4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  /* The brush image is the M at rest; the strokes only draw the star trail. */
-  .ed-motion-mark__brush ~ .ed-motion-mark__stroke { opacity: 0; }
-  .ed-motion-mark__head {
-    fill: #c45a38;
-    stroke: #c45a38;
-    stroke-width: 0.7;
-    stroke-linejoin: round;
-    opacity: 0;
-  }
-  .ed-hero--product .ed-hero__display {
-    grid-area: title;
-    display: grid;
-    gap: 0;
-  }
-  .ed-hero--product .ed-hero__cta-row {
-    grid-area: cta;
-  }
-  .ed-hero__product {
-    display: block;
-    color: var(--ed-ink);
-  }
-  .ed-hero__role {
-    --ed-role-mix: 0;
-    position: relative;
-    display: block;
-    height: 1em;
-    line-height: 1;
-    color: var(--ed-accent-strong);
-    color: color-mix(in oklab, var(--ed-accent-strong), var(--ed-ink) calc(var(--ed-role-mix) * 100%));
-    font-style: italic;
-    letter-spacing: -0.045em;
-    /* Clip the swapping words to the line, with room for ascenders/descenders. */
-    clip-path: inset(-0.18em -0.15em -0.28em -0.1em);
-  }
-  .ed-hero__role-word {
-    position: absolute;
-    inset: 0 auto auto 0;
-    white-space: nowrap;
-    will-change: transform, opacity;
-  }
-  .ed-hero__role-word:not(:first-child) { opacity: 0; }
-  @media (min-width: 1024px) {
-    .ed-hero--product .ed-hero__inner {
-      grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 2fr);
-      grid-template-areas: "mark title" "mark cta";
-      column-gap: clamp(2rem, 6vw, 6rem);
-      align-items: center;
-    }
-    .ed-hero__mark-home { align-self: center; width: 100%; max-width: 24rem; }
-  }
-  @media (max-width: 699px) {
-    .ed-hero--product .ed-hero__display { font-size: var(--ed-fz-5xl); }
-  }
-
-  /* experience.html hero: the M starts on the right before career.js
-     reuses it as the scroll pointer. */
-  .ed-hero--experience .ed-hero__inner {
-    grid-template-rows: auto 1fr auto;
-    grid-template-columns: minmax(0, 1.5fr) minmax(10rem, 0.5fr);
-    grid-template-areas:
-      "meta meta"
-      "copy mark"
-      "cta cta";
-    align-items: center;
-  }
-  .ed-hero--experience .ed-hero__meta { grid-area: meta; }
-  .ed-experience__copy { grid-area: copy; }
-  .ed-hero--experience .ed-hero__display { font-size: clamp(3rem, 6.8vw, 6rem); }
-  .ed-experience__mark-home {
-    grid-area: mark;
-    justify-self: end;
-    width: clamp(10rem, 20vw, 18rem);
-    aspect-ratio: 100 / 58;
-  }
-  .ed-hero--experience .ed-hero__cta-row { grid-area: cta; }
-  @media (max-width: 699px) {
-    .ed-hero--experience .ed-hero__inner {
-      grid-template-rows: auto auto 1fr auto;
-      grid-template-columns: 1fr;
-      grid-template-areas: "meta" "mark" "copy" "cta";
-      gap: var(--ed-s-5);
-    }
-    .ed-experience__mark-home {
-      width: clamp(8rem, 42vw, 11rem);
-    }
-    .ed-hero--experience .ed-hero__display { font-size: var(--ed-fz-5xl); }
-  }
+/* ── editorial-utilities ── */
+  /* Hidden on screen, still read by screen readers (the home loop heading). */
   .ed-sr-only {
     position: absolute;
     width: 1px;
@@ -813,516 +583,10 @@
     border: 0;
   }
 
-  /* ─── The loop: a ring of six stations, rotated by scroll ─── */
-  .ed-loop {
-    min-height: 100svh;
-    padding-block: var(--ed-s-7);
-    border-top: 1px solid var(--ed-hairline);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .ed-loop__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    width: 100%;
-  }
-  .ed-loop__head { max-width: 44rem; }
-  .ed-loop__title {
-    font-size: var(--ed-fz-4xl);
-    margin: 0;
-    text-wrap: balance;
-  }
-  .ed-loop__lede {
-    margin: var(--ed-s-3) 0 0;
-    color: var(--ed-ink-soft);
-    font-size: var(--ed-fz-lg);
-  }
-  .ed-loop__stage {
-    /* Six stations on one flat ellipse; loop.js walks the highlight. */
-    --ed-loop-rx: clamp(6.5rem, 30vw, 27rem);
-    --ed-loop-ry: clamp(9.5rem, 12vw, 10rem);
-    --ed-loop-w: clamp(8.5rem, 24vw, 14rem);
-    position: relative;
-    height: calc(var(--ed-loop-ry) * 2 + 8rem);
-    margin-top: var(--ed-s-6);
-  }
-  .ed-loop__track {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: calc(var(--ed-loop-rx) * 2);
-    height: calc(var(--ed-loop-ry) * 2);
-    border: 1px solid var(--ed-hairline-strong);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 0;
-    pointer-events: none;
-  }
-  .ed-loop__stage::before {
-    content: "";
-    position: absolute;
-    inset: -10% 8%;
-    border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(196, 90, 56, 0.2), rgba(141, 117, 168, 0.1) 34%, transparent 68%);
-    pointer-events: none;
-  }
-  .ed-loop__galaxy {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  .ed-loop__orbits {
-    fill: none;
-    stroke: var(--ed-accent);
-    stroke-width: 0.8;
-    opacity: 0.24;
-  }
-  .ed-loop__orbits ellipse:nth-child(2) { stroke-dasharray: 2 10; }
-  .ed-loop__orbits ellipse:last-child { opacity: 0.55; }
-  .ed-loop__stars { fill: var(--ed-accent-strong); opacity: 0.5; }
-  .ed-loop__stars path { fill: none; stroke: var(--ed-accent-strong); stroke-width: 1.3; }
-  .ed-loop__spiral { fill: none; stroke: var(--ed-accent); stroke-width: 1; opacity: 0.3; }
-  .ed-loop__spiral circle { fill: var(--ed-accent); stroke: none; }
-  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-    .ed-loop.is-in-view .ed-loop__stars circle { animation: ed-star-twinkle 4s ease-in-out infinite alternate; }
-    .ed-loop.is-in-view .ed-loop__stars circle:nth-child(3n) { animation-delay: -2s; }
-    .ed-loop.is-in-view .ed-loop__stars circle:nth-child(3n + 1) { animation-delay: -1s; }
-  }
-  @keyframes ed-star-twinkle { from { opacity: 0.3; } to { opacity: 1; } }
-  .ed-loop__ring {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .ed-loop__card {
-    --ed-loop-a: -90deg;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: var(--ed-loop-w);
-    margin: -3.25rem 0 0 calc(var(--ed-loop-w) / -2);
-    padding: var(--ed-s-3) var(--ed-s-4);
-    min-height: 6.5rem;
-    display: grid;
-    gap: var(--ed-s-2);
-    place-content: center;
-    text-align: center;
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-lg);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--ed-ink-soft);
-    background: var(--ed-bg-soft);
-    border: 1px solid var(--ed-hairline);
-    border-radius: 0.75rem;
-    box-shadow: 0 8px 28px rgba(var(--ed-ink-rgb), 0.06);
-    transform: translate(calc(cos(var(--ed-loop-a)) * var(--ed-loop-rx)), calc(sin(var(--ed-loop-a)) * var(--ed-loop-ry))) scale(0.92);
-    opacity: 0.7;
-    transition: transform var(--ed-d-base) var(--ed-ease), opacity var(--ed-d-base) var(--ed-ease-soft),
-                color var(--ed-d-base) var(--ed-ease-soft), border-color var(--ed-d-base) var(--ed-ease-soft),
-                box-shadow var(--ed-d-base) var(--ed-ease-soft), background var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-loop__card:nth-child(2) { --ed-loop-a: -30deg; }
-  .ed-loop__card:nth-child(3) { --ed-loop-a: 30deg; }
-  .ed-loop__card:nth-child(4) { --ed-loop-a: 90deg; }
-  .ed-loop__card:nth-child(5) { --ed-loop-a: 150deg; }
-  .ed-loop__card:nth-child(6) { --ed-loop-a: 210deg; }
-  @media (max-width: 699px) {
-    .ed-loop__stage { --ed-loop-rx: 5.5rem; --ed-loop-ry: 12rem; }
-    .ed-loop__stars circle { r: 4; }
-    .ed-loop__card { font-size: var(--ed-fz-base); padding: var(--ed-s-2) var(--ed-s-3); min-height: 5.5rem; margin-top: -2.75rem; }
-  }
-  .ed-loop__kicker {
-    display: block;
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-xs);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--ed-ink-mute);
-  }
-  .ed-loop__card.is-front .ed-loop__kicker { color: var(--ed-accent-strong); }
-  .ed-loop__card.is-front {
-    color: var(--ed-ink);
-    background: color-mix(in oklab, var(--ed-bg-soft), var(--ed-accent) 8%);
-    border-color: var(--ed-accent);
-    box-shadow: var(--ed-shadow);
-    opacity: 1;
-    z-index: 1;
-    transform: translate(calc(cos(var(--ed-loop-a)) * var(--ed-loop-rx)), calc(sin(var(--ed-loop-a)) * var(--ed-loop-ry))) scale(1.06);
-  }
-
-/* ── editorial-content-pages ── */
-  /* Hero modifier for content pages (portfolio, certificates) — calmer, not full viewport. */
-  .ed-hero--page {
-    min-height: 0;
-    padding-block: calc(var(--ed-s-7) + var(--ed-s-3)) var(--ed-s-7);
-  }
-  .ed-hero--page .ed-hero__inner {
-    grid-template-rows: auto auto auto;
-    gap: var(--ed-s-5);
-  }
-
-  /* Section primitive — used to host card grids on content pages. */
-  .ed-section {
-    padding-block: var(--ed-s-7) var(--ed-s-8);
-    border-top: 1px solid var(--ed-hairline);
-  }
-  .ed-section:first-of-type { border-top: 0; }
-  .ed-section__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    display: flex;
-    flex-direction: column;
-    gap: var(--ed-s-6);
-  }
-  .ed-section__head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ed-s-3);
-    max-width: 48rem;
-  }
-  .ed-section__eyebrow {
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-xs);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ed-ink-mute);
-    font-weight: 500;
-  }
-  .ed-section__title {
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-3xl);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    color: var(--ed-ink);
-    margin: 0;
-  }
-  .ed-section__title em {
-    font-style: italic;
-    color: var(--ed-accent-strong);
-  }
-
-  /* Card grid — auto-fit with a comfortable minimum so it reflows cleanly. */
-  .ed-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    gap: var(--ed-s-5);
-  }
-  @media (min-width: 1024px) {
-    .ed-cards {
-      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    }
-  }
-
-  /* Card itself — hairline on dark surface, no fill on tags, calm hover lift. */
-  .ed-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ed-s-4);
-    padding: var(--ed-s-4);
-    background: var(--ed-bg-soft);
-    border: 1px solid var(--ed-hairline);
-    border-radius: 1rem;
-    color: inherit;
-    text-decoration: none;
-    text-align: left;
-    cursor: pointer;
-    /* Keep button-resets minimal so <button class="ed-card"> looks identical to <a>. */
-    font: inherit;
-    width: 100%;
-    transition: transform var(--ed-d-base) var(--ed-ease-soft),
-                border-color var(--ed-d-base) var(--ed-ease-soft),
-                background-color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--ed-hairline-strong);
-    background: var(--ed-surface);
-  }
-  .ed-card:focus-visible {
-    outline: 1px solid var(--ed-accent);
-    outline-offset: 2px;
-  }
-
-  .ed-card__media {
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    border-radius: 0.75rem;
-    background: var(--ed-surface);
-    border: 1px solid var(--ed-hairline);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .ed-card__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--ed-d-slow) var(--ed-ease);
-  }
-  .ed-card:hover .ed-card__media img {
-    transform: scale(1.04);
-  }
-  .ed-card__media .material-symbols-outlined {
-    font-size: 3.25rem;
-    color: var(--ed-ink-mute);
-    transition: color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card:hover .ed-card__media .material-symbols-outlined {
-    color: var(--ed-accent-strong);
-  }
-
-  .ed-card__body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ed-s-2);
-  }
-  .ed-card__kicker {
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-xs);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ed-ink-mute);
-    margin: 0;
-  }
-  .ed-card__title {
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-xl);
-    line-height: 1.18;
-    letter-spacing: -0.01em;
-    color: var(--ed-ink);
-    margin: 0;
-  }
-  .ed-card__lede {
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-sm);
-    color: var(--ed-ink-soft);
-    line-height: 1.55;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .ed-card__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--ed-s-2);
-    margin-top: auto;
-  }
-  .ed-tag {
-    display: inline-block;
-    padding: 0.25rem 0.625rem;
-    border: 1px solid var(--ed-hairline);
-    border-radius: 999px;
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ed-ink-mute);
-    background: transparent;
-    transition: color var(--ed-d-base) var(--ed-ease-soft),
-                border-color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card:hover .ed-tag {
-    color: var(--ed-ink-soft);
-    border-color: var(--ed-hairline-strong);
-  }
-
-  /* Certificate-card variant — credentials get a circular badge icon, no media image. */
-  .ed-card--cert .ed-card__media {
-    aspect-ratio: auto;
-    background: transparent;
-    border: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .ed-card__icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 999px;
-    border: 1px solid var(--ed-hairline-strong);
-    display: grid;
-    place-items: center;
-    color: var(--ed-accent-strong);
-    transition: border-color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card--cert:hover .ed-card__icon {
-    border-color: var(--ed-accent);
-  }
-  .ed-card__icon .material-symbols-outlined {
-    font-size: 1.5rem;
-  }
-  .ed-card__external {
-    color: var(--ed-ink-mute);
-    transition: color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card--cert:hover .ed-card__external {
-    color: var(--ed-ink-soft);
-  }
-  .ed-card__external .material-symbols-outlined {
-    font-size: 1.25rem;
-  }
-
-  /* Personal-project icon-only media — bigger glyph, no border. */
-  .ed-card__media--icon {
-    background: var(--ed-surface);
-  }
-
-  /* Reduced-motion: cancel transitions on cards too. */
-  @media (prefers-reduced-motion: reduce) {
-    .ed-card,
-    .ed-card__media img,
-    .ed-card__media .material-symbols-outlined,
-    .ed-tag,
-    .ed-card__icon,
-    .ed-card__external {
-      transition: none !important;
-    }
-    .ed-card:hover {
-      transform: none !important;
-    }
-    .ed-card:hover .ed-card__media img {
-      transform: none !important;
-    }
-  }
-
-/* ── editorial-career-spine ── */
-  /* experience.html: career.js builds the timeline spine inside the
-     .ed-career wrap (markup only carries the wrap, so no JS = no spine).
-     Shown only where the container leaves a real left gutter. */
-  .ed-career {
-    position: relative;
-  }
-  [data-star-stop] {
-    position: relative;
-    border-radius: 0.45rem;
-    transition: background-color 240ms var(--ed-ease),
-                box-shadow 240ms var(--ed-ease);
-  }
-  [data-star-stop].is-star-active {
-    background: color-mix(in oklab, var(--ed-accent), transparent 91%);
-    box-shadow: 0 0 0 8px color-mix(in oklab, var(--ed-accent), transparent 90%);
-  }
+/* ── editorial-skills (Experience) ── */
+  /* Below 720 px each Skills description keeps to the second grid column, beside its number. */
   @media (max-width: 719px) {
-    .ed-career > section > div,
-    #role-skills > div { padding-left: 3.25rem; }
-    #role-skills .ed-stage__desc { grid-column: 2; }
-  }
-  .ed-spine {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: max(1.25rem, calc(50% - 40rem - 3rem));
-    width: 1px;
-    display: none;
-    pointer-events: none;
-  }
-  @media (min-width: 1280px) {
-    .ed-spine { display: block; }
-  }
-  .ed-spine__track,
-  .ed-spine__progress {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 1px;
-  }
-  .ed-spine__track {
-    background: var(--ed-hairline);
-  }
-  .ed-spine__progress {
-    background: var(--ed-accent);
-    opacity: 0.8;
-    transform: scaleY(0);
-    transform-origin: top center;
-    will-change: transform;
-  }
-  .ed-spine__node {
-    position: absolute;
-    left: 50%;
-    width: 9px;
-    height: 9px;
-    border-radius: 999px;
-    background: var(--ed-bg);
-    border: 1px solid var(--ed-hairline-strong);
-    transform: translate(-50%, -50%);
-    transition: background-color 400ms var(--ed-ease),
-                border-color 400ms var(--ed-ease);
-  }
-  .ed-spine__node.is-lit {
-    background: var(--ed-accent);
-    border-color: var(--ed-accent);
-  }
-  .ed-spine__ping {
-    position: absolute;
-    inset: -1px;
-    border-radius: 999px;
-    border: 1px solid var(--ed-accent);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Word spans for the split-and-restore headline intros (career.js,
-     folio.js, case.js). No overflow masks — the italics overhang. */
-  .ed-word {
-    display: inline-block;
-  }
-
-/* ── editorial-folio-cards ── */
-  /* portfolio.html hover polish: accent hairline sweeps the card's top
-     edge and the title underline draws in. Pure CSS, hover + keyboard. */
-  .ed-card {
-    position: relative;
-  }
-  .ed-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: var(--ed-s-4);
-    right: var(--ed-s-4);
-    height: 1px;
-    background: var(--ed-accent);
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 480ms var(--ed-ease);
-    pointer-events: none;
-  }
-  .ed-card:hover::after,
-  .ed-card:focus-visible::after {
-    transform: scaleX(1);
-  }
-  .ed-card__title {
-    width: fit-content;
-    background-image: linear-gradient(var(--ed-accent), var(--ed-accent));
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    background-size: 0 1px;
-    transition: background-size 420ms var(--ed-ease);
-  }
-  .ed-card:hover .ed-card__title,
-  .ed-card:focus-visible .ed-card__title {
-    background-size: 100% 1px;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ed-card::after,
-    .ed-card__title {
-      transition: none !important;
-    }
+    #role-education .ed-stage__desc { grid-column: 2; }
   }
 
 /* ── editorial-ai-modal ── */
@@ -1468,12 +732,6 @@
   #mobile-menu a,
   #mobile-menu button { color: var(--ed-ink); }
 
-  /* experience.html chapter dividers (was border-white/5) */
-  .ed-divider { border-top: 1px solid var(--ed-hairline); }
-
-  /* experience.html tree-ring SVGs — authored with white paint */
-  .ed-rings [stroke="white"] { stroke: var(--ed-ink-soft); }
-  .ed-rings [fill="white"] { fill: var(--ed-ink-soft); }
 
   /* index.html testimonial modal (still Tailwind primary/surface utilities) */
   #testimonial-modal [data-testimonial-overlay] > div {
@@ -1550,3 +808,257 @@
     text-underline-offset: 2px;
   }
   .ed-foot__consent:hover { color: var(--ed-ink); }
+
+/* ── editorial-reveal ── */
+  /* A full-screen <dialog> that site.js opens with showModal().
+     With the star cursor on, the star's "Close ×" pill acts as the close button.
+     The button stays in the tab order and shows on keyboard focus.
+     Without the star (touch, reduced motion), the button stays visible. */
+  html:has(dialog.ed-reveal[open]) { overflow: hidden; }
+  dialog.ed-reveal { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--ed-bg); color: var(--ed-ink); overflow-y: auto; }
+  dialog.ed-reveal::backdrop { background: var(--ed-bg); }
+  .ed-reveal__close { position: fixed; top: 20px; right: 24px; z-index: 2; border: 1px solid var(--ed-hairline); background: var(--ed-bg); color: var(--ed-ink); border-radius: 999px; padding: 8px 16px; font: inherit; font-size: 0.9rem; cursor: pointer; }
+  .star-on .ed-reveal__close:not(:focus-visible) { opacity: 0; }
+  .ed-reveal__inner { max-width: 1180px; margin: 0 auto; padding: 16vh 32px 12vh; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 40px 72px; }
+  .ed-reveal__head { grid-column: 1 / -1; }
+  .ed-reveal__kicker { margin: 0; font-size: 1.3rem; color: var(--ed-ink); }
+  .ed-reveal__title { margin: 6px 0 12px; font-family: var(--ed-display); font-size: clamp(2.4rem, 5.6vw, 5rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.02; color: var(--ed-ink); }
+  .ed-reveal__meta { margin: 0; font-family: var(--ed-mono); font-size: 0.9rem; color: var(--ed-ink-mute); }
+  .ed-reveal__body p, .ed-reveal__list li { font-size: clamp(1.1rem, 1.6vw, 1.32rem); line-height: 1.5; }
+  .ed-reveal__body > p { margin: 0 0 24px; color: var(--ed-ink-soft); }
+  .ed-reveal__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 18px; }
+  .ed-reveal__list li { padding-top: 18px; border-top: 1px solid var(--ed-hairline); color: var(--ed-ink); }
+  .ed-reveal__side h3 { margin: 0 0 10px; font-size: clamp(1.1rem, 1.6vw, 1.32rem); font-weight: 500; color: var(--ed-ink); }
+  .ed-reveal__side ul { margin: 0; padding: 0; list-style: none; }
+  .ed-reveal__side li { font-size: clamp(1.1rem, 1.6vw, 1.32rem); line-height: 1.6; color: var(--ed-ink-mute); }
+  .ed-reveal__link { display: inline-block; margin-top: 28px; font-size: 1.05rem; color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
+  dialog.ed-reveal[open] .ed-reveal__inner { animation: ed-reveal-rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  @keyframes ed-reveal-rise { from { opacity: 0; transform: translateY(18px); } }
+  /* The "Info" chip shows only when there is no star (touch, reduced motion). */
+  .ed-chip { position: absolute; right: 22px; bottom: 20px; display: none; padding: 6px 14px; border-radius: 999px; background: var(--ed-ink); color: var(--ed-bg); font-size: 0.85rem; font-weight: 500; box-shadow: 0 0 0 1px var(--ed-bg); }   /* the ring keeps the chip visible on a tile of its own colour */
+  .no-star .ed-chip { display: block; }
+  @media (prefers-reduced-motion: reduce) { dialog.ed-reveal[open] .ed-reveal__inner { animation: none; } }
+  @media (max-width: 760px) { .ed-reveal__inner { grid-template-columns: 1fr; padding-inline: 16px; } }
+  /* Without scripts, every reveal shows in the page flow. */
+  @media (scripting: none) {
+    dialog.ed-reveal { display: block; position: static; width: auto; height: auto; overflow: visible; background: transparent; }
+    .ed-reveal__close { display: none; }
+    .ed-reveal__inner { padding: 32px 0 48px; }
+  }
+
+/* ── editorial-star ── */
+  /* star-cursor.js sets html.star-on only with a fine pointer and no reduced
+     motion. The layer sits above every fixed overlay (cookie banner 90,
+     mobile menu 60); inside an open dialog it follows into the top layer. */
+  .star-on, .star-on * { cursor: none !important; }
+  /* the same text-like fields as TEXT_FIELD in star-cursor.js */
+  .star-on :is(textarea, [contenteditable="true"], input:not([type]), input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="tel"], input[type="password"], input[type="number"]) { cursor: text !important; }
+  .ed-star-layer { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 2147483646; }
+  .ed-star-label { position: fixed; left: 0; top: 0; z-index: 2147483647; pointer-events: none; opacity: 0; transition: opacity 0.16s ease; }
+  .ed-star-label.is-visible { opacity: 1; }
+  .ed-star-label__text { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 16px; border-radius: 999px; white-space: nowrap; background: var(--ed-ink); color: var(--ed-bg); font-family: var(--ed-body); font-size: 0.9rem; font-weight: 500; transform: translate(22px, -50%); }
+
+/* ── editorial-page-head ── */
+  .ed-page-head { padding: clamp(3rem, 8vw, 6rem) 0 2rem; }
+  .ed-page-head h1 { margin: 0; font-family: var(--ed-display); font-size: clamp(2.6rem, 6vw, 4.4rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--ed-ink); }
+  .ed-page-head p { margin: 12px 0 0; max-width: 48ch; color: var(--ed-ink-mute); }
+  .ed-page-head__link { color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
+
+/* ── editorial-mark ── */
+  /* a one-colour logo: the PNG or SVG alpha is the mask, currentColor the ink. The markup sets
+     mask-image in its style attribute, so the URL resolves against the page, not this stylesheet. */
+  .ed-mark { display: block; height: var(--h, 64px); aspect-ratio: var(--ratio, 1); max-width: 70%; background: currentColor; -webkit-mask-position: center; mask-position: center; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+
+/* ── editorial-panels (Experience) ── */
+  .ed-panels { display: grid; gap: 20px; padding-bottom: clamp(3rem, 8vw, 6rem); }
+  .ed-fib { display: grid; gap: 20px; }
+  .ed-fib__spiral { display: none; }
+  .ed-panel { position: relative; display: grid; place-items: center; width: 100%; min-height: clamp(260px, 32vw, 400px); padding: 28px; border: 0; border-radius: 28px; background: var(--ed-panel); color: var(--ed-ink); font: inherit; cursor: pointer; transition: background-color 0.25s ease; }
+  .ed-panel:hover { background: var(--ed-panel-hover); }
+  .ed-panel__foot { position: absolute; left: 28px; bottom: 24px; display: grid; gap: 2px; text-align: left; }
+  .ed-panel__title { font-weight: 500; }
+  .ed-panel__dates { font-family: var(--ed-mono); font-size: 0.82rem; color: var(--ed-ink-dim); }   /* on --ed-panel, ink-mute is below AA */
+  .ed-panel--edu { min-height: 0; padding: 26px 28px; justify-items: start; }
+  .ed-panel__label { font-size: 1.1rem; font-weight: 600; }
+  .ed-reveal__body--wide { grid-column: 1 / -1; }
+
+/* ── editorial-how ── */
+  .ed-how { margin: 0 0 30px; padding: 22px 24px; border-radius: 18px; background: var(--ed-panel); }
+  .ed-how h3 { margin: 0 0 14px; font-family: var(--ed-mono); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ed-accent-strong); }
+  .ed-how__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .ed-how h4 { margin: 0 0 8px; font-size: 1.05rem; font-weight: 600; color: var(--ed-ink); }
+  .ed-how p, .ed-how li { margin: 0 0 10px; font-size: 1.02rem; line-height: 1.5; color: var(--ed-ink-soft); }
+  .ed-how ol { margin: 0 0 10px; padding-left: 1.3em; }
+  @media (max-width: 760px) { .ed-how__cols { grid-template-columns: 1fr; } }
+
+/* ── editorial-mosaic (Portfolio, Certifications) ── */
+  .ed-mosaic { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: clamp(72px, 7.4vw, 104px); background: var(--ed-field); margin-bottom: clamp(3rem, 8vw, 6rem); }
+  .ed-tile { position: relative; overflow: hidden; border: 0; padding: 0; margin: 0; cursor: pointer; background: var(--ed-bg); color: var(--ed-ink); font: inherit; text-align: left; }
+  .ed-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ed-tile:hover img { transform: scale(1.03); }
+  .ed-tile__cap { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; font-family: var(--ed-mono); font-size: 0.72rem; letter-spacing: 0.04em; color: #ffffff; background: linear-gradient(transparent, rgba(0, 0, 0, 0.55)); }
+  .ed-tile__logo { position: absolute; left: 16px; top: 16px; color: #ffffff; }
+  .ed-tile .ed-chip { right: 12px; bottom: 36px; }
+  .ed-tile:focus-visible { outline: 2px solid var(--ed-accent); outline-offset: -4px; }   /* inside the tile, so a neighbour cannot cover it */
+  .ed-tile--light .ed-tile__logo { color: #111111; }
+  .ed-tile--light .ed-tile__cap { color: #111111; background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.92)); }
+  @media (prefers-reduced-motion: reduce) { .ed-tile img { transition: none; } }
+  @media (max-width: 760px) {
+    .ed-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 150px; }
+    .ed-mosaic > * { grid-column: auto !important; grid-row: auto !important; }
+  }
+
+/* ── editorial-credential-tiles ── */
+  .ed-ct { display: flex; flex-direction: column; justify-content: space-between; padding: 16px 18px; container-type: inline-size; }
+  .ed-ct__issuer { font-family: var(--ed-mono); font-size: clamp(8px, 4.4cqi, 0.72rem); letter-spacing: 0.08em; text-transform: uppercase; }
+  /* the designed size is the ceiling; the tile width and the word length set the cap, so the code never wraps or overflows */
+  .ed-ct__big { font-size: min(var(--big, 3rem), 100cqi / (0.62 * var(--chars, 4))); font-weight: 600; letter-spacing: -0.04em; line-height: 0.9; white-space: nowrap; }
+  .ed-ct__name { font-size: clamp(9px, 5.6cqi, 0.95rem); font-weight: 500; line-height: 1.2; max-width: 22ch; }
+  .ed-ct--ink { background: #111111; color: #f4f4f2; }
+  :root[data-theme="dark"] .ed-ct--ink { box-shadow: inset 0 0 0 1px var(--ed-hairline-strong); }   /* the dark field is almost the ink colour */
+  .ed-ct--paper { background: #ffffff; color: #111111; }
+  .ed-ct--grey { background: #e4e4e1; color: #111111; }
+  .ed-ct--clay { background: #a8431f; color: #ffffff; }   /* fixed deep clay: white text passes AA (6.0:1) in both themes */
+  .ed-ct--outline { background: transparent; color: var(--ed-ink); box-shadow: inset 0 0 0 1px var(--ed-ink); }
+  .ed-ct .ed-chip { top: 12px; right: 12px; bottom: auto; padding: 6px 10px; }   /* the chip sits top-right, clear of the name */
+  .no-star .ed-ct__issuer { padding-right: 56px; }   /* the issuer line leaves room for the chip */
+  .ed-mosaic--certs { grid-auto-rows: minmax(clamp(120px, 9.4vw, 136px), auto); }   /* credential tiles set fixed-size type, so their rows stay taller and grow to fit the text */
+  @media (max-width: 760px) {
+    .ed-mosaic--certs { grid-auto-rows: minmax(150px, auto); }
+    .ed-mosaic--certs .ed-ct__big { font-size: min(2.4rem, 100cqi / (0.62 * var(--chars, 4))); }
+    .no-star .ed-ct__issuer { min-height: 2.5em; }   /* the issuer line reaches the chip bottom, so the big word starts below the chip */
+  }
+
+/* ── editorial-home ── */
+  .ed-home-hero { padding: clamp(3rem, 8vw, 6rem) 0 0; }
+  .ed-home-title { margin: 8px 0 0; font-family: var(--ed-display); font-size: clamp(3rem, 7.4vw, 6.4rem); font-weight: 500; letter-spacing: -0.035em; line-height: 0.98; color: var(--ed-ink); }
+  .ed-home-sub { margin: 14px 0 0; font-size: clamp(1.1rem, 1.8vw, 1.4rem); color: var(--ed-ink-soft); }
+  .ed-home-actions { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 22px; font-size: 0.95rem; }
+  .ed-home-action { padding: 0 0 2px; border: 0; border-bottom: 1px solid transparent; background: none; color: var(--ed-ink-mute); font: inherit; text-decoration: none; cursor: pointer; }
+  .ed-home-action:hover, .ed-home-action--primary { color: var(--ed-ink); border-bottom-color: var(--ed-accent); }
+
+/* ── editorial-loop-hero ── */
+  /* The ring below is the default layout, and loop-hero.js writes the same positions in pixels.
+     So the ring also holds before the script runs, when the script fails to load, and with scripts off.
+     Only the tall ring depends on the browser: a stage under 640 px uses the container query below,
+     and a browser without container queries uses the 671 px viewport rule instead. */
+  .ed-loop-stage { position: relative; width: 100%; height: clamp(400px, 44vw, 560px); margin-top: 8px; container-type: inline-size; }
+  .ed-loop-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ed-loop-orbit { position: absolute; left: calc(50% - min(40%, 470px)); top: 14%; width: calc(2 * min(40%, 470px)); height: 72%; border: 1px solid var(--ed-hairline-strong); border-radius: 50%; }
+  .ed-loop-card { position: absolute; left: 0; top: 0; width: 190px; padding: 16px 14px; text-align: center; background: var(--ed-bg); border: 1px solid var(--ed-hairline); border-radius: 14px; box-shadow: var(--ed-card-shadow); user-select: none; -webkit-user-select: none; transition: border-color 0.2s ease, background-color 0.2s ease; }
+  /* card k sits at -90deg + 60deg * k on the ellipse, where layout() in loop-hero.js puts it */
+  .ed-loop-card { --a: calc(-90deg + 60deg * var(--k)); left: calc(50% + min(40%, 470px) * cos(var(--a))); top: calc(50% + 36% * sin(var(--a))); transform: translate(-50%, -50%); }
+  .ed-loop-card small { display: block; margin-bottom: 6px; font-family: var(--ed-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ed-ink-mute); }
+  .ed-loop-card span { font-size: 1.02rem; font-weight: 500; line-height: 1.25; color: var(--ed-ink); }
+  .ed-loop-card.is-front { border-color: var(--ed-accent); background: var(--ed-accent-tint); }
+  .ed-loop-card.is-front small { color: var(--ed-accent-strong); }
+  .ed-loop-core { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 10px; pointer-events: none; text-align: center; }
+  .ed-loop-mark { width: clamp(150px, 17vw, 240px); height: auto; overflow: visible; }
+  .ed-mark-reveal { fill: none; stroke: #fff; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
+  .ed-mark-star { fill: var(--ed-accent); opacity: 0; }
+  .ed-role-line { margin: 0; font-family: var(--ed-display); font-size: clamp(1.9rem, 3.4vw, 3.1rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; color: var(--ed-ink); }
+  .ed-role-word { display: inline-block; text-align: left; color: var(--ed-accent); font-variation-settings: 'wdth' 100, 'wght' 560; }
+  .ed-loop-hint { visibility: hidden; margin: 0; text-align: center; font-size: 0.85rem; color: var(--ed-ink-mute); }
+  /* loop-hero.js adds is-draggable once the ring answers a drag; until then the hint keeps its line and stays invisible */
+  .ed-loop-hero.is-draggable .ed-loop-hint { visibility: visible; }
+  @media (max-width: 760px) { .ed-loop-card { width: 124px; padding: 10px 8px; } .ed-loop-card span { font-size: 0.86rem; } }
+  /* phones: a taller stage and a smaller mark, so the tall ring has room; the side cards sit above and below the M */
+  @media (max-width: 671px) {
+    .ed-loop-stage { height: 560px; }
+    .ed-loop-mark { width: 120px; }
+  }
+  /* The viewport stands in for the stage width only where container queries are missing. Where they exist, the query below
+     decides the ring alone: it can add the tall ring but cannot remove one that a viewport rule set, and a stage of 640 px
+     or more at a small viewport would keep the wrong ring. */
+  @supports not (container-type: inline-size) {
+    @media (max-width: 671px) {
+      .ed-loop-orbit { left: 16%; top: 10%; width: 68%; height: 80%; }
+      .ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }
+    }
+  }
+  /* The same two rules by stage width, which is what layout() reads: under 640 px. Blink and WebKit round 639.98 px to the last layout unit (1/64 px) below 640. */
+  @container (max-width: 639.98px) {
+    .ed-loop-orbit { left: 16%; top: 10%; width: 68%; height: 80%; }
+    .ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }
+  }
+  /* the ring ignores touch drags, so the drag hint shows only with a hover pointer */
+  @media (hover: none) { .ed-loop-hint { display: none; } }
+
+/* ── editorial-results (home) ── */
+  .ed-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 56px; border-top: 1px solid var(--ed-hairline); }
+  .ed-result { position: relative; display: grid; align-content: start; gap: 6px; padding: 28px 20px 8px 0; border: 0; background: none; color: var(--ed-ink); font: inherit; text-align: left; cursor: pointer; }
+  .ed-result + .ed-result { padding-left: 20px; border-left: 1px solid var(--ed-hairline); }
+  .ed-result b { font-family: var(--ed-display); font-size: clamp(2.4rem, 4.6vw, 3.8rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+  .ed-result span:not(.ed-chip) { font-size: 0.98rem; }   /* the Info chip keeps its own size */
+  .ed-result small { font-family: var(--ed-mono); font-size: 0.78rem; color: var(--ed-ink-mute); }
+  .ed-result:hover b { color: var(--ed-accent); }
+  .ed-result .ed-chip { position: static; justify-self: start; margin-top: 8px; }
+  @media (max-width: 760px) { .ed-results { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ed-result:nth-child(3) { padding-left: 0; border-left: 0; } }
+
+/* ── editorial-band (home: How I work) ── */
+  .ed-band { margin: clamp(3rem, 8vw, 6rem) 0; padding: clamp(24px, 4vw, 40px); border-radius: 28px; background: var(--ed-panel); }
+  .ed-band__label { margin: 0 0 12px; font-family: var(--ed-mono); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ed-accent-strong); }
+  .ed-band__text { margin: 0; max-width: 60ch; font-size: clamp(1.1rem, 1.8vw, 1.4rem); line-height: 1.5; color: var(--ed-ink); }
+  .ed-band__link { display: inline-block; margin-top: 18px; color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
+
+/* ── editorial-fit (Experience, Portfolio, Certifications) ── */
+  /* With scripts on and a window of at least 761 x 500 px, these pages fit the window: the top bar,
+     the page head, the tiles and the footer, with no scrolling. The tiles take the height that is
+     left, and their text scales with each tile. A phone, a short window or no scripts keeps the
+     scrolling layout above. Nothing here hides overflow, so a page that cannot fit still scrolls. */
+  @media (scripting: enabled) and (min-width: 761px) and (min-height: 500px) {
+    .ed-fit { display: flex; flex-direction: column; height: 100dvh; }
+    .ed-fit:has(> .cookie-consent) { padding-bottom: var(--ed-consent-h, 0px); }   /* site.js publishes the banner height */
+    .ed-fit > main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+    .ed-fit > main > .ed-shell { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+    .ed-fit .ed-topbar__inner { padding-block: 0.5rem; }
+    .ed-fit .ed-page-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; padding: clamp(10px, 2.6vh, 32px) 0 clamp(8px, 2vh, 20px); }
+    .ed-fit .ed-page-head h1 { font-size: clamp(1.7rem, 5.2vh, 3.2rem); }
+    .ed-fit .ed-page-head p { margin: 0; }
+    .ed-fit .ed-foot { padding-block: 10px; }
+    .ed-fit .ed-foot__inner > div:first-child { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+    .ed-fit .ed-foot p { margin: 0 !important; }   /* the brand line carries an inline top margin */
+
+    /* Portfolio and Certifications: the rows share the height; --rows on each mosaic matches its placements (tested). */
+    .ed-fit .ed-mosaic { flex: 1 1 auto; min-height: 0; margin-bottom: clamp(8px, 2vh, 20px); grid-template-rows: repeat(var(--rows, 7), minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); }
+    .ed-fit .ed-tile { container-type: size; }
+    .ed-fit .ed-tile__logo { left: clamp(8px, 6cqmin, 16px); top: clamp(8px, 6cqmin, 16px); }
+    .ed-fit .ed-tile__logo .ed-mark { height: min(var(--h, 34px), 26cqmin); }
+    .ed-fit .ed-tile__cap { padding: clamp(5px, 4cqmin, 10px) clamp(8px, 5cqmin, 14px); font-size: clamp(9px, 3.8cqi, 0.72rem); }
+    .ed-fit .ed-ct { padding: 10px 14px; }   /* container units measure the content box, so a short tile keeps a short padding */
+    .ed-fit .ed-ct__big { font-size: min(var(--big, 3rem), 100cqi / (0.62 * var(--chars, 4)), 52cqh); }
+    .ed-fit .ed-ct__issuer { font-size: clamp(8px, min(4.4cqi, 8cqh), 0.72rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ed-fit .ed-ct .ed-chip { top: 8px; right: 8px; padding: 3px 8px; font-size: 0.7rem; }
+    .no-star .ed-fit .ed-ct__issuer { min-height: 2.5em; }   /* the issuer line reaches the chip bottom, so the code starts below the chip */
+    .no-star .ed-fit .ed-ct__big { font-size: min(var(--big, 3rem), 100cqi / (0.62 * var(--chars, 4)), 44cqh); }   /* the taller issuer line leaves less room */
+    .ed-fit .ed-ct__name { font-size: clamp(9px, min(5.6cqi, 10cqh), 0.95rem); }
+    /* a short tile keeps its code; the name, then the issuer, stay only for screen readers */
+    @container (max-height: 104px) { .ed-ct__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+    @container (max-height: 64px) { .ed-ct__issuer { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+
+    /* Experience: the five roles and Education & Languages fill a golden rectangle (89 x 55), most recent
+       in the largest square: Sema 55, Labforward 34, LabTwin 21, Thryve 13, EY 8, Education 5 x 8.
+       The rectangle takes the largest size that fits the free box. */
+    .ed-fit .ed-panels { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding-bottom: clamp(8px, 2vh, 20px); container-type: size; }
+    .ed-fit .ed-fib { position: relative; flex: none; width: min(100cqw, 100cqh * 89 / 55); aspect-ratio: 89 / 55; gap: 1px; background: var(--ed-hairline-strong);
+      grid-template-columns: 55fr 8fr 5fr 21fr; grid-template-rows: 34fr 8fr 13fr;
+      grid-template-areas: "s l l l" "s e k t" "s y y t"; }   /* mirror: "l l l s" "t k e s" "t y y s", and flip the spiral */
+    .ed-fit .ed-fib > [data-area="s"] { grid-area: s; }
+    .ed-fit .ed-fib > [data-area="l"] { grid-area: l; }
+    .ed-fit .ed-fib > [data-area="t"] { grid-area: t; }
+    .ed-fit .ed-fib > [data-area="y"] { grid-area: y; }
+    .ed-fit .ed-fib > [data-area="e"] { grid-area: e; }
+    .ed-fit .ed-fib > [data-area="k"] { grid-area: k; }
+    .ed-fit .ed-fib__spiral { display: block; position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; fill: none; stroke: var(--ed-accent); stroke-width: 1.5; opacity: 0.55; }
+    .ed-fit .ed-fib__spiral path { vector-effect: non-scaling-stroke; }   /* not inherited: without it the stroke scales with the viewBox */
+    .ed-fit .ed-fib .ed-panel { min-height: 0; padding: 0; border-radius: 0; container-type: size; }
+    .ed-fit .ed-fib .ed-mark { height: min(var(--h, 64px), 24cqmin); max-width: 64%; }
+    .ed-fit .ed-fib .ed-panel__foot { left: clamp(8px, 6cqmin, 28px); bottom: clamp(6px, 5cqmin, 24px); font-size: clamp(10px, 5cqmin, 1rem); }
+    .ed-fit .ed-fib .ed-panel__dates { font-size: 0.84em; }
+    .ed-fit .ed-fib .ed-chip { top: 8px; right: 8px; bottom: auto; padding: 3px 9px; font-size: 0.72rem; }
+    @container (max-height: 150px) { .ed-panel__foot { display: none; } }
+    @container (max-height: 88px) { .ed-fib .ed-chip { display: none; } }
+    .ed-fit .ed-fib .ed-panel--edu { place-items: center; padding: 0 4px; text-align: center; }
+    .ed-fit .ed-panel--edu .ed-panel__label { font-size: clamp(7px, 15cqi, 12px); line-height: 1.15; }
+    @container (max-width: 56px) { .ed-panel--edu .ed-panel__label { writing-mode: vertical-rl; transform: rotate(180deg); font-size: clamp(7px, 10cqh, 11px); } }   /* a narrow tile reads along its height */
+  }

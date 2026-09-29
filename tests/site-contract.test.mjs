@@ -7,8 +7,8 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SITE_BASE = 'https://matthew-thaokhamlue.github.io/resume/';
 
-// about.html is a redirect stub, cv.html is a generated export — neither is a content page.
-const NON_CONTENT_PAGES = new Set(['about.html', 'cv.html']);
+// about.html and the three retired case pages are redirect stubs; cv.html is a generated export.
+const NON_CONTENT_PAGES = new Set(['about.html', 'cv.html', 'portfolio/mcp-server.html', 'portfolio/automation-tools.html', 'portfolio/interview-prep.html']);
 // Intentionally hidden (noindex, unlinked) — must stay OUT of the sitemap.
 const HIDDEN_PAGES = new Set(['portfolio/achievement.html']);
 

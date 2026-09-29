@@ -55,3 +55,7 @@ pids
 # Local git worktrees
 .worktrees/
 .gstack/
+
+# Design documents stay private: the repo is public, and Pages serves every file on main
+docs/plans/
+docs/research/

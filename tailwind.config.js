@@ -19,15 +19,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'primary': '#0da6f2',
-        'primary-dark': '#0a8ccf',
-        'background-light': '#f5f7f8',
-        'background-dark': '#101c22',
-        'surface': '#1a262d',
-        'surface-hover': '#233038',
+        'primary': '#c45a38',
+        'primary-dark': '#a8431f',
+        'background-light': '#ffffff',
+        'background-dark': '#0c0c0d',
+        'surface': '#18181a',
+        'surface-hover': '#1f1f22',
       },
       fontFamily: {
-        'display': ['Space Grotesk', 'sans-serif'],
+        'display': ['Instrument Sans', 'sans-serif'],
       },
       borderRadius: {
         'DEFAULT': '0.25rem',
