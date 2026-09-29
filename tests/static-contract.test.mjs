@@ -436,22 +436,63 @@ test('the home page head carries the headline', () => {
 
 test('experience.html keeps the AI Match hooks inside the role reveals', () => {
   const html = readText('experience.html');
-  const roles = [...html.matchAll(/<section class="ed-reveal__inner" id="(role-[a-z]+)">([\s\S]*?)<\/section>\s*<\/dialog>/g)];
-  assert.deepEqual(roles.map((m) => m[1]), ['role-sema', 'role-labforward', 'role-labtwin', 'role-thryve', 'role-ey']);
-  for (const [, id, body] of roles) {
+  const sections = [...html.matchAll(/<section class="ed-reveal__inner" id="(role-[a-z]+)">([\s\S]*?)<\/section>\s*<\/dialog>/g)];
+  assert.deepEqual(sections.map((m) => m[1]), ['role-sema', 'role-labforward', 'role-labtwin', 'role-thryve', 'role-ey', 'role-education']);
+  for (const [, id, body] of sections.filter((m) => m[1] !== 'role-education')) {
     for (const hook of ['data-role-company', 'data-role-title', 'data-role-meta', 'data-role-summary', 'data-role-skill']) {
       assert.ok(body.includes(hook), `${id} lost ${hook}`);
     }
     assert.ok(body.includes('<section class="ed-how" aria-label="How I work">'), `${id} lost its How I work block`);
   }
-  assert.match(html, /id="role-skills"/);
-  assert.ok((html.match(/class="ed-stage[ "]/g) || []).length >= 4, 'the skills section keeps its .ed-stage rows');
-  assert.match(readText('assets/css/editorial.css'), /#role-skills \.experience-role-title \{ font-family: var\(--ed-display\); font-size: clamp\(2rem, 4vw, 3rem\);/, 'the Skills and Education heading keeps its display size');
+  // ai-match.js reads the Education rows from #role-education, and skips that section as a role.
+  const edu = sections.find((m) => m[1] === 'role-education')[2];
+  const rows = [...edu.matchAll(/<div class="ed-stage"><span class="ed-stage__num">\d+<\/span><h3 class="ed-stage__title">([^<]+)<\/h3><p class="ed-stage__desc">[^<]+<\/p>/g)].map((m) => m[1]);
+  assert.deepEqual(rows, ['Education', 'Languages'], 'the Education reveal keeps its two rows');
   assert.match(html, /<a class="ed-page-head__link" href="cv\.html"[^>]*data-ga-event="resume_downloaded"/, 'the Experience page keeps its View CV link');
   const aiMatch = readText('assets/js/ai-match.js');
   for (const hook of ['[data-role-company]', '[data-role-title]', '[data-role-meta]', '[data-role-summary]', '[data-role-skill]']) {
     assert.ok(aiMatch.includes(hook), `ai-match.js no longer reads ${hook}`);
   }
+  assert.match(aiMatch, /section\[id\^="role-"\]:not\(#role-education\)/, 'ai-match.js skips the Education section as a role');
+  assert.match(aiMatch, /#role-education \.ed-stage/, 'ai-match.js reads the Education rows');
+});
+
+test('the tile pages fit the window: one fit condition, and a failed fit scrolls', () => {
+  for (const name of ['experience.html', 'portfolio.html', 'certificates.html']) {
+    assert.match(readText(name), /<body class="ed-page ed-fit">/, `${name} opts into fit mode`);
+  }
+  const css = readText('assets/css/editorial.css');
+  const fit = css.match(/@media \(scripting: enabled\) and \(min-width: 761px\) and \(min-height: 500px\) \{([\s\S]*?)\n {2}\}\n/);
+  assert.ok(fit, 'one fit block: scripts on, at least 761 px wide and 500 px tall');
+  assert.equal((css.match(/min-width: 761px\) and \(min-height: 500px\)/g) || []).length, 1, 'the fit condition is written once');
+  assert.doesNotMatch(fit[1], /\.ed-fit(?: > main(?: > \.ed-shell)?)? \{[^}]*overflow:\s*hidden/, 'the page, main and the shell never hide overflow: a page that cannot fit must scroll, not clip');
+  assert.match(fit[1], /\.ed-fit \{ display: flex; flex-direction: column; height: 100dvh; \}/);
+  assert.match(fit[1], /\.ed-fit:has\(> \.cookie-consent\) \{ padding-bottom: var\(--ed-consent-h, 0px\); \}/, 'the cookie banner never covers the footer');
+  assert.match(readText('assets/js/site.js'), /new ResizeObserver\([\s\S]{0,160}--ed-consent-h/, 'site.js publishes the banner height');
+
+  // --rows on each mosaic matches its tile placements, or an extra row would make the page scroll again.
+  for (const name of ['portfolio.html', 'certificates.html']) {
+    const html = readText(name);
+    const rows = Number(html.match(/<div class="ed-mosaic ed-mosaic--[a-z]+" style="--rows:(\d+)">/)[1]);
+    const ends = [...html.matchAll(/grid-row:(\d+) \/ span (\d+)/g)].map((m) => Number(m[1]) + Number(m[2]) - 1);
+    assert.equal(rows, Math.max(...ends), `${name}: --rows must equal the last row the tiles use`);
+  }
+  // each credential code carries its designed size and its length, which caps the size to the tile width
+  for (const m of readText('certificates.html').matchAll(/<span class="ed-ct__big" style="--big:[0-9.]+rem;--chars:(\d+)">([^<]+)<\/span>/g)) {
+    assert.equal(Number(m[1]), m[2].length, `--chars of ${m[2]}`);
+  }
+  assert.equal((readText('certificates.html').match(/class="ed-ct__big" style="--big:/g) || []).length, 14);
+});
+
+test('experience.html lays the roles out as a Fibonacci spiral, most recent in the largest square', () => {
+  const html = readText('experience.html');
+  const areas = [...html.matchAll(/<button class="ed-panel[^"]*" type="button" data-area="([a-z])" data-action="open-reveal" data-reveal="([a-z-]+)"/g)].map((m) => `${m[1]}:${m[2]}`);
+  assert.deepEqual(areas, ['s:reveal-sema', 'l:reveal-labforward', 't:reveal-labtwin', 'y:reveal-thryve', 'e:reveal-ey', 'k:reveal-education']);
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /grid-template-columns: 55fr 8fr 5fr 21fr; grid-template-rows: 34fr 8fr 13fr;\s*grid-template-areas: "s l l l" "s e k t" "s y y t";/, 'Sema 55, Labforward 34, LabTwin 21, Thryve 13, EY 8, Education 5 x 8');
+  assert.match(css, /\.ed-fit \.ed-fib \{[^}]*aspect-ratio: 89 \/ 55;/, 'the grid keeps the golden ratio');
+  assert.match(html, /<svg class="ed-fib__spiral" viewBox="0 0 89 55"[^>]*aria-hidden="true"/, 'the spiral is decoration only');
+  assert.match(css, /\.ed-fit \.ed-fib__spiral \{[^}]*pointer-events: none;/, 'the spiral lets every click through');
 });
 
 test('every logo mask the markup references exists, in both the prefixed and the standard property', () => {

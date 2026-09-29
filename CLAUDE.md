@@ -16,7 +16,7 @@ Pushing this repo uses the personal `gh` account `matthew-thaokhamlue` (not `mat
 
 **Pages:** Each top-level HTML file is a standalone page sharing a common structure:
 - `index.html` — the home page: the loop hero (the star-written M, "Product" plus a role word, six station cards on a ring), four results that open receipts, the How I work band, testimonials, AI Match, contact
-- `experience.html` — five role panels (a logo, the title and the dates) that open full-screen role reveals, then Skills and Education
+- `experience.html` — a Fibonacci spiral of six tiles (a golden rectangle, 89 x 55): Sema 55, Labforward 34, LabTwin 21, Thryve 13, EY 8 and Education & Languages 5 x 8, each opening its reveal. The Education reveal keeps `id="role-education"`, which ai-match.js reads
 - `portfolio.html` — a mosaic of eight project tiles that open five project reveals; each reveal links its `portfolio/*.html` case page
 - `certificates.html` — a mosaic of 14 credential tiles; each opens a reveal with a verify link
 - `portfolio/*.html` — editorial case study pages (Labforward, LabTwin, Thryve, Opportunity Paths, Remarcable Living); `portfolio/achievement.html` stays hidden (see SEO below)
@@ -35,6 +35,8 @@ Pushing this repo uses the personal `gh` account `matthew-thaokhamlue` (not `mat
 - `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt from the role reveals' `data-role-*` hooks, opens ChatGPT or Claude.ai in a popup/tab. (Contains no gtag calls.)
 - `assets/js/theme.js` — sets `data-theme` on `<html>` from localStorage before paint.
 - GSAP, ScrollTrigger and the scroll-motion scripts (`editorial.js`, `loop.js`, `rings.js`, `career.js`, `folio.js`, `case.js`) were deleted in September 2026, with the `data-motion-pending` gate. No page loads them (tested). The legacy HTML5 UP Dimension assets were deleted in June 2026. Don't reintroduce either.
+
+**Fit mode (Experience, Portfolio, Certifications):** the body carries `ed-fit`. With scripts on and a window of at least 761 x 500 px, the page fits the window with no scrolling: a compact top bar, page head and footer, and the tiles in the height that is left (`@media (scripting: enabled) and (min-width: 761px) and (min-height: 500px)`, written once, tested). Tile text scales with container units; `--rows` on each mosaic must equal its last grid row (tested). While the cookie banner shows, `site.js` publishes its height as `--ed-consent-h` and the page reserves it. Phones, short windows and no scripts keep the scrolling layout; nothing hides overflow, so a page that cannot fit scrolls.
 
 **CDN dependencies:** Font Awesome 6.4.0 is pinned on cdnjs with `integrity` (SRI sha384) + `crossorigin="anonymous"` attributes. When bumping a CDN version, recompute the hash: `curl -sf <url> | openssl dgst -sha384 -binary | base64`.
 

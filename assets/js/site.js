@@ -91,6 +91,12 @@
     banner.appendChild(text);
     banner.appendChild(actions);
     document.body.appendChild(banner);
+    // A page that fits the window reserves the banner's height, so the footer stays in view (editorial.css).
+    if (typeof ResizeObserver === 'function') {
+      new ResizeObserver(function () {
+        document.documentElement.style.setProperty('--ed-consent-h', banner.offsetHeight + 'px');
+      }).observe(banner);
+    }
   }
 
   function onConsentChange() {

@@ -12,6 +12,7 @@ https://matthew-thaokhamlue.github.io/resume/
 - **Styling**: precompiled Tailwind CSS (`assets/css/tailwind.css`, theme in `tailwind.config.js`), plus `assets/css/editorial.css` for the design system: light and dark tokens, Instrument Sans and IBM Plex Mono.
 - **Reveals**: panels and tiles open full-screen `<dialog>` reveals through `assets/js/site.js`; a URL fragment opens its reveal, and without scripts every reveal's content shows in the page.
 - **Star cursor**: `assets/js/star-cursor.js` replaces the mouse cursor with a clay star on devices with a fine pointer and no reduced-motion request.
+- **Fit mode**: on Experience, Portfolio and Certifications, the whole page fits the window (761 x 500 px and up) with no scrolling; phones keep scrolling.
 - **Loop hero**: `assets/js/loop-hero.js` draws the home page loop with WebGL 2 and writes the M once per load, within 4.8 s. No page moves on scroll.
 - **AI Match**: `assets/js/ai-match.js` powers the "Evaluate role fit" feature on the homepage (paste a job description, open ChatGPT/Claude with a prefilled prompt).
 - **Analytics**: GA4 (`G-D11HKMWFB4`) loads only after the visitor accepts the cookie banner (`assets/js/site.js`), with declarative `data-ga-event` click tracking.
@@ -21,7 +22,7 @@ https://matthew-thaokhamlue.github.io/resume/
 
 ```
 index.html               Home: the loop hero, results with receipts, How I work, testimonials, AI Match, contact
-experience.html          Five role panels that open full-screen role reveals, then Skills and Education
+experience.html          A Fibonacci spiral of role tiles (most recent largest) that open full-screen reveals
 portfolio.html           A mosaic of project tiles; each reveal links its case study
 portfolio/*.html         Standalone case studies (career + personal projects)
 certificates.html        A mosaic of credential tiles with verify links

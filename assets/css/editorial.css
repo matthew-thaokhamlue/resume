@@ -281,20 +281,7 @@
     color: var(--ed-ink);
   }
 
-  /* ─── How It Works (Abstract) ──────────────────────────── */
-  .ed-howitworks__heading {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--ed-s-3);
-    margin-bottom: var(--ed-s-7);
-  }
-  @media (min-width: 900px) {
-    .ed-howitworks__heading {
-      grid-template-columns: 1fr 2fr;
-      align-items: end;
-      gap: var(--ed-s-7);
-    }
-  }
+  /* ─── Stages: numbered rows (the Education reveal, the case pages) ─── */
   .ed-stages {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -599,7 +586,7 @@
 /* ── editorial-skills (Experience) ── */
   /* Below 720 px each Skills description keeps to the second grid column, beside its number. */
   @media (max-width: 719px) {
-    #role-skills .ed-stage__desc { grid-column: 2; }
+    #role-education .ed-stage__desc { grid-column: 2; }
   }
 
 /* ── editorial-ai-modal ── */
@@ -745,9 +732,6 @@
   #mobile-menu a,
   #mobile-menu button { color: var(--ed-ink); }
 
-  /* experience.html chapter dividers (was border-white/5) */
-  .ed-divider { border-top: 1px solid var(--ed-hairline); }
-
 
   /* index.html testimonial modal (still Tailwind primary/surface utilities) */
   #testimonial-modal [data-testimonial-overlay] > div {
@@ -879,7 +863,6 @@
   .ed-page-head h1 { margin: 0; font-family: var(--ed-display); font-size: clamp(2.6rem, 6vw, 4.4rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--ed-ink); }
   .ed-page-head p { margin: 12px 0 0; max-width: 48ch; color: var(--ed-ink-mute); }
   .ed-page-head__link { color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
-  #role-skills .experience-role-title { font-family: var(--ed-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; color: var(--ed-ink); }   /* the Skills and Education heading */
 
 /* ── editorial-mark ── */
   /* a one-colour logo: the PNG or SVG alpha is the mask, currentColor the ink. The markup sets
@@ -888,11 +871,16 @@
 
 /* ── editorial-panels (Experience) ── */
   .ed-panels { display: grid; gap: 20px; padding-bottom: clamp(3rem, 8vw, 6rem); }
+  .ed-fib { display: grid; gap: 20px; }
+  .ed-fib__spiral { display: none; }
   .ed-panel { position: relative; display: grid; place-items: center; width: 100%; min-height: clamp(260px, 32vw, 400px); padding: 28px; border: 0; border-radius: 28px; background: var(--ed-panel); color: var(--ed-ink); font: inherit; cursor: pointer; transition: background-color 0.25s ease; }
   .ed-panel:hover { background: var(--ed-panel-hover); }
   .ed-panel__foot { position: absolute; left: 28px; bottom: 24px; display: grid; gap: 2px; text-align: left; }
   .ed-panel__title { font-weight: 500; }
   .ed-panel__dates { font-family: var(--ed-mono); font-size: 0.82rem; color: var(--ed-ink-dim); }   /* on --ed-panel, ink-mute is below AA */
+  .ed-panel--edu { min-height: 0; padding: 26px 28px; justify-items: start; }
+  .ed-panel__label { font-size: 1.1rem; font-weight: 600; }
+  .ed-reveal__body--wide { grid-column: 1 / -1; }
 
 /* ── editorial-how ── */
   .ed-how { margin: 0 0 30px; padding: 22px 24px; border-radius: 18px; background: var(--ed-panel); }
@@ -921,10 +909,11 @@
   }
 
 /* ── editorial-credential-tiles ── */
-  .ed-ct { display: flex; flex-direction: column; justify-content: space-between; padding: 16px 18px; }
-  .ed-ct__issuer { font-family: var(--ed-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
-  .ed-ct__big { font-weight: 600; letter-spacing: -0.04em; line-height: 0.9; }
-  .ed-ct__name { font-size: 0.95rem; font-weight: 500; line-height: 1.2; max-width: 22ch; }
+  .ed-ct { display: flex; flex-direction: column; justify-content: space-between; padding: 16px 18px; container-type: inline-size; }
+  .ed-ct__issuer { font-family: var(--ed-mono); font-size: clamp(8px, 4.4cqi, 0.72rem); letter-spacing: 0.08em; text-transform: uppercase; }
+  /* the designed size is the ceiling; the tile width and the word length set the cap, so the code never wraps or overflows */
+  .ed-ct__big { font-size: min(var(--big, 3rem), 100cqi / (0.62 * var(--chars, 4))); font-weight: 600; letter-spacing: -0.04em; line-height: 0.9; white-space: nowrap; }
+  .ed-ct__name { font-size: clamp(9px, 5.6cqi, 0.95rem); font-weight: 500; line-height: 1.2; max-width: 22ch; }
   .ed-ct--ink { background: #111111; color: #f4f4f2; }
   :root[data-theme="dark"] .ed-ct--ink { box-shadow: inset 0 0 0 1px var(--ed-hairline-strong); }   /* the dark field is almost the ink colour */
   .ed-ct--paper { background: #ffffff; color: #111111; }
@@ -934,10 +923,9 @@
   .ed-ct .ed-chip { top: 12px; right: 12px; bottom: auto; padding: 6px 10px; }   /* the chip sits top-right, clear of the name */
   .no-star .ed-ct__issuer { padding-right: 56px; }   /* the issuer line leaves room for the chip */
   .ed-mosaic--certs { grid-auto-rows: minmax(clamp(120px, 9.4vw, 136px), auto); }   /* credential tiles set fixed-size type, so their rows stay taller and grow to fit the text */
-  @media (max-width: 1279px) {
-    .ed-mosaic--certs { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(150px, auto); }
-    .ed-mosaic--certs > * { grid-column: auto !important; grid-row: auto !important; }
-    .ed-mosaic--certs .ed-ct__big { font-size: min(2.4rem, 16vw - 24px) !important; white-space: nowrap; }   /* the code shrinks below 390 px, so DP-900 stays on one line */
+  @media (max-width: 760px) {
+    .ed-mosaic--certs { grid-auto-rows: minmax(150px, auto); }
+    .ed-mosaic--certs .ed-ct__big { font-size: min(2.4rem, 100cqi / (0.62 * var(--chars, 4))); }
     .no-star .ed-ct__issuer { min-height: 2.5em; }   /* the issuer line reaches the chip bottom, so the big word starts below the chip */
   }
 
@@ -1012,3 +1000,65 @@
   .ed-band__label { margin: 0 0 12px; font-family: var(--ed-mono); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ed-accent-strong); }
   .ed-band__text { margin: 0; max-width: 60ch; font-size: clamp(1.1rem, 1.8vw, 1.4rem); line-height: 1.5; color: var(--ed-ink); }
   .ed-band__link { display: inline-block; margin-top: 18px; color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
+
+/* ── editorial-fit (Experience, Portfolio, Certifications) ── */
+  /* With scripts on and a window of at least 761 x 500 px, these pages fit the window: the top bar,
+     the page head, the tiles and the footer, with no scrolling. The tiles take the height that is
+     left, and their text scales with each tile. A phone, a short window or no scripts keeps the
+     scrolling layout above. Nothing here hides overflow, so a page that cannot fit still scrolls. */
+  @media (scripting: enabled) and (min-width: 761px) and (min-height: 500px) {
+    .ed-fit { display: flex; flex-direction: column; height: 100dvh; }
+    .ed-fit:has(> .cookie-consent) { padding-bottom: var(--ed-consent-h, 0px); }   /* site.js publishes the banner height */
+    .ed-fit > main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+    .ed-fit > main > .ed-shell { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+    .ed-fit .ed-topbar__inner { padding-block: 0.5rem; }
+    .ed-fit .ed-page-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; padding: clamp(10px, 2.6vh, 32px) 0 clamp(8px, 2vh, 20px); }
+    .ed-fit .ed-page-head h1 { font-size: clamp(1.7rem, 5.2vh, 3.2rem); }
+    .ed-fit .ed-page-head p { margin: 0; }
+    .ed-fit .ed-foot { padding-block: 10px; }
+    .ed-fit .ed-foot__inner > div:first-child { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+    .ed-fit .ed-foot p { margin: 0 !important; }   /* the brand line carries an inline top margin */
+
+    /* Portfolio and Certifications: the rows share the height; --rows on each mosaic matches its placements (tested). */
+    .ed-fit .ed-mosaic { flex: 1 1 auto; min-height: 0; margin-bottom: clamp(8px, 2vh, 20px); grid-template-rows: repeat(var(--rows, 7), minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); }
+    .ed-fit .ed-tile { container-type: size; }
+    .ed-fit .ed-tile__logo { left: clamp(8px, 6cqmin, 16px); top: clamp(8px, 6cqmin, 16px); }
+    .ed-fit .ed-tile__logo .ed-mark { height: min(var(--h, 34px), 26cqmin); }
+    .ed-fit .ed-tile__cap { padding: clamp(5px, 4cqmin, 10px) clamp(8px, 5cqmin, 14px); font-size: clamp(9px, 3.8cqi, 0.72rem); }
+    .ed-fit .ed-ct { padding: 10px 14px; }   /* container units measure the content box, so a short tile keeps a short padding */
+    .ed-fit .ed-ct__big { font-size: min(var(--big, 3rem), 100cqi / (0.62 * var(--chars, 4)), 52cqh); }
+    .ed-fit .ed-ct__issuer { font-size: clamp(8px, min(4.4cqi, 8cqh), 0.72rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ed-fit .ed-ct .ed-chip { top: 8px; right: 8px; padding: 3px 8px; font-size: 0.7rem; }
+    .no-star .ed-fit .ed-ct__issuer { min-height: 2.5em; }   /* the issuer line reaches the chip bottom, so the code starts below the chip */
+    .no-star .ed-fit .ed-ct__big { font-size: min(var(--big, 3rem), 100cqi / (0.62 * var(--chars, 4)), 44cqh); }   /* the taller issuer line leaves less room */
+    .ed-fit .ed-ct__name { font-size: clamp(9px, min(5.6cqi, 10cqh), 0.95rem); }
+    /* a short tile keeps its code; the name, then the issuer, stay only for screen readers */
+    @container (max-height: 104px) { .ed-ct__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+    @container (max-height: 64px) { .ed-ct__issuer { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+
+    /* Experience: the five roles and Education & Languages fill a golden rectangle (89 x 55), most recent
+       in the largest square: Sema 55, Labforward 34, LabTwin 21, Thryve 13, EY 8, Education 5 x 8.
+       The rectangle takes the largest size that fits the free box. */
+    .ed-fit .ed-panels { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding-bottom: clamp(8px, 2vh, 20px); container-type: size; }
+    .ed-fit .ed-fib { position: relative; flex: none; width: min(100cqw, 100cqh * 89 / 55); aspect-ratio: 89 / 55; gap: 1px; background: var(--ed-hairline-strong);
+      grid-template-columns: 55fr 8fr 5fr 21fr; grid-template-rows: 34fr 8fr 13fr;
+      grid-template-areas: "s l l l" "s e k t" "s y y t"; }   /* mirror: "l l l s" "t k e s" "t y y s", and flip the spiral */
+    .ed-fit .ed-fib > [data-area="s"] { grid-area: s; }
+    .ed-fit .ed-fib > [data-area="l"] { grid-area: l; }
+    .ed-fit .ed-fib > [data-area="t"] { grid-area: t; }
+    .ed-fit .ed-fib > [data-area="y"] { grid-area: y; }
+    .ed-fit .ed-fib > [data-area="e"] { grid-area: e; }
+    .ed-fit .ed-fib > [data-area="k"] { grid-area: k; }
+    .ed-fit .ed-fib__spiral { display: block; position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; fill: none; stroke: var(--ed-accent); stroke-width: 1.5; opacity: 0.55; }
+    .ed-fit .ed-fib__spiral path { vector-effect: non-scaling-stroke; }   /* not inherited: without it the stroke scales with the viewBox */
+    .ed-fit .ed-fib .ed-panel { min-height: 0; padding: 0; border-radius: 0; container-type: size; }
+    .ed-fit .ed-fib .ed-mark { height: min(var(--h, 64px), 24cqmin); max-width: 64%; }
+    .ed-fit .ed-fib .ed-panel__foot { left: clamp(8px, 6cqmin, 28px); bottom: clamp(6px, 5cqmin, 24px); font-size: clamp(10px, 5cqmin, 1rem); }
+    .ed-fit .ed-fib .ed-panel__dates { font-size: 0.84em; }
+    .ed-fit .ed-fib .ed-chip { top: 8px; right: 8px; bottom: auto; padding: 3px 9px; font-size: 0.72rem; }
+    @container (max-height: 150px) { .ed-panel__foot { display: none; } }
+    @container (max-height: 88px) { .ed-fib .ed-chip { display: none; } }
+    .ed-fit .ed-fib .ed-panel--edu { place-items: center; padding: 0 4px; text-align: center; }
+    .ed-fit .ed-panel--edu .ed-panel__label { font-size: clamp(7px, 15cqi, 12px); line-height: 1.15; }
+    @container (max-width: 56px) { .ed-panel--edu .ed-panel__label { writing-mode: vertical-rl; transform: rotate(180deg); font-size: clamp(7px, 10cqh, 11px); } }   /* a narrow tile reads along its height */
+  }

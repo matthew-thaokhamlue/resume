@@ -29,7 +29,7 @@ function parseProfileContext(html) {
   const doc = new DOMParser().parseFromString(html, 'text/html');
   const portfolioLines = [];
 
-  doc.querySelectorAll('section[id^="role-"]:not(#role-skills)').forEach((section) => {
+  doc.querySelectorAll('section[id^="role-"]:not(#role-education)').forEach((section) => {
     const companyEl = section.querySelector('[data-role-company]');
     const metaEl = section.querySelector('[data-role-meta]');
     const titleEl = section.querySelector('[data-role-title]');
@@ -52,7 +52,7 @@ function parseProfileContext(html) {
     portfolioLines.push(line);
   });
 
-  doc.querySelectorAll('#role-skills .ed-stage').forEach((stage) => {
+  doc.querySelectorAll('#role-education .ed-stage').forEach((stage) => {
     const title = stage.querySelector('.ed-stage__title');
     const desc = stage.querySelector('.ed-stage__desc');
     if (title && desc) {
