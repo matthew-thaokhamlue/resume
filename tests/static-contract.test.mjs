@@ -280,6 +280,17 @@ test('index.html shows four results with receipts and the How I work band', () =
   assert.doesNotMatch(html, /dialog:not\(\[open\]\)/, 'an inline dialog:not([open]) rule hides the receipts without scripts');
 });
 
+test('the redesigned pages wrap content in .ed-shell, the top bar width', () => {
+  for (const name of ['index.html', 'experience.html', 'portfolio.html', 'certificates.html']) {
+    const html = readText(name);
+    assert.match(html, /<div class="ed-shell">/, `${name} must wrap its content in .ed-shell`);
+    assert.doesNotMatch(html, /max-w-7xl mx-auto px-4 sm:px-6 lg:px-8/, `${name} keeps the old 80rem wrapper, which misaligns with the top bar`);
+  }
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /\.ed-shell \{\s*width: 100%;\s*max-width: var\(--ed-content-max\);\s*margin-inline: auto;\s*padding-inline: var\(--ed-gutter-x\);/, 'full width inside a flex column, then the top bar width and gutter');
+  assert.match(css, /\.ed-topbar__inner \{\s*max-width: var\(--ed-content-max\);\s*margin-inline: auto;\s*padding: 1rem var\(--ed-gutter-x\);/, 'the top bar uses the same width and gutter');
+});
+
 test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {

@@ -5,7 +5,6 @@
    Namespaced .ed-* classes avoid collisions with Tailwind utilities.
    ───────────────────────────────────────────────────────────── */
 
-
 /* ── editorial-tokens ── */
   :root {
     /* palette — neutral light, the default theme. Dark is opt-in via the toggle. */
@@ -77,7 +76,7 @@
     --ed-d-slow:    640ms;
 
     /* layout */
-    --ed-content-max: 76rem;       /* matches existing max-w-7xl */
+    --ed-content-max: 76rem;       /* the top bar and .ed-shell */
     --ed-prose-max:   38rem;       /* readable measure for body */
     --ed-gutter-x:    clamp(1rem, 4vw, 2.25rem);
   }
@@ -140,7 +139,7 @@
     color: var(--ed-ink);
   }
 
-  /* Display headlines let the browser pick Source Serif 4's optical cut by size. */
+  /* Headings and .ed-display share the display face, its stylistic sets and tight tracking. */
   .ed-page :where(h1, h2, h3, .ed-display) {
     font-family: var(--ed-display);
     font-feature-settings: "ss01", "ss02";
@@ -161,14 +160,10 @@
     font-weight: 500;
   }
 
-  .ed-rule {
-    height: 1px;
-    background: var(--ed-hairline);
-    border: 0;
-    margin: 0;
-  }
-
+  /* The page content wrapper: the same width and gutter as the top bar. The width
+     keeps it full width inside a flex column, where auto margins would shrink it. */
   .ed-shell {
+    width: 100%;
     max-width: var(--ed-content-max);
     margin-inline: auto;
     padding-inline: var(--ed-gutter-x);
@@ -183,29 +178,6 @@
     display: flex;
     align-items: stretch;
     overflow: hidden;
-  }
-
-  .ed-hero__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: var(--ed-s-6);
-    width: 100%;
-  }
-
-  .ed-hero__meta {
-    display: flex;
-    align-items: center;
-    gap: var(--ed-s-4);
-    color: var(--ed-ink-mute);
-  }
-  .ed-hero__meta::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--ed-hairline);
   }
 
   .ed-hero__display {
@@ -223,13 +195,6 @@
     font-style: italic;
     color: var(--ed-accent-strong);
     letter-spacing: -0.045em;
-  }
-
-  .ed-hero__support {
-    max-width: 36rem;
-    color: var(--ed-ink-soft);
-    font-size: var(--ed-fz-lg);
-    line-height: 1.55;
   }
 
   .ed-hero__cta-row {
@@ -267,15 +232,6 @@
   .ed-btn:hover { transform: translateY(-1px); }
   .ed-btn:active { transform: translateY(0); }
 
-  .ed-btn--ghost {
-    --ed-btn-bg: transparent;
-    --ed-btn-fg: var(--ed-ink);
-    --ed-btn-bd: var(--ed-hairline-strong);
-  }
-  .ed-btn--ghost:hover {
-    --ed-btn-bd: var(--ed-ink-soft);
-  }
-
   .ed-btn--accent {
     --ed-btn-bg: transparent;
     --ed-btn-fg: var(--ed-accent-strong);
@@ -310,36 +266,6 @@
   }
 
   /* ─── Philosophy ───────────────────────────────────────── */
-  .ed-philosophy {
-    padding-block: var(--ed-s-8);
-    border-top: 1px solid var(--ed-hairline);
-  }
-  .ed-philosophy__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--ed-s-7);
-  }
-  @media (min-width: 900px) {
-    .ed-philosophy__inner {
-      grid-template-columns: 1fr 1.4fr;
-      gap: clamp(3rem, 8vw, 7rem);
-    }
-  }
-  .ed-philosophy__lede {
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-4xl);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    color: var(--ed-ink);
-    margin: 0;
-  }
-  .ed-philosophy__lede em {
-    font-style: italic;
-    color: var(--ed-accent-strong);
-  }
   .ed-philosophy__body {
     display: flex;
     flex-direction: column;
@@ -356,15 +282,6 @@
   }
 
   /* ─── How It Works (Abstract) ──────────────────────────── */
-  .ed-howitworks {
-    padding-block: var(--ed-s-8);
-    border-top: 1px solid var(--ed-hairline);
-  }
-  .ed-howitworks__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-  }
   .ed-howitworks__heading {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -423,7 +340,6 @@
     height: 1px;
     background: var(--ed-hairline-strong);
     transform-origin: left center;
-    /* Hidden (scaleX(0)) state lives in the gated editorial-motion block. */
   }
   @media (min-width: 720px) {
     .ed-stage__line { display: block; min-width: 4rem; }
@@ -654,16 +570,6 @@
     transition: opacity var(--ed-d-slow) var(--ed-ease),
                 transform var(--ed-d-slow) var(--ed-ease);
   }
-  .reveal.is-in {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-
-  /* Stages line draw */
-  .ed-stage.is-in .ed-stage__line {
-    transform: scaleX(1);
-    transition: transform var(--ed-d-slow) var(--ed-ease);
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .reveal,
@@ -676,126 +582,8 @@
     }
   }
 
-/* ── editorial-product-hero ── */
-  /* index.html hero: M mark, "Product" + a role word that loop.js swaps
-     under a scroll pin. Without JS or with reduced motion the first word
-     stays visible in the accent; all further hiding is JS-applied. */
-  .ed-hero--product .ed-hero__inner {
-    grid-template-rows: none;
-    grid-template-areas: "mark" "title" "cta";
-    align-content: center;
-    gap: var(--ed-s-5);
-  }
-  .ed-hero__mark-home {
-    grid-area: mark;
-    width: clamp(9rem, 28vw, 22rem);
-    aspect-ratio: 100 / 58;
-    position: relative;
-  }
-  .ed-motion-mark {
-    width: 100%;
-    height: auto;
-    display: block;
-    z-index: 45;
-    overflow: visible;
-    pointer-events: none;
-    filter: drop-shadow(0 1.25rem 2rem rgba(196, 90, 56, 0.16));
-    will-change: transform, opacity;
-  }
-  .ed-motion-mark__stroke {
-    fill: none;
-    stroke: #c45a38;
-    stroke-width: 2.4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  /* The brush image is the M at rest; the strokes only draw the star trail. */
-  .ed-motion-mark__brush ~ .ed-motion-mark__stroke { opacity: 0; }
-  .ed-motion-mark__head {
-    fill: #c45a38;
-    stroke: #c45a38;
-    stroke-width: 0.7;
-    stroke-linejoin: round;
-    opacity: 0;
-  }
-  .ed-hero--product .ed-hero__display {
-    grid-area: title;
-    display: grid;
-    gap: 0;
-  }
-  .ed-hero--product .ed-hero__cta-row {
-    grid-area: cta;
-  }
-  .ed-hero__product {
-    display: block;
-    color: var(--ed-ink);
-  }
-  .ed-hero__role {
-    --ed-role-mix: 0;
-    position: relative;
-    display: block;
-    height: 1em;
-    line-height: 1;
-    color: var(--ed-accent-strong);
-    color: color-mix(in oklab, var(--ed-accent-strong), var(--ed-ink) calc(var(--ed-role-mix) * 100%));
-    font-style: italic;
-    letter-spacing: -0.045em;
-    /* Clip the swapping words to the line, with room for ascenders/descenders. */
-    clip-path: inset(-0.18em -0.15em -0.28em -0.1em);
-  }
-  .ed-hero__role-word {
-    position: absolute;
-    inset: 0 auto auto 0;
-    white-space: nowrap;
-    will-change: transform, opacity;
-  }
-  .ed-hero__role-word:not(:first-child) { opacity: 0; }
-  @media (min-width: 1024px) {
-    .ed-hero--product .ed-hero__inner {
-      grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 2fr);
-      grid-template-areas: "mark title" "mark cta";
-      column-gap: clamp(2rem, 6vw, 6rem);
-      align-items: center;
-    }
-    .ed-hero__mark-home { align-self: center; width: 100%; max-width: 24rem; }
-  }
-  @media (max-width: 699px) {
-    .ed-hero--product .ed-hero__display { font-size: var(--ed-fz-5xl); }
-  }
-
-  /* experience.html hero: the M starts on the right before career.js
-     reuses it as the scroll pointer. */
-  .ed-hero--experience .ed-hero__inner {
-    grid-template-rows: auto 1fr auto;
-    grid-template-columns: minmax(0, 1.5fr) minmax(10rem, 0.5fr);
-    grid-template-areas:
-      "meta meta"
-      "copy mark"
-      "cta cta";
-    align-items: center;
-  }
-  .ed-hero--experience .ed-hero__meta { grid-area: meta; }
-  .ed-experience__copy { grid-area: copy; }
-  .ed-hero--experience .ed-hero__display { font-size: clamp(3rem, 6.8vw, 6rem); }
-  .ed-experience__mark-home {
-    grid-area: mark;
-    justify-self: end;
-    width: clamp(10rem, 20vw, 18rem);
-    aspect-ratio: 100 / 58;
-  }
-  .ed-hero--experience .ed-hero__cta-row { grid-area: cta; }
-  @media (max-width: 699px) {
-    .ed-hero--experience .ed-hero__inner {
-      grid-template-rows: auto auto 1fr auto;
-      grid-template-columns: 1fr;
-      grid-template-areas: "meta" "mark" "copy" "cta";
-      gap: var(--ed-s-5);
-    }
-    .ed-experience__mark-home {
-      width: clamp(8rem, 42vw, 11rem);
-    }
-    .ed-hero--experience .ed-hero__display { font-size: var(--ed-fz-5xl); }
-  }
+/* ── editorial-utilities ── */
+  /* Hidden on screen, still read by screen readers (the home loop heading). */
   .ed-sr-only {
     position: absolute;
     width: 1px;
@@ -808,516 +596,10 @@
     border: 0;
   }
 
-  /* ─── The loop: a ring of six stations, rotated by scroll ─── */
-  .ed-loop {
-    min-height: 100svh;
-    padding-block: var(--ed-s-7);
-    border-top: 1px solid var(--ed-hairline);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .ed-loop__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    width: 100%;
-  }
-  .ed-loop__head { max-width: 44rem; }
-  .ed-loop__title {
-    font-size: var(--ed-fz-4xl);
-    margin: 0;
-    text-wrap: balance;
-  }
-  .ed-loop__lede {
-    margin: var(--ed-s-3) 0 0;
-    color: var(--ed-ink-soft);
-    font-size: var(--ed-fz-lg);
-  }
-  .ed-loop__stage {
-    /* Six stations on one flat ellipse; loop.js walks the highlight. */
-    --ed-loop-rx: clamp(6.5rem, 30vw, 27rem);
-    --ed-loop-ry: clamp(9.5rem, 12vw, 10rem);
-    --ed-loop-w: clamp(8.5rem, 24vw, 14rem);
-    position: relative;
-    height: calc(var(--ed-loop-ry) * 2 + 8rem);
-    margin-top: var(--ed-s-6);
-  }
-  .ed-loop__track {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: calc(var(--ed-loop-rx) * 2);
-    height: calc(var(--ed-loop-ry) * 2);
-    border: 1px solid var(--ed-hairline-strong);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 0;
-    pointer-events: none;
-  }
-  .ed-loop__stage::before {
-    content: "";
-    position: absolute;
-    inset: -10% 8%;
-    border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(196, 90, 56, 0.2), rgba(141, 117, 168, 0.1) 34%, transparent 68%);
-    pointer-events: none;
-  }
-  .ed-loop__galaxy {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  .ed-loop__orbits {
-    fill: none;
-    stroke: var(--ed-accent);
-    stroke-width: 0.8;
-    opacity: 0.24;
-  }
-  .ed-loop__orbits ellipse:nth-child(2) { stroke-dasharray: 2 10; }
-  .ed-loop__orbits ellipse:last-child { opacity: 0.55; }
-  .ed-loop__stars { fill: var(--ed-accent-strong); opacity: 0.5; }
-  .ed-loop__stars path { fill: none; stroke: var(--ed-accent-strong); stroke-width: 1.3; }
-  .ed-loop__spiral { fill: none; stroke: var(--ed-accent); stroke-width: 1; opacity: 0.3; }
-  .ed-loop__spiral circle { fill: var(--ed-accent); stroke: none; }
-  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-    .ed-loop.is-in-view .ed-loop__stars circle { animation: ed-star-twinkle 4s ease-in-out infinite alternate; }
-    .ed-loop.is-in-view .ed-loop__stars circle:nth-child(3n) { animation-delay: -2s; }
-    .ed-loop.is-in-view .ed-loop__stars circle:nth-child(3n + 1) { animation-delay: -1s; }
-  }
-  @keyframes ed-star-twinkle { from { opacity: 0.3; } to { opacity: 1; } }
-  .ed-loop__ring {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .ed-loop__card {
-    --ed-loop-a: -90deg;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: var(--ed-loop-w);
-    margin: -3.25rem 0 0 calc(var(--ed-loop-w) / -2);
-    padding: var(--ed-s-3) var(--ed-s-4);
-    min-height: 6.5rem;
-    display: grid;
-    gap: var(--ed-s-2);
-    place-content: center;
-    text-align: center;
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-lg);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--ed-ink-soft);
-    background: var(--ed-bg-soft);
-    border: 1px solid var(--ed-hairline);
-    border-radius: 0.75rem;
-    box-shadow: 0 8px 28px rgba(var(--ed-ink-rgb), 0.06);
-    transform: translate(calc(cos(var(--ed-loop-a)) * var(--ed-loop-rx)), calc(sin(var(--ed-loop-a)) * var(--ed-loop-ry))) scale(0.92);
-    opacity: 0.7;
-    transition: transform var(--ed-d-base) var(--ed-ease), opacity var(--ed-d-base) var(--ed-ease-soft),
-                color var(--ed-d-base) var(--ed-ease-soft), border-color var(--ed-d-base) var(--ed-ease-soft),
-                box-shadow var(--ed-d-base) var(--ed-ease-soft), background var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-loop__card:nth-child(2) { --ed-loop-a: -30deg; }
-  .ed-loop__card:nth-child(3) { --ed-loop-a: 30deg; }
-  .ed-loop__card:nth-child(4) { --ed-loop-a: 90deg; }
-  .ed-loop__card:nth-child(5) { --ed-loop-a: 150deg; }
-  .ed-loop__card:nth-child(6) { --ed-loop-a: 210deg; }
-  @media (max-width: 699px) {
-    .ed-loop__stage { --ed-loop-rx: 5.5rem; --ed-loop-ry: 12rem; }
-    .ed-loop__stars circle { r: 4; }
-    .ed-loop__card { font-size: var(--ed-fz-base); padding: var(--ed-s-2) var(--ed-s-3); min-height: 5.5rem; margin-top: -2.75rem; }
-  }
-  .ed-loop__kicker {
-    display: block;
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-xs);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--ed-ink-mute);
-  }
-  .ed-loop__card.is-front .ed-loop__kicker { color: var(--ed-accent-strong); }
-  .ed-loop__card.is-front {
-    color: var(--ed-ink);
-    background: color-mix(in oklab, var(--ed-bg-soft), var(--ed-accent) 8%);
-    border-color: var(--ed-accent);
-    box-shadow: var(--ed-shadow);
-    opacity: 1;
-    z-index: 1;
-    transform: translate(calc(cos(var(--ed-loop-a)) * var(--ed-loop-rx)), calc(sin(var(--ed-loop-a)) * var(--ed-loop-ry))) scale(1.06);
-  }
-
-/* ── editorial-content-pages ── */
-  /* Hero modifier for content pages (portfolio, certificates) — calmer, not full viewport. */
-  .ed-hero--page {
-    min-height: 0;
-    padding-block: calc(var(--ed-s-7) + var(--ed-s-3)) var(--ed-s-7);
-  }
-  .ed-hero--page .ed-hero__inner {
-    grid-template-rows: auto auto auto;
-    gap: var(--ed-s-5);
-  }
-
-  /* Section primitive — used to host card grids on content pages. */
-  .ed-section {
-    padding-block: var(--ed-s-7) var(--ed-s-8);
-    border-top: 1px solid var(--ed-hairline);
-  }
-  .ed-section:first-of-type { border-top: 0; }
-  .ed-section__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    display: flex;
-    flex-direction: column;
-    gap: var(--ed-s-6);
-  }
-  .ed-section__head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ed-s-3);
-    max-width: 48rem;
-  }
-  .ed-section__eyebrow {
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-xs);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ed-ink-mute);
-    font-weight: 500;
-  }
-  .ed-section__title {
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-3xl);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    color: var(--ed-ink);
-    margin: 0;
-  }
-  .ed-section__title em {
-    font-style: italic;
-    color: var(--ed-accent-strong);
-  }
-
-  /* Card grid — auto-fit with a comfortable minimum so it reflows cleanly. */
-  .ed-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    gap: var(--ed-s-5);
-  }
-  @media (min-width: 1024px) {
-    .ed-cards {
-      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    }
-  }
-
-  /* Card itself — hairline on dark surface, no fill on tags, calm hover lift. */
-  .ed-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ed-s-4);
-    padding: var(--ed-s-4);
-    background: var(--ed-bg-soft);
-    border: 1px solid var(--ed-hairline);
-    border-radius: 1rem;
-    color: inherit;
-    text-decoration: none;
-    text-align: left;
-    cursor: pointer;
-    /* Keep button-resets minimal so <button class="ed-card"> looks identical to <a>. */
-    font: inherit;
-    width: 100%;
-    transition: transform var(--ed-d-base) var(--ed-ease-soft),
-                border-color var(--ed-d-base) var(--ed-ease-soft),
-                background-color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--ed-hairline-strong);
-    background: var(--ed-surface);
-  }
-  .ed-card:focus-visible {
-    outline: 1px solid var(--ed-accent);
-    outline-offset: 2px;
-  }
-
-  .ed-card__media {
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    border-radius: 0.75rem;
-    background: var(--ed-surface);
-    border: 1px solid var(--ed-hairline);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .ed-card__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--ed-d-slow) var(--ed-ease);
-  }
-  .ed-card:hover .ed-card__media img {
-    transform: scale(1.04);
-  }
-  .ed-card__media .material-symbols-outlined {
-    font-size: 3.25rem;
-    color: var(--ed-ink-mute);
-    transition: color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card:hover .ed-card__media .material-symbols-outlined {
-    color: var(--ed-accent-strong);
-  }
-
-  .ed-card__body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ed-s-2);
-  }
-  .ed-card__kicker {
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-xs);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ed-ink-mute);
-    margin: 0;
-  }
-  .ed-card__title {
-    font-family: var(--ed-display);
-    font-size: var(--ed-fz-xl);
-    line-height: 1.18;
-    letter-spacing: -0.01em;
-    color: var(--ed-ink);
-    margin: 0;
-  }
-  .ed-card__lede {
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-sm);
-    color: var(--ed-ink-soft);
-    line-height: 1.55;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .ed-card__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--ed-s-2);
-    margin-top: auto;
-  }
-  .ed-tag {
-    display: inline-block;
-    padding: 0.25rem 0.625rem;
-    border: 1px solid var(--ed-hairline);
-    border-radius: 999px;
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ed-ink-mute);
-    background: transparent;
-    transition: color var(--ed-d-base) var(--ed-ease-soft),
-                border-color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card:hover .ed-tag {
-    color: var(--ed-ink-soft);
-    border-color: var(--ed-hairline-strong);
-  }
-
-  /* Certificate-card variant — credentials get a circular badge icon, no media image. */
-  .ed-card--cert .ed-card__media {
-    aspect-ratio: auto;
-    background: transparent;
-    border: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .ed-card__icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 999px;
-    border: 1px solid var(--ed-hairline-strong);
-    display: grid;
-    place-items: center;
-    color: var(--ed-accent-strong);
-    transition: border-color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card--cert:hover .ed-card__icon {
-    border-color: var(--ed-accent);
-  }
-  .ed-card__icon .material-symbols-outlined {
-    font-size: 1.5rem;
-  }
-  .ed-card__external {
-    color: var(--ed-ink-mute);
-    transition: color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-card--cert:hover .ed-card__external {
-    color: var(--ed-ink-soft);
-  }
-  .ed-card__external .material-symbols-outlined {
-    font-size: 1.25rem;
-  }
-
-  /* Personal-project icon-only media — bigger glyph, no border. */
-  .ed-card__media--icon {
-    background: var(--ed-surface);
-  }
-
-  /* Reduced-motion: cancel transitions on cards too. */
-  @media (prefers-reduced-motion: reduce) {
-    .ed-card,
-    .ed-card__media img,
-    .ed-card__media .material-symbols-outlined,
-    .ed-tag,
-    .ed-card__icon,
-    .ed-card__external {
-      transition: none !important;
-    }
-    .ed-card:hover {
-      transform: none !important;
-    }
-    .ed-card:hover .ed-card__media img {
-      transform: none !important;
-    }
-  }
-
-/* ── editorial-career-spine ── */
-  /* experience.html: career.js builds the timeline spine inside the
-     .ed-career wrap (markup only carries the wrap, so no JS = no spine).
-     Shown only where the container leaves a real left gutter. */
-  .ed-career {
-    position: relative;
-  }
-  [data-star-stop] {
-    position: relative;
-    border-radius: 0.45rem;
-    transition: background-color 240ms var(--ed-ease),
-                box-shadow 240ms var(--ed-ease);
-  }
-  [data-star-stop].is-star-active {
-    background: color-mix(in oklab, var(--ed-accent), transparent 91%);
-    box-shadow: 0 0 0 8px color-mix(in oklab, var(--ed-accent), transparent 90%);
-  }
+/* ── editorial-skills (Experience) ── */
+  /* Below 720 px each Skills description keeps to the second grid column, beside its number. */
   @media (max-width: 719px) {
-    .ed-career > section > div,
-    #role-skills > div { padding-left: 3.25rem; }
     #role-skills .ed-stage__desc { grid-column: 2; }
-  }
-  .ed-spine {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: max(1.25rem, calc(50% - 40rem - 3rem));
-    width: 1px;
-    display: none;
-    pointer-events: none;
-  }
-  @media (min-width: 1280px) {
-    .ed-spine { display: block; }
-  }
-  .ed-spine__track,
-  .ed-spine__progress {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 1px;
-  }
-  .ed-spine__track {
-    background: var(--ed-hairline);
-  }
-  .ed-spine__progress {
-    background: var(--ed-accent);
-    opacity: 0.8;
-    transform: scaleY(0);
-    transform-origin: top center;
-    will-change: transform;
-  }
-  .ed-spine__node {
-    position: absolute;
-    left: 50%;
-    width: 9px;
-    height: 9px;
-    border-radius: 999px;
-    background: var(--ed-bg);
-    border: 1px solid var(--ed-hairline-strong);
-    transform: translate(-50%, -50%);
-    transition: background-color 400ms var(--ed-ease),
-                border-color 400ms var(--ed-ease);
-  }
-  .ed-spine__node.is-lit {
-    background: var(--ed-accent);
-    border-color: var(--ed-accent);
-  }
-  .ed-spine__ping {
-    position: absolute;
-    inset: -1px;
-    border-radius: 999px;
-    border: 1px solid var(--ed-accent);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Word spans for the split-and-restore headline intros (career.js,
-     folio.js, case.js). No overflow masks — the italics overhang. */
-  .ed-word {
-    display: inline-block;
-  }
-
-/* ── editorial-folio-cards ── */
-  /* portfolio.html hover polish: accent hairline sweeps the card's top
-     edge and the title underline draws in. Pure CSS, hover + keyboard. */
-  .ed-card {
-    position: relative;
-  }
-  .ed-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: var(--ed-s-4);
-    right: var(--ed-s-4);
-    height: 1px;
-    background: var(--ed-accent);
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 480ms var(--ed-ease);
-    pointer-events: none;
-  }
-  .ed-card:hover::after,
-  .ed-card:focus-visible::after {
-    transform: scaleX(1);
-  }
-  .ed-card__title {
-    width: fit-content;
-    background-image: linear-gradient(var(--ed-accent), var(--ed-accent));
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    background-size: 0 1px;
-    transition: background-size 420ms var(--ed-ease);
-  }
-  .ed-card:hover .ed-card__title,
-  .ed-card:focus-visible .ed-card__title {
-    background-size: 100% 1px;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ed-card::after,
-    .ed-card__title {
-      transition: none !important;
-    }
   }
 
 /* ── editorial-ai-modal ── */
@@ -1466,9 +748,6 @@
   /* experience.html chapter dividers (was border-white/5) */
   .ed-divider { border-top: 1px solid var(--ed-hairline); }
 
-  /* experience.html tree-ring SVGs — authored with white paint */
-  .ed-rings [stroke="white"] { stroke: var(--ed-ink-soft); }
-  .ed-rings [fill="white"] { fill: var(--ed-ink-soft); }
 
   /* index.html testimonial modal (still Tailwind primary/surface utilities) */
   #testimonial-modal [data-testimonial-overlay] > div {
@@ -1600,7 +879,7 @@
   .ed-page-head h1 { margin: 0; font-family: var(--ed-display); font-size: clamp(2.6rem, 6vw, 4.4rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--ed-ink); }
   .ed-page-head p { margin: 12px 0 0; max-width: 48ch; color: var(--ed-ink-mute); }
   .ed-page-head__link { color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
-  #role-skills .experience-role-title { font-family: var(--ed-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; color: var(--ed-ink); }   /* The old inline style block used to size this heading. */
+  #role-skills .experience-role-title { font-family: var(--ed-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; color: var(--ed-ink); }   /* the Skills and Education heading */
 
 /* ── editorial-mark ── */
   /* a one-colour logo: the PNG or SVG alpha is the mask, currentColor the ink. The markup sets
