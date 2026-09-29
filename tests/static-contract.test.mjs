@@ -229,6 +229,8 @@ test('the drag hint shows only while the ring answers a drag', () => {
   const add = js.indexOf("classList.add('is-draggable')");
   assert.ok(lastStaticReturn > 0 && handlers > lastStaticReturn, 'the pointer handlers sit in the live path');
   assert.ok(add > handlers, 'the class comes after the pointer handlers');
+  // loop-hero.js finds the section by its class, and the hint rule needs the hint inside it
+  assert.match(readText('index.html'), /<section class="ed-loop-hero" id="loop"[^>]*>[\s\S]*<p class="ed-loop-hint">[^<]*<\/p>\s*<\/section>/, 'the section that gets is-draggable holds the hint');
 });
 
 test('a lost WebGL context hides the dead canvas and the drag hint', () => {
