@@ -1713,3 +1713,20 @@
   }
   /* the ring ignores touch drags, so the drag hint shows only with a hover pointer */
   @media (hover: none) { .ed-loop-hint { display: none; } }
+
+/* ── editorial-results (home) ── */
+  .ed-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 56px; border-top: 1px solid var(--ed-hairline); }
+  .ed-result { position: relative; display: grid; align-content: start; gap: 6px; padding: 28px 20px 8px 0; border: 0; background: none; color: var(--ed-ink); font: inherit; text-align: left; cursor: pointer; }
+  .ed-result + .ed-result { padding-left: 20px; border-left: 1px solid var(--ed-hairline); }
+  .ed-result b { font-family: var(--ed-display); font-size: clamp(2.4rem, 4.6vw, 3.8rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+  .ed-result span { font-size: 0.98rem; }
+  .ed-result small { font-family: var(--ed-mono); font-size: 0.78rem; color: var(--ed-ink-mute); }
+  .ed-result:hover b { color: var(--ed-accent); }
+  .ed-result .ed-chip { position: static; justify-self: start; margin-top: 8px; }
+  @media (max-width: 760px) { .ed-results { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ed-result:nth-child(3) { padding-left: 0; border-left: 0; } }
+
+/* ── editorial-band (home: How I work) ── */
+  .ed-band { margin: clamp(3rem, 8vw, 6rem) 0; padding: clamp(24px, 4vw, 40px); border-radius: 28px; background: var(--ed-panel); }
+  .ed-band__label { margin: 0 0 12px; font-family: var(--ed-mono); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ed-accent-strong); }
+  .ed-band__text { margin: 0; max-width: 60ch; font-size: clamp(1.1rem, 1.8vw, 1.4rem); line-height: 1.5; color: var(--ed-ink); }
+  .ed-band__link { display: inline-block; margin-top: 18px; color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }

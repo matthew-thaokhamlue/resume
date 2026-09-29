@@ -110,9 +110,7 @@
     ::-webkit-scrollbar-thumb { background: var(--ed-hairline-strong); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--ed-accent); }
 
-    /* Fix dialog display (kept from prior version for retained modals) */
-    dialog:not([open]) { display: none; }
-    dialog[open] { display: flex; }
+    #ai-match-modal[open], #testimonial-modal[open] { display: flex; }
   </style>
 <script src="assets/js/theme.js?v=20260615"></script>
 </head>
@@ -197,6 +195,51 @@
       </div>
       <p class="ed-loop-hint">Grab a station and pull. The ring springs back.</p>
     </section>
+<div class="ed-results">
+<button class="ed-result" type="button" data-action="open-reveal" data-reveal="receipt-sema" aria-haspopup="dialog"><b>~39%</b><span>Inefficient AI spend cut</span><small>Sema</small><span class="ed-chip" aria-hidden="true">Info</span></button>
+<button class="ed-result" type="button" data-action="open-reveal" data-reveal="receipt-labforward" aria-haspopup="dialog"><b>$500K</b><span>Contract renewal</span><small>Labforward</small><span class="ed-chip" aria-hidden="true">Info</span></button>
+<button class="ed-result" type="button" data-action="open-reveal" data-reveal="receipt-thryve" aria-haspopup="dialog"><b>1M+</b><span>Users on the APIs and SDKs</span><small>Thryve</small><span class="ed-chip" aria-hidden="true">Info</span></button>
+<button class="ed-result" type="button" data-action="open-reveal" data-reveal="receipt-labtwin" aria-haspopup="dialog"><b>4 → 12</b><span>Production releases a year</span><small>LabTwin</small><span class="ed-chip" aria-hidden="true">Info</span></button>
+</div>
+<div class="ed-reveals">
+<dialog class="ed-reveal" id="receipt-sema" aria-labelledby="receipt-sema-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">Sema Technologies Inc. · Senior AI Product Manager</p><h2 class="ed-reveal__title" id="receipt-sema-title">~39% · Inefficient AI spend cut</h2><p class="ed-reveal__meta">Mar 2026 – Present · Dresden &amp; Berlin, Germany</p></header>
+    <div class="ed-reveal__body"><ul class="ed-reveal__list"><li>Cut inefficient daily AI spend <b>~39% (~$3,250/month)</b> with no loss of customer coverage, by auto-scaling driven by per-user tracking events; reported to the CEO.</li></ul></div>
+    <aside class="ed-reveal__side" aria-label="Where it comes from"><h3>Where it comes from</h3><ul><li>Sema Technologies Inc.</li><li>Senior AI Product Manager</li><li>Mar 2026 – Present</li></ul></aside>
+  </div>
+</dialog>
+<dialog class="ed-reveal" id="receipt-labforward" aria-labelledby="receipt-labforward-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">Labforward GmbH · Senior Product Manager</p><h2 class="ed-reveal__title" id="receipt-labforward-title">$500K · Contract renewal</h2><p class="ed-reveal__meta">Nov 2024 – Nov 2025 · Berlin, Germany</p></header>
+    <div class="ed-reveal__body"><ul class="ed-reveal__list"><li>Contributed to a <b>$500K</b> enterprise contract renewal by rebuilding the collaboration between Product, Engineering and the customer on deliverables, timelines and SLAs for the at-risk account.</li></ul></div>
+    <aside class="ed-reveal__side" aria-label="Where it comes from"><h3>Where it comes from</h3><ul><li>Labforward GmbH</li><li>Senior Product Manager</li><li>Nov 2024 – Nov 2025</li></ul></aside>
+  </div>
+</dialog>
+<dialog class="ed-reveal" id="receipt-thryve" aria-labelledby="receipt-thryve-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">Thryve GmbH · Product Owner</p><h2 class="ed-reveal__title" id="receipt-thryve-title">1M+ · Users on the APIs and SDKs</h2><p class="ed-reveal__meta">Feb 2019 – Dec 2022 · Berlin, Germany</p></header>
+    <div class="ed-reveal__body"><ul class="ed-reveal__list"><li>Scaled APIs and SDKs to <b>1M+ users across 100+ B2B partners</b> in digital health.</li></ul></div>
+    <aside class="ed-reveal__side" aria-label="Where it comes from"><h3>Where it comes from</h3><ul><li>Thryve GmbH</li><li>Product Owner</li><li>Feb 2019 – Dec 2022</li></ul></aside>
+  </div>
+</dialog>
+<dialog class="ed-reveal" id="receipt-labtwin" aria-labelledby="receipt-labtwin-title">
+  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><p class="ed-reveal__kicker">LabTwin GmbH · Technical Product Manager</p><h2 class="ed-reveal__title" id="receipt-labtwin-title">4 → 12 · Production releases a year</h2><p class="ed-reveal__meta">Jan 2023 – Nov 2024 · Berlin, Germany</p></header>
+    <div class="ed-reveal__body"><ul class="ed-reveal__list"><li>Tripled deployment frequency <b>from 4 to 12 production releases a year</b> through release coordination.</li></ul></div>
+    <aside class="ed-reveal__side" aria-label="Where it comes from"><h3>Where it comes from</h3><ul><li>LabTwin GmbH</li><li>Technical Product Manager</li><li>Jan 2023 – Nov 2024</li></ul></aside>
+  </div>
+</dialog>
+</div>
+<section class="ed-band" aria-labelledby="band-title">
+  <p class="ed-band__label" id="band-title">AI Workflow Architect</p>
+  <p class="ed-band__text">I work in a forward-deployed model with client teams, and I run my own PM work through AI workflows I built: release notes, tickets, customer-insight analysis and digests, reviewed by a person.</p>
+  <a class="ed-band__link" href="experience.html#role-sema">How I work at Sema →</a>
+</section>
     </div>
 
     <!-- ────────────────  INLINE QUOTES  ──────────────── -->
@@ -232,7 +275,7 @@
           <a class="ed-link" href="https://www.linkedin.com/in/matthewthaokhamlue/details/recommendations/" target="_blank"
             rel="noopener noreferrer"
             data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"linkedin","link_type":"recommendations_score","location":"inline_quotes_section"}'>
-            <span>Seven more recommendations on LinkedIn</span>
+            <span>More recommendations on LinkedIn</span>
             <span class="ed-link__arrow" aria-hidden="true">→</span>
           </a>
         </div>
@@ -242,7 +285,7 @@
     <!-- ────────────────  FINAL CTA  ──────────────── -->
     <section class="ed-cta" id="contact">
       <div class="ed-cta__inner">
-        <h2 class="ed-cta__line reveal">Have ideas worth <em>building</em>?<br />Let&rsquo;s talk about it.</h2>
+        <h2 class="ed-cta__line">Contact</h2>
         <div class="ed-cta__row reveal">
           <a class="ed-btn" href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
             data-ga-event="external_link_clicked" data-ga-params='{"destination_platform":"linkedin","link_type":"cta_button","location":"final_cta"}'>

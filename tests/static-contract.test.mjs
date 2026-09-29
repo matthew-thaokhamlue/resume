@@ -268,6 +268,18 @@ test('a lost WebGL context hides the dead canvas and the drag hint', () => {
   assert.match(js, /'webglcontextlost'[\s\S]{0,600}api\.show = \(\) => \{\};/, 'a lost context is final: show() does nothing afterwards');
 });
 
+test('index.html shows four results with receipts and the How I work band', () => {
+  const html = readText('index.html');
+  const bigs = [...html.matchAll(/<button class="ed-result" type="button" data-action="open-reveal" data-reveal="receipt-[a-z]+" aria-haspopup="dialog"><b>([^<]+)<\/b>/g)].map((m) => m[1]);
+  assert.deepEqual(bigs, ['~39%', '$500K', '1M+', '4 → 12']);
+  assert.match(html, /<p class="ed-band__label" id="band-title">AI Workflow Architect<\/p>/);
+  assert.match(html, /<a class="ed-band__link" href="experience\.html#role-sema">How I work at Sema →<\/a>/);
+  assert.doesNotMatch(html, /Seven more recommendations/, 'the testimonials link carries no count');
+  assert.match(html, /<h2 class="ed-cta__line">Contact<\/h2>/, 'the contact heading is plain');
+  assert.doesNotMatch(html, /Have ideas worth/, 'the old contact slogan leaves the page');
+  assert.doesNotMatch(html, /dialog:not\(\[open\]\)/, 'an inline dialog:not([open]) rule hides the receipts without scripts');
+});
+
 test('no page loads GSAP or the old motion scripts', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {
