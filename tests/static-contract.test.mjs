@@ -280,6 +280,25 @@ test('index.html shows four results with receipts and the How I work band', () =
   assert.doesNotMatch(html, /dialog:not\(\[open\]\)/, 'an inline dialog:not([open]) rule hides the receipts without scripts');
 });
 
+test('tiles and panels take their names from the visible text (WCAG 2.5.3)', () => {
+  for (const name of ['portfolio.html', 'certificates.html']) {
+    const tiles = [...readText(name).matchAll(/<button class="ed-tile[^"]*"[^>]*>/g)].map((m) => m[0]);
+    assert.ok(tiles.length >= 8, `${name} has its tiles`);
+    for (const tag of tiles) assert.doesNotMatch(tag, /aria-label=/, `${name}: a tile label hides the visible caption`);
+  }
+  const certs = readText('certificates.html');
+  assert.doesNotMatch(certs, /<\/span><span class="ed-ct__(big|name)"/, 'the credential spans need a space, or the computed name runs the words together');
+  const panels = [...readText('experience.html').matchAll(/<button class="ed-panel"[^>]*aria-label="([^"]*)"[^>]*>[\s\S]*?<span class="ed-panel__dates">([^<]+)<\/span>/g)];
+  assert.equal(panels.length, 5, 'five role panels');
+  for (const [, label, dates] of panels) assert.ok(label.endsWith(`, ${dates}`), `the panel label "${label}" must end with its visible dates`);
+
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /\.ed-tile:focus-visible \{ outline: 2px solid var\(--ed-accent\); outline-offset: -4px; \}/, 'the focus ring sits inside the tile');
+  assert.match(css, /\.ed-chip \{[^}]*box-shadow: 0 0 0 1px var\(--ed-bg\);/, 'the chip ring keeps the chip visible on a tile of its own colour');
+  assert.match(css, /:root\[data-theme="dark"\] \.ed-ct--ink \{ box-shadow: inset 0 0 0 1px var\(--ed-hairline-strong\); \}/, 'dark ink tiles keep an edge');
+  assert.doesNotMatch(readText('portfolio.html'), /<img [^>]*loading="lazy"[^>]*><span class="ed-tile__logo">/, 'every tile starts in the first viewport at 1440 x 900');
+});
+
 test('the redesigned pages wrap content in .ed-shell, the top bar width', () => {
   for (const name of ['index.html', 'experience.html', 'portfolio.html', 'certificates.html']) {
     const html = readText(name);

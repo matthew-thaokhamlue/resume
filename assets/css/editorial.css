@@ -851,7 +851,7 @@
   dialog.ed-reveal[open] .ed-reveal__inner { animation: ed-reveal-rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
   @keyframes ed-reveal-rise { from { opacity: 0; transform: translateY(18px); } }
   /* The "Info" chip shows only when there is no star (touch, reduced motion). */
-  .ed-chip { position: absolute; right: 22px; bottom: 20px; display: none; padding: 6px 14px; border-radius: 999px; background: var(--ed-ink); color: var(--ed-bg); font-size: 0.85rem; font-weight: 500; }
+  .ed-chip { position: absolute; right: 22px; bottom: 20px; display: none; padding: 6px 14px; border-radius: 999px; background: var(--ed-ink); color: var(--ed-bg); font-size: 0.85rem; font-weight: 500; box-shadow: 0 0 0 1px var(--ed-bg); }   /* the ring keeps the chip visible on a tile of its own colour */
   .no-star .ed-chip { display: block; }
   @media (prefers-reduced-motion: reduce) { dialog.ed-reveal[open] .ed-reveal__inner { animation: none; } }
   @media (max-width: 760px) { .ed-reveal__inner { grid-template-columns: 1fr; padding-inline: 16px; } }
@@ -911,6 +911,7 @@
   .ed-tile__cap { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; font-family: var(--ed-mono); font-size: 0.72rem; letter-spacing: 0.04em; color: #ffffff; background: linear-gradient(transparent, rgba(0, 0, 0, 0.55)); }
   .ed-tile__logo { position: absolute; left: 16px; top: 16px; color: #ffffff; }
   .ed-tile .ed-chip { right: 12px; bottom: 36px; }
+  .ed-tile:focus-visible { outline: 2px solid var(--ed-accent); outline-offset: -4px; }   /* inside the tile, so a neighbour cannot cover it */
   .ed-tile--light .ed-tile__logo { color: #111111; }
   .ed-tile--light .ed-tile__cap { color: #111111; background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.92)); }
   @media (prefers-reduced-motion: reduce) { .ed-tile img { transition: none; } }
@@ -925,6 +926,7 @@
   .ed-ct__big { font-weight: 600; letter-spacing: -0.04em; line-height: 0.9; }
   .ed-ct__name { font-size: 0.95rem; font-weight: 500; line-height: 1.2; max-width: 22ch; }
   .ed-ct--ink { background: #111111; color: #f4f4f2; }
+  :root[data-theme="dark"] .ed-ct--ink { box-shadow: inset 0 0 0 1px var(--ed-hairline-strong); }   /* the dark field is almost the ink colour */
   .ed-ct--paper { background: #ffffff; color: #111111; }
   .ed-ct--grey { background: #e4e4e1; color: #111111; }
   .ed-ct--clay { background: #a8431f; color: #ffffff; }   /* fixed deep clay: white text passes AA (6.0:1) in both themes */
