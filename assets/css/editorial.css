@@ -1692,14 +1692,21 @@
   /* loop-hero.js adds is-draggable once the ring answers a drag; until then the hint keeps its line and stays invisible */
   .ed-loop-hero.is-draggable .ed-loop-hint { visibility: visible; }
   @media (max-width: 760px) { .ed-loop-card { width: 124px; padding: 10px 8px; } .ed-loop-card span { font-size: 0.86rem; } }
-  /* phones: the stage is narrower than 640 px, so loop-hero.js uses the tall ellipse; the side cards sit above and below the M */
+  /* phones: a taller stage and a smaller mark, so the tall ring has room; the side cards sit above and below the M */
   @media (max-width: 671px) {
     .ed-loop-stage { height: 560px; }
     .ed-loop-mark { width: 120px; }
-    .ed-loop-orbit { left: 16%; top: 10%; width: 68%; height: 80%; }
-    .ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }
   }
-  /* The same two rules by stage width, which is what layout() reads: under 640 px. 639.98 px rounds to the last layout unit (1/64 px) below 640. */
+  /* The viewport stands in for the stage width only where container queries are missing. Where they exist, the query below
+     decides the ring alone: it can add the tall ring but cannot remove one that a viewport rule set, and a stage of 640 px
+     or more at a small viewport would keep the wrong ring. */
+  @supports not (container-type: inline-size) {
+    @media (max-width: 671px) {
+      .ed-loop-orbit { left: 16%; top: 10%; width: 68%; height: 80%; }
+      .ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }
+    }
+  }
+  /* The same two rules by stage width, which is what layout() reads: under 640 px. Blink and WebKit round 639.98 px to the last layout unit (1/64 px) below 640. */
   @container (max-width: 639.98px) {
     .ed-loop-orbit { left: 16%; top: 10%; width: 68%; height: 80%; }
     .ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }

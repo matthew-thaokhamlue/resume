@@ -198,21 +198,31 @@ test('the loop ring is the default CSS layout, and layout() writes what the card
   assert.match(js, /function layout\(\) \{[\s\S]*?c\.style\.left = '0px'; c\.style\.top = '0px';[\s\S]*?placeCards\(\);/, 'layout() gives every card left 0 and top 0 before it places the cards');
 });
 
-test('the tall ring follows the stage width through a container query, and the viewport rule stays as the fallback', () => {
+test('the tall ring follows the stage width through a container query, and the viewport rule is the fallback only where container queries are missing', () => {
   const css = readText('assets/css/editorial.css');
   const js = readText('assets/js/loop-hero.js');
-  // layout() chooses the tall ring for a stage narrower than 640 px; 639.98 px is the query's largest width below that
+  const orbitRule = '.ed-loop-orbit { left: 16%; top: 10%; width: 68%; height: 80%; }';
+  const cardRule = '.ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }';
+  // layout() chooses the tall ring for a stage narrower than 640 px; 639.98 px rounds to the last layout unit below that
   assert.match(js, /const narrow = W < 640;/, 'layout() switches at a stage width of 640 px');
   assert.match(css, /\n {2}\.ed-loop-stage \{[^}]*container-type: inline-size;/, 'the stage is the query container');
   const query = css.indexOf('@container (max-width: 639.98px) {');
   assert.ok(query > 0, 'the query limit is 639.98 px');
   assert.ok(query > css.indexOf('.ed-loop-card { --a:'), 'the query follows the default ring, so it wins at equal specificity');
   assert.match(css, /@container \(max-width: 639\.98px\) \{\s*\.ed-loop-orbit \{ left: 16%; top: 10%; width: 68%; height: 80%; \}\s*\.ed-loop-card \{ left: calc\(50% \+ 34% \* cos\(var\(--a\)\)\); top: calc\(50% \+ 40% \* sin\(var\(--a\)\)\); \}\s*\}/, 'the query holds the two phone rules');
-  // the viewport rule keeps the same two rules for a browser without container queries
-  for (const rule of ['.ed-loop-orbit { left: 16%; top: 10%; width: 68%; height: 80%; }', '.ed-loop-card { left: calc(50% + 34% * cos(var(--a))); top: calc(50% + 40% * sin(var(--a))); }']) {
-    assert.equal(css.split(rule).length - 1, 2, `one copy in the viewport rule and one in the query: ${rule}`);
+  // The query can add the tall ring but cannot remove one that the viewport rule set. A viewport rule outside @supports would keep
+  // the tall ring in a stage of 640 px or more whenever the scrollbar and both gutters total 31 px or less. So the viewport rule
+  // sets the ring only inside @supports not (container-type: inline-size), and the query alone decides where it is supported.
+  const fallback = css.match(/\n {2}@supports not \(container-type: inline-size\) \{\s*@media \(max-width: 671px\) \{\s*(\.ed-loop-orbit \{[^}]*\})\s*(\.ed-loop-card \{[^}]*\})\s*\}\s*\}/);
+  assert.ok(fallback, 'the two ring rules of the viewport rule sit inside @supports not (container-type: inline-size)');
+  assert.deepEqual([fallback[1], fallback[2]], [orbitRule, cardRule], 'and they are the two phone rules');
+  for (const rule of [orbitRule, cardRule]) {
+    assert.equal(css.split(rule).length - 1, 2, `one copy in the fallback and one in the query: ${rule}`);
   }
-  assert.match(css, /@media \(max-width: 671px\) \{[^@]*\.ed-loop-orbit \{ left: 16%;/, 'the viewport rule stays as the fallback');
+  const bare = [...css.matchAll(/\n {2}@media \(max-width: 671px\) \{([\s\S]*?)\n {2}\}/g)];
+  assert.ok(bare.length >= 1, 'the viewport rule for the stage height exists');
+  for (const block of bare) assert.doesNotMatch(block[1], /\.ed-loop-(?:orbit|card)/, 'no viewport rule outside @supports sets the ring');
+  assert.match(css, /\n {2}@media \(max-width: 671px\) \{\s*\.ed-loop-stage \{ height: 560px; \}\s*\.ed-loop-mark \{ width: 120px; \}\s*\}/, 'the stage height and the mark width stay in the viewport rule');
 });
 
 test('loop-hero.js lays the ring out again on every resize, in the static branches too', () => {
