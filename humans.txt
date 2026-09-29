@@ -7,9 +7,9 @@ LinkedIn: linkedin.com/in/matthewthaokhamlue
 GitHub: github.com/matthew-thaokhamlue
 
 /* SITE */
-Last update: 2026-06-10
+Last update: 2026-09-29
 Language: English
 Doctype: HTML5
 Standards: HTML5, CSS3, Tailwind CSS
-Components: Tailwind CSS (precompiled), GSAP + ScrollTrigger, Font Awesome, Google Fonts (Fraunces, Space Grotesk)
+Components: Tailwind CSS (precompiled), WebGL 2, Font Awesome, Google Fonts (Instrument Sans, IBM Plex Mono)
 Software: GitHub Pages

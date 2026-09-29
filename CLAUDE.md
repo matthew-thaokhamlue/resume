@@ -8,80 +8,77 @@ Static resume/portfolio website for Matthew Thaokhamlue, deployed to GitHub Page
 
 ## Development
 
-Open `index.html` in a browser to test. No build or install commands needed. The site is deployed by pushing to the `main` branch (GitHub Pages serves from root).
+Serve the repo root over http to test: `python3 -m http.server 8765`, then open `http://localhost:8765/index.html`. The logo masks do not load over `file://`. No build or install commands are needed. The site is deployed by pushing to the `main` branch (GitHub Pages serves from root).
 
 Pushing this repo uses the personal `gh` account `matthew-thaokhamlue` (not `matthew-semasoftware`); a push to `main` triggers both the CI workflow and the Pages build automatically, so verify CI is green after pushing.
 
 ## Architecture
 
 **Pages:** Each top-level HTML file is a standalone page sharing a common structure:
-- `index.html` — Main landing page (hero, testimonials, AI Match, contact)
-- `portfolio.html` — Portfolio index page linking to standalone editorial case studies
-- `experience.html`, `certificates.html` — Dedicated full pages for each section
-- `portfolio/*.html` — Individual editorial case study pages for career and personal projects
-- `about.html` — redirect stub to `index.html` (meta refresh + JS); not a content page, exempt from GA/metadata rules, not in the sitemap
+- `index.html` — the home page: the loop hero (the star-written M, "Product" plus a role word, six station cards on a ring), four results that open receipts, the How I work band, testimonials, AI Match, contact
+- `experience.html` — five role panels (a logo, the title and the dates) that open full-screen role reveals, then Skills and Education
+- `portfolio.html` — a mosaic of eight project tiles that open five project reveals; each reveal links its `portfolio/*.html` case page
+- `certificates.html` — a mosaic of 14 credential tiles; each opens a reveal with a verify link
+- `portfolio/*.html` — editorial case study pages (Labforward, LabTwin, Thryve, Opportunity Paths, Remarcable Living); `portfolio/achievement.html` stays hidden (see SEO below)
+- `about.html` and the retired case pages `portfolio/mcp-server.html`, `portfolio/automation-tools.html`, `portfolio/interview-prep.html` — redirect stubs (meta refresh + JS + a canonical, no `noindex`) to `index.html` or `portfolio.html`; not content pages, exempt from the GA/metadata rules, not in the sitemap
 - `cv.html` — generated CV export linked as a download from index/experience; not hand-maintained
 
 **Styling:**
 - **Tailwind CSS, precompiled** — `assets/css/tailwind.css` is a checked-in one-time compile (tailwindcss 3.4.17 + forms + container-queries plugins). Theme tokens live only in `tailwind.config.js` at the repo root, which also documents the regen command. **After adding/removing Tailwind classes in any HTML/JS file, regenerate the stylesheet** — a static compile only contains classes found in the content scan, so a new class without a rebuild silently renders unstyled.
-- **`assets/css/editorial.css`** — the editorial design system (reveals, hero display, stages, quotes). Loaded after tailwind.css so its rules win the cascade. All local CSS/JS use a `?v=` cache-bust param that must stay identical across all pages (tested).
+- **`assets/css/editorial.css`** — the design system, loaded after tailwind.css so its rules win the cascade. The tokens (`--ed-*`) sit in `:root` (light) and `:root[data-theme="dark"]` (dark, set by `theme.js` before paint). Every class uses the `ed-` prefix. The fonts come from one Google Fonts link on every content page (tested): Instrument Sans with the width and italic axes (display and body), IBM Plex Mono, Material Symbols. All local CSS/JS use a `?v=` cache-bust param that must stay identical across all pages (tested).
 
 **JavaScript:**
-- `assets/js/site.js` — site-wide glue: cookie-consent banner + consent-gated GA (gtag.js injected only after explicit accept; `resume_cookie_consent` localStorage key, `resume_cookie_consent_change` window event, `data-action="cookie-accept" | "cookie-dismiss" | "cookie-preferences"`), delegated GA event tracking via `[data-ga-event]`/`[data-ga-params]`, mobile menu (`data-action="toggle-menu"`), and the testimonial modal (`data-action="open-testimonial"` etc.). Loaded on every content page. `window.gtag` stays undefined until consent, so all `track()` calls no-op for unconsented visitors.
-- `assets/js/editorial.js` — GSAP + ScrollTrigger scroll reveals (see Scroll Motion Pattern below).
-- `assets/js/loop.js` — index.html only: two scroll pins. (1) The product hero: `Product` plus a role word (`.ed-hero__role-word` stack: builder, manager, designer, owner, tester, builder) swapped one step per scroll span under a pinned hero; the last step tweens `--ed-role-mix` so the returning `builder` takes the ink colour via `color-mix`. The M mark is an inline two-path SVG (`.ed-hero__mark`) that draws itself with a CSS stroke-dash animation, no JS. (2) The loop (`.ed-loop`): six `.ed-loop__card` stations on a 3D ring (`rotateY`/`translateZ` per card via `--ed-loop-a`) rotated one full turn under a pinned section; the card facing the viewer carries `.is-front`. Own `?v=` version. Bails without GSAP or under reduced motion; CSS shows the first role word and the KPIs card by default, so no JS / blocked CDN / reduced motion all fail visible. Contract-tested in static-contract.test.mjs (hooks, the exact role-word order, six cards with KPIs in front, the GSAP and reduced-motion guards). The former canvas-graph `hero.js` was deleted in September 2026.
-- `assets/js/rings.js` — experience.html only: growth animation for the five `svg.ed-rings` tree-ring panels (scroll-triggered draw-in innermost-to-outermost via stroke-dash, one accent ping off the newest ring, slow idle rotation + counter-orbiting rim caption paused offscreen via ScrollTrigger, cursor tilt on fine pointers). Own `?v=` version like ai-match.js. Without GSAP, with reduced motion, or with no JS, the authored static SVGs render untouched (all hiding happens in JS). Ring counts stay accumulated career years (9/8/7/5/2), now enforced by the growth-rings contract test.
-- `assets/js/career.js` — experience.html only: chapter choreography + career spine. Light hero word intro (split-and-restore words, never touches font-variation — the editorial.js scrub owns it), per-panel timelines for the right column (index number, eyebrow, word-split role title restored on complete, company line, `.sema-story__item`s, skill chips, portfolio link — body paragraphs are left to editorial.js `initPhilosophy()`), and a JS-built `.ed-spine` inside the `.ed-career` wrap (scrub-drawn accent progress line + one node per chapter that lights and pings on entry; CSS shows it ≥1280px only). Own `?v=` version. Bails without GSAP or with reduced motion — all hiding is JS-applied, so the page fails visible.
-- `assets/js/folio.js` — portfolio.html only: page-hero word intro + per-grid card staggers (trigger `top bottom` — a stricter start line leaves a blank band at the fold on load). Card hover polish (top hairline sweep, title underline draw) is pure CSS in editorial.css (`editorial-folio-cards`). Same guards / own `?v=` as career.js.
-- `assets/js/case.js` — every `portfolio/*.html` case page (shared template): case-hero word intro + facts stagger, metric count-up (parses prefix/number/suffix; skips ranges and words — no leading digit, or digits left in the suffix; always writes the exact authored string back on complete), impact-list item staggers. Same guards / own `?v=`.
-- **Motion fail-visible gate**: every content page `<body>` carries `data-motion-pending` (tested). editorial.css applies the `.reveal` hidden state (and experience.html's inline directional variants) only inside `@media (scripting: enabled) and (prefers-reduced-motion: no-preference)` scoped under `[data-motion-pending]`; site.js removes the attribute when the GSAP CDN never loaded. Net effect: no JS, blocked CDN, old browsers, and reduced motion all render content visible. A new page using `.reveal` must carry the body attribute or the motion-fails-visible contract test fails.
-- `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt, opens ChatGPT or Claude.ai in a popup/tab. (Contains no gtag calls.)
-- The legacy HTML5 UP Dimension assets (jQuery, `main.js`, `portfolio.js`, `main.css`, `portfolio.css`, the SASS tree, and local Font Awesome webfonts) were deleted in June 2026 — no page referenced them. Don't reintroduce them.
+- `assets/js/site.js` — site-wide glue: cookie-consent banner + consent-gated GA (gtag.js injected only after explicit accept; `resume_cookie_consent` localStorage key, `resume_cookie_consent_change` window event, `data-action="cookie-accept" | "cookie-dismiss" | "cookie-preferences"`), delegated GA event tracking via `[data-ga-event]`/`[data-ga-params]`, mobile menu (`data-action="toggle-menu"`), the testimonial modal (`data-action="open-testimonial"` etc.), and the reveal system. Loaded on every content page. `window.gtag` stays undefined until consent, so all `track()` calls no-op for unconsented visitors.
+  - **Reveals:** `data-action="open-reveal" data-reveal="ID"` opens `<dialog class="ed-reveal" id="ID">` with `showModal()`. A URL fragment `#ID` opens its reveal on load and on `hashchange` (deep links such as `experience.html#role-sema`). A click inside an open reveal closes it, except on a link or while text is selected; the close button always closes it. Without scripts, `@media (scripting: none)` in editorial.css shows every reveal's content in the page, and no inline `<style>` may override that rule (tested).
+- `assets/js/star-cursor.js` — every content page, loaded directly after `site.js` (tested): the clay star that replaces the mouse cursor on a 2D canvas. With a fine pointer and no reduced-motion request it sets `html.star-on` (last, once the canvas works) and draws a pill: "Info" over a reveal target, "Close ×" while a reveal is open, none over a link inside a reveal. Otherwise it sets `html.no-star`, and each reveal target shows its `.ed-chip` "Info" chip. The canvas and the pill follow any open dialog into the top layer. Text-like fields keep the native caret (one field list in the script and the CSS, tested).
+- `assets/js/loop-hero.js` — index.html only, with its own `?v=`: the loop hero. Six `.ed-loop-card` stations on a ring of 96 particles (XPBD constraints) with WebGL 2 dust. On first view the star writes the M at the centre through two fitted mask paths, then a tour walks the highlight (`.is-front`) and the role word (builder, manager, designer, tester, owner, builder) around the stations with a Web Animations width morph. `WRITE_S` 0.9 s + `TOUR_S` 3.9 s = 4.8 s, once per load (WCAG 2.2.2). The ring's default layout is CSS, so the page shows the ring before the script runs; a container query on the stage width picks the tall phone ring, with a 671 px media query only where container queries are missing. Reduced motion, no WebGL 2 and a shader failure keep the static ring, the full M and "Product builder", and still follow resizes. A lost WebGL context is final: the canvas hides, the M completes and the word ends on "builder". The drag hint shows only while the ring answers a drag (`.is-draggable`).
+- `assets/js/ai-match.js` — Custom "Evaluate role fit" feature: reads a job description textarea, builds a prompt from the role reveals' `data-role-*` hooks, opens ChatGPT or Claude.ai in a popup/tab. (Contains no gtag calls.)
+- `assets/js/theme.js` — sets `data-theme` on `<html>` from localStorage before paint.
+- GSAP, ScrollTrigger and the scroll-motion scripts (`editorial.js`, `loop.js`, `rings.js`, `career.js`, `folio.js`, `case.js`) were deleted in September 2026, with the `data-motion-pending` gate. No page loads them (tested). The legacy HTML5 UP Dimension assets were deleted in June 2026. Don't reintroduce either.
 
-**CDN dependencies:** GSAP 3.12.5, ScrollTrigger 3.12.5, and Font Awesome 6.4.0 are pinned on cdnjs with `integrity` (SRI sha384) + `crossorigin="anonymous"` attributes. When bumping a CDN version, recompute the hash: `curl -sf <url> | openssl dgst -sha384 -binary | base64`.
+**CDN dependencies:** Font Awesome 6.4.0 is pinned on cdnjs with `integrity` (SRI sha384) + `crossorigin="anonymous"` attributes. When bumping a CDN version, recompute the hash: `curl -sf <url> | openssl dgst -sha384 -binary | base64`.
 
-**Content-Security-Policy:** every content page carries a CSP `<meta>` tag (first element in `<head>`) with `script-src 'self' cdnjs googletagmanager` — **no `'unsafe-inline'` for scripts**. Consequences: never add inline `<script>` blocks (JSON-LD data blocks are the only exception) or inline `on*=` handlers; put behavior in `site.js` and wire it with data attributes. When adding a new external resource, extend the CSP on all 11 pages (tested).
+**Content-Security-Policy:** every content page carries a CSP `<meta>` tag (first element in `<head>`) with `script-src 'self' cdnjs googletagmanager` — **no `'unsafe-inline'` for scripts**. Consequences: never add inline `<script>` blocks (JSON-LD data blocks are the only exception) or inline `on*=` handlers; put behavior in `site.js` and wire it with data attributes. When adding a new external resource, extend the CSP on all content pages (tested). No page loads a cdnjs script now (Font Awesome loads as a stylesheet), so the cdnjs entry in `script-src` has no user.
 
-## Scroll Motion Pattern
+## Motion
 
-`index.html` and `experience.html` both use native OS scrolling plus GSAP + ScrollTrigger reveals via `assets/js/editorial.js` (loaded with the GSAP CDN at the bottom of each page). No sticky panels, no scroll snap, no wheel hijack.
+No page moves on scroll: native OS scrolling, no pins, no scroll snap, no wheel hijack, no scroll-linked reveals. The `.reveal` class is inert.
 
-- **`index.html`**: two pinned acts (hero word swap, loop ring; both in loop.js), then `.ed-quote` reveals and the contact close. editorial.js skips its `.ed-hero__display` scrub on `.ed-hero--product`; `initStages()`/`initPhilosophy()` stay in editorial.js for experience.html and the case pages.
-- **`portfolio.html`**: folio.js hero word intro + card-grid staggers; hover sweep/underline in CSS.
-- **`portfolio/*.html`**: case.js evidence reel (hero word intro, facts stagger, metric count-up, impact-list staggers); everything else keeps `.reveal`.
-- **`experience.html`**: 6 flow sections, one per job role plus Skills/Education, wrapped (panels 1–5) in `div.ed-career` for the career spine. Sections 2–6 carry a `border-t border-white/5` divider so each chapter still reads as a discrete block.
-  - Panels 1–5 use a 50/50 split: organic SVG tree rings (left) + editorial text (right). The SVG wrappers carry `class="reveal reveal-left/right"` (CSS reveal via `initBaseReveal()`); the right-column elements carry no `.reveal` — career.js owns their choreography, so don't re-add it.
-  - Panel 6 (Skills & Education) uses `.ed-stages`/`.ed-stage`, animated by `initStages()`. The heading block carries `.reveal`.
-  - SVG tree ring counts = **accumulated career years**: Sema=9, Labforward=8, LabTwin=7, Thryve=5, EY=2. Preserve these when editing SVGs.
-  - The page still needs `.card-hover` CSS in the inline `<style>` block — don't remove it when editing other styles.
+- **`index.html`**: the loop hero runs once per load (see `loop-hero.js`); the drag on the ring works with a fine pointer.
+- **All content pages**: the reveals open with a short rise (`ed-reveal-rise`), and the star cursor draws on demand and stops when it settles.
+- Reduced motion, no WebGL 2, no scripts and a failed script load all leave the content visible.
+- `experience.html` panels show each company as a logo mask; the Skills and Education section uses `.ed-stages`/`.ed-stage` rows.
 
 ## File Editing Gotchas
 
-- `index.html` and `assets/js/editorial.js` use CRLF line endings (`ai-match.js` is LF); all other HTML files use LF-only. The Edit tool silently fails to match strings in CRLF files. Use this Python pattern for reliable replacements:
+- `index.html` uses CRLF line endings (`ai-match.js` is LF); all other HTML files use LF-only. The Edit tool silently fails to match strings in CRLF files. Use this Python pattern for reliable replacements:
   ```python
   with open('index.html', 'rb') as f: src = f.read().decode('utf-8')
   src = src.replace('OLD', 'NEW')
   with open('index.html', 'wb') as f: f.write(src.encode('utf-8'))
   ```
-- Background subagents (`run_in_background: true`) cannot use Edit or Write tools — use them for research/reads only; apply all file edits in the main agent session.
+- Background subagents can edit files and commit in this repo; each works in its own worktree when dispatched with worktree isolation.
 - Worktrees created by Claude land in `.claude/worktrees/` — clean up with `git worktree remove --force` after branches are merged.
 - The rtk Bash hook mangles grep patterns with escaped parens/alternations and can fail on missing `gsed` — for multi-pattern greps over the HTML files, use `rtk proxy grep` or a python script instead.
 - zsh reserves `status` as a read-only variable — shell loops in Bash/Monitor tools must use a different variable name or they exit 1.
 - `cv.html` is a GitHub-export render whose TOC anchors use `id="user-content-*"`, so its `#fragment` links don't resolve statically — that's why it's exempt from the fragment-link contract test.
-- `overflow-x: clip` must sit on `html` (root) — set only on `body` it propagates to the viewport as scrollable and mobile can still pan sideways (this is the fix for the old 28px pre-reveal overflow on experience.html).
+- `overflow-x: clip` must sit on `html` (root) — set only on `body` it propagates to the viewport as scrollable and mobile can still pan sideways.
 - The local `python3 -m http.server` sends no Cache-Control, so the /browse headless browser heuristically caches HTML **and CSS/JS assets**. Fresh query params (`?fresh=N`) only bust the HTML — after editing a CSS/JS file mid-verification, confirm via computed styles that the change actually arrived before trusting a failing check.
+- Headless Chrome does not lay out below 500 px. Check a 390 px phone layout through a page that holds a 390 px `<iframe>`.
+- The /browse headless browser has no WebGL, so it shows only the static loop. Check the live loop in system Chrome, or headless Chrome with `--use-angle=swiftshader --enable-unsafe-swiftshader`.
+- A merge conflict at the end of `editorial.css` can hide a shared closing brace: view it with `git checkout --conflict=diff3 <file>` before keeping both sides, or the second block nests inside a phone-only `@media` with no error.
 
 ## Key Conventions
 
-- External dependencies via CDN (GSAP, Font Awesome, Google Fonts) — no `node_modules`; Tailwind is precompiled into `assets/css/tailwind.css`
-- Standard content container: `w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` — matches nav width/padding exactly. Use this for all section content.
+- External dependencies via CDN (Font Awesome, Google Fonts) — no `node_modules`; Tailwind is precompiled into `assets/css/tailwind.css`
+- Standard content container: `.ed-shell` (editorial.css) — the same width and gutter as the top bar (`--ed-content-max` plus `--ed-gutter-x`), full width inside a flex column. Use it for all section content (tested on the four main pages).
 - Tailwind theme tokens live in `tailwind.config.js` only — regenerate `assets/css/tailwind.css` after changing them (command in that file's header comment)
-- Google Analytics (G-D11HKMWFB4) is consent-gated: no page carries a static gtag.js loader (tested); `assets/js/site.js` injects it only after the visitor accepts the cookie banner, and every content page footer carries the `data-action="cookie-preferences"` control (tested) that clears the choice and re-opens the banner. GA4 custom events (`resume_downloaded`, `external_link_clicked`, etc.) are wired declaratively: `data-ga-event="event_name" data-ga-params='{"key":"value"}'` on the clickable element — never inline `onclick` (CSP forbids it, tested).
-- `portfolio.html` all project cards link directly to standalone `portfolio/*.html` editorial case-study pages.
+- Google Analytics (G-D11HKMWFB4) is consent-gated: no page carries a static gtag.js loader (tested); `assets/js/site.js` injects it only after the visitor accepts the cookie banner, and every content page footer carries the `data-action="cookie-preferences"` control (tested) that clears the choice and re-opens the banner. GA4 custom events (`resume_downloaded`, `external_link_clicked`, `credential_verified`, etc.) are wired declaratively: `data-ga-event="event_name" data-ga-params='{"key":"value"}'` on the clickable element — never inline `onclick` (CSP forbids it, tested).
+- Tiles and panels take their accessible names from their visible text (WCAG 2.5.3): the Portfolio and Certifications tiles carry no `aria-label`; the Experience panels keep one, because the company shows only as a logo, and it ends with the visible dates (tested).
 - SEO: JSON-LD Person schema lives inline in `index.html` `<head>` (there is no separate structured-data file — a standalone JSON file is invisible to crawlers). `sitemap.xml` and `robots.txt` are at root; content pages carry Open Graph + Twitter Card tags (tested). `portfolio/achievement.html` is intentionally hidden: noindex, unlinked, excluded from the sitemap — keep it that way.
 - Machine-readable profile: `llms.txt` (summary + page index) and `llms-full.txt` (full CV) at root — update the current-role facts there when career copy changes on the site.
-- Images go in `images/` directory
-- `docs/plans/` — design docs (`*-design.md`) and implementation plans from brainstorm/writing-plans skill sessions
+- Images go in `images/` directory; the tile logos in `images/logos/`, the tile photos in `images/mosaic/`
+- Design docs and implementation plans stay private: this repo is public and GitHub Pages serves every file, so they never enter it (tested).
 - Branch naming: Claude-created branches use `claude/<adjective-name>` prefix (e.g. `claude/recursing-kalam`)
 
 ## Personal Brand & Content Positioning
@@ -95,22 +92,12 @@ Matthew's positioning throughline: **"AI Workflow Architect"** — he builds AI 
 - **MCP Server**: Live on GitHub but early-stage / proof of concept
 - **Interview-prep**: Multi-agent Claude Code framework (`/.claude/agents/onboarding.md` + `interview-prep.md`); uses MCP WebSearch/WebFetch; 5-stage pipeline; canonical I/O files (`00_user_profile.md`, `01_cv_resume.md`, `02_target_company_role.md`). Strongest single showcase of AI workflow architect skills.
 
-**Hero section (index.html) current state (September 2026):** the M mark, then `Product` + a scroll-swapped role word (builder → manager → designer → owner → tester → builder, ending in the ink colour), then the three actions (Evaluate role fit, View CV, skim the portfolio). No eyebrow, no support paragraph, no scroll cue. The "Product philosophy", "The system" and four-word signature sections were replaced by "The loop" (six station cards on a scroll-rotated ring; labels only, no prose).
-
-## Smooth Scroll Implementation Notes (2026-05-06)
-
-`experience.html` previously used a wheel-driven snap IIFE, then a sticky stack-panel cover effect. Both were removed: the wheel snap hijacked native scroll, and the sticky stack made later panels visually cover earlier ones in a way that read as "scroll is broken" before content could fade in. The page now mirrors `index.html` — flat editorial sections, GSAP `.reveal` fade-ups, no sticky/snap/hijack.
-
-Current state for both pages:
-
-- Native OS scrolling, no `event.preventDefault()` on wheel, no programmatic `scrollTo`, no `.stack-panel`/`.is-covered` CSS, no `--panel-z` z-index ladder.
-- `assets/js/editorial.js` (loaded via GSAP + ScrollTrigger CDN at the bottom of each page) drives all scroll-linked motion: `.reveal` fade-ups, `.ed-stage` staggered reveals, `.ed-philosophy` paragraph fade-ups, `.ed-hero__display` font-variation scrub (skipped on the index product hero).
-- Reduced motion is honored in both `editorial.js` and `editorial.css` — content remains visible, transitions are disabled.
+**Home page (index.html) current state (September 2026):** the head and the hero title read "Senior AI Product Manager"; the subline names Liz, Sema's AI agent; the actions are Evaluate role fit, View CV and LinkedIn. Below them the loop hero: the M written by the star at the ring centre, "Product" plus the role word, and six station cards. Then four results (~39%, $500K, 1M+, 4 → 12), each opening a receipt with the employer, the role, the dates and the claim; then the How I work band ("AI Workflow Architect", linking the Sema role reveal); then testimonials and a plain "Contact" heading. The footer line on every page still reads "Builder · AI Workflow Architect".
 
 ### Regression Tests
 
 - `tests/ai-match.test.mjs`: verifies AI Match prompt, provider URL, clipboard, and popup helpers.
-- `tests/static-contract.test.mjs`: verifies local HTML references, AI Match DOM IDs, prompt template wiring, the experience.html story beats, the product-hero/loop-ring and growth-rings contracts, the career-spine contract (`.ed-career` wrap holds exactly the 5 role panels, career.js wired), the gallery contract (folio.js wired, section heads keep `.reveal`), the evidence-reel contract (case.js wired on every `portfolio/*.html`), and the motion-fails-visible contract (body `data-motion-pending` on all content pages, site.js fallback, `.reveal` hidden only behind the scripting gate).
+- `tests/static-contract.test.mjs`: verifies the fonts link and the tokens; local HTML references; the AI Match DOM contract and the role-reveal hooks; the loop hero contract (the six cards, the exact role-word order, the fitted mask paths, the 4.8 s budget, the default CSS ring, the container query, resize handling, the first frame, the drag hint, a lost context); the four results and the band; tile and panel names (WCAG 2.5.3), the focus ring, the chip ring and the dark ink edge; the `.ed-shell` wrapper; no GSAP or old motion script; no design docs in the repo; every reveal target and its dialog, the close paths and the no-script fallback; no inline style that hides the reveals; the star cursor guards, its field list, its pointer-events and its load order; the home head copy and JSON-LD; the logo masks; the Portfolio mosaic and its case links; the redirect stubs and links to retired pages; the 14 credentials and their analytics values.
 - `tests/site-contract.test.mjs`: verifies sitemap ↔ disk sync (achievement.html excluded by design), per-page head metadata (title, description, canonical, OG, Twitter Card), GA tag presence, precompiled-Tailwind usage (no Play CDN, no inline config), `?v=` cache-bust consistency, CSP meta presence, zero inline event handlers, no executable inline scripts (JSON-LD only), `data-ga-params` JSON validity, `data-action` ↔ site.js handler sync, and same-page anchor targets.
 - Run with:
   - `node --test tests/*.test.mjs`
