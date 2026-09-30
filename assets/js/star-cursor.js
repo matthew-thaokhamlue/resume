@@ -36,6 +36,7 @@
   const trail = Array.from({ length: 14 }, () => ({ x: -200, y: -200 }));
   const sparks = [];
   let spinFrom = -1, last = 0, running = false;
+  let hoverTarget = null;
 
   const clamp01 = (v) => Math.max(0, Math.min(1, v));
   const isDark = () => root.getAttribute('data-theme') === 'dark';
@@ -102,10 +103,15 @@
     overField = !!(t && t.closest(TEXT_FIELD));
     overLink = !!(t && t.closest('a, button, label, summary'));
     const m = modeAt(t);
+    const target = !overField && t ? t.closest('a[href], button, label, summary, .ed-loop-card') : null;
+    if (target !== hoverTarget) {
+      hoverTarget = target;
+      if (target && m === 'idle') flourish(); // Reveal modes already trigger their own burst.
+    }
     if (m !== mode) setMode(m); else applyLabel();
     wake();
   }, { passive: true });
-  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget) { visible = false; applyLabel(); wake(); } });
+  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget) { visible = false; hoverTarget = null; applyLabel(); wake(); } });
   resize();
   follow();   // site.js may have opened a deep-linked reveal before this script ran
   root.classList.add('star-on');   // last: the native cursor hides only once the star can draw

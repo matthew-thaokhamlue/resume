@@ -405,7 +405,7 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
     if (NON_CONTENT.has(name)) continue;
     const html = fs.readFileSync(file, 'utf8');
     assert.equal((html.match(/star-cursor\.js/g) || []).length, 1, `${name} must load star-cursor.js once`);
-    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260929"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260929"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
+    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260929"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260930-hover"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
   }
 });
 
