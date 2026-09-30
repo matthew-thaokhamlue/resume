@@ -260,7 +260,7 @@ test('the drag hint shows only while the ring answers a drag', () => {
   assert.ok(lastStaticReturn > 0 && handlers > lastStaticReturn, 'the pointer handlers sit in the live path');
   assert.ok(add > handlers, 'the class comes after the pointer handlers');
   // loop-hero.js finds the section by its class, and the hint rule needs the hint inside it
-  assert.match(readText('index.html'), /<section class="ed-loop-hero" id="loop"[^>]*>[\s\S]*<div class="ed-loop-controls">\s*<p class="ed-loop-hint">[^<]*<\/p>[\s\S]*?<\/section>/, 'the section that gets is-draggable holds the hint');
+  assert.match(readText('index.html'), /<section class="ed-loop-hero(?: [^"]*)?" id="loop"[^>]*>[\s\S]*<div class="ed-loop-controls">\s*<p class="ed-loop-hint">[^<]*<\/p>[\s\S]*?<\/section>/, 'the section that gets is-draggable holds the hint');
 });
 
 test('a lost WebGL context hides the dead canvas and the drag hint', () => {
@@ -278,7 +278,7 @@ test('index.html shows four results with receipts and omits the removed home ban
   assert.deepEqual(bigs, ['~39%', '$500K', '1M+', '4 → 12']);
   assert.doesNotMatch(html, /class="ed-band"|I work in a forward-deployed model|How I work at Sema/, 'the removed home band stays absent');
   assert.doesNotMatch(html, /Seven more recommendations/, 'the testimonials link carries no count');
-  assert.match(html, /<h2 class="ed-cta__line">Contact<\/h2>/, 'the contact heading is plain');
+  assert.doesNotMatch(html, /id="contact"|Reach out on LinkedIn|Or send an email/, 'the removed Contact section stays absent');
   assert.doesNotMatch(html, /Have ideas worth/, 'the old contact slogan leaves the page');
 });
 
@@ -291,7 +291,8 @@ test('no inline style block overrides the no-script reveal fallback', () => {
     assert.doesNotMatch(inline, /dialog:not\(\[open\]\)/, `${name}: an inline dialog:not([open]) rule hides the reveals without scripts`);
     assert.doesNotMatch(inline, /(^|[\s,{}])dialog\[open\]/, `${name}: an inline dialog[open] rule restyles every open reveal`);
   }
-  assert.match(readText('index.html'), /#ai-match-modal\[open\], #testimonial-modal\[open\] \{ display: flex; \}/, 'the home modals keep their flex layout');
+  assert.match(readText('index.html'), /#ai-match-modal\[open\] \{ display: flex; \}/, 'AI Match keeps its flex layout');
+  assert.doesNotMatch(readText('index.html'), /#testimonial-modal\[open\]/, 'the testimonial reveal uses the shared reveal layout');
 });
 
 test('tiles and panels take their names from the visible text (WCAG 2.5.3)', () => {
@@ -405,7 +406,7 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
     if (NON_CONTENT.has(name)) continue;
     const html = fs.readFileSync(file, 'utf8');
     assert.equal((html.match(/star-cursor\.js/g) || []).length, 1, `${name} must load star-cursor.js once`);
-    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260929"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260930-hover"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
+    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260930"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260930-testimonials"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
   }
 });
 
@@ -612,5 +613,6 @@ test('the seven testimonial tiles keep exact excerpts and share the existing dia
     const excerpt = content.match(/class="ed-quote__text">([^<]+)</)[1];
     assert.ok(full.includes(excerpt), 'the excerpt must be verbatim from the full quote');
   }
-  assert.match(html, /<dialog id="testimonial-modal" aria-labelledby="modal-name"/);
+  assert.match(html, /<dialog id="testimonial-modal" aria-labelledby="modal-name" class="ed-reveal"/);
+  assert.match(html, /class="ed-reveal__close"[^>]*data-action="close-testimonial"/);
 });
