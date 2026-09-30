@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Key Files
-- `index.html` — home page (the loop hero, results with receipts, How I work, AI Match, GA events)
+- `index.html` — home page (the loop hero, results with receipts, AI Match, GA events)
 - `experience.html` — five role panels that open full-screen role reveals (the AI Match `data-role-*` hooks live inside them)
 - `portfolio.html`, `certificates.html` — mosaics of tiles that open reveals
 - `portfolio/*.html` — editorial case study pages
@@ -18,7 +18,7 @@
 ## Architecture Invariants (checked by harness/validate.sh)
 - GA is opt-in: no content page loads `gtag.js` statically, every content page carries the `data-action="cookie-preferences"` footer control and loads `site.js`, and `site.js` holds the GA ID and the consent gate — `about.html`, the three retired case-page stubs (redirects) and `cv.html` (export) are exempt
 - No inline `<script>` blocks (except JSON-LD) and no inline `on*=` handlers — the CSP meta forbids them; behavior goes in `site.js`, GA events via `data-ga-event`/`data-ga-params`
-- `AI Workflow Architect` must remain in `index.html` — canonical brand positioning (the How I work band carries it)
+- `AI Workflow Architect` must remain in `index.html` — canonical brand positioning (the footer carries it; the home band is removed)
 - ` DAU` must not appear in any content page — public-safe content (no internal metrics)
 
 ## Gotchas
