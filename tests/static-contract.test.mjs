@@ -260,23 +260,23 @@ test('the drag hint shows only while the ring answers a drag', () => {
   assert.ok(lastStaticReturn > 0 && handlers > lastStaticReturn, 'the pointer handlers sit in the live path');
   assert.ok(add > handlers, 'the class comes after the pointer handlers');
   // loop-hero.js finds the section by its class, and the hint rule needs the hint inside it
-  assert.match(readText('index.html'), /<section class="ed-loop-hero" id="loop"[^>]*>[\s\S]*<p class="ed-loop-hint">[^<]*<\/p>\s*<\/section>/, 'the section that gets is-draggable holds the hint');
+  assert.match(readText('index.html'), /<section class="ed-loop-hero" id="loop"[^>]*>[\s\S]*<div class="ed-loop-controls">\s*<p class="ed-loop-hint">[^<]*<\/p>[\s\S]*?<\/section>/, 'the section that gets is-draggable holds the hint');
 });
 
 test('a lost WebGL context hides the dead canvas and the drag hint', () => {
   const js = readText('assets/js/loop-hero.js');
   assert.match(js, /'webglcontextlost'[\s\S]{0,400}canvas\.style\.display = 'none'/, 'a dead canvas paints over the ellipse');
   assert.match(js, /'webglcontextlost'[\s\S]{0,400}classList\.remove\('is-draggable'\)/, 'the ring no longer answers a drag');
-  // the observer calls loop.show() when the stage re-enters the viewport, which would revive the loop on the dead context
-  assert.match(js, /'webglcontextlost'[\s\S]{0,600}api\.show = \(\) => \{\};/, 'a lost context is final: show() does nothing afterwards');
+  // The DOM wheel stays available, but render() never touches the lost GPU context.
+  assert.match(js, /'webglcontextlost'[\s\S]{0,100}gpuReady = false;/, 'a lost context disables GPU rendering');
+  assert.match(js, /function render\(\) \{\s*placeCards\(\);\s*if \(!gpuReady\) return;/, 'DOM placement runs before the GPU guard');
 });
 
-test('index.html shows four results with receipts and the How I work band', () => {
+test('index.html shows four results with receipts and omits the removed home band', () => {
   const html = readText('index.html');
   const bigs = [...html.matchAll(/<button class="ed-result" type="button" data-action="open-reveal" data-reveal="receipt-[a-z]+" aria-haspopup="dialog"><b>([^<]+)<\/b>/g)].map((m) => m[1]);
   assert.deepEqual(bigs, ['~39%', '$500K', '1M+', '4 → 12']);
-  assert.match(html, /<p class="ed-band__label" id="band-title">AI Workflow Architect<\/p>/);
-  assert.match(html, /<a class="ed-band__link" href="experience\.html#role-sema">How I work at Sema →<\/a>/);
+  assert.doesNotMatch(html, /class="ed-band"|I work in a forward-deployed model|How I work at Sema/, 'the removed home band stays absent');
   assert.doesNotMatch(html, /Seven more recommendations/, 'the testimonials link carries no count');
   assert.match(html, /<h2 class="ed-cta__line">Contact<\/h2>/, 'the contact heading is plain');
   assert.doesNotMatch(html, /Have ideas worth/, 'the old contact slogan leaves the page');

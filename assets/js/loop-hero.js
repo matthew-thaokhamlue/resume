@@ -3,8 +3,9 @@
  * (XPBD edge, bend and tether constraints, 8 substeps), with WebGL 2 dust along it.
  * On first view the star writes the M at the centre, then a tour walks the highlight
  * and the role word around the stations: WRITE_S + TOUR_S = 4.8 s, within WCAG 2.2.2.
- * Without WebGL, with reduced motion, or after a lost context, the CSS ellipse, the
- * placed cards, the full M and "Product builder" stay.
+ * The wheel button adds momentum to the stations and a role reel, then lands on a
+ * station and its description. Without WebGL it uses the same DOM animation;
+ * reduced motion selects a role immediately, without spinning.
  */
 (() => {
   'use strict';
@@ -28,16 +29,26 @@
     const N = 96, STEP = 16, M = 5000;
     const x = new Float32Array(N * 2), px_ = new Float32Array(N * 2), v = new Float32Array(N * 2), rest = new Float32Array(N * 2);
     const inv = new Float32Array(N).fill(1), rl = new Float32Array(N), rl2 = new Float32Array(N);
-    let W = 0, H = 0, progress = 0, hoverIdx = -1;
+    let W = 0, H = 0, progress = 0, hoverIdx = -1, angle = 0, speed = 0, spinTarget = 0, braking = 3;
+    let cx = 0, cy = 0, rx = 0, ry = 0, gpuReady = false;
+    let grabbed = -1, gx = 0, gy = 0, gox = 0, goy = 0;
+    let running = false, lastT = 0, tourFrom = null, tourPending = false, toured = false, settleT = 0, scrollFlow = 0, writeFrom = null, writePending = false;
+    const spinButton = document.getElementById('loop-spin');
+    const result = document.getElementById('loop-result');
+    const spinIcon = spinButton.querySelector('svg');
+    let reel = null, hasResult = false, resultStation = -1;
+    function fillRing() {
+      for (let i = 0; i < N; i++) { const th = -Math.PI / 2 + 2 * Math.PI * i / N + angle; rest[2 * i] = cx + rx * Math.cos(th); rest[2 * i + 1] = cy + ry * Math.sin(th); }
+      for (let i = 0; i < N; i++) { const j = (i + 1) % N, k = (i + 2) % N; rl[i] = Math.hypot(rest[2 * j] - rest[2 * i], rest[2 * j + 1] - rest[2 * i + 1]); rl2[i] = Math.hypot(rest[2 * k] - rest[2 * i], rest[2 * k + 1] - rest[2 * i + 1]); }
+      x.set(rest); v.fill(0);
+    }
     function layout() {
       const r = stage.getBoundingClientRect();
       if (r.width < 2) return false;
       W = r.width; H = r.height;
       const narrow = W < 640;
-      const cx = W / 2, cy = H / 2, rx = Math.min(W * (narrow ? 0.34 : 0.40), 470), ry = H * (narrow ? 0.40 : 0.36);
-      for (let i = 0; i < N; i++) { const th = -Math.PI / 2 + 2 * Math.PI * i / N; rest[2 * i] = cx + rx * Math.cos(th); rest[2 * i + 1] = cy + ry * Math.sin(th); }
-      for (let i = 0; i < N; i++) { const j = (i + 1) % N, k = (i + 2) % N; rl[i] = Math.hypot(rest[2 * j] - rest[2 * i], rest[2 * j + 1] - rest[2 * i + 1]); rl2[i] = Math.hypot(rest[2 * k] - rest[2 * i], rest[2 * k + 1] - rest[2 * i + 1]); }
-      x.set(rest); v.fill(0);
+      cx = W / 2; cy = H / 2; rx = Math.min(W * (narrow ? 0.34 : 0.40), 470); ry = H * (narrow ? 0.40 : 0.36);
+      fillRing();
       Object.assign(orbit.style, { left: `${cx - rx}px`, top: `${cy - ry}px`, width: `${2 * rx}px`, height: `${2 * ry}px` });
       cards.forEach((c) => { c.style.left = '0px'; c.style.top = '0px'; });   // the CSS ring sets left and top; the transforms below count from the stage corner
       placeCards();
@@ -45,6 +56,44 @@
     }
     function placeCards() { cards.forEach((c, k) => { const i = k * STEP; c.style.transform = `translate(${x[2 * i].toFixed(1)}px, ${x[2 * i + 1].toFixed(1)}px) translate(-50%, -50%)`; }); }
     const WORDS = ['builder', 'manager', 'designer', 'tester', 'owner', 'builder'];
+    const DESCRIPTIONS = [
+      [
+        'As a Product Builder, Matthew shapes product strategy from business goals and user needs.',
+        'As a Product Builder, Matthew connects product decisions to measurable business goals.',
+        'As a Product Builder, Matthew turns customer problems into priorities for the team.',
+        'As a Product Builder, Matthew checks that the team solves the right problem before planning a release.'
+      ],
+      [
+        'As a Product Manager, Matthew turns goals into a roadmap and aligns the team on priorities.',
+        'As a Product Manager, Matthew helps product and engineering agree on scope, priorities, and release plans.',
+        'As a Product Manager, Matthew keeps stakeholders aligned on deliverables and timelines.',
+        'As a Product Manager, Matthew turns product goals into work that the team can plan and deliver.'
+      ],
+      [
+        'As a Product Designer, Matthew works with engineers to turn requirements into product workflows.',
+        'As a Product Designer, Matthew uses customer context to clarify how a feature should work.',
+        'As a Product Designer, Matthew connects user needs with engineering constraints.',
+        'As a Product Designer, Matthew helps the team turn feedback into clearer product workflows.'
+      ],
+      [
+        'As a Product Tester, Matthew works with engineering to check product quality before releases reach users.',
+        'As a Product Tester, Matthew runs user acceptance testing to check product quality against user needs.',
+        'As a Product Tester, Matthew uses AI to support user acceptance testing and reviews the results.',
+        'As a Product Tester, Matthew checks product behaviour with engineering before a release reaches users.'
+      ],
+      [
+        'As a Product Owner, Matthew uses telemetry and user feedback to guide the next release.',
+        'As a Product Owner, Matthew uses user events to understand how people use a release.',
+        'As a Product Owner, Matthew brings customer feedback into product priorities.',
+        'As a Product Owner, Matthew checks telemetry after release to decide what the team should improve next.'
+      ],
+      [
+        'As a Product Builder, Matthew checks how releases affect users, costs, and profitability.',
+        'As a Product Builder, Matthew links product decisions to business outcomes.',
+        'As a Product Builder, Matthew looks at customer value and operating costs when reviewing a release.',
+        'As a Product Builder, Matthew checks whether product changes move the business towards its goals.'
+      ]
+    ];
     const roleEl = stage.querySelector('.ed-role-word');
     let roleIdx = 0, roleAnim = null;
     function setRole(i) {
@@ -67,7 +116,45 @@
         roleAnim = roleEl.animate([{ fontVariationSettings: "'wdth' 75, 'wght' 420", opacity: 0, transform: 'translateY(0.28em)', width: `${from}px` }, { fontVariationSettings: "'wdth' 100, 'wght' 560", opacity: 1, transform: 'translateY(0)', width: `${to}px` }], { duration: 300, easing: 'cubic-bezier(0,0,.2,1)' });
       }).catch(() => {});
     }
-    function highlight() { const s = hoverIdx >= 0 ? hoverIdx : Math.floor(progress * 6) % 6; cards.forEach((c, k) => c.classList.toggle('is-front', k === s)); setRole(s); }
+    function highlight() {
+      if (speed > 0) return;
+      const s = hoverIdx >= 0 ? hoverIdx : Math.floor(progress * 6) % 6;
+      cards.forEach((c, k) => c.classList.toggle('is-front', k === s)); setRole(s);
+      if (hasResult && resultStation !== s) {
+        resultStation = s;
+        const bank = DESCRIPTIONS[s]; result.textContent = bank[Math.floor(Math.random() * bank.length)];
+      }
+    }
+    function finishSpin() {
+      speed = 0; angle = spinTarget % (2 * Math.PI);
+      const selected = (6 - Math.round(angle / (Math.PI / 3))) % 6;
+      progress = selected / 6; hoverIdx = -1; roleIdx = selected;
+      roleEl.classList.remove('is-reeling'); roleEl.removeAttribute('aria-hidden');
+      roleEl.textContent = WORDS[selected]; reel = null; hasResult = true; resultStation = -1;
+      result.removeAttribute('aria-busy'); highlight();
+    }
+    spinButton.addEventListener('click', () => {
+      writeFrom = tourFrom = null; writePending = tourPending = false; toured = true; drawMark(1);
+      active = true; hoverIdx = -1;
+      if (grabbed >= 0) { inv[grabbed] = 1; grabbed = -1; }
+      if (reduceMotion) {
+        spinTarget = angle + Math.PI / 3; finishSpin(); fillRing(); placeCards(); return;
+      }
+      if (!reel) {
+        if (roleAnim) { roleAnim.cancel(); roleAnim = null; }
+        reel = document.createElement('span'); reel.className = 'ed-role-reel';
+        for (const word of [WORDS[0], ...WORDS.slice(1).reverse(), WORDS[0]]) {
+          const row = document.createElement('span'); row.textContent = word; reel.append(row);
+        }
+        roleEl.replaceChildren(reel); roleEl.classList.add('is-reeling'); roleEl.setAttribute('aria-hidden', 'true');
+      }
+      speed = Math.min(12, speed + 3 + Math.random() * 2);
+      spinTarget = Math.ceil((angle + speed * speed / 6) / (Math.PI / 3)) * (Math.PI / 3);
+      braking = speed * speed / (2 * (spinTarget - angle));
+      result.textContent = ''; result.setAttribute('aria-busy', 'true');
+      cards.forEach((c) => c.classList.remove('is-front')); wake();
+    });
+    spinButton.hidden = false;
     // the star writes the M: two masked strokes, a star head riding the stroke end
     const markPaths = [...stage.querySelectorAll('.ed-mark-reveal')];
     const markStar = stage.querySelector('.ed-mark-star');
@@ -93,7 +180,14 @@
       markStar.style.opacity = w < 0.92 ? '1' : String(Math.max(0, (1 - w) / 0.08));
     }
     layout(); highlight();
-    let active = false;   // the observer reads it before the static branches return, and they never set it
+    let active = false;
+    api.show = () => {
+      active = true; layout(); render();
+      if (gpuReady && !toured) { toured = true; drawMark(0); writePending = true; }
+      if (gpuReady || speed > 0) wake();
+    };
+    api.hide = () => { active = false; };
+    api.theme = () => { if (active) render(); };
     new ResizeObserver(() => { if (layout() && active) render(); }).observe(stage);
     if (reduceMotion) return api;
     let gl = null;
@@ -126,7 +220,6 @@
     const emptyVao = gl.createVertexArray(); gl.bindVertexArray(emptyVao);
     function distC(i, j, L, alpha, h) { const wi = inv[i], wj = inv[j], w = wi + wj; if (!w) return; const dx = x[2 * i] - x[2 * j], dy = x[2 * i + 1] - x[2 * j + 1], d = Math.hypot(dx, dy); if (d < 1e-6) return; const dl = -(d - L) / (w + alpha / (h * h)); x[2 * i] += wi * dl * dx / d; x[2 * i + 1] += wi * dl * dy / d; x[2 * j] -= wj * dl * dx / d; x[2 * j + 1] -= wj * dl * dy / d; }
     function tether(i, alpha, h) { const wi = inv[i]; if (!wi) return; const dx = x[2 * i] - rest[2 * i], dy = x[2 * i + 1] - rest[2 * i + 1], d = Math.hypot(dx, dy); if (d < 1e-6) return; const dl = -d / (wi + alpha / (h * h)); x[2 * i] += wi * dl * dx / d; x[2 * i + 1] += wi * dl * dy / d; }
-    let grabbed = -1, gx = 0, gy = 0, gox = 0, goy = 0;
     function simulate(dt) {
       const S = 8, h = dt / S, damp = Math.exp(-3.2 * h); let maxV = 0;
       for (let s = 0; s < S; s++) {
@@ -143,6 +236,7 @@
     let shown = false;
     function render() {
       placeCards();
+      if (!gpuReady) return;
       const d = dprCap(), r = canvas.getBoundingClientRect();
       const w = Math.max(1, Math.round(r.width * d)), hh = Math.max(1, Math.round(r.height * d));
       if (canvas.width !== w || canvas.height !== hh) { canvas.width = w; canvas.height = hh; }
@@ -163,24 +257,31 @@
       gl.bindVertexArray(emptyVao);
       if (!shown) { shown = true; orbit.style.visibility = 'hidden'; }
     }
-    let running = false, lastT = 0, tourFrom = null, tourPending = false, toured = false, settleT = 0, scrollFlow = 0, writeFrom = null, writePending = false;
     function frame(ts) {
       if (!active) { running = false; return; }
-      const now = ts / 1000, dt = lastT ? Math.min(1 / 30, Math.max(1 / 240, now - lastT)) : 1 / 60; lastT = now;
+      const now = ts / 1000, elapsed = lastT ? Math.max(0, now - lastT) : 1 / 60, dt = Math.min(1 / 30, Math.max(1 / 240, elapsed)); lastT = now;
       if (writePending) { writePending = false; writeFrom = now; }
       if (writeFrom !== null) { const w = clamp01((now - writeFrom) / WRITE_S); drawMark(w); if (w >= 1) { writeFrom = null; tourPending = true; } }
       if (tourPending) { tourPending = false; tourFrom = now; }
       if (tourFrom !== null) { const t = clamp01((now - tourFrom) / TOUR_S); progress = t; highlight(); if (t >= 1) tourFrom = null; }   // WRITE_S + TOUR_S: under 5 s, then it stops
-      const maxV = simulate(dt); render();
+      let maxV = 0;
+      if (speed > 0) {
+        const spinDt = Math.min(elapsed, speed / braking), next = Math.max(0, speed - braking * elapsed);
+        angle += (speed + next) * spinDt / 2; speed = next;
+        if (!speed) finishSpin();
+        fillRing(); spinIcon.style.transform = `rotate(${angle}rad)`;
+        if (reel) reel.style.transform = `translateY(-${(angle / (Math.PI / 3) % 6) * 1.2}em)`;
+      } else if (gpuReady) maxV = simulate(dt);
+      render();
       settleT = grabbed < 0 && maxV < 2 ? settleT + dt : 0;
-      if (writePending || writeFrom !== null || tourPending || tourFrom !== null || grabbed >= 0 || settleT < 0.4) requestAnimationFrame(frame); else running = false;
+      if (speed > 0 || writePending || writeFrom !== null || tourPending || tourFrom !== null || grabbed >= 0 || settleT < 0.4) requestAnimationFrame(frame); else running = false;
     }
     function wake() { if (active && !running) { running = true; lastT = 0; requestAnimationFrame(frame); } }
     cards.forEach((c, k) => {
-      c.addEventListener('pointerenter', (e) => { if (e.pointerType === 'touch') return; hoverIdx = k; highlight(); });
+      c.addEventListener('pointerenter', (e) => { if (e.pointerType === 'touch' || speed > 0) return; hoverIdx = k; highlight(); });
       c.addEventListener('pointerleave', () => { hoverIdx = -1; highlight(); });
       c.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch') return;
+        if (e.pointerType === 'touch' || speed > 0 || !gpuReady) return;
         const r = stage.getBoundingClientRect(); grabbed = k * STEP; inv[grabbed] = 0;
         gx = e.clientX - r.left; gy = e.clientY - r.top; gox = x[2 * grabbed] - gx; goy = x[2 * grabbed + 1] - gy;
         try { c.setPointerCapture(e.pointerId); } catch (err) { /* synthetic events */ }
@@ -192,15 +293,14 @@
     });
     window.addEventListener('scroll', () => { if (!active) return; const r = stage.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; scrollFlow = window.scrollY / 1400; render(); }, { passive: true });
     canvas.addEventListener('webglcontextlost', (e) => {
-      e.preventDefault(); active = false; orbit.style.visibility = 'visible';
+      e.preventDefault(); gpuReady = false; orbit.style.visibility = 'visible';
       canvas.style.display = 'none'; section.classList.remove('is-draggable');   // the dead canvas would cover the ellipse
-      writeFrom = tourFrom = null; writePending = tourPending = false;   // the loop stops here, so show the end state now
-      drawMark(1); progress = 1; hoverIdx = -1; highlight();
-      api.show = () => {};   // the loss is final: re-entering the viewport must not revive the loop on a dead context
+      writeFrom = tourFrom = null; writePending = tourPending = false;   // the intro stops here; an explicit spin can continue through the DOM
+      drawMark(1); if (!hasResult) progress = 1; hoverIdx = -1; highlight();
+      toured = true;   // the canvas stays off; explicit spins still work through the DOM
+      if (!speed) { layout(); render(); }
     });
-    api.show = () => { active = true; layout(); render(); if (!toured) { toured = true; drawMark(0); writePending = true; } wake(); };
-    api.hide = () => { active = false; };
-    api.theme = () => { if (active) render(); };
+    gpuReady = true;
     section.classList.add('is-draggable');   // the pointer handlers are attached: the CSS shows the drag hint
     drawMark(0);   // live path only: the first paint must not show the full M before show() starts the write
     return api;
