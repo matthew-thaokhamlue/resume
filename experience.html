@@ -30,7 +30,7 @@
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
   <link rel="stylesheet" href="assets/css/tailwind.css?v=20260929" />
-    <link rel="stylesheet" href="assets/css/editorial.css?v=20260929" />
+    <link rel="stylesheet" href="assets/css/editorial.css?v=20260929-ai-dialog" />
 
     <!-- Fonts: Instrument Sans (display and body), IBM Plex Mono, Material Symbols -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -94,7 +94,7 @@
 
         <main class="relative z-10 flex flex-1 flex-col">
 
-            <!-- ── Page head and the five role panels, each opening a full-screen reveal ── -->
+            <!-- ── Page head and career panels, each opening a full-screen reveal ── -->
             <div class="ed-shell">
 <section class="ed-page-head" id="top" aria-labelledby="page-title"><h1 id="page-title">Experience</h1><p><a class="ed-page-head__link" href="cv.html" target="_blank" rel="noopener noreferrer" data-ga-event="resume_downloaded" data-ga-params='{"file_name":"cv.html","page_location":"experience"}'>View CV</a></p></section>
 <div class="ed-panels">
@@ -109,37 +109,56 @@
   <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
   <section class="ed-reveal__inner" id="role-sema">
     <header class="ed-reveal__head"><p class="ed-reveal__kicker" data-role-company>Sema Technologies Inc.</p><h2 class="ed-reveal__title" data-role-title id="reveal-sema-title">Senior AI Product Manager</h2><p class="ed-reveal__meta" data-role-meta>Mar 2026 – Present · Dresden &amp; Berlin, Germany</p></header>
-    <div class="ed-reveal__body"><p data-role-summary>Product manager for Liz. Liz shows leaders whether the company is building what it decided to build, and what to fix when it isn’t. It reads the tools teams already use (Jira, GitHub, Slack and meetings) and follows each priority down to the work and the code shipped against it. Every answer cites its sources, and nothing is written back until a person approves it. Two squads: Integrations, then Chat and Agent UX.</p><section class="ed-how" aria-label="How I work"><h3>How I work</h3><div class="ed-how__cols"><div><h4>With engineering</h4><p>I stay close to the client, so I know the pain point and the need behind the request. I turn that into a specification for engineering: the what, the why, and the context the engineers need to design the solution.</p><p>AI tools let me do design and front-end work too. I ship small front-end changes myself, so engineers spend their time on the backend and the logic.</p></div><div><h4>With customers</h4><p>We work in a forward-deployed model. Our Customer Success and professional-services teams sit with the client and write the requirement. As product, I read those requirements across all clients and decide for each one:</p><ol><li>configure something that already exists,</li><li>add a building block that works for every client, or</li><li>say no.</li></ol><p>Engineering builds each building block once, and the client team configures it for each client.</p></div></div></section><ul class="ed-reveal__list"><li>Cut inefficient daily AI spend <b>~39% (~$3,250/month)</b> with no loss of customer coverage, by auto-scaling driven by per-user tracking events; reported to the CEO.</li><li>Built and owns the AI cost dashboard that reconciles spend against the provider’s invoice every day. In the first invoice crosswalk, internal and billed cost agreed <b>to within 0.26%</b>.</li><li>Removed a recurring enterprise deal blocker with an AI-native release-note pipeline that satisfied <b>SOC 2</b>. A named person approves every note before it is published by hand.</li><li>Turned Liz from a read-only analytics tab into a colleague that takes governed actions in the org’s own tools: Slack, Email, Confluence, Jira write-back and Linear parity, with a human check on every write-back.</li><li>Led the build of the guardrail rules for Liz’s write-back actions, and maintains them for each customer organisation.</li><li>Scaled the integration roadmap from planning to production rollout, connecting the org’s core work systems (Jira, GitHub, Slack, Zoom, Linear, document sources) into Liz.</li><li>Led the Chat and Agent UX releases: an org-wide document library, one shared calculation per insight, role-based access with tier gating, customer-facing AI-spend limits, and Microsoft Teams at Slack parity.</li></ul></div>
+    <div class="ed-reveal__body">
+      <p data-role-summary>Product manager for Liz, Sema’s AI agent connecting company priorities to work and shipped code. Answers cite sources; actions require human approval. Own delivery across two squads: Integrations, then Chat and Agent UX.</p>
+      <section class="ed-how" aria-label="How I work"><h3>How I work</h3><div class="ed-how__cols"><div><h4>With engineering</h4><p>I turn customer problems into specifications and use AI tools to ship small front-end changes. Engineering can focus on backend logic.</p></div><div><h4>With customers</h4><p>I work with Customer Success and professional services to identify needs across accounts. I decide what to configure, what to build for reuse, and what to decline.</p></div></div></section>
+      <ul class="ed-reveal__list">
+        <li>Cut inefficient daily AI spend <b>~39% (~$3,250/month)</b> through usage-based auto-scaling, with no loss of customer coverage. Built and own the daily AI cost dashboard. Its first invoice reconciliation matched provider billing <b>within 0.26%</b>.</li>
+        <li>Removed a recurring enterprise deal blocker with an AI-assisted release-note process that met <b>SOC 2</b> requirements. A named person approves each note before manual publication.</li>
+        <li>Led Liz’s expansion from read-only analytics to <b>governed actions</b> across Slack, email, Confluence, Jira, and Linear. Led the build of customer-specific approval rules and maintain them.</li>
+        <li>Owned the <b>integration roadmap through production rollout</b> across Jira, GitHub, Slack, Zoom, Linear, and document sources.</li>
+        <li>Led <b>Chat and Agent UX</b> releases covering a shared document library, role-based access with tier gating, shared calculations, and customer-facing AI-spend limits. Delivered Microsoft Teams at Slack parity.</li>
+      </ul>
+    </div>
     <aside class="ed-reveal__side" aria-label="Scope"><h3>Scope</h3><ul><li data-role-skill>AI cost governance</li><li data-role-skill>Integrations</li><li data-role-skill>Governed agent actions</li><li data-role-skill>SOC 2 release notes</li><li data-role-skill>Chat and Agent UX</li></ul></aside>
   </section>
 </dialog>
-<button class="ed-panel" type="button" data-area="l" data-action="open-reveal" data-reveal="reveal-labforward" aria-haspopup="dialog" aria-label="Labforward GmbH, Senior Product Manager, Nov 2024 – Nov 2025">
-  <span class="ed-mark" style="-webkit-mask-image:url('images/logos/labforward.png');mask-image:url('images/logos/labforward.png');--ratio:1.562;--h:92px"></span>
-  <span class="ed-panel__foot"><span class="ed-panel__title">Senior Product Manager</span><span class="ed-panel__dates">Nov 2024 – Nov 2025</span></span>
+<button class="ed-panel" type="button" data-area="l" data-action="open-reveal" data-reveal="reveal-labforward" aria-haspopup="dialog" aria-label="Labforward GmbH (incl. LabTwin, acquired), Senior / Technical Product Manager, Jan 2023 – Nov 2025">
+  <span class="ed-panel__logos" aria-hidden="true">
+    <span class="ed-mark" style="-webkit-mask-image:url('images/logos/labforward.png');mask-image:url('images/logos/labforward.png');--ratio:1.562;--h:62px"></span>
+    <span class="ed-mark" style="-webkit-mask-image:url('images/logos/labtwin.png');mask-image:url('images/logos/labtwin.png');--ratio:4.161;--h:28px"></span>
+  </span>
+  <span class="ed-panel__foot"><span class="ed-panel__title">Senior / Technical Product Manager</span><span class="ed-panel__dates">Jan 2023 – Nov 2025</span></span>
   <span class="ed-chip" aria-hidden="true">Info</span>
 </button>
 <dialog class="ed-reveal" id="reveal-labforward" aria-labelledby="reveal-labforward-title">
   <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
-  <section class="ed-reveal__inner" id="role-labforward">
-    <header class="ed-reveal__head"><p class="ed-reveal__kicker" data-role-company>Labforward GmbH</p><h2 class="ed-reveal__title" data-role-title id="reveal-labforward-title">Senior Product Manager</h2><p class="ed-reveal__meta" data-role-meta>Nov 2024 – Nov 2025 · Berlin, Germany</p></header>
-    <div class="ed-reveal__body"><p data-role-summary>Electronic lab notebook and lab-operations software that helps R&amp;D scientists record, standardise and run experiments. Led delivery of Laboperator after the LabTwin acquisition, with direct ownership of customer-critical accounts and AI workspace expansion.</p><section class="ed-how" aria-label="How I work"><h3>How I work</h3><div class="ed-how__cols"><div><h4>With engineering</h4><p>I introduced rapid prototyping cycles for product ideas. I owned the BI automation of reports and data pipelines, in place of ad-hoc report requests.</p></div><div><h4>With customers</h4><p>For the at-risk enterprise account, I rebuilt the collaboration between Product, Engineering and the customer on deliverables, timelines and SLAs.</p></div></div></section><ul class="ed-reveal__list"><li>Contributed to a <b>$500K</b> enterprise contract renewal by rebuilding the collaboration between Product, Engineering and the customer on deliverables, timelines and SLAs for the at-risk account.</li><li>Cut prototype validation <b>from days to hours</b> by introducing rapid prototyping cycles.</li><li>Turned internal reporting into a <b>daily leadership decision input</b> by owning the BI automation of reports and data pipelines.</li></ul></div>
-    <aside class="ed-reveal__side" aria-label="Scope"><h3>Scope</h3><ul><li data-role-skill>Enterprise accounts</li><li data-role-skill>Rapid prototyping</li><li data-role-skill>BI automation</li><li data-role-skill>AI workspace</li></ul></aside>
-  </section>
+  <div class="ed-reveal__inner">
+    <header class="ed-reveal__head"><h2 class="ed-reveal__title" id="reveal-labforward-title">Labforward GmbH (incl. LabTwin, acquired)</h2><p class="ed-reveal__meta">Jan 2023 – Nov 2025 · Berlin, Germany</p></header>
+    <div class="ed-reveal__body ed-reveal__body--wide"><p>I joined LabTwin as Technical Product Manager for its voice-AI lab assistant. I then owned Labforward’s core lab-operations products through and after the acquisition. Across both products, I owned the roadmap, delivery, and customer-critical accounts.</p><section class="ed-how" aria-label="How I work"><h3>How I work</h3><div class="ed-how__cols"><div><h4>With engineering</h4><p>I used rapid prototypes to validate product ideas. I coordinated releases with engineering and co-led speech-recognition retraining with data scientists.</p></div><div><h4>With customers</h4><p>I worked with scientists and enterprise customers on lab workflows and integrations. I aligned Product, Engineering, and customer teams on deliverables, timelines, and SLAs.</p></div></div></section></div>
+    <section class="ed-role" id="role-labforward" aria-labelledby="labforward-role-title">
+      <header class="ed-reveal__head"><h3 class="ed-role__title" id="labforward-role-title"><span data-role-title>Senior Product Manager</span> · <span data-role-company>Labforward</span></h3><p class="ed-reveal__meta" data-role-meta>Nov 2024 – Nov 2025 · Berlin, Germany</p></header>
+      <div class="ed-reveal__body"><p data-role-summary>Electronic lab notebook and lab-operations software that helps R&amp;D scientists record, standardize, and run experiments. Continued product ownership after Labforward acquired LabTwin.</p><ul class="ed-reveal__list">
+        <li>Rebuilt team collaboration and customer engagement loops, directly contributing to a <b>$500K enterprise contract renewal</b>. Coordinated Product, Engineering, and customer teams for the at-risk account.</li>
+        <li>Introduced rapid prototyping cycles, reducing validation time <b>from days to hours</b> and accelerating customer feedback into the roadmap.</li>
+        <li>Owned BI automation of internal reporting and data pipelines. The automated reports replaced ad-hoc requests and became a <b>daily leadership decision input</b>.</li>
+      </ul></div>
+      <aside class="ed-reveal__side" aria-label="Labforward scope"><h3>Scope</h3><ul><li data-role-skill>Enterprise accounts</li><li data-role-skill>Rapid prototyping</li><li data-role-skill>BI automation</li></ul></aside>
+    </section>
+    <section class="ed-role" id="role-labtwin" aria-labelledby="labtwin-role-title">
+      <header class="ed-reveal__head" id="reveal-labtwin"><h3 class="ed-role__title" id="labtwin-role-title"><span data-role-title>Technical Product Manager</span> · <span data-role-company>LabTwin</span></h3><p class="ed-reveal__meta" data-role-meta>Jan 2023 – Nov 2024 · Berlin, Germany</p></header>
+      <div class="ed-reveal__body"><p data-role-summary>The world’s first voice-powered AI lab assistant, letting scientists capture data and pull up information hands-free at the bench. Product ownership continued at Labforward after the acquisition.</p><ul class="ed-reveal__list">
+        <li>Led the migration of intent recognition to <b>GPT-3.5</b> in 2023. Shipped LLM-powered understanding into a production voice pipeline for pharma and biotech customers.</li>
+        <li>Tripled deployment frequency <b>from 4 to 12 production releases per year</b> by streamlining release coordination with engineering.</li>
+        <li>Drove speech recognition to <b>95% scientific-term accuracy</b> for key customers. Co-led retraining with Azure custom speech training, using customer-specific glossaries and real voice data. Designed the training strategy to cut its cost.</li>
+        <li>Drove an <b>SAP integration</b> workstream to a customer pilot. The pilot tested transferring LabTwin-captured lab data into the customer’s SAP environment via the SAP API.</li>
+        <li>Mentored a junior PM to full independence; they went on to own their own product area.</li>
+      </ul></div>
+      <aside class="ed-reveal__side" aria-label="LabTwin scope"><h3>Scope</h3><ul><li data-role-skill>Voice AI</li><li data-role-skill>LLM in production</li><li data-role-skill>Integrations</li><li data-role-skill>Release coordination</li></ul></aside>
+    </section>
+  </div>
 </dialog>
-<button class="ed-panel" type="button" data-area="t" data-action="open-reveal" data-reveal="reveal-labtwin" aria-haspopup="dialog" aria-label="LabTwin GmbH, Technical Product Manager, Jan 2023 – Nov 2024">
-  <span class="ed-mark" style="-webkit-mask-image:url('images/logos/labtwin.png');mask-image:url('images/logos/labtwin.png');--ratio:4.161;--h:56px"></span>
-  <span class="ed-panel__foot"><span class="ed-panel__title">Technical Product Manager</span><span class="ed-panel__dates">Jan 2023 – Nov 2024</span></span>
-  <span class="ed-chip" aria-hidden="true">Info</span>
-</button>
-<dialog class="ed-reveal" id="reveal-labtwin" aria-labelledby="reveal-labtwin-title">
-  <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
-  <section class="ed-reveal__inner" id="role-labtwin">
-    <header class="ed-reveal__head"><p class="ed-reveal__kicker" data-role-company>LabTwin GmbH</p><h2 class="ed-reveal__title" data-role-title id="reveal-labtwin-title">Technical Product Manager</h2><p class="ed-reveal__meta" data-role-meta>Jan 2023 – Nov 2024 · Berlin, Germany</p></header>
-    <div class="ed-reveal__body"><p data-role-summary>The world’s first voice-powered AI lab assistant, which lets scientists capture data and pull up information hands-free at the bench. Owned the roadmap for the voice agent and the integrations.</p><section class="ed-how" aria-label="How I work"><h3>How I work</h3><div class="ed-how__cols"><div><h4>With engineering</h4><p>I coordinated the releases across the team, and I ran the speech-recognition retraining programme with the data scientists.</p></div><div><h4>With customers</h4><p>I owned the integrations with customer systems, SAP among them, for pharma and biotech customers.</p></div></div></section><ul class="ed-reveal__list"><li>Tripled deployment frequency <b>from 4 to 12 production releases a year</b> through release coordination.</li><li>Maintained <b>95% scientific-term accuracy (5% WER)</b> in production for specific customers by running the speech-recognition retraining programme with data scientists.</li><li>Led the migration of the product’s intent recognition to GPT-3.5 in 2023, putting an LLM into the production speech pipeline for pharma and biotech customers.</li><li>Owned the whole integrations system. The SAP integration delivered lab data into customer SAP systems and reached customer pilot.</li><li>Mentored a junior PM to independent contributor, who took over their own product area.</li></ul></div>
-    <aside class="ed-reveal__side" aria-label="Scope"><h3>Scope</h3><ul><li data-role-skill>Voice AI</li><li data-role-skill>LLM in production</li><li data-role-skill>Integrations</li><li data-role-skill>Release coordination</li></ul></aside>
-  </section>
-</dialog>
-<button class="ed-panel" type="button" data-area="y" data-action="open-reveal" data-reveal="reveal-thryve" aria-haspopup="dialog" aria-label="Thryve GmbH, Product Owner, Feb 2019 – Dec 2022">
+<button class="ed-panel" type="button" data-area="t" data-action="open-reveal" data-reveal="reveal-thryve" aria-haspopup="dialog" aria-label="Thryve GmbH, Product Owner, Feb 2019 – Dec 2022">
   <span class="ed-mark" style="-webkit-mask-image:url('images/logos/thryve.png');mask-image:url('images/logos/thryve.png');--ratio:2.942;--h:60px"></span>
   <span class="ed-panel__foot"><span class="ed-panel__title">Product Owner</span><span class="ed-panel__dates">Feb 2019 – Dec 2022</span></span>
   <span class="ed-chip" aria-hidden="true">Info</span>
@@ -152,7 +171,7 @@
     <aside class="ed-reveal__side" aria-label="Scope"><h3>Scope</h3><ul><li data-role-skill>APIs and SDKs</li><li data-role-skill>Partner integrations</li><li data-role-skill>Onboarding programme</li><li data-role-skill>QA systems</li></ul></aside>
   </section>
 </dialog>
-<button class="ed-panel" type="button" data-area="e" data-action="open-reveal" data-reveal="reveal-ey" aria-haspopup="dialog" aria-label="Ernst &amp; Young, Senior Risk Consultant, Aug 2016 – Feb 2018">
+<button class="ed-panel" type="button" data-area="y" data-action="open-reveal" data-reveal="reveal-ey" aria-haspopup="dialog" aria-label="Ernst &amp; Young, Senior Risk Consultant, Aug 2016 – Feb 2018">
   <span class="ed-mark" style="-webkit-mask-image:url('images/logos/ey.png');mask-image:url('images/logos/ey.png');--ratio:1.187;--h:64px"></span>
   <span class="ed-panel__foot"><span class="ed-panel__title">Senior Risk Consultant</span><span class="ed-panel__dates">Aug 2016 – Feb 2018</span></span>
   <span class="ed-chip" aria-hidden="true">Info</span>
@@ -165,7 +184,7 @@
     <aside class="ed-reveal__side" aria-label="Scope"><h3>Scope</h3><ul><li data-role-skill>Operational risk</li><li data-role-skill>IT General Controls</li><li data-role-skill>Process design</li></ul></aside>
   </section>
 </dialog>
-<button class="ed-panel ed-panel--edu" type="button" data-area="k" data-action="open-reveal" data-reveal="reveal-education" aria-haspopup="dialog">
+<button class="ed-panel ed-panel--edu" type="button" data-area="e" data-action="open-reveal" data-reveal="reveal-education" aria-haspopup="dialog">
   <span class="ed-panel__label">Education &amp; Languages</span>
   <span class="ed-chip" aria-hidden="true">Info</span>
 </button>
