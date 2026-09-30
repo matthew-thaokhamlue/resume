@@ -97,7 +97,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
 
   <!-- Editorial design layer (loaded after Tailwind so @layer takes precedence) -->
-  <link rel="stylesheet" href="assets/css/editorial.css?v=20260929-mobile-logo" />
+  <link rel="stylesheet" href="assets/css/editorial.css?v=20260929-testimonials" />
 
   <style>
     .material-symbols-outlined {
@@ -242,34 +242,83 @@
 </section>
     </div>
 
-    <!-- ────────────────  INLINE QUOTES  ──────────────── -->
+    <!-- ────────────────  TESTIMONIAL TILES  ──────────────── -->
     <section class="ed-quotes" id="recommendations">
       <div class="ed-quotes__inner">
         <p class="ed-eyebrow reveal">In their words</p>
 
-        <button type="button" class="ed-quote" data-action="open-testimonial"
-          data-name="Jeroen de Haas" data-role="CPO at Labforward"
-          data-image="images/jeroen-de-haas.png"
-          data-text="I&apos;ve had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner&mdash;someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I&apos;ve truly seen him grow&mdash;from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn&apos;t just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you&apos;re looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can&apos;t wait to see where his talents take him next.">
-          <p class="ed-quote__text">Matt is a natural team player who listens, collaborates, and makes everyone around him better.</p>
-          <p class="ed-quote__attr"><strong>Jeroen de Haas</strong> CPO at Labforward</p>
-        </button>
-
-        <button type="button" class="ed-quote" data-action="open-testimonial"
-          data-name="Mark Dominick Flores" data-role="Senior iOS Engineer at LabTwin"
-          data-image="images/mark-flores.png"
-          data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He&apos;s also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he&apos;s great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I&apos;d work with him again in a heartbeat. He&apos;s a huge asset to any product or engineering team.">
-          <p class="ed-quote__text">A remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog.</p>
-          <p class="ed-quote__attr"><strong>Mark Dominick Flores</strong> Senior iOS Engineer at LabTwin</p>
-        </button>
-
-        <button type="button" class="ed-quote" data-action="open-testimonial"
-          data-name="Paul Burggraf" data-role="Founder at Thryve"
-          data-image="images/PB.jpeg"
-          data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve&apos;s growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly.">
-          <p class="ed-quote__text">He scaled a complex IT service in a highly regulated field of healthcare from 1k end users to over 1 million.</p>
-          <p class="ed-quote__attr"><strong>Paul Burggraf</strong> Founder at Thryve</p>
-        </button>
+        <div class="ed-mosaic ed-mosaic--quotes">
+          <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
+            aria-haspopup="dialog" aria-controls="testimonial-modal"
+            data-name="Robin Genolet" data-role="Director Innovation &amp; AI at Medgate"
+            data-image=""
+            data-text="At Medgate, we partnered with Berlin-based company mHealth Pioneers GmbH and use their Thryve product since July 2021. We use Thryve&#x27;s standardized API and SDK to allow our patients to securely share with us sensor-generated data from hundreds of health devices via our mobile app. We then make the data available to our Doctors to support their teleconsultations. Their API standardizes the dozens of data formats used by a wide range of brands like Garmin, Fitbit, and Apple Healthkit. Thryve allowed us to minimize the duration of our development phase and takes care of the maintenance necessary when a data provider updates its API. We are both happy with the product and the team behind it: Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
+            style="--quote-bg:#dce8d5;--quote-ink:#111111;--quote-accent:#e7def0">
+            <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0h120v120z"/><circle cx="180" cy="60" r="60" fill="var(--quote-accent)"/><path d="m120 0 120 120m-120-96 96 96m-96-72 72 72m-72-48 48 48m-48-24 24 24" fill="none" stroke="currentColor" opacity=".35"/></svg>
+            <span class="ed-quote__text">We are both happy with the product and the team behind it</span>
+            <span class="ed-quote__attr"><strong>Robin Genolet</strong><span>Director Innovation &amp; AI at Medgate</span></span>
+          </button>
+          <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
+            aria-haspopup="dialog" aria-controls="testimonial-modal"
+            data-name="Paul Burggraf" data-role="Founder at Thryve"
+            data-image="images/PB.jpeg"
+            data-text="Matthew joined Thryve as the 7th employee. He has been pivotal in building our quality assurance team, our customer operations team and our product team. As a product owner, he has managed to scale a complex and unique IT service in a highly regulated and demanding field of health care from 1k end users to over 1 million end users. Matthew has steered our agile development process as a scrum master. He worked closely with the c-level, front end team, back end team and quality assurance team to plan, execute and review sprints and releases. In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding. Matthew massively contributed to Thryve&#x27;s growth and professionalization. The whole team is grateful to have worked with him and sad to let him go. I am sure Matthew will continue to manage big IT projects and scale complex operations convincingly."
+            style="--quote-bg:#f4f4f2;--quote-ink:#111111;--quote-accent:#9c4a2a">
+            <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="var(--quote-accent)" d="M0 120a120 120 0 0 1 240 0z"/><path d="M20 120a100 100 0 0 1 200 0M40 120a80 80 0 0 1 160 0M60 120a60 60 0 0 1 120 0M80 120a40 40 0 0 1 80 0" fill="none" stroke="currentColor" opacity=".6"/></svg>
+            <span class="ed-quote__text">In this role, he showed exceptional dedication, hands-on attitude and a great technical understanding.</span>
+            <span class="ed-quote__attr"><strong>Paul Burggraf</strong><span>Founder at Thryve</span></span>
+          </button>
+          <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
+            aria-haspopup="dialog" aria-controls="testimonial-modal"
+            data-name="Jeroen de Haas" data-role="CPO at Labforward"
+            data-image="images/jeroen-de-haas.png"
+            data-text="I&#x27;ve had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I&#x27;ve truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn&#x27;t just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you&#x27;re looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can&#x27;t wait to see where his talents take him next."
+            style="--quote-bg:#9c4a2a;--quote-ink:#ffffff;--quote-accent:#dce8d5">
+            <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0h120v120H0z" opacity=".16"/><path fill="var(--quote-accent)" d="M120 0h120v120z"/><circle cx="120" cy="60" r="42" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 0v120m12-120v120m12-120v120m12-120v120m12-120v120m12-120v120m12-120v120m12-120v120" fill="none" stroke="currentColor" opacity=".3"/></svg>
+            <span class="ed-quote__text">Matt is a natural team player who listens, collaborates, and makes everyone around him better.</span>
+            <span class="ed-quote__attr"><strong>Jeroen de Haas</strong><span>CPO at Labforward</span></span>
+          </button>
+          <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
+            aria-haspopup="dialog" aria-controls="testimonial-modal"
+            data-name="Ignatius Reza" data-role="CTO at Laboperator"
+            data-image=""
+            data-text="Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use. He&#x27;s also a great person to have in the team. Great presence, character, motivation, and always willing to support."
+            style="--quote-bg:#e7def0;--quote-ink:#111111;--quote-accent:#9c4a2a">
+            <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="var(--quote-accent)" d="M0 0h120v120H0z"/><path fill="currentColor" d="m120 120 120-120v120z"/><path d="M12 12h96v96H12zM24 24h72v72H24zM36 36h48v48H36zM48 48h24v24H48z" fill="none" stroke="currentColor" opacity=".4"/></svg>
+            <span class="ed-quote__text">Matthew is a great product manager with technical chops.</span>
+            <span class="ed-quote__attr"><strong>Ignatius Reza</strong><span>CTO at Laboperator</span></span>
+          </button>
+          <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
+            aria-haspopup="dialog" aria-controls="testimonial-modal"
+            data-name="Mark Dominick Flores" data-role="Senior iOS Engineer at LabTwin"
+            data-image="images/mark-flores.png"
+            data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He&#x27;s also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he&#x27;s great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I&#x27;d work with him again in a heartbeat. He&#x27;s a huge asset to any product or engineering team."
+            style="--quote-bg:#dbe7f2;--quote-ink:#111111;--quote-accent:#9c4a2a">
+            <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 120 120 0v120z"/><path fill="var(--quote-accent)" d="M120 0h120v120z"/><path d="m0 0 120 120M0 24l96 96M0 48l72 72M0 72l48 48M0 96l24 24" stroke="currentColor" fill="none" opacity=".35"/></svg>
+            <span class="ed-quote__text">I worked with him on a number of features, and his contributions were critical to getting them shipped.</span>
+            <span class="ed-quote__attr"><strong>Mark Dominick Flores</strong><span>Senior iOS Engineer at LabTwin</span></span>
+          </button>
+          <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
+            aria-haspopup="dialog" aria-controls="testimonial-modal"
+            data-name="Sumner Price" data-role="Product Designer"
+            data-image=""
+            data-text="I had the pleasure of working with Matt on many projects within our product team. He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned. He was my go-to person whenever I felt uncertain about something. On top of that, his organizational skills—especially in creating PRDs and managing tickets—were invaluable. Working with him was truly a joy!"
+            style="--quote-bg:#111111;--quote-ink:#f4f4f2;--quote-accent:#dbe7f2">
+            <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="60" fill="var(--quote-accent)"/><path fill="currentColor" d="M120 0h120v120z"/><path d="m0 0 120 120M0 24l96 96M0 48l72 72M0 72l48 48M0 96l24 24" fill="none" stroke="var(--quote-bg)" opacity=".55"/></svg>
+            <span class="ed-quote__text">As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned.</span>
+            <span class="ed-quote__attr"><strong>Sumner Price</strong><span>Product Designer</span></span>
+          </button>
+          <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
+            aria-haspopup="dialog" aria-controls="testimonial-modal"
+            data-name="Thuy Tran" data-role="Software Engineer at Doctorlib"
+            data-image=""
+            data-text="I worked with Matthew for more than 3 years in a cross-functional team where he was the Production Owner. I was extremely impressed with his analytical mind and his ability to dig deep and notice even the small details of a software feature. With his attitude of can-do and let&#x27;s get thing done, as well as his ability to pick things up quickly, his contribution to the team was highly significant and valuable. It was always a pleasure to co-work with him, as he takes his responsibility very seriously while maintaining a pleasant, collaborative discussion. I could always count on him to complete his tasks with full efforts and excellent output, and his supportive nature towards our colleagues."
+            style="--quote-bg:#e4e4e1;--quote-ink:#111111;--quote-accent:#dce8d5">
+            <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="var(--quote-accent)" d="M0 0h120v120H0z"/><path fill="currentColor" d="M120 0a60 60 0 0 1 0 120z"/><path d="M0 0v120M24 0v120M48 0v120M72 0v120M96 0v120M120 0v120" fill="none" stroke="currentColor" opacity=".3"/></svg>
+            <span class="ed-quote__text">his analytical mind and his ability to dig deep and notice even the small details</span>
+            <span class="ed-quote__attr"><strong>Thuy Tran</strong><span>Software Engineer at Doctorlib</span></span>
+          </button>
+        </div>
 
         <div class="ed-quotes__more reveal">
           <a class="ed-link" href="https://www.linkedin.com/in/matthewthaokhamlue/details/recommendations/" target="_blank"
@@ -326,8 +375,8 @@
     </div>
   </footer>
 
-  <!-- Testimonial Modal (kept — used by inline quote click) -->
-  <dialog id="testimonial-modal"
+  <!-- Testimonial dialog — shared by the seven tiles -->
+  <dialog id="testimonial-modal" aria-labelledby="modal-name"
     class="bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full h-full max-w-full max-h-full m-0 items-center justify-center">
     <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" data-testimonial-overlay>
       <div

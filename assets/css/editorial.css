@@ -332,68 +332,38 @@
     .ed-stage__line { display: block; min-width: 4rem; }
   }
 
-  /* ─── Inline quotes ────────────────────────────────────── */
-  .ed-quotes {
-    padding-block: var(--ed-s-8);
-    border-top: 1px solid var(--ed-hairline);
-  }
-  .ed-quotes__inner {
-    max-width: var(--ed-content-max);
-    margin-inline: auto;
-    padding-inline: var(--ed-gutter-x);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--ed-s-7);
-  }
-  .ed-quote {
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-    text-align: left;
-    padding: 0;
-    color: inherit;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--ed-s-3);
-    max-width: 56rem;
-  }
-  .ed-quote__text {
-    font-family: var(--ed-display);
-    font-style: italic;
-    font-size: var(--ed-fz-3xl);
-    line-height: 1.18;
-    letter-spacing: -0.02em;
-    color: var(--ed-ink);
-    margin: 0;
-    transition: color var(--ed-d-base) var(--ed-ease-soft);
-  }
-  .ed-quote__text::before {
-    content: "“";
-    color: var(--ed-accent);
-    margin-right: 0.1em;
-    font-style: normal;
-  }
-  .ed-quote__text::after {
-    content: "”";
-    color: var(--ed-accent);
-    margin-left: 0.05em;
-    font-style: normal;
-  }
-  .ed-quote__attr {
-    font-family: var(--ed-body);
-    font-size: var(--ed-fz-sm);
-    color: var(--ed-ink-mute);
-    letter-spacing: 0.02em;
-  }
-  .ed-quote__attr strong {
-    color: var(--ed-ink-soft);
-    font-weight: 500;
-    margin-right: 0.5em;
-  }
-  .ed-quote:hover .ed-quote__text { color: var(--ed-ink); }
-  .ed-quote:hover .ed-quote__attr { color: var(--ed-ink-soft); }
-  .ed-quotes__more {
-    margin-top: var(--ed-s-4);
+  /* ─── Testimonial tiles ─────────────────────────────────── */
+  .ed-quotes { padding-block: var(--ed-s-8); border-top: 1px solid var(--ed-hairline); }
+  .ed-quotes__inner { max-width: var(--ed-content-max); margin-inline: auto; padding-inline: var(--ed-gutter-x); }
+  .ed-quotes .ed-mosaic { grid-auto-rows: minmax(300px, auto); margin-block: var(--ed-s-5) var(--ed-s-4); }
+  .ed-mosaic--quotes .ed-quote { grid-column: span 3; display: flex; flex-direction: column; gap: 18px; padding: 22px; background: var(--quote-bg); color: var(--quote-ink); }
+  .ed-mosaic--quotes .ed-quote:first-child { grid-column: span 7; grid-row: span 2; }
+  .ed-mosaic--quotes .ed-quote:nth-child(2) { grid-column: span 5; min-height: 360px; }
+  .ed-mosaic--quotes .ed-quote:nth-child(3) { grid-column: span 5; }
+  .ed-mosaic--quotes .ed-quote:nth-child(4) { grid-column: span 4; }
+  .ed-mosaic--quotes .ed-quote:last-child { grid-column: span 2; }
+  .ed-quote__art { width: 100%; height: 72px; flex: 0 0 72px; transition: opacity var(--ed-d-base); }
+  .ed-quote:nth-child(-n+3) .ed-quote__art { flex: 1 1 100px; min-height: 72px; }
+  .ed-quote:first-child .ed-quote__art { flex-basis: 160px; min-height: 120px; }
+  .ed-quote__text { font-family: var(--ed-display); font-size: 1.05rem; line-height: 1.4; }
+  .ed-quote:first-child .ed-quote__text { font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.25; }
+  .ed-quote__text::before { content: "“"; }
+  .ed-quote__text::after { content: "”"; }
+  .ed-quote__attr { display: grid; gap: 4px; margin-top: auto; font-size: 0.75rem; line-height: 1.35; }
+  .ed-quote__attr strong { font-size: 0.95rem; font-weight: 600; }
+  .ed-quote:hover .ed-quote__art { opacity: 0.8; }
+  .ed-mosaic--quotes .ed-quote:focus-visible { outline-color: var(--quote-ink); }
+  @media (max-width: 1100px) {
+    .ed-quotes .ed-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ed-mosaic--quotes .ed-quote { grid-column: auto !important; grid-row: auto !important; min-height: 0; padding: 16px; gap: 14px; }
+    .ed-mosaic--quotes .ed-quote:nth-child(2) { min-height: 0; }
+    .ed-mosaic--quotes > .ed-quote:first-child { grid-column: 1 / -1 !important; }
+    .ed-quote__art, .ed-quote:nth-child(-n+3) .ed-quote__art { flex: 0 0 64px; height: 64px; min-height: 0; }
+    .ed-quote:first-child .ed-quote__art { flex-basis: 100px; height: 100px; }
+    .ed-quote__text { font-size: 0.9rem; line-height: 1.4; }
+    .ed-quote:first-child .ed-quote__text { font-size: 1.15rem; line-height: 1.35; }
+    .ed-quote__attr { font-size: 0.72rem; }
+    .ed-quote__attr strong { font-size: 0.88rem; }
   }
 
   /* ─── Final CTA ────────────────────────────────────────── */
@@ -693,6 +663,7 @@
   #modal-text { color: var(--ed-ink-soft); }
   #modal-role { color: var(--ed-accent-strong); }
   #modal-image { border-color: var(--ed-accent-mute); }
+  #modal-image, #modal-initials { flex-shrink: 0; }
   #modal-initials {
     background: var(--ed-accent-mute);
     color: var(--ed-accent-strong);
