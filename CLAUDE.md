@@ -16,7 +16,7 @@ Pushing this repo uses the personal `gh` account `matthew-thaokhamlue` (not `mat
 
 **Pages:** Each top-level HTML file is a standalone page sharing a common structure:
 - `index.html` — the home page: the loop hero (the star-written M, "Product" plus a role word, six station cards on a ring), four results that open receipts, the How I work band, testimonials, AI Match, contact
-- `experience.html` — a Fibonacci spiral of six tiles (a golden rectangle, 89 x 55): Sema 55, Labforward 34, LabTwin 21, Thryve 13, EY 8 and Education & Languages 5 x 8, each opening its reveal. The Education reveal keeps `id="role-education"`, which ai-match.js reads
+- `experience.html` — a Fibonacci spiral of five tiles, stretched to the top bar’s content width while keeping its fitted height. Its grid uses these proportions: Sema 55, Labforward / LabTwin 34, Thryve 21, EY 13 and Education & Languages 13 x 8. The combined lab reveal keeps both role sections and their AI Match hooks; the old LabTwin fragments open it. The Education reveal keeps `id="role-education"`, which ai-match.js reads
 - `portfolio.html` — a mosaic of eight project tiles that open five project reveals; each reveal links its `portfolio/*.html` case page
 - `certificates.html` — a mosaic of 14 credential tiles; each opens a reveal with a verify link
 - `portfolio/*.html` — editorial case study pages (Labforward, LabTwin, Thryve, Opportunity Paths, Remarcable Living); `portfolio/achievement.html` stays hidden (see SEO below)

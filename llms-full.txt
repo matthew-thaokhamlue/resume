@@ -21,35 +21,52 @@ Senior Product Manager with 7+ years of experience building and scaling B2B SaaS
 ### Senior AI Product Manager — Sema Technologies Inc.
 **Mar 2026 - Present | Dresden & Berlin, Germany**
 
-- Own the integration strategy behind Liz's sensory system, giving Sema's AI-native observability platform the reliable work signals it needs to reason across Product, Engineering, and CS.
-- Took ownership of the platform's daily LLM cost: built auto-scaling driven by per-user tracking events, cutting inefficient daily AI spend ~39% (~$3,250/month) with no loss of coverage; retired dormant subscriptions across multiple customer orgs and caught a duplicate-run billing bug, reporting results directly to the CEO.
-- As product manager across two squads (Integrations, then Chat Experience, including the chat tools), owned the delivery backlog end to end. Turned Liz from read-only analytics into a colleague that acts inside the org's own tools: bi-directional Slack chat, email ingestion, Confluence read+write, governed Jira write-back with policy enforcement and a human check on every write-back, and full Linear parity, all shipped to production.
-- Designed the integration layer across Jira, GitHub, Slack, Zoom, Linear, and document sources into the observability stack feeding Chat, Preset Insights, and action workflows.
-- Removed a recurring enterprise deal blocker: proposed the SOC 2-compliant release-note process in the first weeks after joining, drove the compliance requirement to a decision, and built it out alongside ticket cleanup and recurring PM operations as automated, AI-first product practices.
-- Protected engineering capacity by validating feasibility against real system behaviour before engineering effort was committed: an in-flight spike was stopped once measurement showed the ceiling was architectural, and an enterprise integration request was answered the same day using an already-shipped capability.
-- Gave leadership and stakeholders a weekly basis for go/hold decisions on engineering delivery, used to hold production changes for review and escalate customer-blocking issues; AI-automated the executive delivery report from narrative status into measured, ticket-traceable delivery, and widened its coverage from a single squad to engineering-wide.
-- On Chat Experience, built the platform layer that makes Liz enterprise-sellable: org-wide document grounding for AI answers, role-based access with audit trail, per-role insight assignment without duplicating compute, customer-facing AI cost guardrails, and Microsoft Teams ingestion, the readiness gates for tiered, usage-based pricing.
-- Key skills: AI Product Strategy, AI Cost Governance, LLM Cost Optimization, Integration Strategy, Organizational Observability
 
-### Senior Product Manager — Labforward GmbH
-**Nov 2024 - Nov 2025 | Berlin, Germany**
+Product manager for Liz, Sema’s AI agent connecting company priorities to work and shipped code. Answers cite sources; actions require human approval. Own delivery across two squads: Integrations, then Chat and Agent UX.
 
-- Led the product roadmap and end-to-end development cycle for core lab management products.
-- Rebuilt team collaboration practices — directly helping secure a $500K contract renewal.
-- Championed rapid prototyping loops, shrinking testing time from days to hours.
-- Guided the BI team to automate reporting and data pipelines, turning ad-hoc insights into daily decisions.
-- Key skills: Product Roadmap, Rapid Prototyping, BI Automation
+- Cut inefficient daily AI spend **~39% (~$3,250/month)** through usage-based auto-scaling, with no loss of customer coverage. Built and own the daily AI cost dashboard. Its first invoice reconciliation matched provider billing **within 0.26%**.
+- Removed a recurring enterprise deal blocker with an AI-assisted release-note process that met **SOC 2** requirements. A named person approves each note before manual publication.
+- Led Liz’s expansion from read-only analytics to **governed actions** across Slack, email, Confluence, Jira, and Linear. Led the build of customer-specific approval rules and maintain them.
+- Owned the **integration roadmap through production rollout** across Jira, GitHub, Slack, Zoom, Linear, and document sources.
+- Led **Chat and Agent UX** releases covering a shared document library, role-based access with tier gating, shared calculations, and customer-facing AI-spend limits. Delivered Microsoft Teams at Slack parity.
 
-### Technical Product Manager — LabTwin GmbH
-**Jan 2023 - Nov 2024 | Berlin, Germany**
-LabTwin was acquired by Labforward; Matthew's product ownership continued through the acquisition into his Labforward role above.
+**How I work**
 
-- Drove roadmap for voice and integration features supporting scientists in real lab environments.
-- Led the effort to streamline release processes with engineering, tripling deployment frequency (4 → 12 per year).
-- Spearheaded migrating the product's intent recognition to GPT-3.5, shipping LLM-powered understanding into a production voice pipeline for pharma and biotech customers in 2023.
-- Co-led speech recognition retraining on customer-specific glossaries and real voice data, reaching 95% scientific-term accuracy for key customers with Azure custom speech training, and designed the training strategy to cut its cost.
-- Mentored a junior PM, encouraging autonomy and strong product intuition.
-- Key skills: Voice AI, Release Management, Speech Recognition, ML Retraining
+- With engineering: I turn customer problems into specifications and use AI tools to ship small front-end changes. Engineering can focus on backend logic.
+- With customers: I work with Customer Success and professional services to identify needs across accounts. I decide what to configure, what to build for reuse, and what to decline.
+- Key skills: AI Cost Governance, Integrations, Governed Agent Actions, SOC 2 Release Notes, Chat and Agent UX
+
+### Labforward GmbH (incl. LabTwin, acquired)
+**Jan 2023 - Nov 2025 | Berlin, Germany**
+
+Joined LabTwin as Technical Product Manager for its voice-AI lab assistant. Then owned Labforward's core lab-operations products through and after the acquisition. Owned the roadmap, delivery, and customer-critical accounts across both products.
+
+**How I work**
+
+- With engineering: I used rapid prototypes to validate product ideas. I coordinated releases with engineering and co-led speech-recognition retraining with data scientists.
+- With customers: I worked with scientists and enterprise customers on lab workflows and integrations. I aligned Product, Engineering, and customer teams on deliverables, timelines, and SLAs.
+
+#### Senior Product Manager — Labforward
+**Nov 2024 - Nov 2025**
+
+Electronic lab notebook and lab-operations software that helps R&D scientists record, standardize, and run experiments.
+
+- Rebuilt team collaboration and customer engagement loops, directly contributing to a $500K enterprise contract renewal. Coordinated Product, Engineering, and customer teams for the at-risk account.
+- Introduced rapid prototyping cycles, reducing validation time from days to hours and accelerating customer feedback into the roadmap.
+- Owned BI automation of internal reporting and data pipelines. Automated reports replaced ad-hoc requests and became a daily leadership decision input.
+- Key skills: Enterprise Accounts, Rapid Prototyping, BI Automation
+
+#### Technical Product Manager — LabTwin
+**Jan 2023 - Nov 2024**
+
+The world's first voice-powered AI lab assistant, letting scientists capture data and pull up information hands-free at the bench.
+
+- Led the migration of intent recognition to GPT-3.5 in 2023. Shipped LLM-powered understanding into a production voice pipeline for pharma and biotech customers.
+- Tripled deployment frequency from 4 to 12 production releases per year by streamlining release coordination with engineering.
+- Drove speech recognition to 95% scientific-term accuracy for key customers. Co-led retraining with Azure custom speech training, using customer-specific glossaries and real voice data. Designed the training strategy to cut its cost.
+- Drove an SAP integration workstream to a customer pilot. The pilot tested transferring LabTwin-captured lab data into the customer's SAP environment via the SAP API.
+- Mentored a junior PM to full independence; they went on to own their own product area.
+- Key skills: Voice AI, LLM in Production, Integrations, Release Coordination
 
 ### Product Owner — Thryve GmbH
 **Oct 2019 - Dec 2022 | Berlin, Germany**

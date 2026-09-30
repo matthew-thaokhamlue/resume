@@ -303,7 +303,7 @@ test('tiles and panels take their names from the visible text (WCAG 2.5.3)', () 
   const certs = readText('certificates.html');
   assert.doesNotMatch(certs, /<\/span><span class="ed-ct__(big|name)"/, 'the credential spans need a space, or the computed name runs the words together');
   const panels = [...readText('experience.html').matchAll(/<button class="ed-panel"[^>]*aria-label="([^"]*)"[^>]*>[\s\S]*?<span class="ed-panel__dates">([^<]+)<\/span>/g)];
-  assert.equal(panels.length, 5, 'five role panels');
+  assert.equal(panels.length, 4, 'four career panels, with Labforward and LabTwin combined');
   for (const [, label, dates] of panels) assert.ok(label.endsWith(`, ${dates}`), `the panel label "${label}" must end with its visible dates`);
 
   const css = readText('assets/css/editorial.css');
@@ -436,13 +436,15 @@ test('the home page head carries the headline', () => {
 
 test('experience.html keeps the AI Match hooks inside the role reveals', () => {
   const html = readText('experience.html');
-  const sections = [...html.matchAll(/<section class="ed-reveal__inner" id="(role-[a-z]+)">([\s\S]*?)<\/section>\s*<\/dialog>/g)];
+  const sections = [...html.matchAll(/<section class="(?:ed-reveal__inner|ed-role)" id="(role-[a-z]+)"[^>]*>([\s\S]*?)<\/section>(?=\s*(?:<\/dialog>|<section class="ed-role"|<\/div>\s*<\/dialog>))/g)];
   assert.deepEqual(sections.map((m) => m[1]), ['role-sema', 'role-labforward', 'role-labtwin', 'role-thryve', 'role-ey', 'role-education']);
   for (const [, id, body] of sections.filter((m) => m[1] !== 'role-education')) {
     for (const hook of ['data-role-company', 'data-role-title', 'data-role-meta', 'data-role-summary', 'data-role-skill']) {
       assert.ok(body.includes(hook), `${id} lost ${hook}`);
     }
-    assert.ok(body.includes('<section class="ed-how" aria-label="How I work">'), `${id} lost its How I work block`);
+    if (!['role-labforward', 'role-labtwin'].includes(id)) {
+      assert.ok(body.includes('<section class="ed-how" aria-label="How I work">'), `${id} lost its How I work block`);
+    }
   }
   // ai-match.js reads the Education rows from #role-education, and skips that section as a role.
   const edu = sections.find((m) => m[1] === 'role-education')[2];
@@ -484,15 +486,30 @@ test('the tile pages fit the window: one fit condition, and a failed fit scrolls
   assert.equal((readText('certificates.html').match(/class="ed-ct__big" style="--big:/g) || []).length, 14);
 });
 
-test('experience.html lays the roles out as a Fibonacci spiral, most recent in the largest square', () => {
+test('experience.html lays the roles out as a Fibonacci spiral, most recent in the largest tile', () => {
   const html = readText('experience.html');
   const areas = [...html.matchAll(/<button class="ed-panel[^"]*" type="button" data-area="([a-z])" data-action="open-reveal" data-reveal="([a-z-]+)"/g)].map((m) => `${m[1]}:${m[2]}`);
-  assert.deepEqual(areas, ['s:reveal-sema', 'l:reveal-labforward', 't:reveal-labtwin', 'y:reveal-thryve', 'e:reveal-ey', 'k:reveal-education']);
+  assert.deepEqual(areas, ['s:reveal-sema', 'l:reveal-labforward', 't:reveal-thryve', 'y:reveal-ey', 'e:reveal-education']);
   const css = readText('assets/css/editorial.css');
-  assert.match(css, /grid-template-columns: 55fr 8fr 5fr 21fr; grid-template-rows: 34fr 8fr 13fr;\s*grid-template-areas: "s l l l" "s e k t" "s y y t";/, 'Sema 55, Labforward 34, LabTwin 21, Thryve 13, EY 8, Education 5 x 8');
-  assert.match(css, /\.ed-fit \.ed-fib \{[^}]*aspect-ratio: 89 \/ 55;/, 'the grid keeps the golden ratio');
+  assert.match(css, /grid-template-columns: 55fr 13fr 21fr; grid-template-rows: 34fr 8fr 13fr;\s*grid-template-areas: "s l l" "s e t" "s y t";/, 'Sema 55, Labforward / LabTwin 34, Thryve 21, EY 13, Education 13 x 8');
+  assert.match(css, /\.ed-fit \.ed-fib \{[^}]*width: 100cqw; height: min\(100cqh, 100cqw \* 55 \/ 89\);/, 'the grid fills the content width and retains its fitted height');
   assert.match(html, /<svg class="ed-fib__spiral" viewBox="0 0 89 55"[^>]*aria-hidden="true"/, 'the spiral is decoration only');
   assert.match(css, /\.ed-fit \.ed-fib__spiral \{[^}]*pointer-events: none;/, 'the spiral lets every click through');
+});
+
+test('the combined lab chapter keeps both logos, role dates, and old links', () => {
+  const html = readText('experience.html');
+  const panel = html.match(/<button class="ed-panel"[^>]*data-reveal="reveal-labforward"[^>]*>([\s\S]*?)<\/button>/)[1];
+  for (const logo of ['labforward.png', 'labtwin.png']) assert.ok(panel.includes(logo));
+  assert.match(panel, /Jan 2023 – Nov 2025/);
+  assert.equal((html.match(/<dialog class="ed-reveal"/g) || []).length, 5);
+  const chapter = html.match(/<dialog class="ed-reveal" id="reveal-labforward"[^>]*>([\s\S]*?)<\/dialog>/)[1];
+  for (const id of ['role-labforward', 'role-labtwin', 'reveal-labtwin']) {
+    assert.ok(chapter.includes(`id="${id}"`), `${id} must resolve inside the combined dialog`);
+  }
+  assert.match(chapter, /Nov 2024 – Nov 2025/);
+  assert.match(chapter, /Jan 2023 – Nov 2024/);
+  assert.match(chapter, /customer pilot/);
 });
 
 test('every logo mask the markup references exists, in both the prefixed and the standard property', () => {
