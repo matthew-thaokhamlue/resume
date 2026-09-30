@@ -45,7 +45,7 @@
   // A link click inside an open reveal follows the link and leaves the reveal open (site.js), so no "Close" pill there.
   const modeAt = (el) => {
     if (openReveal()) return el && el.closest('a') ? 'idle' : 'close';
-    return el && el.closest('[data-action="open-reveal"]') ? 'info' : 'idle';
+    return el && el.closest('[data-action="open-reveal"], [data-action="open-testimonial"]') ? 'info' : 'idle';
   };
   // Text-like fields keep the native caret; the star hides over them.
   const TEXT_FIELD = 'textarea, [contenteditable="true"], input:not([type]), input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="tel"], input[type="password"], input[type="number"]';
