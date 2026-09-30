@@ -260,7 +260,7 @@ test('the drag hint shows only while the ring answers a drag', () => {
   assert.ok(lastStaticReturn > 0 && handlers > lastStaticReturn, 'the pointer handlers sit in the live path');
   assert.ok(add > handlers, 'the class comes after the pointer handlers');
   // loop-hero.js finds the section by its class, and the hint rule needs the hint inside it
-  assert.match(readText('index.html'), /<section class="ed-loop-hero" id="loop"[^>]*>[\s\S]*<div class="ed-loop-controls">\s*<p class="ed-loop-hint">[^<]*<\/p>[\s\S]*?<\/section>/, 'the section that gets is-draggable holds the hint');
+  assert.match(readText('index.html'), /<section class="ed-loop-hero(?: [^"]*)?" id="loop"[^>]*>[\s\S]*<div class="ed-loop-controls">\s*<p class="ed-loop-hint">[^<]*<\/p>[\s\S]*?<\/section>/, 'the section that gets is-draggable holds the hint');
 });
 
 test('a lost WebGL context hides the dead canvas and the drag hint', () => {
@@ -406,7 +406,7 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
     if (NON_CONTENT.has(name)) continue;
     const html = fs.readFileSync(file, 'utf8');
     assert.equal((html.match(/star-cursor\.js/g) || []).length, 1, `${name} must load star-cursor.js once`);
-    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260929"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260930-testimonials"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
+    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260930"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260930-testimonials"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
   }
 });
 
