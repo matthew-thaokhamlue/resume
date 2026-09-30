@@ -597,3 +597,20 @@ test('AI Match prompt template exists for the configured prompt version', () => 
     assert.match(promptTemplate, new RegExp(`\\{\\{${placeholder}\\}\\}`));
   }
 });
+
+test('the seven testimonial tiles keep exact excerpts and share the existing dialog', () => {
+  const html = readText('index.html');
+  const cards = [...html.matchAll(/<button\b([^>]*data-action="open-testimonial"[^>]*)>([\s\S]*?)<\/button>/g)];
+  assert.deepEqual(cards.map(([, attrs]) => attrs.match(/data-name="([^"]+)"/)[1]), [
+    'Robin Genolet', 'Paul Burggraf', 'Jeroen de Haas', 'Ignatius Reza',
+    'Mark Dominick Flores', 'Sumner Price', 'Thuy Tran',
+  ]);
+  for (const [, attrs, content] of cards) {
+    assert.match(attrs, /class="ed-tile ed-quote"/);
+    assert.match(attrs, /aria-haspopup="dialog" aria-controls="testimonial-modal"/);
+    const full = attrs.match(/data-text="([^"]+)"/)[1];
+    const excerpt = content.match(/class="ed-quote__text">([^<]+)</)[1];
+    assert.ok(full.includes(excerpt), 'the excerpt must be verbatim from the full quote');
+  }
+  assert.match(html, /<dialog id="testimonial-modal" aria-labelledby="modal-name"/);
+});
