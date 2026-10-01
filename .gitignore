@@ -59,3 +59,8 @@ pids
 # Design documents stay private: the repo is public, and Pages serves every file on main
 docs/plans/
 docs/research/
+
+# Agent instructions stay local: the repo is public, and Pages serves every file on main
+CLAUDE.md
+AGENTS.md
+.claude/
