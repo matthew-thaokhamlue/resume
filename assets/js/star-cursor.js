@@ -3,13 +3,13 @@
  *
  * It runs only with a fine pointer (mouse, pen) and no reduced-motion request.
  * It then sets html.star-on, and editorial.css hides the native cursor except
- * in text fields. Otherwise it sets html.no-star, and each reveal target shows
- * its "Info" chip instead. The star head sits exactly on the pointer, so clicks
- * stay precise; only the tail lags. Over a reveal target a pill says "Info",
- * or "Play" over the intro video's play icon; while a reveal is open it says
- * "Close ×". A modal dialog renders in the top layer, so the canvas and the
- * pill move into any open dialog. The frame loop runs on demand and stops
- * when the star settles.
+ * in text fields. Otherwise it sets html.no-star, and each reveal target except
+ * the play icon shows its "Info" chip instead. The star head sits exactly on
+ * the pointer, so clicks stay precise; only the tail lags. Over a reveal target
+ * a pill says "Info", or "Play" over the intro video's play icon; while a
+ * reveal is open it says "Close ×". A modal dialog renders in the top layer, so
+ * the canvas and the pill move into any open dialog. The frame loop runs on
+ * demand and stops when the star settles.
  */
 (() => {
   'use strict';

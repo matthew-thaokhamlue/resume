@@ -732,7 +732,8 @@
 
 /* ── editorial-reveal ── */
   /* A full-screen <dialog> that site.js opens with showModal().
-     With the star cursor on, the star's "Close ×" pill acts as the close button.
+     With the star cursor on, the star's "Close ×" pill acts as the close button,
+     except in the intro video reveal, where the button stays visible.
      The button stays in the tab order and shows on keyboard focus.
      Without the star (touch, reduced motion), the button stays visible. */
   html:has(dialog.ed-reveal[open]) { overflow: hidden; }
