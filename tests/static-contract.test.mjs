@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import vm from 'node:vm';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -373,6 +374,85 @@ test('every reveal target opens a dialog in the same page', () => {
   const css = readText('assets/css/editorial.css');
   assert.match(css, /@media \(scripting: none\) \{\s*dialog\.ed-reveal \{[^}]*display: block;/, 'without scripts, reveal content shows in the page');
   assert.match(css, /\.star-on \.ed-reveal__close:not\(:focus-visible\) \{ opacity: 0; \}/, 'the close button hides for the star only, and shows on keyboard focus');
+});
+
+function loadRevealWithVideo({ reducedMotion }) {
+  const listeners = [];
+  const hearsNonBubblingClose = (l) => l.type === 'close' && (l.capture || l.on === dialog);
+  class Element {
+    constructor(selectors, parent = null, attrs = {}) { Object.assign(this, { selectors, parent, attrs }); }
+    is(selector) { return this.selectors.includes(selector); }
+    closest(query) {
+      for (let el = this; el; el = el.parent) if (query.split(', ').some((s) => el.is(s))) return el;
+      return null;
+    }
+    getAttribute(name) { return this.attrs[name] ?? null; }
+    hasAttribute(name) { return name in this.attrs; }
+  }
+  const dialog = new Element([]);
+  const video = new Element(['video'], dialog);
+  Object.assign(dialog, {
+    id: 'intro-video', open: false,
+    is: (s) => s === 'dialog.ed-reveal' || (s === 'dialog.ed-reveal[open]' && dialog.open),
+    showModal() { dialog.open = true; },
+    close() {
+      dialog.open = false;
+      for (const l of listeners) if (hearsNonBubblingClose(l)) l.fn({ type: 'close', target: dialog });
+    },
+    querySelector: (s) => (s === 'video' ? video : null),
+    addEventListener: (type, fn) => listeners.push({ type, fn, on: dialog }),
+  });
+  Object.assign(video, {
+    paused: true, currentTime: 0,
+    play() { video.paused = false; video.currentTime = 3; return Promise.resolve(); },
+    pause() { video.paused = true; },
+  });
+  vm.runInNewContext(readText('assets/js/site.js'), {
+    Element,
+    window: {
+      localStorage: { getItem: () => 'dismissed' }, location: { hash: '' }, getSelection: () => '',
+      matchMedia: (q) => ({ matches: reducedMotion && q === '(prefers-reduced-motion: reduce)' }),
+      addEventListener() {},
+    },
+    document: {
+      getElementById: (id) => (id === dialog.id ? dialog : null),
+      documentElement: { getAttribute: () => null }, querySelectorAll: () => [],
+      addEventListener: (type, fn, opts) => listeners.push({ type, fn, capture: opts === true || !!opts?.capture }),
+    },
+  });
+  const click = (target) => { for (const l of listeners) if (l.type === 'click') l.fn({ target }); };
+  const opener = new Element(['[data-action]'], null, { 'data-action': 'open-reveal', 'data-reveal': dialog.id });
+  return { dialog, video, click, opener, insideReveal: new Element([], dialog) };
+}
+
+test('the hero opens the intro video reveal, which loads nothing first and stops on every close', () => {
+  const html = readText('index.html');
+  const opener = html.match(/<button type="button" class="ed-home-action" data-action="open-reveal" data-reveal="([^"]+)" aria-haspopup="dialog">Watch the intro · 0:56<\/button>/);
+  assert.ok(opener, 'the hero carries the "Watch the intro · 0:56" action');
+  const dialog = html.match(new RegExp(`<dialog class="ed-reveal" id="${opener[1]}"[\\s\\S]*?</dialog>`));
+  assert.ok(dialog, `the hero action opens an ed-reveal dialog with id ${opener[1]}`);
+  const video = dialog[0].match(/<video [^>]*>/)?.[0] ?? '';
+  assert.match(video, / preload="none"/, 'the page requests no video data before the reveal opens');
+  assert.match(video, / poster="assets\/video\/intro-poster\.jpg"/);
+  assert.match(dialog[0], /<source src="assets\/video\/intro\.mp4" type="video\/mp4">/);
+  assert.ok(fs.existsSync(path.join(repoRoot, 'assets/video/intro-poster.jpg')), 'the poster exists');
+  assert.ok(fs.statSync(path.join(repoRoot, 'assets/video/intro.mp4')).size <= 15e6, 'intro.mp4 is 15 MB or less');
+
+  const page = loadRevealWithVideo({ reducedMotion: false });
+  page.click(page.opener);
+  assert.ok(page.dialog.open && !page.video.paused, 'opening the reveal plays the video');
+  page.click(page.video);
+  assert.ok(page.dialog.open, 'a click on the video (play, pause, seek) leaves the reveal open');
+  page.click(page.insideReveal);
+  assert.ok(!page.dialog.open, 'a click elsewhere in the reveal closes it');
+  assert.deepEqual([page.video.paused, page.video.currentTime], [true, 0], 'a click-close pauses and rewinds the video');
+  page.click(page.opener);
+  page.dialog.close();
+  assert.deepEqual([page.video.paused, page.video.currentTime], [true, 0], 'Esc (a native close) pauses and rewinds the video');
+
+  const still = loadRevealWithVideo({ reducedMotion: true });
+  still.click(still.opener);
+  assert.ok(still.dialog.open && still.video.paused, 'under reduced motion the video waits for the play button');
 });
 
 test('the star cursor guards on a fine pointer and reduced motion, and stays on top', () => {
