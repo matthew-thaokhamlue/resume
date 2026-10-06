@@ -194,15 +194,27 @@
 
   /* Reveals: [data-action="open-reveal"][data-reveal="<id>"] opens
      <dialog class="ed-reveal" id="<id>"> with showModal(). A click anywhere
-     in an open reveal closes it, except on a link or while text is selected.
-     Esc closes it natively, and the browser returns focus to the opener.
-     A URL fragment that names a reveal, or an element inside one, opens it. */
+     in an open reveal closes it, except on a link, on a video, or while text
+     is selected. Esc closes it natively, and the browser returns focus to the
+     opener. A URL fragment that names a reveal, or an element inside one, opens it. */
   function openReveal(id) {
     var dialog = id ? document.getElementById(id) : null;
     if (!dialog || dialog.open || typeof dialog.showModal !== 'function') return;
     dialog.showModal();
+    var video = dialog.querySelector('video');
+    // play() rejects without a click (a deep link) or on a close during loading; the play button still works.
+    if (video && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) video.play().catch(function () {});
     track('reveal_opened', { reveal_id: id });
   }
+
+  // 'close' does not bubble.
+  document.addEventListener('close', function (event) {
+    var video = event.target.querySelector('video');
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }, true);
 
   function openRevealFromHash() {
     var id = '';
@@ -233,7 +245,7 @@
 
     var openedReveal = target.closest('dialog.ed-reveal[open]');
     if (openedReveal) {
-      if (target.closest('.ed-reveal__close') || (!target.closest('a') && !String(window.getSelection() || '').trim())) openedReveal.close();
+      if (target.closest('.ed-reveal__close') || (!target.closest('a, video') && !String(window.getSelection() || '').trim())) openedReveal.close();
       return;
     }
 
