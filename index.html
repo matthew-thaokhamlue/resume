@@ -361,8 +361,10 @@
 <dialog class="ed-reveal" id="intro-video" aria-labelledby="intro-video-title" aria-describedby="intro-video-desc">
   <button class="ed-reveal__close" type="button">Close <span aria-hidden="true">×</span></button>
   <div class="ed-reveal__inner">
-    <header class="ed-reveal__head"><h2 class="ed-reveal__title" id="intro-video-title">Intro video</h2><p class="ed-reveal__meta" id="intro-video-desc">A 56-second tour of this site in music and on-screen text, with no speech: four results, how I run a product, two independent products, three recommendations and Evaluate role fit.</p></header>
-    <div class="ed-reveal__body ed-reveal__body--wide"><video class="ed-reveal__video" controls playsinline preload="none" poster="assets/video/intro-poster.jpg" width="1920" height="1080"><source src="assets/video/intro.mp4" type="video/mp4"></video></div>
+    <div class="ed-reveal__frame">
+      <header class="ed-home-section-head"><h2 id="intro-video-title">Intro video</h2><p id="intro-video-desc">A 56-second tour of this site.<span class="ed-sr-only"> It uses music and on-screen text, with no speech: four results, how I run a product, two independent products, three recommendations and Evaluate role fit.</span></p></header>
+      <video class="ed-reveal__video" controls playsinline preload="none" poster="assets/video/intro-poster.jpg" width="1920" height="1080"><source src="assets/video/intro.mp4" type="video/mp4"></video>
+    </div>
   </div>
 </dialog>
 </div>

@@ -754,8 +754,14 @@
   .ed-reveal__side ul { margin: 0; padding: 0; list-style: none; }
   .ed-reveal__side li { font-size: clamp(1.1rem, 1.6vw, 1.32rem); line-height: 1.6; color: var(--ed-ink-mute); }
   .ed-reveal__link { display: inline-block; margin-top: 28px; font-size: 1.05rem; color: var(--ed-ink); text-decoration: none; border-bottom: 1px solid var(--ed-accent); }
-  .ed-reveal__inner:has(.ed-reveal__video) { padding-block: 80px 32px; }
-  .ed-reveal__video { --head-and-padding: 20rem; display: block; width: min(100%, max(20rem, (100dvh - var(--head-and-padding)) * 16 / 9)); height: auto; }
+  /* The intro video reveal: the heading and the video share the "In their words" width, or less on a short
+     window, so the reveal never scrolls. The height reserve is the padding, the largest heading line and its
+     margin. The star shows no "Close" pill over the video, so the close button stays visible. */
+  #intro-video .ed-reveal__inner { display: flex; flex-direction: column; justify-content: center; min-height: 100%; max-width: var(--ed-content-max); padding: 72px var(--ed-gutter-x) 32px; }
+  .ed-reveal__frame { width: min(100%, (100dvh - 104px - 3.2rem * 1.04 - 20px) * 16 / 9); margin-inline: auto; }
+  .ed-reveal__video { display: block; width: 100%; height: auto; }
+  #intro-video .ed-reveal__close { opacity: 1; border-color: var(--ed-hairline-strong); }
+  #intro-video .ed-reveal__close:hover { border-color: var(--ed-accent); color: var(--ed-accent-strong); }
   dialog.ed-reveal[open] .ed-reveal__inner { animation: ed-reveal-rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
   @keyframes ed-reveal-rise { from { opacity: 0; transform: translateY(18px); } }
   /* The "Info" chip shows only when there is no star (touch, reduced motion). */

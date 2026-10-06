@@ -437,6 +437,10 @@ test('the hero opens the intro video reveal, which loads nothing first and stops
   assert.match(icon, /^<svg [^>]*aria-hidden="true"/, 'screen readers skip the icon art');
   const dialog = html.match(new RegExp(`<dialog class="ed-reveal" id="${revealId}"[\\s\\S]*?</dialog>`));
   assert.ok(dialog, `the icon opens an ed-reveal dialog with id ${revealId}`);
+  const labels = dialog[0].match(/^<dialog [^>]*aria-labelledby="([^"]+)" aria-describedby="([^"]+)"/);
+  assert.ok(labels, 'the reveal keeps its accessible name and description');
+  for (const id of labels.slice(1)) assert.match(dialog[0], new RegExp(` id="${id}"`), `the reveal holds #${id}`);
+  assert.match(readText('assets/css/editorial.css'), new RegExp(`#${revealId} \\.ed-reveal__close \\{[^}]*opacity: 1;`), 'the close button of the video reveal stays visible under the star cursor');
   const video = dialog[0].match(/<video [^>]*>/)?.[0] ?? '';
   assert.match(video, / preload="none"/, 'the page requests no video data before the reveal opens');
   assert.match(video, / poster="assets\/video\/intro-poster\.jpg"/);
