@@ -69,6 +69,7 @@
 .ed-home-team .ed-foot p { margin: 0 !important; }
 @media (min-width: 761px) and (min-height: 720px) {
   .ed-home-section { height: var(--ed-home-screen-h); min-height: 0; }
+  .ed-home-overview { height: auto; min-height: var(--ed-home-screen-h); }   /* on a short window it grows rather than spill into the loop */
   .ed-home-workflow .ed-loop-stage { flex: 1 1 auto; height: 560px; min-height: 300px; max-height: 560px; }
   .ed-home-team .ed-mosaic--quotes {
     flex: 1;
