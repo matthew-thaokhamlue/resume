@@ -881,6 +881,18 @@
   .ed-home-actions { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 22px; font-size: 0.95rem; }
   .ed-home-action { padding: 0 0 2px; border: 0; border-bottom: 1px solid transparent; background: none; color: var(--ed-ink-mute); font: inherit; text-decoration: none; cursor: pointer; }
   .ed-home-action:hover, .ed-home-action--primary { color: var(--ed-ink); border-bottom-color: var(--ed-accent); }
+  /* The intro video opener: a disc cut like the testimonial tile art, circled by the star.
+     The top margin leaves 14px for the orbit; below it, the hero's flex gap clears the orbit. */
+  .ed-play { display: block; width: 56px; height: 56px; margin: 50px 0 0; padding: 0; border: 0; border-radius: 50%; cursor: pointer; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background: repeating-radial-gradient(circle at 50% 100%, transparent 0 5px, rgba(17, 17, 17, 0.5) 5px 6px) top / 100% 50% no-repeat, linear-gradient(#dce8d5, #dce8d5) top / 100% 50% no-repeat, #111111; }
+  .ed-play:hover { transform: scale(1.06); }
+  .ed-play:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 4px; }
+  :root[data-theme="dark"] .ed-play { box-shadow: 0 0 0 1px var(--ed-hairline-strong); }   /* the ink half would vanish on the dark ground */
+  .ed-play svg { width: 100%; height: 100%; overflow: visible; fill: #ffffff; stroke: #111111; stroke-width: 1.8; stroke-linejoin: round; paint-order: stroke; }
+  .ed-play__orbit { fill: var(--ed-accent); stroke: none; animation: ed-play-orbit 5s linear infinite; }
+  .ed-play:hover .ed-play__orbit { animation-duration: 1.6s; }
+  @keyframes ed-play-orbit { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .ed-play__orbit { animation: none; } }
 
 /* ── editorial-loop-hero ── */
   /* The ring below is the default layout, and loop-hero.js writes the same positions in pixels.

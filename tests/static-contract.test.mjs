@@ -427,10 +427,16 @@ function loadRevealWithVideo({ reducedMotion }) {
 
 test('the hero opens the intro video reveal, which loads nothing first and stops on every close', () => {
   const html = readText('index.html');
-  const opener = html.match(/<button type="button" class="ed-home-action" data-action="open-reveal" data-reveal="([^"]+)" aria-haspopup="dialog">Watch the intro · 0:56<\/button>/);
-  assert.ok(opener, 'the hero carries the "Watch the intro · 0:56" action');
-  const dialog = html.match(new RegExp(`<dialog class="ed-reveal" id="${opener[1]}"[\\s\\S]*?</dialog>`));
-  assert.ok(dialog, `the hero action opens an ed-reveal dialog with id ${opener[1]}`);
+  const hero = html.match(/<div class="ed-home-actions">([\s\S]*?)<\/div>\s*<button type="button" class="ed-play" data-action="open-reveal" data-reveal="([^"]+)" aria-haspopup="dialog" aria-label="([^"]*)">([\s\S]*?)<\/button>/);
+  assert.ok(hero, 'the play icon opener follows the hero action row directly');
+  const [, actions, revealId, name, icon] = hero;
+  assert.equal((actions.match(/class="ed-home-action[ "]/g) || []).length, 3, 'the hero keeps three text actions');
+  assert.doesNotMatch(actions, /data-reveal=/, 'the intro video opens from the icon, not from a text action');
+  assert.equal(name, 'Watch the intro video, 0:56', 'the icon opener has an accessible name');
+  assert.equal(icon.replace(/<[^>]*>/g, '').trim(), '', 'the icon opener shows no visible text');
+  assert.match(icon, /^<svg [^>]*aria-hidden="true"/, 'screen readers skip the icon art');
+  const dialog = html.match(new RegExp(`<dialog class="ed-reveal" id="${revealId}"[\\s\\S]*?</dialog>`));
+  assert.ok(dialog, `the icon opens an ed-reveal dialog with id ${revealId}`);
   const video = dialog[0].match(/<video [^>]*>/)?.[0] ?? '';
   assert.match(video, / preload="none"/, 'the page requests no video data before the reveal opens');
   assert.match(video, / poster="assets\/video\/intro-poster\.jpg"/);
