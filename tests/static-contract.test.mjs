@@ -440,6 +440,7 @@ test('the hero opens the intro video reveal, which loads nothing first and stops
   const labels = dialog[0].match(/^<dialog [^>]*aria-labelledby="([^"]+)" aria-describedby="([^"]+)"/);
   assert.ok(labels, 'the reveal keeps its accessible name and description');
   for (const id of labels.slice(1)) assert.match(dialog[0], new RegExp(` id="${id}"`), `the reveal holds #${id}`);
+  assert.match(readText('assets/css/editorial.css'), /\.ed-play__orbit \{[^}]*animation: ed-play-orbit [\d.]+s linear 1;/, 'the star turns once on load, so automatic motion stops (WCAG 2.2.2)');
   assert.match(readText('assets/css/editorial.css'), new RegExp(`#${revealId} \\.ed-reveal__close \\{[^}]*opacity: 1;`), 'the close button of the video reveal stays visible under the star cursor');
   const video = dialog[0].match(/<video [^>]*>/)?.[0] ?? '';
   assert.match(video, / preload="none"/, 'the page requests no video data before the reveal opens');

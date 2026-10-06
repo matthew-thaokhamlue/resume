@@ -896,8 +896,9 @@
   .ed-play:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 4px; }
   :root[data-theme="dark"] .ed-play { box-shadow: 0 0 0 1px var(--ed-hairline-strong); }   /* the ink half would vanish on the dark ground */
   .ed-play svg { width: 100%; height: 100%; overflow: visible; fill: #ffffff; stroke: #111111; stroke-width: 1.8; stroke-linejoin: round; paint-order: stroke; }
-  .ed-play__orbit { fill: var(--ed-accent); stroke: none; animation: ed-play-orbit 5s linear infinite; }
-  .ed-play:hover .ed-play__orbit { animation-duration: 1.6s; }
+  /* One turn on load, then rest: automatic motion stops within 5 s (WCAG 2.2.2), like the loop hero. Hover spins it again. */
+  .ed-play__orbit { fill: var(--ed-accent); stroke: none; animation: ed-play-orbit 5s linear 1; }
+  .ed-play:hover .ed-play__orbit { animation-duration: 1.6s; animation-iteration-count: infinite; }
   @keyframes ed-play-orbit { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .ed-play__orbit { animation: none; } }
 
