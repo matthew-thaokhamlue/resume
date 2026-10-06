@@ -42,9 +42,9 @@
   const isDark = () => root.getAttribute('data-theme') === 'dark';
   const openDialog = () => document.querySelector('dialog[open]');
   const openReveal = () => { const d = openDialog(); return d && d.classList.contains('ed-reveal') ? d : null; };
-  // A link click inside an open reveal follows the link and leaves the reveal open (site.js), so no "Close" pill there.
+  // A link or video click inside an open reveal leaves the reveal open (site.js), so no "Close" pill there.
   const modeAt = (el) => {
-    if (openReveal()) return el && el.closest('a') ? 'idle' : 'close';
+    if (openReveal()) return el && el.closest('a, video') ? 'idle' : 'close';
     return el && el.closest('[data-action="open-reveal"], [data-action="open-testimonial"]') ? 'info' : 'idle';
   };
   // Text-like fields keep the native caret; the star hides over them.

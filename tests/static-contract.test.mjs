@@ -367,7 +367,7 @@ test('every reveal target opens a dialog in the same page', () => {
   const siteJs = readText('assets/js/site.js');
   assert.match(siteJs, /case 'open-reveal':/);
   assert.match(siteJs, /closest\('dialog\.ed-reveal\[open\]'\)/, 'a click inside an open reveal must close it');
-  assert.match(siteJs, /target\.closest\('\.ed-reveal__close'\) \|\| \(!target\.closest\('a'\)/, 'the close button closes the reveal even with text selected; a link click does not close it');
+  assert.match(siteJs, /target\.closest\('\.ed-reveal__close'\) \|\| \(!target\.closest\('a, video'\)/, 'the close button closes the reveal even with text selected; a click on a link or a video does not close it');
   assert.match(siteJs, /'hashchange'/, 'a URL fragment must open its reveal');
 
   const css = readText('assets/css/editorial.css');
@@ -385,7 +385,7 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
   assert.ok(ctxAt > 0 && starOnAt > ctxAt, 'star-on (which hides the native cursor) must come after the canvas check');
   assert.match(js, /attributeFilter: \['open'\]/, 'the star must follow any dialog into the top layer');
   assert.match(js, /\n\s*follow\(\);/, 'the star must join a reveal that opened before this script ran (a deep link)');
-  assert.match(js, /if \(openReveal\(\)\) return el && el\.closest\('a'\) \? 'idle' : 'close';/, 'a link inside an open reveal does not close it, so no "Close" pill there');
+  assert.match(js, /if \(openReveal\(\)\) return el && el\.closest\('a, video'\) \? 'idle' : 'close';/, 'a link or a video inside an open reveal does not close it, so no "Close" pill there');
   assert.match(js, /if \(m !== 'idle'\) labelText\.animate\(/, 'a fading pill must not pop');
   assert.match(js, /if \(mode === 'idle' \|\| mode === shown\) return;/, 'the pill text changes only when its mode changes');
 
@@ -406,7 +406,7 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
     if (NON_CONTENT.has(name)) continue;
     const html = fs.readFileSync(file, 'utf8');
     assert.equal((html.match(/star-cursor\.js/g) || []).length, 1, `${name} must load star-cursor.js once`);
-    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260930"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260930-testimonials"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
+    assert.match(html, /<script src="(?:\.\.\/)?assets\/js\/site\.js\?v=20260930-intro"><\/script>\r?\n\s*<script src="(?:\.\.\/)?assets\/js\/star-cursor\.js\?v=20260930-intro"><\/script>/, `${name} must load star-cursor.js directly after site.js`);
   }
 });
 
