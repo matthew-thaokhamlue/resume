@@ -55,6 +55,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://matthew-thaokhamlue.github.io/resume/portfolio/dataverse.html</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matthew-thaokhamlue.github.io/resume/portfolio/ai-training.html</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://matthew-thaokhamlue.github.io/resume/llms-full.txt</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>

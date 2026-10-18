@@ -622,14 +622,14 @@ test('every logo mask the markup references exists, in both the prefixed and the
   assert.deepEqual(missing, []);
 });
 
-test('portfolio.html is a mosaic of eight tiles over five project reveals', () => {
+test('portfolio.html is a mosaic of ten tiles over seven project reveals', () => {
   const html = readText('portfolio.html');
-  assert.equal((html.match(/<button class="ed-tile[ "]/g) || []).length, 8, 'expected eight tiles');
+  assert.equal((html.match(/<button class="ed-tile[ "]/g) || []).length, 10, 'expected ten tiles');
   const reveals = [...html.matchAll(/<dialog class="ed-reveal" id="(project-[a-z]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(reveals, ['project-labforward', 'project-labtwin', 'project-thryve', 'project-opppaths', 'project-remarcable']);
+  assert.deepEqual(reveals, ['project-labforward', 'project-labtwin', 'project-thryve', 'project-opppaths', 'project-remarcable', 'project-dataverse', 'project-training']);
   assert.doesNotMatch(html, /mcp-server|automation-tools|interview-prep/, 'retired projects stay off the portfolio');
   const caseLinks = [...html.matchAll(/<a class="ed-reveal__link" href="([^"]+)"/g)].map((m) => m[1]);
-  assert.equal(caseLinks.length, 5, 'each project reveal links its case page');
+  assert.equal(caseLinks.length, 7, 'each project reveal links its case page');
   for (const link of caseLinks) {
     assert.match(link, /^portfolio\/[a-z-]+\.html$/, `case-study link should be relative: ${link}`);
     assert.ok(fs.existsSync(path.join(repoRoot, link)), `the case page ${link} exists`);

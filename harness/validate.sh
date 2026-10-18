@@ -29,6 +29,7 @@ CONTENT_PAGES=(
   index.html experience.html certificates.html portfolio.html
   portfolio/labforward.html portfolio/labtwin.html portfolio/thryve.html
   portfolio/opppaths.html portfolio/remarcable-living.html
+  portfolio/dataverse.html portfolio/ai-training.html
 )
 
 # GA is GDPR opt-in: no page may load gtag.js statically, and every page must

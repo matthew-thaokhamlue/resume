@@ -24,11 +24,10 @@
 - [Labforward Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/labforward.html): Lab management product leadership
 - [LabTwin Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/labtwin.html): Voice AI for laboratory environments
 - [Thryve Portfolio](https://matthew-thaokhamlue.github.io/resume/portfolio/thryve.html): Health data API/SDK platform
-- [MCP Server](https://matthew-thaokhamlue.github.io/resume/portfolio/mcp-server.html): Model Context Protocol server project
-- [Automation Tools](https://matthew-thaokhamlue.github.io/resume/portfolio/automation-tools.html): Multi-LLM PM automation suite
-- [Interview Prep](https://matthew-thaokhamlue.github.io/resume/portfolio/interview-prep.html): Multi-agent Claude Code interview-prep framework
 - [Opportunity Paths](https://matthew-thaokhamlue.github.io/resume/portfolio/opppaths.html): AI scholarship platform, founder & sole human builder (live at opppaths.com)
 - [Remarcable Living](https://matthew-thaokhamlue.github.io/resume/portfolio/remarcable-living.html): Bangkok condo-rental website for exchange students and interns; designed and rebuilt from a broken starter into a production-grade site (live at remarcableliving.co)
+- [DataVerse Consulting](https://matthew-thaokhamlue.github.io/resume/portfolio/dataverse.html): On-demand consulting for a ~40-person monitoring-and-evaluation consultancy in Vientiane, Lao PDR; AI-assisted drafting of evaluation reports and AI-assisted programming of internal systems (since Aug 2026)
+- [Executive AI training](https://matthew-thaokhamlue.github.io/resume/portfolio/ai-training.html): Management training on three AI tools for an international forestry non-profit in Laos, with a prompt library mapped to the director's repetitive jobs (Sep 2026)
 
 ## Contact
 
