@@ -503,8 +503,8 @@ test('the star cursor guards on a fine pointer and reduced motion, and stays on 
 
 test('the home page head carries the headline', () => {
   const html = readText('index.html');
-  assert.match(html, /<title>Matthew Thaokhamlue – Senior AI Product Manager<\/title>/);
-  assert.match(html, /"jobTitle": "Senior AI Product Manager"/);
+  assert.match(html, /<title>Matthew Thaokhamlue – Product Builder<\/title>/);
+  assert.match(html, /"jobTitle": "Product Builder"/);
   // The footer line keeps the old headline on every page until a later review, so this assert reads only the head.
   const headEnd = html.indexOf('</head>');
   assert.ok(headEnd > 0, 'index.html has a </head>');
@@ -512,8 +512,8 @@ test('the home page head carries the headline', () => {
   assert.doesNotMatch(head, /Builder · AI Workflow Architect/, 'the old headline leaves the head');
   assert.doesNotMatch(head, /[Bb]uilder and AI workflow architect/, 'the old description leaves the head');
 
-  const TITLE = 'Matthew Thaokhamlue – Senior AI Product Manager';
-  const DESC = 'Senior AI Product Manager at Sema, and product manager for Liz, Sema’s AI agent. Earlier roles at Labforward, LabTwin, Thryve and EY.';
+  const TITLE = 'Matthew Thaokhamlue – Product Builder';
+  const DESC = 'Product Builder at Sema, designing and delivering Liz, Sema’s AI agent. Earlier roles at Labforward, LabTwin, Thryve and EY.';
   const q = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   for (const attr of ['property="og:title"', 'name="twitter:title"']) {
     assert.match(head, new RegExp(`<meta ${attr}\\s+content="${q(TITLE)}"`), `${attr} carries the headline`);
@@ -523,7 +523,7 @@ test('the home page head carries the headline', () => {
   }
   const ld = JSON.parse(head.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
   assert.equal(ld.description, DESC, 'the JSON-LD description');
-  assert.equal(ld.hasOccupation[0].name, 'Senior AI Product Manager', 'the JSON-LD occupation follows the job title');
+  assert.equal(ld.hasOccupation[0].name, 'Product Builder', 'the JSON-LD occupation follows the job title');
 });
 
 test('experience.html keeps the AI Match hooks inside the role reveals', () => {

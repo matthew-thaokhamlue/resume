@@ -1,6 +1,6 @@
 /* TEAM */
 Name: Matthew Thaokhamlue
-Title: Senior AI Product Manager
+Title: Product Builder
 Location: Berlin, Germany
 Email: matthew.thaokhamlue@gmail.com
 LinkedIn: linkedin.com/in/matthewthaokhamlue

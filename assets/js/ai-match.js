@@ -7,10 +7,10 @@ const PROVIDER_URL_BUILDERS = {
 
 const PROFILE_CONTEXT = {
   FULL_NAME: 'Matthew Thaokhamlue',
-  ROLE: 'Senior Product Manager · AI Workflow Architect',
-  SUMMARY: 'Senior Product Manager with 7+ years shipping AI/ML, health analytics, laboratory informatics, and B2B SaaS products across platform and user-facing experiences.',
+  ROLE: 'Product Builder · AI Workflow Architect',
+  SUMMARY: 'Product Builder with 7+ years shipping AI/ML, health analytics, laboratory informatics, and B2B SaaS products across platform and user-facing experiences.',
   PORTFOLIO: [
-    '- Sema Technologies (Mar 2026 – Present): Senior Product Manager. Owned the integration strategy behind Liz\'s sensory system, giving Sema\'s AI-native observability platform reliable work signals across Product, Engineering, and CS. Skills: AI Product Strategy, Integration Strategy, Organizational Observability, Customer Feedback Loops.',
+    '- Sema Technologies (Mar 2026 – Present): Product Builder since Aug 2026, Senior AI Product Manager Mar – Jul 2026. Designed Liz\'s v2 interface and led its delivery. Owned the integration strategy behind Liz\'s sensory system, giving Sema\'s AI-native observability platform reliable work signals across Product, Engineering, and CS. Skills: AI Product Strategy, Integration Strategy, Organizational Observability, Customer Feedback Loops.',
     '- Labforward (Nov 2024 – Nov 2025): Senior Product Manager. Led roadmap and discovery for laboratory informatics workflows and data-intensive SaaS products. Skills: GenAI Product Strategy, Customer-Critical Roadmaps, Rapid Prototyping, Product Operations.',
     '- LabTwin (Jan 2023 – Nov 2024): Technical Product Manager. Drove voice-AI product strategy, API/SDK decisions, and cross-functional delivery for lab execution products. Skills: Voice AI & NLP, Lab Workflow Integrations, Release Cadence, Scientific UX.',
     '- Thryve (Oct 2019 – Dec 2022): Product Owner. Worked on digital health product initiatives connecting biometric data, user needs, and partner-facing platform capabilities. Skills: API & SDK Strategy, Wearable Integrations, Health Data Platforms, B2B SaaS Growth.',
