@@ -22,9 +22,10 @@ Product builder with 7+ years of experience building and scaling B2B SaaS produc
 **Mar 2026 - Present | Dresden & Berlin, Germany**
 
 
-Product manager for Liz, Sema’s AI agent connecting company priorities to work and shipped code. Answers cite sources; actions require human approval. Own delivery across two squads: Integrations, then Chat and Agent UX.
+Product manager for Liz, Sema’s AI agent connecting company priorities to work and shipped code, and the engine behind Sema’s AI Adoption and AI Defensibility products. Answers cite sources; actions require human approval. Own delivery across two squads: Integrations, then Chat and Agent UX.
 
 - Designed Liz’s look and feel and its **v2 interface**, now live, and led its delivery with the engineering lead.
+- Designed and helped build the logic behind Sema’s **AI Adoption** reports in Liz, which compare AI-assisted and other engineering work against delivery outcomes.
 - Built and own the daily AI cost dashboard. Its first invoice reconciliation matched provider billing **within 0.26%**.
 - As Senior AI Product Manager, cut inefficient daily AI spend **~39% (~$3,250/month)** through usage-based auto-scaling, with no loss of customer coverage.
 - Removed a recurring enterprise deal blocker with an AI-assisted release-note process that met **SOC 2** requirements. A named person approves each note before manual publication.
