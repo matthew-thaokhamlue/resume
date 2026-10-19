@@ -1,6 +1,6 @@
 # Matthew Thaokhamlue - Resume & Portfolio
 
-Personal resume and portfolio website for Matthew Thaokhamlue, Senior AI Product Manager. Static HTML/CSS/JS with no build step, deployed to GitHub Pages from the `main` branch.
+Personal resume and portfolio website for Matthew Thaokhamlue, Product Builder. Static HTML/CSS/JS with no build step, deployed to GitHub Pages from the `main` branch.
 
 ## Live Website
 

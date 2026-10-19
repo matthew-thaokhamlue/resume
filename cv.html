@@ -125,7 +125,7 @@
     .doc h2 { font-size: 9.9pt; break-after: avoid; page-break-after: avoid; }
     .doc h3 { font-size: 10.9pt; break-after: avoid; page-break-after: avoid; }
     .doc h4 { font-size: 10.6pt; break-after: avoid; page-break-after: avoid; }
-    .doc ul, .doc li { break-inside: avoid; page-break-inside: avoid; }
+    .doc li { break-inside: avoid; page-break-inside: avoid; }
     .doc p { orphans: 3; widows: 3; }
     a { color: var(--accent); }
     /* Add class="cv-page-break-before" to an <h3> to force a clean page break */
@@ -136,100 +136,96 @@
 <article class="sheet doc">
 
 <h1>Matthew Thaokhamlue</h1>
-<p>Senior AI Product Manager</p>
+<p>Product Builder</p>
 <p><a href="mailto:matthew.thaokhamlue@gmail.com">matthew.thaokhamlue@gmail.com</a> &nbsp;·&nbsp; Dresden &amp; Berlin, Germany &nbsp;·&nbsp; <a href="https://matthew-thaokhamlue.github.io/resume" rel="nofollow">matthew-thaokhamlue.github.io/resume</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/matthewthaokhamlue" rel="nofollow">LinkedIn</a> &nbsp;·&nbsp; <a href="https://github.com/matthew-thaokhamlue">GitHub</a></p>
 <hr>
 
 <h2>Profile</h2>
-<p>Product practitioner with 6+ years owning AI and integration-heavy B2B SaaS from scoping to production. I pair technical depth (AI/ML, APIs, data flows) with consulting-grade stakeholder work: mapping business workflows, surfacing high-value AI opportunities, and shipping deployed solutions with proven ROI, now including daily AI cost governance for a live LLM platform. I run my own PM practice through a personal multi-agent AI operating system I built: agents that work like colleagues across web, Slack, and Teams, with human review on everything that ships.</p>
+<p>Product builder with 7+ years in AI and integration-heavy B2B SaaS. I design the product, write the specs that AI coding pipelines build from, and build products myself, from the Liz v2 interface at Sema to Opportunity Paths, an AI scholarship platform I built and run. I work in a forward-deployed model: client teams bring the requirement, and I decide what to configure, what to build once for every client, and what to decline.</p>
 <hr>
 
 <h2>Career Highlights</h2>
 <ul>
-<li><strong>The right model for each job, proven by measurement:</strong> built an eval harness that scores every AI operation separately &mdash; drafting, extraction, analysis &mdash; instead of judging a model on overall feel, then used it to choose the model now running in production (OppPaths)</li>
-<li><strong>Governs AI cost:</strong> cut inefficient daily AI spend ~39% (~$3,250/month) while preserving customer coverage (Sema)</li>
-<li><strong>Ships AI to production:</strong> Slack, Email, Confluence, Jira, and Microsoft Teams integrations shipped into a live enterprise AI agent platform (Sema)</li>
-<li><strong>Builds integration platforms:</strong> primary technical interface for partner integrations, behind APIs and SDKs serving 1M+ users across 100+ B2B partners (Thryve)</li>
-<li><strong>Protects revenue through delivery:</strong> contributed to a $500K enterprise contract renewal by rebuilding customer engagement loops (Labforward)</li>
-<li><strong>Builds AI systems for himself first:</strong> daily-drives a self-built personal multi-agent AI operating system, and used it to solo-ship a production web app alongside the day job</li>
+<li><strong>Designs and ships AI products:</strong> designed Liz's v2 interface and led its delivery to live: navigation, scorecard run page and insight tags, Sep&ndash;Oct 2026 (Sema)</li>
+<li><strong>Builds products end to end:</strong> built Opportunity Paths alongside a full-time job; live early access with 50+ applications and 10 students in interview rounds (OppPaths)</li>
+<li><strong>Chooses AI models by measurement:</strong> built the test that moved production to a model 11.3&times; cheaper and ~8&times; faster that passed all 23 AI jobs (OppPaths)</li>
+<li><strong>Governs AI cost:</strong> cut inefficient daily AI spend ~39% (~$3,250/month) with no loss of customer coverage (Sema)</li>
+<li><strong>Builds integration platforms:</strong> APIs and SDKs serving 1M+ users across 100+ B2B partners (Thryve)</li>
 </ul>
 <hr>
 
 <h2>Experience</h2>
 
-<h3>Senior AI Product Manager · Sema Technologies Inc.</h3>
-<p><em>Mar 2026, Present · Dresden, Germany</em><br><em>Liz: an AI agent that gives C-level management and engineering leaders live visibility into strategy, software-delivery, risk, and impact to profitability across their tools, and takes action to mitigate them.</em></p>
-<p>Product manager across two squads, Integrations then Chat Experience and its tools. I own delivery from customer scoping to production, and the daily AI bill.</p>
+<h3>Sema Technologies Inc.</h3>
+<p><em>Mar 2026 – Present · Dresden &amp; Berlin, Germany</em><br><em>Liz: an AI agent that gives engineering leaders live visibility into software-delivery health, risk and status across their tools, and takes governed actions. Liz is the engine behind Sema's AI Adoption and AI Defensibility products.</em></p>
+<p>Two squads: Integrations, then Chat and Agent UX. I own delivery from customer scoping to production, and the daily AI bill.</p>
+
+<h4>Product Builder <em>Aug 2026 – Present</em></h4>
 <ul>
-<li>Cut inefficient daily AI spend ~39% (~$3,250/month) with no loss of customer coverage, using auto-scaling driven by per-user tracking events plus spend monitoring and billing-anomaly checks. Reported to the CEO</li>
-<li>Turned Liz from a read-only dashboard into a colleague that works inside the customer's own tools: Slack chat in-thread, email, Confluence read and write, Jira write-back with policy enforcement and a human check on every write, and full Linear parity</li>
-<li>Led the guardrail rules for the agent's write actions and maintains them per customer: which rule wins when several apply, and what an admin can change without an engineer</li>
-<li>Built an AI-native product harness so strategy and delivery stay in step: roadmap from KPIs, built with engineers on kanban, UAT run with AI, then telemetry traced back to the KPI. Its SOC 2 release-note pipeline removed a recurring enterprise deal blocker</li>
-<li>Gave leadership a weekly, ticket-traceable delivery report used for go/hold decisions, automated out of a writing job and widened from one squad to all of engineering</li>
+<li>Designed Liz's overall look and feel and its v2 interface, now live across the app (navigation 2 Oct, scorecard run page 23 Sep, insight tags 13 Oct), and led its delivery screen by screen with the engineering lead</li>
+<li>Writes the specs that Sema's software factory, an AI coding pipeline, builds from, then reviews its output and files its defects; changes built this way are live</li>
+<li>Designed and helped build the logic behind Sema's AI Adoption reports in Liz, which compare AI-assisted and other engineering work against delivery outcomes and are live for customer organisations</li>
+<li>Built and owns the AI cost dashboard that reconciles spend against the provider's invoice every day; in the first invoice check, internal and billed cost agreed to within 0.26%</li>
+<li>Leads the guardrail rules for the agent's write actions and maintains them for each customer organisation</li>
 </ul>
 
-<h3 class="cv-page-break-before">Labforward GmbH <em style="font-weight:normal;font-size:0.85em;">(incl. LabTwin, acquired)</em></h3>
-<p><em>Jan 2023, Nov 2025 · Berlin, Germany</em></p>
-<p>One continuous chapter across two lab-software products and the acquisition that joined them: joined LabTwin's voice-AI lab assistant as Technical PM, then owned Labforward's core lab-operations products through and after the acquisition, with roadmap ownership, delivery, and customer-critical accounts throughout.</p>
-
-<h4>Senior Product Manager · Labforward <em>Nov 2024 – Nov 2025</em></h4>
-<p><em>Electronic lab notebook and lab-operations software that helps R&amp;D scientists record, standardize, and run experiments.</em></p>
+<h4>Senior AI Product Manager <em>Mar 2026 – Jul 2026</em></h4>
 <ul>
-<li>Rebuilt team collaboration and customer engagement loops, directly contributing to a $500K enterprise contract renewal, coordinating Product, Engineering, and customer teams for the at-risk account</li>
-<li>Introduced rapid prototyping cycles, reducing validation time from days to hours and accelerating customer feedback into the roadmap</li>
-<li>Owned BI automation of internal reporting and data pipelines; the automated reports replaced ad-hoc requests and became a daily leadership decision input</li>
-</ul>
-
-<h4>Technical Product Manager · LabTwin <em>Jan 2023 – Nov 2024</em></h4>
-<p><em>The world's first voice-powered AI lab assistant, letting scientists capture data and pull up information hands-free at the bench.</em></p>
-<ul>
-<li>Spearheaded migrating the product's intent recognition to GPT-3.5, shipping LLM-powered understanding into a production voice pipeline for pharma and biotech customers in 2023</li>
-<li>Tripled deployment frequency from 4 to 12 production releases per year by streamlining release coordination with engineering</li>
-<li>Drove speech recognition to 95% scientific-term accuracy for key customers by co-leading retraining on customer-specific glossaries and real voice data with Azure custom speech training, and designed the training strategy to cut its cost</li>
-<li>Drove an SAP integration workstream to a customer pilot that tested transferring LabTwin-captured lab data into the customer's SAP environment via the SAP API</li>
-<li>Mentored a junior PM to full independence; they went on to own their own product area</li>
+<li>Cut inefficient daily AI spend ~39% (~$3,250/month) with no loss of customer coverage, through auto-scaling driven by per-user tracking events</li>
+<li>Turned Liz from a read-only dashboard into a colleague that acts in the customer's own tools: Slack, email, Confluence, Jira write-back and Linear, with policy enforcement and a human check on every write</li>
+<li>Built an AI-native product harness that keeps roadmap and delivery in step; its SOC 2 release-note pipeline removed a recurring enterprise deal blocker</li>
 </ul>
 
 <h3>Founder &amp; Builder · Opportunity Paths (opppaths.com)</h3>
-<p><em>Jan 2026, Present · independent side project</em><br><em>An early-access product that matches students to scholarships and drafts their application documents.</em></p>
+<p><em>Jan 2026 – Present · independent side project</em><br><em>An AI platform that helps students find scholarships and write their applications, in English and Thai.</em></p>
 <ul>
-<li>Sole builder, shipped alongside a full-time role: scholarship matching with gap analysis, an AI document builder and multi-student workspaces, on Next.js, Supabase and the Vercel AI SDK</li>
-<li>Built the eval harness that gates every model change: each candidate does the same jobs as production, an AI judge compares the six riskiest, and each candidate's own price is counted. It chose the model now shipping &mdash; 24 comparisons, no losses, 11.3x cheaper, faster on every job</li>
-<li>Built a second eval for the step that reads scholarship pages, which was inventing dates. Twelve hand-checked pages showed a bigger model was no better &mdash; both invented a date 17% of the time &mdash; so a two-sentence prompt fix, not a costlier model, took it to zero. Those checks now guard the live data</li>
+<li>Live early access: 50+ applications, and 10 students reached interview rounds</li>
+<li>Built it alongside a full-time job with my own AI coding workflow: scholarship matching and gap analysis, an AI builder for statements of purpose and CVs, interview preparation and Stripe billing (Next.js, Supabase)</li>
+<li>Built the test that decides which AI model runs in production: it moved OppPaths to a model 11.3&times; cheaper and ~8&times; faster that passed all 23 AI jobs and invented fewer facts</li>
+</ul>
+
+<h3>Labforward GmbH <em style="font-weight:normal;font-size:0.85em;">(incl. LabTwin, acquired)</em></h3>
+<p><em>Jan 2023 – Nov 2025 · Berlin, Germany</em></p>
+
+<h4>Senior Product Manager · Labforward <em>Nov 2024 – Nov 2025</em></h4>
+<ul>
+<li>Contributed to a $500K enterprise contract renewal by rebuilding the collaboration between Product, Engineering and the customer on SLAs</li>
+<li>Cut prototype validation from days to hours by introducing rapid prototyping cycles</li>
+</ul>
+
+<h4>Technical Product Manager · LabTwin <em>Jan 2023 – Nov 2024</em></h4>
+<ul>
+<li>Led the migration of the product's intent recognition to GPT-3.5 in 2023, putting an LLM into the production speech pipeline for pharma and biotech customers</li>
+<li>Tripled deployment frequency from 4 to 12 production releases a year through release coordination</li>
+<li>Maintained 95% scientific-term accuracy (5% WER) in production for specific customers via Azure custom speech training</li>
 </ul>
 
 <h3>Product Owner · Thryve GmbH</h3>
-<p><em>Oct 2019, Dec 2022 · Berlin, Germany</em><br><em>A health-data API that unifies wearables and health apps (Fitbit, Garmin, Apple Health, and more) into one stream for digital-health products.</em></p>
-<p>Built the integration backbone from early-stage to scaled product, owning APIs, SDKs, and partner integrations across the European ecosystem.</p>
+<p><em>Oct 2019 – Dec 2022 · Berlin, Germany</em><br><em>A health-data API that unifies wearables and health apps into one stream for digital-health products.</em></p>
 <ul>
-<li>Scaled APIs and SDKs to power 1M+ end users across 100+ B2B partner deployments, operating as the primary technical interface for partner integrations</li>
-<li>Led 10+ wearable and health system integrations including Fitbit, Garmin, Withings, Oura, and Apple Health</li>
-<li>Founded and led the Customer Success function alongside Product, and built Thryve Academy, a self-recorded video library plus dual-audience release notes that onboarded every team as the company grew from 7 to 35 people and &euro;0 to &euro;1M ARR</li>
+<li>Scaled APIs and SDKs to 1M+ users across 100+ B2B partners, as the primary technical interface for partner integrations</li>
+<li>Led 10+ wearable and health-system integrations: Fitbit, Garmin, Withings, Oura, Apple Health</li>
+<li>Helped build Customer Success and founded Thryve Academy as the team grew from 7 to 35; contributed to growth from &euro;0 to &euro;1M ARR</li>
 </ul>
 
-<h3 class="cv-page-break-before">Senior Risk Consultant · Ernst &amp; Young</h3>
-<p><em>Aug 2016, Feb 2018 · Bangkok, Thailand</em></p>
-<p>Consulted large enterprise clients on operational risk, process design, and digital transformation. Foundation in structured problem discovery and senior stakeholder work.</p>
+<h3>Senior Business Consultant · Ernst &amp; Young</h3>
+<p><em>Aug 2016 – Feb 2018 · Bangkok, Thailand</em></p>
 <ul>
-<li>Led a Control Self-Assessment team evaluating operational risk for one of Thailand's largest energy companies</li>
-<li>Delivered 5+ IT General Controls projects (2 on SAP environments) embedding controls aligned with required compliance standards, covering user access and segregation of duties, change management, and logical security</li>
+<li>Delivered 5+ IT General Controls projects (2 on SAP environments) and led a Control Self-Assessment team for one of Thailand's largest energy companies</li>
 </ul>
+
+<h3>Independent work</h3>
+<p>DataVerse Consulting: AI-assisted work for a 40-person consultancy in Vientiane (Aug 2026 – Present) · Executive AI training for a forestry non-profit in Laos (Sep 2026)</p>
 <hr>
 
 <h2>Skills</h2>
-<p><strong>AI &amp; Product Delivery</strong>: AI agent platforms, LLM evaluation, GenAI workflow design, AI cost governance (FinOps for LLM workloads), AI opportunity discovery &amp; ROI advisory, rapid prototyping, A/B testing, production observability</p>
-<p><strong>Technical</strong>: APIs, SDKs, third-party integration architecture, data pipelines, Python, n8n, multi-agent Claude Code workflows, MCP servers</p>
-<p><strong>Delivery &amp; Stakeholder Management</strong>: requirements scoping, roadmap ownership, cross-functional team leadership, Agile and Scrum, release coordination, SOC 2 compliance processes</p>
+<p><strong>AI &amp; Product</strong>: AI agent platforms, LLM evaluation, AI cost governance, product design and prototyping, integration architecture (APIs, SDKs, MCP), Python, Claude Code and Codex workflows</p>
 <p><strong>Languages</strong>: English (IELTS 7.5), German (B1), Thai (native)</p>
 <hr>
 
-<h2>Education</h2>
-<p><strong>Master of International and Development Economics</strong><br>University of Applied Science Berlin · DAAD Scholarship Recipient<br><em>Thesis: Technological Change and Human Capital Transformation in Banking Sector in Thailand</em></p>
-<p><strong>Bachelor's Degree in Economics</strong><br>Chiang Mai University · Specialization: Quantitative Economics</p>
-<hr>
-
-<h2>Certifications</h2>
-<p>Professional Product Owner · PMI Agile Certified Practitioner · Google UX Design · Google Business Intelligence · Google Cybersecurity · CompTIA Security+ · AWS Solutions Architect · Azure Solutions Architect</p>
+<h2>Education &amp; Certifications</h2>
+<p><strong>Master of International and Development Economics</strong>, HTW Berlin · DAAD Scholarship Recipient &nbsp;·&nbsp; <strong>Bachelor of Economics</strong>, Chiang Mai University</p>
+<p>Professional Scrum Product Owner I · PMI-ACP · Google UX Design · Google Business Intelligence · Google Cybersecurity · CompTIA Security+ · AWS Solutions Architect Associate · Azure Solutions Architect Expert</p>
 
 </article>
 </body>

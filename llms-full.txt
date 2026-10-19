@@ -1,11 +1,11 @@
-# Matthew Thaokhamlue - Senior AI Product Manager
+# Matthew Thaokhamlue - Product Builder
 
-> Matthew Thaokhamlue is a Senior AI Product Manager based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
+> Matthew Thaokhamlue is a Product Builder based in Berlin, Germany, with 7+ years of experience driving AI-powered innovation in health analytics, laboratory informatics, and B2B SaaS platforms. He specializes in AI/ML product development, API/SDK platforms, voice AI, and cross-functional team leadership.
 
 ## Contact Information
 
 - **Full Name**: Matthew Thaokhamlue
-- **Title**: Senior AI Product Manager
+- **Title**: Product Builder
 - **Location**: Berlin, Germany
 - **Email**: matthew.thaokhamlue@gmail.com
 - **LinkedIn**: https://www.linkedin.com/in/matthewthaokhamlue
@@ -14,17 +14,20 @@
 
 ## Professional Summary
 
-Senior Product Manager with 7+ years of experience building and scaling B2B SaaS products at the intersection of AI, health analytics, and laboratory informatics. Proven track record of taking products from 0 to 1M+ users, driving revenue growth from €0 to €1M ARR, and leading cross-functional teams across engineering, design, data, and customer success. Deep technical fluency across cloud architectures (AWS, Azure), AI/ML systems, API platforms, and voice AI. Known for bridging technical complexity with human-centered design, rapid prototyping, and data-driven decision making. Now also governs daily AI/LLM cost for a production platform, turning runaway model spend into a managed, ROI-positive line item. Runs his own PM practice through a personal multi-agent AI operating system he built: agents that work like colleagues across web, Slack, and Teams, with human review on everything that ships.
+Product builder with 7+ years of experience building and scaling B2B SaaS products at the intersection of AI, health analytics, and laboratory informatics. Proven track record of taking products from 0 to 1M+ users, driving revenue growth from €0 to €1M ARR, and leading cross-functional teams across engineering, design, data, and customer success. Deep technical fluency across cloud architectures (AWS, Azure), AI/ML systems, API platforms, and voice AI. Known for bridging technical complexity with human-centered design, rapid prototyping, and data-driven decision making. Now also governs daily AI/LLM cost for a production platform, turning runaway model spend into a managed, ROI-positive line item. Runs his own PM practice through a personal multi-agent AI operating system he built: agents that work like colleagues across web, Slack, and Teams, with human review on everything that ships.
 
 ## Work Experience
 
-### Senior AI Product Manager — Sema Technologies Inc.
+### Product Builder (Aug 2026 - Present) and Senior AI Product Manager (Mar - Jul 2026) — Sema Technologies Inc.
 **Mar 2026 - Present | Dresden & Berlin, Germany**
 
 
-Product manager for Liz, Sema’s AI agent connecting company priorities to work and shipped code. Answers cite sources; actions require human approval. Own delivery across two squads: Integrations, then Chat and Agent UX.
+Product manager for Liz, Sema’s AI agent connecting company priorities to work and shipped code, and the engine behind Sema’s AI Adoption and AI Defensibility products. Answers cite sources; actions require human approval. Own delivery across two squads: Integrations, then Chat and Agent UX.
 
-- Cut inefficient daily AI spend **~39% (~$3,250/month)** through usage-based auto-scaling, with no loss of customer coverage. Built and own the daily AI cost dashboard. Its first invoice reconciliation matched provider billing **within 0.26%**.
+- Designed Liz’s look and feel and its **v2 interface**, now live, and led its delivery with the engineering lead.
+- Designed and helped build the logic behind Sema’s **AI Adoption** reports in Liz, which compare AI-assisted and other engineering work against delivery outcomes.
+- Built and own the daily AI cost dashboard. Its first invoice reconciliation matched provider billing **within 0.26%**.
+- As Senior AI Product Manager, cut inefficient daily AI spend **~39% (~$3,250/month)** through usage-based auto-scaling, with no loss of customer coverage.
 - Removed a recurring enterprise deal blocker with an AI-assisted release-note process that met **SOC 2** requirements. A named person approves each note before manual publication.
 - Led Liz’s expansion from read-only analytics to **governed actions** across Slack, email, Confluence, Jira, and Linear. Led the build of customer-specific approval rules and maintain them.
 - Owned the **integration roadmap through production rollout** across Jira, GitHub, Slack, Zoom, Linear, and document sources.
@@ -74,10 +77,10 @@ The world's first voice-powered AI lab assistant, letting scientists capture dat
 - Owned and scaled APIs and SDKs powering 1M+ users across 100+ B2B partners in digital health.
 - Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and more).
 - Contributed to company growth from €0 → €1M ARR and from 7 → 35 people.
-- Founded and led the Customer Success function alongside Product, and built "Thryve Academy," a self-recorded video library plus dual-audience release notes that onboarded every team as the company scaled.
+- Helped build the Customer Success team and founded Thryve Academy, the onboarding programme, while the team grew from 7 to 35.
 - Key skills: API/SDK, Wearable Integrations, B2B Partnerships, Digital Health
 
-### Senior Risk Consultant — Ernst & Young
+### Senior Business Consultant — Ernst & Young
 **Aug 2016 - Feb 2018 | Bangkok, Thailand**
 
 - Drove risk assessments and process improvement projects for Thailand's largest corporations.
@@ -90,10 +93,10 @@ The world's first voice-powered AI lab assistant, letting scientists capture dat
 ### Opportunity Paths (opppaths.com) — Founder & Builder
 **Jan 2026 - Present**
 
-- AI-powered scholarship platform that matches students to funding and helps them build winning applications: profile-to-scholarship matching, gap analysis, document drafting, and interview preparation, localized in English and Thai.
-- Built as the sole human owner through a personal multi-agent AI workflow of his own design; roughly 396 commits in the first six months, live in production configuration with an early-access waitlist.
-- Built the eval harness that gates every model change: each candidate does the same jobs as production, an AI judge compares the six riskiest, and each candidate's own price is counted. It chose the model now shipping - 24 comparisons, no losses, 11.3x cheaper, faster on every job.
-- Built a second eval for the step that reads scholarship pages, which was inventing dates. Twelve hand-checked pages showed a bigger model was no better - both invented a date 17% of the time - so a two-sentence prompt fix, not a costlier model, took it to zero. Those checks now guard the live data.
+- AI platform that helps students find scholarships and write their applications, in English and Thai.
+- Live early access: 50+ applications, and 10 students reached interview rounds.
+- Built alongside a full-time job with his own AI coding workflow: scholarship matching and gap analysis, an AI builder for statements of purpose and CVs, interview preparation and Stripe billing (Next.js, Supabase).
+- Built the test that decides which AI model runs in production: it moved OppPaths to a model 11.3x cheaper and ~8x faster that passed all 23 AI jobs and invented fewer facts.
 - Inspired by the DAAD scholarship that changed his own path in 2018; aimed first at students in the Mekong region.
 
 ### Remarcable Living (remarcableliving.co) — Design and build
@@ -195,4 +198,4 @@ He is known for bridging technical complexity with human needs, having helped sc
 
 ## Keywords
 
-Matthew Thaokhamlue, Senior Product Manager, Technical Product Manager, AI Product Manager, Product Owner, Berlin Germany, B2B SaaS, AI/ML, Voice AI, Health Analytics, Laboratory Informatics, Digital Health, Wearable Integrations, API Platform, SDK, Cloud Architecture, AWS, Azure, Scrum, Agile, Cross-functional Leadership, DAAD Scholar
+Matthew Thaokhamlue, Product Builder, Senior Product Manager, Technical Product Manager, AI Product Manager, Product Owner, Berlin Germany, B2B SaaS, AI/ML, Voice AI, Health Analytics, Laboratory Informatics, Digital Health, Wearable Integrations, API Platform, SDK, Cloud Architecture, AWS, Azure, Scrum, Agile, Cross-functional Leadership, DAAD Scholar
