@@ -77,7 +77,7 @@ The world's first voice-powered AI lab assistant, letting scientists capture dat
 - Owned and scaled APIs and SDKs powering 1M+ users across 100+ B2B partners in digital health.
 - Led 10+ wearable integrations (Fitbit, Garmin, Withings, Oura, Apple Health, and more).
 - Contributed to company growth from €0 → €1M ARR and from 7 → 35 people.
-- Founded and led the Customer Success function alongside Product, and built "Thryve Academy," a self-recorded video library plus dual-audience release notes that onboarded every team as the company scaled.
+- Helped build the Customer Success team and founded Thryve Academy, the onboarding programme, while the team grew from 7 to 35.
 - Key skills: API/SDK, Wearable Integrations, B2B Partnerships, Digital Health
 
 ### Senior Business Consultant — Ernst & Young
@@ -93,10 +93,10 @@ The world's first voice-powered AI lab assistant, letting scientists capture dat
 ### Opportunity Paths (opppaths.com) — Founder & Builder
 **Jan 2026 - Present**
 
-- AI-powered scholarship platform that matches students to funding and helps them build winning applications: profile-to-scholarship matching, gap analysis, document drafting, and interview preparation, localized in English and Thai.
-- Built as the sole human owner through a personal multi-agent AI workflow of his own design; roughly 396 commits in the first six months, live in production configuration with an early-access waitlist.
-- Built the eval harness that gates every model change: each candidate does the same jobs as production, an AI judge compares the six riskiest, and each candidate's own price is counted. It chose the model now shipping - 24 comparisons, no losses, 11.3x cheaper, faster on every job.
-- Built a second eval for the step that reads scholarship pages, which was inventing dates. Twelve hand-checked pages showed a bigger model was no better - both invented a date 17% of the time - so a two-sentence prompt fix, not a costlier model, took it to zero. Those checks now guard the live data.
+- AI platform that helps students find scholarships and write their applications, in English and Thai.
+- Live early access: 50+ applications, and 10 students reached interview rounds.
+- Built alongside a full-time job with his own AI coding workflow: scholarship matching and gap analysis, an AI builder for statements of purpose and CVs, interview preparation and Stripe billing (Next.js, Supabase).
+- Built the test that decides which AI model runs in production: it moved OppPaths to a model 11.3x cheaper and ~8x faster that passed all 23 AI jobs and invented fewer facts.
 - Inspired by the DAAD scholarship that changed his own path in 2018; aimed first at students in the Mekong region.
 
 ### Remarcable Living (remarcableliving.co) — Design and build
