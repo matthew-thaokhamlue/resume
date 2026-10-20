@@ -28,7 +28,7 @@ Product manager for Liz, Sema’s AI agent connecting company priorities to work
 - Designed and helped build the logic behind Sema’s **AI Adoption** reports in Liz, which compare AI-assisted and other engineering work against delivery outcomes.
 - Built and own the daily AI cost dashboard. Its first invoice reconciliation matched provider billing **within 0.26%**.
 - As Senior AI Product Manager, cut inefficient daily AI spend **~39% (~$3,250/month)** through usage-based auto-scaling, with no loss of customer coverage.
-- Removed a recurring enterprise deal blocker with an AI-assisted release-note process that met **SOC 2** requirements. A named person approves each note before manual publication.
+- Removed a recurring enterprise deal blocker with an AI-assisted release-note process that met **SOC 2** requirements. He approves each note, as the product manager, before manual publication.
 - Led Liz’s expansion from read-only analytics to **governed actions** across Slack, email, Confluence, Jira, and Linear. Led the build of customer-specific approval rules and maintain them.
 - Owned the **integration roadmap through production rollout** across Jira, GitHub, Slack, Zoom, Linear, and document sources.
 - Led **Chat and Agent UX** releases covering a shared document library, role-based access with tier gating, shared calculations, and customer-facing AI-spend limits. Delivered Microsoft Teams at Slack parity.
