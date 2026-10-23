@@ -954,7 +954,7 @@ test('room.js makes the Audio element only inside a press handler, with preload 
   const firstListeners = count(js, /section\.addEventListener\('(?:pointerdown|keydown)', firstPlay, \{ signal, capture: true \}\);/g);
   assert.equal(firstListeners, 2, 'a pointerdown or a key press in the room starts the music');
   assert.equal(count(js, /\bfirstPlay\b/g), 1 + firstListeners, 'firstPlay runs only from those two listeners');
-  assert.match(fn('firstPlay'), /if \(firstPress \|\| event\.key === 'Escape'\) return;\n\s*firstPress = true;\n\s*if \(music\.paused \|\| event\.target\.closest\?\.\('\[data-room-play\]'\)\) return;/, 'once per load, never after a pause, and never from the Play button');
+  assert.match(fn('firstPlay'), /if \(firstPress \|\| event\.key === 'Escape'\) return;\n\s*firstPress = true;\n\s*if \(music\.paused \|\| event\.target\.closest\?\.\('\[data-room-music\]'\)\) return;/, 'once per load, never after a pause, and never from a control in the music bar');
   assert.match(canvasClick, /hit\.kind === 'radio'\) toggleMusic\(\);/, 'a click on the radio plays or pauses');
 });
 
@@ -998,11 +998,11 @@ test('room.js makes the AudioContext only inside the first-press handler, and lo
 
 test('the music bar holds the sound effects toggle after Next, named by its text, with aria-pressed', () => {
   const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
-  assert.match(room, /data-room-next aria-label="Next track">(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+Next<\/button>\r?\n\s*<button class="ed-room__control" type="button" data-room-sfx aria-pressed="true">(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+<span data-room-sfx-label>Sounds on<\/span><\/button>/,
-    'the toggle follows Next, starts pressed, and its visible text is its name');
+  assert.match(room, /data-room-next aria-label="Next track">(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+Next<\/button>\r?\n\s*<button class="ed-room__control" type="button" data-room-sfx aria-pressed="true">(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+Sounds<\/button>/,
+    'the toggle follows Next, starts pressed, and its visible text "Sounds" is its name');
   const js = readText('assets/room/room.js');
   assert.match(js, /sfxButton\.setAttribute\('aria-pressed', String\(sfx\.on\)\);/, 'aria-pressed follows the toggle');
-  assert.match(js, /sfxLabel\.textContent = sfx\.on \? 'Sounds on' : 'Sounds off';/);
+  assert.doesNotMatch(js, /Sounds on|Sounds off|data-room-sfx-label/, 'the name stays "Sounds"; aria-pressed alone carries the state');
   assert.match(js, /try \{ sfx\.on = localStorage\.getItem\('room\.sfx'\) !== 'off'; \} catch/, 'on unless stored off, read in try/catch');
   assert.match(js, /try \{ localStorage\.setItem\('room\.sfx', sfx\.on \? 'on' : 'off'\); \} catch/, 'stored in try/catch');
   assert.match(readText('assets/css/editorial.css'), /\.ed-room__control\[aria-pressed="true"\] \.ed-room__icon--muted, \.ed-room__control\[aria-pressed="false"\] \.ed-room__icon--sound \{ display: none; \}/, 'the icon follows the toggle');
@@ -1016,6 +1016,16 @@ test('the room shows a still image of the rest view for each theme while it load
   const css = readText('assets/css/editorial.css');
   assert.match(css, /html\.room-on \.ed-room \{ background-image: url\("\.\.\/room\/still-day\.webp"\); background-size: cover;/);
   assert.match(css, /html\.room-on\[data-theme="dark"\] \.ed-room \{ background-image: url\("\.\.\/room\/still-night\.webp"\); \}/);
+});
+
+test('every selector in the room block of editorial.css is scoped to the room', () => {
+  const css = readText('assets/css/editorial.css');
+  const block = css.match(/\/\* ── editorial-room [^\n]*\n([\s\S]*?)\n\/\* ── /)[1].replace(/\/\*[\s\S]*?\*\//g, '');
+  const selectors = [...block.matchAll(/([^{}]+)\{[^{}]*\}/g)].flatMap((m) => m[1].split(',').map((s) => s.trim()));
+  assert.ok(selectors.length > 20, `the room block holds ${selectors.length} selectors`);
+  for (const selector of selectors) {
+    assert.ok(selector.startsWith('.ed-room') || selector.startsWith('html.room-on'), `"${selector}" would style the page outside the room`);
+  }
 });
 
 test('the station links name every room station', () => {

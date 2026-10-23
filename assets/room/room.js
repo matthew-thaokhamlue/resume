@@ -127,6 +127,8 @@ const NOTES = { every: 600, life: 2000, max: 6, rise: 0.3, size: 0.06, fps: 30 }
 // The glow tour lights each station's objects in turn for TOUR_STEP_MS, up to PULSE, once the canvas has faded in
 // (CANVAS_FADE_MS, as in editorial.css). HOVER is the hover tint.
 const HOVER = 0.12, PULSE = 0.3, TOUR_STEP_MS = 600, CANVAS_FADE_MS = 600;
+// A lost WebGL context has RESTORE_MS to come back before the room hides.
+const RESTORE_MS = 3000;
 
 // The lined paper, laid out in CSS px: it hangs at a fixed place in front of the camera, so its size on screen
 // never changes. Each line of text sits on a ruled line.
@@ -2945,10 +2947,11 @@ export async function start(section) {
       return { station: m[1], item: m[2] && items.has(`${m[1]}/${m[2]}`) ? m[2] : null };
     }
 
-    // Entering a station from rest adds one history entry; every later move replaces it, so Back returns to rest.
+    // Entering a station from rest adds one history entry; every later move replaces it, so Back returns to rest. The
+    // room marks its entries with { room: 1 }, so a reload at a station adds no second entry.
     function go(hash) {
-      if (state.station === 'rest') { window.location.hash = hash; return; }
-      window.history.replaceState(null, '', `#${hash}`);
+      if (state.station === 'rest') window.history.pushState({ room: 1 }, '', `#${hash}`);
+      else window.history.replaceState({ room: 1 }, '', `#${hash}`);
       apply();
     }
 
@@ -2969,6 +2972,7 @@ export async function start(section) {
       const next = readHash();
       if (next.station === state.station && next.item === state.item) return;
       const was = { ...state };
+      const focused = document.activeElement;
       Object.assign(state, next);
       if (state.station !== 'rest' && state.station !== was.station) track('room_station_opened', { station: state.station });
       if (state.item && (state.item !== was.item || state.station !== was.station)) track('room_item_opened', { station: state.station, item: state.item });
@@ -2987,6 +2991,12 @@ export async function start(section) {
       const key = keyOf(state);
       showPaper(key);
       if (key) announce(key);
+      else { live.replaceChildren(); paperLinks.remove(); }
+      // The Back button hides at rest, and the paper's links leave with the paper. Either one that held the focus hands
+      // it to the station link of the station just left.
+      if ((focused === backButton && backButton.hidden) || (paperLinks.contains(focused) && !focused.isConnected)) {
+        (stationLinks.find((link) => link.dataset.roomStation === was.station) ?? stationLinks[0]).focus();
+      }
       if (pass(state)) showView(items.get(`desk/${state.item}`).pass.view);
       tip.hidden = true;
       showSides();
@@ -3019,8 +3029,10 @@ export async function start(section) {
 
     window.addEventListener('hashchange', apply, { signal });
     backButton.addEventListener('click', back, { signal });
+    // The keys act only while the room is in view or holds the focus.
     document.addEventListener('keydown', (event) => {
       if (state.station === 'rest' || event.defaultPrevented || document.querySelector('dialog[open]')) return;
+      if (!inView && !section.contains(document.activeElement)) return;
       if (event.key === 'Escape') { back(); return; }
       // Left and Right turn the open paper's pages; with no paper open they move sideways.
       const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
@@ -3169,7 +3181,8 @@ export async function start(section) {
     musicBox.querySelector('[data-room-play]').addEventListener('click', toggleMusic, { signal });
     musicBox.querySelector('[data-room-next]').addEventListener('click', nextTrack, { signal });
     // The visitor's first press in the room, a click anywhere in it or a key, starts the music alongside what the press
-    // does: once per page load, and only when the visitor never paused it. The Play button starts it by its own click.
+    // does: once per page load, and only when the visitor never paused it. A press in the music bar starts nothing: the
+    // Play button starts the music by its own click, and Next and Sounds leave it off.
     // Esc gives the page no right to play sound, so it waits for the next press. Every other press also wakes the sound
     // effects.
     let firstPress = false;
@@ -3177,7 +3190,7 @@ export async function start(section) {
       if (event.key !== 'Escape') wakeSounds(event);
       if (firstPress || event.key === 'Escape') return;
       firstPress = true;
-      if (music.paused || event.target.closest?.('[data-room-play]')) return;
+      if (music.paused || event.target.closest?.('[data-room-music]')) return;
       player();
       play();
     }
@@ -3191,7 +3204,6 @@ export async function start(section) {
     const sfx = { ctx: null, on: true, loads: new Map(), buffers: new Map(), last: new Map(), voices: [], log: [], loading: false };
     try { sfx.on = localStorage.getItem('room.sfx') !== 'off'; } catch { sfx.on = true; }
     const sfxButton = musicBox.querySelector('[data-room-sfx]');
-    const sfxLabel = sfxButton.querySelector('[data-room-sfx-label]');
     function wakeSounds(event) {
       if (sfx.ctx) { if (sfx.ctx.state === 'suspended') sfx.ctx.resume().catch(() => {}); return; }
       try { sfx.ctx = new AudioContext(); } catch (error) { console.warn('Room: the sound effects did not start.', error); return; }
@@ -3243,9 +3255,9 @@ export async function start(section) {
       gain.gain.setTargetAtTime(0, sfx.ctx.currentTime, 0.015);
       source.stop(sfx.ctx.currentTime + 0.08);
     }
+    // The button's name stays "Sounds"; aria-pressed carries the state, and the icon follows it.
     function showSounds() {
       sfxButton.setAttribute('aria-pressed', String(sfx.on));
-      sfxLabel.textContent = sfx.on ? 'Sounds on' : 'Sounds off';
     }
     sfxButton.addEventListener('click', () => {
       sfx.on = !sfx.on;
@@ -3390,6 +3402,26 @@ export async function start(section) {
     const theme = new MutationObserver(applyLighting);
     signal.addEventListener('abort', () => { resize.disconnect(); visibility.disconnect(); theme.disconnect(); });
 
+    // A lost context: preventDefault() lets the browser restore it, and a restore draws the room and its shadows again.
+    // Without a restore within RESTORE_MS, the room stops, its music pauses and the home page shows without it, as
+    // after a failed start.
+    let lostTimer = 0;
+    canvas.addEventListener('webglcontextlost', (event) => {
+      event.preventDefault();
+      lostTimer = setTimeout(() => {
+        abort.abort();
+        audio?.pause();
+        root.classList.remove('room-on');
+        section.hidden = true;
+        console.warn('Room: the WebGL context was lost and did not come back, so the home page shows without the room.');
+      }, RESTORE_MS);
+    }, { signal });
+    canvas.addEventListener('webglcontextrestored', () => {
+      clearTimeout(lostTimer);
+      renderer.shadowMap.needsUpdate = true;
+      invalidate();
+    }, { signal });
+
     // ── First frame ──
     camera.aspect = stage.clientWidth / stage.clientHeight;
     camera.updateProjectionMatrix();
@@ -3399,12 +3431,15 @@ export async function start(section) {
     applyLighting();
     cam.eye.copy(poses.rest.eye);
     cam.target.copy(poses.rest.target);
-    // A load with a station or an item hash opens that state above a rest entry, so Esc and Back return to rest.
+    // A load with a station or an item hash opens that state above a rest entry, so Esc and Back return to rest. A
+    // reload of the room's own entry already has that rest entry below it.
     const opened = readHash();
     if (opened.station !== 'rest') {
-      const hash = window.location.hash;
-      window.history.replaceState(null, '', window.location.pathname + window.location.search);
-      window.history.pushState(null, '', hash);
+      if (!window.history.state?.room) {
+        const hash = window.location.hash;
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        window.history.pushState({ room: 1 }, '', hash);
+      }
       apply();
       for (const t of [camTween, ...cardTweens.values(), ...passTweens.values()]) if (t && tweens.has(t)) { tweens.delete(t); t.step(1); t.done?.(); }
       camTween = null;
@@ -3441,7 +3476,7 @@ export async function start(section) {
       tourTimer = setTimeout(startTour, CANVAS_FADE_MS);
     }
 
-    // ── Test hooks for the headless checks ──
+    // ── Test hooks for the headless checks; window.__room exists only with force=1, which every check uses ──
     const ndc = new THREE.Vector3();
     const probe = new THREE.Raycaster();
     const isShown = (o) => { for (; o; o = o.parent) if (!o.visible) return false; return true; };
@@ -3571,7 +3606,7 @@ export async function start(section) {
     };
     const zonePoint = (z) => (z ? paperPoint((z.x0 + z.x1) / 2, (z.y0 + z.y1) / 2) : null);
 
-    window.__room = {
+    if (/[?&]force=1\b/.test(window.location.search)) window.__room = {
       state: () => ({ ...state, spread: { ...spreadOut }, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip, linked: Object.keys(stationObjects).find((s) => stationObjects[s] === linked) ?? null, touring: !!tourTween, glowing: pulse && { name: pulse.name, amount: +pulse.amount.toFixed(2) }, coffee: coffee.left }),
       tour: () => ({ ...tourLog }),
       music: () => ({ track: music.track + 1, playing: music.playing, time: audio ? +audio.currentTime.toFixed(2) : music.time, src: audio?.currentSrc || null, label: playLabel.textContent, trackText: trackLabel.textContent, led: led.material.emissiveIntensity }),
@@ -3597,7 +3632,7 @@ export async function start(section) {
       steam: (ms) => steamFor(ms),
       // The sound effects: the context's state, the decoded files, what played (a hover, a click, a turn or a sip) and
       // the toggle. sound(name) asks for one sound, as an object would.
-      sounds: () => ({ state: sfx.ctx?.state ?? null, rate: sfx.ctx?.sampleRate ?? null, on: sfx.on, decoded: [...sfx.buffers.keys()], played: sfx.log.slice(), voices: sfx.voices.length, pressed: sfxButton.getAttribute('aria-pressed'), label: sfxLabel.textContent }),
+      sounds: () => ({ state: sfx.ctx?.state ?? null, rate: sfx.ctx?.sampleRate ?? null, on: sfx.on, decoded: [...sfx.buffers.keys()], played: sfx.log.slice(), voices: sfx.voices.length, pressed: sfxButton.getAttribute('aria-pressed'), label: sfxButton.textContent.trim() }),
       sound: (name) => playSound(name),
       // A point on the canvas where a click meets nothing, away from the paper and the room's controls.
       emptyPoint: () => {
