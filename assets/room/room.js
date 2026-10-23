@@ -2973,6 +2973,8 @@ export async function start(section) {
       if (next.station === state.station && next.item === state.item) return;
       const was = { ...state };
       const focused = document.activeElement;
+      // Only keyboard focus moves on: a mouse click on Back leaves no focus ring and needs no handoff.
+      const keyboardFocus = focused?.matches?.(':focus-visible');
       Object.assign(state, next);
       if (state.station !== 'rest' && state.station !== was.station) track('room_station_opened', { station: state.station });
       if (state.item && (state.item !== was.item || state.station !== was.station)) track('room_item_opened', { station: state.station, item: state.item });
@@ -2994,7 +2996,7 @@ export async function start(section) {
       else { live.replaceChildren(); paperLinks.remove(); }
       // The Back button hides at rest, and the paper's links leave with the paper. Either one that held the focus hands
       // it to the station link of the station just left.
-      if ((focused === backButton && backButton.hidden) || (paperLinks.contains(focused) && !focused.isConnected)) {
+      if (keyboardFocus && ((focused === backButton && backButton.hidden) || (paperLinks.contains(focused) && !focused.isConnected))) {
         (stationLinks.find((link) => link.dataset.roomStation === was.station) ?? stationLinks[0]).focus();
       }
       if (pass(state)) showView(items.get(`desk/${state.item}`).pass.view);
