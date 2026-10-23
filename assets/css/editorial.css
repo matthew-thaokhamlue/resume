@@ -1049,6 +1049,8 @@
   .ed-room__control:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 1px; }
   .ed-room__icon { flex: none; width: 13px; height: 13px; fill: currentColor; }
   .ed-room__music:not(.is-playing) .ed-room__icon--pause, .ed-room__music.is-playing .ed-room__icon--play { display: none; }
+  /* the sound effects toggle shows a speaker with waves when on, and a crossed speaker when off */
+  .ed-room__control[aria-pressed="true"] .ed-room__icon--muted, .ed-room__control[aria-pressed="false"] .ed-room__icon--sound { display: none; }
   .ed-room__track { margin-left: 4px; padding-left: 12px; border-left: 1px solid var(--ed-hairline); color: var(--ed-ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
   /* the station links along the bottom, over a soft scrim; room.js marks the current station with aria-current */
   .ed-room__stations { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2px; padding: 26px var(--ed-gutter-x) 10px; background: linear-gradient(to top, rgba(var(--ed-bg-rgb), 0.86), rgba(var(--ed-bg-rgb), 0.6) 50%, rgba(var(--ed-bg-rgb), 0)); color: var(--ed-ink-soft); pointer-events: none; }

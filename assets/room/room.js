@@ -1,11 +1,12 @@
 /*
  * room.js — the 3D room on the home page: a wide room with a wooden window above a long desk. On the desk lie five
- * boarding passes in a pile, a laptop, a CV printout, a tray of business cards, a telephone and a radio. An awards shelf hangs on
- * the right wall and framed posters on the left wall. A chosen item shows its text on a lined paper held in front of
- * the camera. room-boot.js imports this module behind ?room=1 and calls start(section). start() resolves after the
- * first frame. Until then any failure removes every listener and rejects, and room-boot.js hides the room. All text
- * comes from the site's own pages: experience.html, certificates.html and portfolio.html, read the same way as
- * assets/js/ai-match.js, and the home page itself. Where the home page has a link or a button, the room clicks it.
+ * boarding passes in a pile, a laptop, a CV printout, a tray of business cards, a telephone, a radio and a mug of
+ * coffee. An awards shelf hangs on the right wall and framed posters on the left wall. A chosen item shows its text on
+ * a lined paper held in front of the camera. Objects play short sounds on hover and on click. room-boot.js imports
+ * this module behind ?room=1 and calls start(section). start() resolves after the first frame. Until then any failure
+ * removes every listener and rejects, and room-boot.js hides the room. All text comes from the site's own pages:
+ * experience.html, certificates.html and portfolio.html, read the same way as assets/js/ai-match.js, and the home page
+ * itself. Where the home page has a link or a button, the room clicks it.
  */
 import * as THREE from './vendor/three.module.min.js';
 import { GLTFLoader } from './vendor/loaders/GLTFLoader.js';
@@ -97,6 +98,19 @@ const DESK_EYE = { up: 0.94, back: 0.86, refH: 820 };
 const REST = { eye: [0.55, 1.62, 5.3], target: [0.55, 1.28, 0] };
 // The radio stands at the back left corner of the desk, in front of the sill and below it, so it never hides a pane.
 const RADIO = { x: -0.3, z: 0.245, turn: 0.22, w: 0.26, h: 0.15, d: 0.12 };
+// The coffee mug stands right of the laptop, behind the CV printout and near the lamp. turn points its handle to the
+// front right. A full mug holds sips sips.
+const MUG = { x: 0.87, z: 0.27, turn: -0.5, r: 0.055, h: 0.095, sips: 5 };
+// Steam rises from the coffee: a wisp every STEAM.every ms, each for STEAM.life ms and at most STEAM.opacity opaque,
+// at most STEAM.max at once. It rises for STEAM.arrive ms after the camera arrives at #desk and for STEAM.sip ms after
+// a sip.
+const STEAM = { every: 120, life: 1800, max: 16, rise: 0.15, size: 0.034, opacity: 0.7, arrive: 4000, sip: 3000 };
+// The sound effects in sfx/: one hover sound for each kind of object, a page turn and a sip. A click on an object
+// plays its hover sound, and a click on the coffee the sip. The same sound plays again only after SFX_GAP ms, at most
+// SFX_VOICES play at once, and a sound that is still loading plays when it arrives within SFX_LATE ms.
+const SFX = ['hover-pass', 'hover-laptop', 'hover-cv', 'hover-radio', 'hover-phone', 'hover-coffee', 'hover-cards', 'hover-poster',
+  'hover-trophy', 'hover-certificate', 'hover-medal', 'hover-lamp', 'flip', 'sip'];
+const SFX_GAIN = { hover: 0.25, effect: 0.5 }, SFX_GAP = 150, SFX_VOICES = 2, SFX_LATE = 600;
 // The decor. The bookshelf stands in the back left corner, clear of the desk and of the posters' sight lines; the
 // tall plant stands in the back right corner, its leaves clear of the shelf's sight lines; the clock hangs right of
 // the window. FLOOR.tile is the size of one floorboard texture in metres.
@@ -679,6 +693,35 @@ function noteArt(kind) {
     flag(58, 12);
     if (kind === 2) flag(58, 32);
   }
+  return c;
+}
+
+// The coffee seen from above: dark coffee with a thin light ring of crema at the rim.
+function coffeeArt() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 256;
+  const g = c.getContext('2d'), R = 128;
+  const grad = g.createRadialGradient(R, R, 0, R, R, R);
+  for (const [at, color] of [[0, '#43261a'], [0.6, '#2e180e'], [0.82, '#2a150b'], [0.87, '#6e4527'], [0.92, '#d3a878'], [0.96, '#e4c597'], [1, '#a2724a']]) grad.addColorStop(at, color);
+  g.fillStyle = grad;
+  g.fillRect(0, 0, c.width, c.height);
+  return c;
+}
+
+// A wisp of steam: a soft white blob, twice as tall as it is wide.
+function steamArt() {
+  const c = document.createElement('canvas');
+  c.width = 64;
+  c.height = 128;
+  const g = c.getContext('2d');
+  g.translate(32, 64);
+  g.scale(1, 2);
+  const grad = g.createRadialGradient(0, 0, 0, 0, 0, 30);
+  grad.addColorStop(0, 'rgba(255, 255, 255, 0.85)');
+  grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.32)');
+  grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  g.fillStyle = grad;
+  g.fillRect(-32, -32, 64, 64);
   return c;
 }
 
@@ -1436,11 +1479,12 @@ export async function start(section) {
       faces.push(mesh);
       return mesh;
     }
-    // An item that a click opens: its group carries the station and the id, and a second click opens its paper.
+    // An item that a click opens: its group carries the station, the id and its sound, and a second click opens its
+    // paper.
     const items = new Map();
     function item(station, id, fields) {
       const group = new THREE.Group();
-      group.userData = { kind: 'item', station, id };
+      group.userData = { kind: 'item', station, id, sound: fields.sound };
       const entry = { station, id, object: group, ...fields };
       if (id) items.set(`${station}/${id}`, entry);
       return entry;
@@ -1451,7 +1495,7 @@ export async function start(section) {
     lamp.position.set(1.45, DESK.top, 0.22);
     lamp.rotation.y = 2.4;
     lamp.scale.setScalar(0.8);
-    lamp.userData.kind = 'lamp';
+    lamp.userData = { kind: 'lamp', sound: 'hover-lamp' };
     const lampLight = new THREE.PointLight(0xffb066, 0.4, 0, 2);
     lampLight.position.set(-0.005, 0.66, -0.18);   // just below the bulb, in model space
     const plant = new THREE.Group();
@@ -1460,7 +1504,7 @@ export async function start(section) {
     const laptop = new THREE.Group();
     laptop.position.set(LAPTOP.x, DESK.top, LAPTOP.z);
     laptop.scale.setScalar(LAPTOP.scale);
-    laptop.userData.kind = 'laptop';
+    laptop.userData = { kind: 'laptop', sound: 'hover-laptop' };
     for (const [anchor, gltf] of [[lamp, lampModel], [plant, plantModel], [laptop, laptopModel]]) {
       gltf.scene.traverse((o) => {
         if (!o.isMesh) return;
@@ -1519,7 +1563,7 @@ export async function start(section) {
     // on its left two thirds, and a brushed gold panel with a large tuning dial and three small knurled knobs. It
     // stands on four dark feet and carries a thin telescopic antenna. A red LED above the grille glows while it plays. ──
     const radio = new THREE.Group();
-    radio.userData.kind = 'radio';
+    radio.userData = { kind: 'radio', sound: 'hover-radio' };
     const FOOT = 0.009, BORDER = 0.02;
     const walnut = wood.clone();
     walnut.color.setHex(0x7a5848);   // the room's grain, darkened to walnut
@@ -1606,7 +1650,7 @@ export async function start(section) {
     const passItems = passes.map((pass, i) => {
       const mesh = faceMesh(passFace(pass, PASS_H), { alphaTest: 0.5, roughness: 0.9 });
       mesh.rotation.x = -Math.PI / 2;
-      const entry = item('desk', pass.id, { name: pass.name, doc: passDoc(pass), tip: passTip(pass), pass, mesh });
+      const entry = item('desk', pass.id, { name: pass.name, doc: passDoc(pass), tip: passTip(pass), pass, mesh, sound: 'hover-pass' });
       const holder = entry.object;
       const row = new THREE.Object3D();
       row.position.set(DESK.x + (i - (passes.length - 1) / 2) * (PASS.w + PASS.gap), DESK.top + 0.0012 + i * 0.0004, DX.z1 - 0.035 - PASS_H / 2 + SHIFT[i]);
@@ -1626,7 +1670,7 @@ export async function start(section) {
     // ── The CV printout in front of the telephone, with a paper clip at its top edge ──
     const print = faceMesh(printFace(), { roughness: 0.92 });
     print.rotation.x = -Math.PI / 2;
-    print.userData.kind = 'print';
+    Object.assign(print.userData, { kind: 'print', sound: 'hover-cv' });
     const printHolder = new THREE.Group();
     printHolder.position.set(PRINT.x, DESK.top + 0.0012, PRINT.z);
     printHolder.rotation.y = PRINT.turn;
@@ -1634,6 +1678,43 @@ export async function start(section) {
     clip.position.set(-0.05, 0.0009, -PRINT.h / 2 - 0.008);
     printHolder.add(print, clip);
     scene.add(printHolder);
+
+    // ── The coffee mug right of the laptop: glazed red outside and cream inside, with a handle, and coffee whose level
+    // drops a step with each sip. It sips by tilting towards the eye, hinged at its base's front edge. ──
+    const mug = new THREE.Group();
+    mug.userData = { kind: 'mug', sound: 'hover-coffee' };
+    mug.position.set(MUG.x, DESK.top, MUG.z);
+    const mugTilt = new THREE.Group();
+    mugTilt.position.z = MUG.r;
+    const coffeeTop = MUG.h - 0.014, coffeeBottom = 0.016;   // the coffee's height when full and just before empty
+    const coffeeSurface = new THREE.Mesh(new THREE.CircleGeometry(MUG.r - 0.0056, 40).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: texture(coffeeArt()), roughness: 0.2 }));
+    {
+      const { r: R, h: H } = MUG, t = 0.005, floor = 0.012;
+      const lathe = (points) => new THREE.LatheGeometry(points.map(([x, y]) => new THREE.Vector2(x, y)), 40);
+      const glaze = new THREE.MeshStandardMaterial({ color: 0xb3241e, roughness: 0.16 });
+      const body = new THREE.Group();
+      body.position.z = -MUG.r;
+      body.rotation.y = MUG.turn;
+      body.add(new THREE.Mesh(lathe([[0, 0], [R * 0.8, 0], [R * 0.95, 0.004], [R, 0.014], [R, H - 0.003], [R - 0.0012, H], [R - t + 0.0012, H]]), glaze));
+      body.add(new THREE.Mesh(lathe([[R - t + 0.0012, H], [R - t, H - 0.003], [R - t, floor + 0.006], [R - t - 0.006, floor], [0, floor]]),
+        new THREE.MeshStandardMaterial({ color: 0xf1e7d6, roughness: 0.2 })));
+      // The handle: a loop on the mug's local +x side, both ends set into the wall.
+      body.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([[R - 0.003, H * 0.8], [R + 0.022, H * 0.82], [R + 0.037, H * 0.66], [R + 0.035, H * 0.4], [R + 0.019, H * 0.26], [R - 0.003, H * 0.24]]
+        .map(([x, y]) => new THREE.Vector3(x, y, 0))), 32, 0.0062, 8), glaze));
+      body.add(coffeeSurface);
+      mugTilt.add(body);
+      mug.add(mugTilt);
+      mug.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
+      scene.add(mug);
+    }
+    // The coffee at a level of sips, 0 to MUG.sips: an empty mug shows its cream inside. From #desk the eye sees only
+    // the top half of the inside, so the first sips take the level down less and every step shows.
+    function setCoffee(sips) {
+      coffeeSurface.visible = sips > 0.01;
+      coffeeSurface.position.y = coffeeBottom + (coffeeTop - coffeeBottom) * Math.sqrt(sips / MUG.sips);
+    }
+    const coffee = { left: MUG.sips, anim: null, steamUntil: 0 };
+    setCoffee(coffee.left);
 
     // ── The awards shelf on the right wall: trophies on the low board, certificates on the high board, medals on
     // three hooks above. Everything faces the room (-x). ──
@@ -1658,6 +1739,7 @@ export async function start(section) {
         tip: [['b', `${result.value} · ${result.label}`], ['span', result.company]],
         doc: revealDoc(result.reveal, [result.reveal.kicker, result.reveal.meta],
           experience.getElementById(`role-${result.id}`) ? [{ text: LINK_TEXT, href: `experience.html#role-${result.id}` }] : []),
+        sound: 'hover-trophy',
       });
       const t = entry.object, metal = gold();
       const dark = new THREE.MeshStandardMaterial({ color: 0x2c2420, roughness: 0.45 });
@@ -1700,7 +1782,7 @@ export async function start(section) {
     ];
     const certStep = (SHELF.z1 - SHELF.z0 - 0.04) / certSpecs.length;
     const certItems = certSpecs.map((spec, i) => {
-      const entry = item('awards', spec.id, { name: spec.name, doc: spec.doc, tip: [['b', spec.title], ['span', spec.issuer]] });
+      const entry = item('awards', spec.id, { name: spec.name, doc: spec.doc, tip: [['b', spec.title], ['span', spec.issuer]], sound: 'hover-certificate' });
       const c = entry.object;
       const frameMaterial = new THREE.MeshStandardMaterial({ color: 0x2a211b, roughness: 0.5 });
       box(CERT.w + 2 * CERT.frame, CERT.h + 2 * CERT.frame, 0.014, frameMaterial, 0, 0, -0.007, c);
@@ -1731,7 +1813,9 @@ export async function start(section) {
       group.ids.forEach((id, i) => {
         const r = credential(id), label = medalLabel(r.title);
         const issuer = r.kicker.split(' · ')[0];
-        const entry = item('awards', id, { name: `${r.title}, ${issuer}`, doc: revealDoc(r, [r.kicker], [...r.links].sort((a, b) => b.external - a.external)), tip: [['b', r.title], ['span', issuer]] });
+        const entry = item('awards', id, {
+          name: `${r.title}, ${issuer}`, doc: revealDoc(r, [r.kicker], [...r.links].sort((a, b) => b.external - a.external)), tip: [['b', r.title], ['span', issuer]], sound: 'hover-medal',
+        });
         const m = entry.object;
         // Every other medal hangs lower, so neighbours never cover each other.
         const n = group.ids.length, drop = 0.12 + (i % 2) * 0.155;
@@ -1760,7 +1844,7 @@ export async function start(section) {
       const dialog = portfolioPage.getElementById(`project-${spec.id}`);
       if (!dialog) throw new Error(`portfolio.html has no #project-${spec.id}`);
       const r = readReveal(dialog);
-      const entry = item('projects', spec.id, { name: `${r.title}, ${r.kicker}`, doc: revealDoc(r, [r.kicker, r.meta]), tip: [['b', r.title], ['span', r.kicker]] });
+      const entry = item('projects', spec.id, { name: `${r.title}, ${r.kicker}`, doc: revealDoc(r, [r.kicker, r.meta]), tip: [['b', r.title], ['span', r.kicker]], sound: 'hover-poster' });
       const p = entry.object;
       box(POSTER.w + 2 * POSTER.frame, POSTER.h + 2 * POSTER.frame, 0.022, new THREE.MeshStandardMaterial({ color: 0x1c1a19, roughness: 0.5 }), 0, 0, -0.011, p);
       // The left wall gets little light, so a poster glows more than the other faces.
@@ -1798,6 +1882,7 @@ export async function start(section) {
         name: `Recommendation from ${quote.name}, ${quote.role}`,
         tip: [['b', quote.name], ['span', quote.role]],
         doc: { blocks: [{ title: quote.name }, { line: quote.role }, { gap: 1 }, { text: quote.text }], links: [{ text: 'All recommendations on LinkedIn', el: recLink }] },
+        sound: 'hover-cards',
       });
       const card = entry.object;
       const face = faceMesh(cardFace(quote, photos[i]), { side: THREE.DoubleSide });
@@ -1823,6 +1908,7 @@ export async function start(section) {
     const contact = item('contact', null, {
       name: 'Contact',
       doc: { blocks: [{ title: clean(talkLink) }], links: [{ text: 'LinkedIn', el: talkLink }, { text: 'View CV', el: cvLink }] },
+      sound: 'hover-phone',
     });
     const phone = contact.object;
     {
@@ -2218,6 +2304,7 @@ export async function start(section) {
       const { notes, page } = paperState;
       const next = page + step;
       if (next < 0 || next >= notes.pages.length) return;
+      playSound('flip');
       const log = { step, start: performance.now(), end: null };
       flipLog.push(log);
       const turning = step > 0 ? paper.material.map : pageMap(next, page).map;
@@ -2550,7 +2637,10 @@ export async function start(section) {
         const e = easeInOut(k);
         cam.eye.lerpVectors(eye0, pose.eye, e);
         cam.target.lerpVectors(target0, pose.target, e);
-      }, () => { camTween = null; });
+      }, () => {
+        camTween = null;
+        if (state.station === 'desk' && !state.item) steamFor(STEAM.arrive);
+      });
     }
 
     // A chosen pass lifts a little off the desk and tilts towards the eye. It moves inside its holder, so a lift and
@@ -2658,13 +2748,13 @@ export async function start(section) {
       look.pitch += (look.toPitch - look.pitch) * damp;
       const turning = Math.abs(look.toYaw - look.yaw) > 1e-4 || Math.abs(look.toPitch - look.pitch) > 1e-4;
       placeCamera(cam.eye, cam.target, look.yaw, look.pitch);
-      if (pointerDirty || turning || tweens.size) { pointerDirty = false; setHovered(pick()); }
+      if (pointerDirty || turning || tweens.size) { pointerDirty = false; setHovered(pick()); pointerMoved = false; }
       if ([...cardTweens.values(), ...passTweens.values()].some((t) => tweens.has(t))) renderer.shadowMap.needsUpdate = true;
-      const singing = updateNotes(now);
+      const singing = updateNotes(now), brewing = updateMug(now);
       renderer.render(scene, camera);
       clearTimeout(noteTimer);
       if (tweens.size || turning) invalidate();
-      else if (singing) noteTimer = setTimeout(invalidate, 1000 / NOTES.fps);
+      else if (singing || brewing) noteTimer = setTimeout(invalidate, 1000 / NOTES.fps);
       else last = 0;
     }
 
@@ -2672,10 +2762,10 @@ export async function start(section) {
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
     const pointerAt = { x: 0, y: 0 };
-    let pointerIn = false, hovered = null, hoveredPile = null, tipHeld = false;
+    let pointerIn = false, hovered = null, hoveredPile = null, tipHeld = false, pointerKind = 'mouse', pointerMoved = false;
     const itemObjects = [...items.values()].map((e) => e.object);
-    const targets = [paper, ...itemObjects, shelfParts, trayGroup, phone, print, laptop, lamp, radio, ...deskParts];
-    const tintables = [...itemObjects, phone, print, laptop, radio];
+    const targets = [paper, ...itemObjects, shelfParts, trayGroup, phone, print, laptop, lamp, radio, mug, ...deskParts];
+    const tintables = [...itemObjects, phone, print, laptop, radio, mug];
     // The objects of each station, in the order of the station links and of the glow tour.
     const stationObjects = {
       desk: passItems.map((e) => e.object), laptop: [laptop], projects: posterItems.map((e) => e.object),
@@ -2686,9 +2776,10 @@ export async function start(section) {
     const piles = { desk: stationObjects.desk, letters: stationObjects.letters };
     const stacked = (hit) => hit?.kind === 'item' && !!piles[hit.station] && !spreadOut[hit.station];
 
-    function pick() {
-      if (!pointerIn) return null;
-      raycaster.setFromCamera(pointer, camera);
+    const pick = () => (pointerIn ? pickAt(pointer) : null);
+    // The object at a point of the canvas, in normalised device coordinates.
+    function pickAt(ndc) {
+      raycaster.setFromCamera(ndc, camera);
       for (const hit of raycaster.intersectObjects(targets, true)) {
         let o = hit.object;
         while (o && !o.userData.kind) o = o.parent;
@@ -2721,15 +2812,18 @@ export async function start(section) {
 
     // A light tint marks what a click would act on. With a paper open, only the station's other items light up: a
     // click on one opens its paper, and any other click closes the paper. The shelf and the tray share the room's
-    // wood, so they take no tint; their items do. A stacked pile lights as a whole.
+    // wood, so they take no tint; their items do. A stacked pile lights as a whole. The pointer entering an object
+    // plays the object's hover sound: only after a move of the pointer itself, while the camera rests, and never for
+    // touch.
     function setHovered(hit) {
       const pile = stacked(hit) ? piles[hit.station] : null;
       const lit = hit && (pile || hit.kind !== 'item' || hit.id || hit.object === phone);
-      const acts = hit && (paper.visible ? sameStation(hit) : ['item', 'lamp', 'laptop', 'screen', 'print', 'radio'].includes(hit.kind));
+      const acts = hit && (paper.visible ? sameStation(hit) : ['item', 'lamp', 'laptop', 'screen', 'print', 'radio', 'mug'].includes(hit.kind));
       const next = acts && lit ? (pile ? pile[0] : hit.object) : null, nextPile = next && pile;
       showTip(acts ? hit : null);
       if (next === hovered && nextPile === hoveredPile) return;
       const was = hoveredPile ?? [hovered];
+      if (next && next !== hovered && pointerMoved && !camTween && pointerKind !== 'touch') playSound(next.userData.sound);
       hovered = next;
       hoveredPile = nextPile;
       for (const object of [...was, ...(hoveredPile ?? [hovered])]) if (object) tint(object);
@@ -2756,6 +2850,7 @@ export async function start(section) {
       if (hit.kind === 'screen' || hit.kind === 'laptop') return [['b', 'Evaluate role fit'], ['i', at !== 'laptop' ? CLOSER : hit.kind === 'screen' ? OPEN : '']];
       if (hit.kind === 'print') return [['b', clean(cvLink)], ['i', at === 'desk' ? OPEN : CLOSER]];
       if (hit.kind === 'radio') return [['b', 'Music'], ['span', `Track ${music.track + 1} / ${TRACKS}`], ['i', music.playing ? 'Click to pause' : 'Click to play']];
+      if (hit.kind === 'mug') return [['b', 'Coffee'], ['span', cupLevel()], ['i', at !== 'desk' ? CLOSER : coffee.left ? 'Click to sip' : 'Click to refill']];
       if (hit.kind !== 'item') return null;
       if (hit.object === phone) return [['b', clean(talkLink)], ['i', READ]];
       if (stacked(hit)) return [['b', pileNames[hit.station][0]], ['span', `${piles[hit.station].length} ${pileNames[hit.station][1]}`], ['i', hit.station === at ? SPREAD : CLOSER]];
@@ -2779,9 +2874,12 @@ export async function start(section) {
       tip.style.transform = `translate(${Math.max(8, Math.round(x))}px, ${Math.max(8, Math.round(y))}px)`;
     }
 
-    function setPointer(event) {
+    const ndcOf = (event, out) => {
       const rect = canvas.getBoundingClientRect();
-      pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
+      return out.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
+    };
+    function setPointer(event) {
+      ndcOf(event, pointer);
       pointerAt.x = event.clientX;
       pointerAt.y = event.clientY;
       pointerIn = event.target === canvas;   // over a button of the room, nothing in 3D is hovered
@@ -2792,7 +2890,8 @@ export async function start(section) {
       look.toYaw = pointer.x * MAX_TILT;
       look.toPitch = pointer.y * MAX_TILT;
       tipHeld = false;
-      pointerDirty = true;
+      pointerKind = event.pointerType;
+      pointerDirty = pointerMoved = true;
       invalidate();
     }, { signal });
     section.addEventListener('pointerleave', () => {
@@ -2805,25 +2904,29 @@ export async function start(section) {
     // Two clicks, always: from rest or another station a click on an object goes to its station, and only there does
     // an item open its paper. At #desk and #letters a click on the stacked pile spreads it first. With a paper open,
     // another item of the station opens its own paper at once. The telephone opens the contact paper at once. The
-    // radio plays or pauses the music at any station.
+    // radio plays or pauses the music at any station. The coffee goes to #desk, and there each click takes a sip. A
+    // click on empty space goes one level back, as Esc does. A click on an object plays the object's sound.
     const sameStation = (hit) => hit?.kind === 'item' && !!hit.id && hit.station === state.station;
+    const soundOf = (hit) => (!hit ? null : hit.kind === 'mug' ? 'sip' : (stacked(hit) ? piles[hit.station][0] : hit.object).userData.sound);
     canvas.addEventListener('click', (event) => {
       setPointer(event);
       tipHeld = true;
       tip.hidden = true;
       const hit = pick();
+      playSound(soundOf(hit));
       if (paperState.key) {
         if (hit?.kind === 'paper' && hit.uv) clickPaper(hit.uv);
         else if (sameStation(hit)) go(`${hit.station}/${hit.id}`);
         else back();
         return;
       }
-      if (!hit) return;
+      if (!hit) { back(); return; }
       const at = state.station;
       if (hit.kind === 'lamp') document.querySelector('[data-action="toggle-theme"]')?.click();
       else if (hit.kind === 'radio') toggleMusic();
       else if (hit.kind === 'screen' && at === 'laptop') aiTrigger.click();
       else if (hit.kind === 'laptop' || hit.kind === 'screen') go('laptop');
+      else if (hit.kind === 'mug') { if (at === 'desk') sip(); else go('desk'); }
       else if (hit.kind === 'print' && at === 'desk') cvLink.click();
       else if (hit.kind === 'print' || hit.kind === 'desk') { if (at !== 'desk') go('desk'); }
       else if (hit.kind === 'item' && hit.station !== at) go(hit.station);
@@ -2849,9 +2952,13 @@ export async function start(section) {
       apply();
     }
 
-    // One level back, for Esc and the Back button: a paper closes to its station, and a station returns to rest.
+    // One level back, for Esc, the Back button and a click on empty space: a paper closes to its station, the stations
+    // by the desk (the laptop, the business cards and the telephone) return to the desk, and the desk and the walls
+    // return to rest. Only the move to rest leaves the history entry, so the browser's Back still reaches rest.
+    const BY_DESK = ['laptop', 'letters', 'contact'];
     function back() {
       if (state.item) go(state.station);
+      else if (BY_DESK.includes(state.station)) go('desk');
       else if (state.station !== 'rest') window.history.back();
     }
 
@@ -2923,9 +3030,9 @@ export async function start(section) {
       else if (to) { event.preventDefault(); go(to); }
     }, { signal });
 
-    // ── The hidden HTML copy: one button per item in the room, the laptop and the CV, and the open paper's text in
-    // a live region. The station links are the visible row. The open paper's links follow the button that opened it,
-    // or start the list for the contact paper, whose station link comes right before it. ──
+    // ── The hidden HTML copy: one button per item in the room, the laptop, the CV and the coffee, and the open paper's
+    // text in a live region. The station links are the visible row. The open paper's links follow the button that
+    // opened it, or start the list for the contact paper, whose station link comes right before it. ──
     const paperLinks = document.createElement('li');
     const control = (text, onClick) => {
       const li = document.createElement('li');
@@ -2943,10 +3050,12 @@ export async function start(section) {
       itemControls.set(`${entry.station}/${entry.id}`, li);
       return li;
     };
+    const coffeeControl = control('Sip the coffee', () => { playSound('sip'); sip(); });
     list.replaceChildren(
       ...passItems.map(itemControl),
       control('Evaluate role fit', () => aiTrigger.click()),
       control('View CV', () => cvLink.click()),
+      coffeeControl,
       ...[...trophyItems, ...certItems, ...medalItems, ...posterItems, ...cardItems].map(itemControl),
     );
 
@@ -3061,9 +3170,11 @@ export async function start(section) {
     musicBox.querySelector('[data-room-next]').addEventListener('click', nextTrack, { signal });
     // The visitor's first press in the room, a click anywhere in it or a key, starts the music alongside what the press
     // does: once per page load, and only when the visitor never paused it. The Play button starts it by its own click.
-    // Esc gives the page no right to play sound, so it waits for the next press.
+    // Esc gives the page no right to play sound, so it waits for the next press. Every other press also wakes the sound
+    // effects.
     let firstPress = false;
     function firstPlay(event) {
+      if (event.key !== 'Escape') wakeSounds(event);
       if (firstPress || event.key === 'Escape') return;
       firstPress = true;
       if (music.paused || event.target.closest?.('[data-room-play]')) return;
@@ -3073,9 +3184,80 @@ export async function start(section) {
     section.addEventListener('pointerdown', firstPlay, { signal, capture: true });
     section.addEventListener('keydown', firstPlay, { signal, capture: true });
 
+    // ── Sound effects: one AudioContext, made by the visitor's first press in the room and resumed by later presses,
+    // so no sound plays and no file under sfx/ loads before it. The files then load and decode once each; when that
+    // press is a click on an object, the object's sound loads first. room.sfx keeps "off" when the visitor turns them
+    // off; the music stays as it is. ──
+    const sfx = { ctx: null, on: true, loads: new Map(), buffers: new Map(), last: new Map(), voices: [], log: [], loading: false };
+    try { sfx.on = localStorage.getItem('room.sfx') !== 'off'; } catch { sfx.on = true; }
+    const sfxButton = musicBox.querySelector('[data-room-sfx]');
+    const sfxLabel = sfxButton.querySelector('[data-room-sfx-label]');
+    function wakeSounds(event) {
+      if (sfx.ctx) { if (sfx.ctx.state === 'suspended') sfx.ctx.resume().catch(() => {}); return; }
+      try { sfx.ctx = new AudioContext(); } catch (error) { console.warn('Room: the sound effects did not start.', error); return; }
+      const first = event.type === 'pointerdown' && event.target === canvas ? soundOf(pickAt(ndcOf(event, new THREE.Vector2()))) : null;
+      loadSounds(first);
+    }
+    function loadSound(name) {
+      if (!sfx.loads.has(name)) {
+        sfx.loads.set(name, fetch(new URL(`sfx/${name}.mp3`, import.meta.url).href)
+          .then((response) => { if (!response.ok) throw new Error(`sfx/${name}.mp3 returned ${response.status}`); return response.arrayBuffer(); })
+          .then((data) => sfx.ctx.decodeAudioData(data))
+          .then((buffer) => { sfx.buffers.set(name, buffer); return buffer; }, (error) => { sfx.loads.delete(name); console.warn(`Room: the sound ${name} did not load.`, error); return null; }));
+      }
+      return sfx.loads.get(name);
+    }
+    // Loads every sound once the context exists and the sounds are on; first, when given, loads before the rest.
+    function loadSounds(first) {
+      if (!sfx.ctx || !sfx.on || sfx.loading) return;
+      sfx.loading = true;
+      const rest = () => { for (const name of SFX) loadSound(name); };
+      if (first) loadSound(first).then(rest); else rest();
+    }
+    // Plays a sound now, or when it arrives if it is still loading. Returns whether it will play.
+    function playSound(name) {
+      if (!name || !sfx.on || !sfx.ctx) return false;
+      const asked = performance.now();
+      if (asked - (sfx.last.get(name) ?? -Infinity) < SFX_GAP) return false;
+      sfx.last.set(name, asked);
+      const voice = (buffer) => {
+        if (!buffer || !sfx.on || sfx.ctx.state !== 'running' || performance.now() - asked > SFX_LATE) return;
+        if (sfx.voices.length >= SFX_VOICES) fadeVoice(sfx.voices.shift());
+        const source = sfx.ctx.createBufferSource(), gain = sfx.ctx.createGain();
+        source.buffer = buffer;
+        gain.gain.value = name.startsWith('hover-') ? SFX_GAIN.hover : SFX_GAIN.effect;
+        source.connect(gain).connect(sfx.ctx.destination);
+        const playing = { source, gain };
+        source.addEventListener('ended', () => { const i = sfx.voices.indexOf(playing); if (i >= 0) sfx.voices.splice(i, 1); });
+        sfx.voices.push(playing);
+        source.start();
+        sfx.log.push({ name, at: Math.round(asked), waited: Math.round(performance.now() - asked) });
+      };
+      if (sfx.buffers.has(name)) voice(sfx.buffers.get(name));
+      else loadSound(name).then(voice);
+      return true;
+    }
+    // A sound that makes room for another fades out over a few milliseconds, so it stops without a click.
+    function fadeVoice({ source, gain }) {
+      gain.gain.setTargetAtTime(0, sfx.ctx.currentTime, 0.015);
+      source.stop(sfx.ctx.currentTime + 0.08);
+    }
+    function showSounds() {
+      sfxButton.setAttribute('aria-pressed', String(sfx.on));
+      sfxLabel.textContent = sfx.on ? 'Sounds on' : 'Sounds off';
+    }
+    sfxButton.addEventListener('click', () => {
+      sfx.on = !sfx.on;
+      try { localStorage.setItem('room.sfx', sfx.on ? 'on' : 'off'); } catch { /* storage blocked */ }
+      if (sfx.on) loadSounds(null);
+      else while (sfx.voices.length) fadeVoice(sfx.voices.shift());
+      showSounds();
+    }, { signal });
+    showSounds();
+
     // ── Music notes: while the music plays, notes rise from the radio's grille, drift sideways with a wobble and fade
-    // out. They are the one thing that draws frames without a change of state, at up to NOTES.fps, until the last one
-    // has faded after a pause. ──
+    // out. They and the coffee's steam are the only things that draw frames without a change of state, at up to
+    // NOTES.fps, until the last one has faded after a pause. ──
     const noteMaps = [0, 1, 2].map((kind) => texture(noteArt(kind)));
     const notes = [];
     const noteInk = new THREE.Color();
@@ -3103,6 +3285,57 @@ export async function start(section) {
     function tintNotes() {
       noteInk.set(isNight() ? 0xf2ede4 : 0x2a2420);
       for (const n of notes) n.sprite.material.color.copy(noteInk);
+    }
+
+    // ── The coffee: a sip takes the level down a step while the mug tilts towards the eye and back; a click on the
+    // empty mug fills it again with a short rise. Steam rises while the mug holds coffee, for a while after the camera
+    // arrives at #desk and after each sip, and then fades out. ──
+    const cupLevel = () => (coffee.left === MUG.sips ? 'Full' : !coffee.left ? 'Empty' : `${coffee.left} sip${coffee.left > 1 ? 's' : ''} left`);
+    function sip() {
+      const from = coffee.left;
+      coffee.left = from ? from - 1 : MUG.sips;
+      coffee.anim = { start: performance.now(), ms: from ? 500 : 600, from, to: coffee.left };
+      if (coffee.left) steamFor(STEAM.sip);
+      coffeeControl.firstChild.textContent = coffee.left ? 'Sip the coffee' : 'Refill the coffee';
+      pointerDirty = true;
+      invalidate();
+    }
+    function steamFor(ms) {
+      coffee.steamUntil = Math.max(coffee.steamUntil, performance.now() + ms);
+      invalidate();
+    }
+    const steamMap = texture(steamArt());
+    const wisps = [];
+    let lastWisp = -Infinity, wispCount = 0;
+    // Moves the mug, its coffee and the steam on to the time now; returns whether they still need frames.
+    function updateMug(now) {
+      const a = coffee.anim;
+      if (a) {
+        const k = Math.min(1, Math.max(0, (now - a.start) / a.ms));
+        mugTilt.rotation.x = a.to < a.from ? 0.32 * Math.sin(Math.PI * k) : 0;
+        setCoffee(a.from + (a.to - a.from) * (a.to < a.from ? easeInOut(k) : easeOut(k)));
+        renderer.shadowMap.needsUpdate = true;
+        if (k >= 1) coffee.anim = null;
+      }
+      const steaming = coffee.left > 0 && now < coffee.steamUntil;
+      if (steaming && now - lastWisp >= STEAM.every && wisps.length < STEAM.max) {
+        lastWisp = now;
+        const rand = random(++wispCount + 300);
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: steamMap, color: isNight() ? 0xc9ced8 : 0xffffff, transparent: true, depthWrite: false, toneMapped: false, opacity: 0 }));
+        sprite.raycast = () => {};   // decoration only: clicks and landmark checks pass through
+        scene.add(sprite);
+        const r = (MUG.r - 0.02) * Math.sqrt(rand()), a = rand() * Math.PI * 2;
+        wisps.push({ sprite, born: now, start: new THREE.Vector3(MUG.x + Math.cos(a) * r, DESK.top + coffeeSurface.position.y + 0.012, MUG.z + Math.sin(a) * r), drift: (rand() - 0.5) * 0.05, phase: rand() * 6.3 });
+      }
+      for (let i = wisps.length - 1; i >= 0; i--) {
+        const w = wisps[i], age = (now - w.born) / STEAM.life;
+        if (age >= 1) { scene.remove(w.sprite); w.sprite.material.dispose(); wisps.splice(i, 1); continue; }
+        const s = STEAM.size * (1 + age * 2);
+        w.sprite.scale.set(s, 2 * s, 1);
+        w.sprite.position.copy(w.start).add(new THREE.Vector3(w.drift * age + Math.sin(w.phase + age * 6) * 0.008, STEAM.rise * age, 0));
+        w.sprite.material.opacity = STEAM.opacity * Math.min(1, age * 5) * (1 - age) ** 1.5;
+      }
+      return !!coffee.anim || steaming || wisps.length > 0;
     }
 
     // ── The glow tour: on a first visit, each station's objects glow in turn and then the radio, so a
@@ -3250,11 +3483,13 @@ export async function start(section) {
 
     // Which items the decor hides: rays from each pose's eye, over the corners of the orbit, to the centre and the
     // eight inset corners of each item's box. A ray counts when it meets the decor before its point. The passes count
-    // at rest and at the desk, where they show; their paper pose looks at the window.
-    function decorBlocks() {
+    // at rest and at the desk, where they show; their paper pose looks at the window. The desk's other objects count at
+    // rest and at the desk too. With blocker set to the mug, the same rays find what the coffee mug hides.
+    function decorBlocks(blocker = decor) {
       const out = [], ray = new THREE.Raycaster(), p = new THREE.Vector3(), corner = new THREE.Vector3();
       const all = [...items.values()].map((e) => [`${e.station}/${e.id}`, e.object]);
       const check = (name, pose, list) => {
+        list = list.filter(([, object]) => object !== blocker);
         for (const yaw of [-3, 0, 3]) for (const pitch of [-3, 0, 3]) {
           placeCamera(pose.eye, pose.target, THREE.MathUtils.degToRad(yaw), THREE.MathUtils.degToRad(pitch));
           for (const [key, object] of list) {
@@ -3265,14 +3500,16 @@ export async function start(section) {
               p.copy(c).add(i === 8 ? corner.set(0, 0, 0) : corner).sub(camera.position);
               ray.set(camera.position, p.clone().normalize());
               ray.far = p.length() - 0.002;
-              if (ray.intersectObject(decor, true).length) hidden++;
+              if (ray.intersectObject(blocker, true).length) hidden++;
             }
             if (hidden) out.push({ pose: name, yaw, pitch, item: key, hidden });
           }
         }
       };
-      check('rest', poses.rest, [...all, ['phone', phone], ['laptop', screen], ['print', print], ['lamp', lamp], ['radio', radio]]);
+      const deskObjects = [['phone', phone], ['laptop', screen], ['print', print], ['lamp', lamp], ['radio', radio], ['mug', mug]];
+      check('rest', poses.rest, [...all, ...deskObjects]);
       for (const station of ['desk', 'awards', 'projects', 'letters']) check(station, poses[station], all.filter(([key]) => key.startsWith(`${station}/`)));
+      check('desk', poses.desk, deskObjects);
       check('laptop', poses.laptop, [['laptop', screen]]);
       check('contact', poses.contact, [['phone', phone]]);
       for (const [key, object] of all) if (!key.startsWith('desk/')) check(key, itemPoses.get(items.get(key)), [[key, object]]);
@@ -3334,7 +3571,7 @@ export async function start(section) {
     const zonePoint = (z) => (z ? paperPoint((z.x0 + z.x1) / 2, (z.y0 + z.y1) / 2) : null);
 
     window.__room = {
-      state: () => ({ ...state, spread: { ...spreadOut }, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip, linked: Object.keys(stationObjects).find((s) => stationObjects[s] === linked) ?? null, touring: !!tourTween, glowing: pulse && { name: pulse.name, amount: +pulse.amount.toFixed(2) } }),
+      state: () => ({ ...state, spread: { ...spreadOut }, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip, linked: Object.keys(stationObjects).find((s) => stationObjects[s] === linked) ?? null, touring: !!tourTween, glowing: pulse && { name: pulse.name, amount: +pulse.amount.toFixed(2) }, coffee: coffee.left }),
       tour: () => ({ ...tourLog }),
       music: () => ({ track: music.track + 1, playing: music.playing, time: audio ? +audio.currentTime.toFixed(2) : music.time, src: audio?.currentSrc || null, label: playLabel.textContent, trackText: trackLabel.textContent, led: led.material.emissiveIntensity }),
       seekMusic: (s) => { if (audio) audio.currentTime = s; },
@@ -3349,7 +3586,27 @@ export async function start(section) {
       fades: () => fadeLog.map((f) => ({ file: f.file, ms: f.end && Math.round(f.end - f.start) })),
       itemPoint: (key) => { const e = items.get(key); return e && screenPoint(e.mesh ? e.mesh.localToWorld(new THREE.Vector3(-PASS.w / 4, PASS_H / 6, 0)) : centreOf(e.object)); },
       passPoint: (id) => window.__room.itemPoint(`desk/${id}`),
-      objectPoint: (name) => screenPoint(centreOf({ shelf: shelfParts, tray: trayGroup, phone, plant, radio }[name])),
+      objectPoint: (name) => screenPoint(centreOf({ shelf: shelfParts, tray: trayGroup, phone, plant, radio, mug }[name])),
+      // The coffee: sips left, the wisps of steam in the air, and the mug's height on screen in CSS px.
+      coffee: () => {
+        const b = new THREE.Box3().setFromObject(mug), top = screenPoint(b.max.clone().setX(MUG.x).setZ(MUG.z)), base = screenPoint(new THREE.Vector3(MUG.x, b.min.y, MUG.z));
+        return { left: coffee.left, level: cupLevel(), sipping: !!coffee.anim, steam: wisps.length, steaming: coffee.left > 0 && performance.now() < coffee.steamUntil, heightPx: Math.round(Math.hypot(top.x - base.x, top.y - base.y)), button: coffeeControl.textContent };
+      },
+      // Keeps the steam rising for ms, for screenshots.
+      steam: (ms) => steamFor(ms),
+      // The sound effects: the context's state, the decoded files, what played (a hover, a click, a turn or a sip) and
+      // the toggle. sound(name) asks for one sound, as an object would.
+      sounds: () => ({ state: sfx.ctx?.state ?? null, rate: sfx.ctx?.sampleRate ?? null, on: sfx.on, decoded: [...sfx.buffers.keys()], played: sfx.log.slice(), voices: sfx.voices.length, pressed: sfxButton.getAttribute('aria-pressed'), label: sfxLabel.textContent }),
+      sound: (name) => playSound(name),
+      // A point on the canvas where a click meets nothing, away from the paper and the room's controls.
+      emptyPoint: () => {
+        const rect = canvas.getBoundingClientRect(), v = new THREE.Vector2();
+        for (let j = 3; j <= 9; j++) for (let i = 21; i >= 3; i--) {
+          const x = rect.left + (i / 24) * rect.width, y = rect.top + (j / 12) * rect.height;
+          if (!pickAt(v.set((i / 24) * 2 - 1, 1 - (j / 12) * 2)) && document.elementFromPoint(x, y) === canvas) return { x, y };
+        }
+        return null;
+      },
       notes: () => notes.length,
       radioPoint: () => screenPoint(grilleSpot),
       // Frames the pile of passes from above and in front for a close screenshot; any move of the room puts the camera back.
@@ -3361,7 +3618,8 @@ export async function start(section) {
         cam.eye.copy(centre).add(new THREE.Vector3(0, 0.42, 0.34));
         invalidate();
       },
-      decorBlocks,
+      decorBlocks: () => decorBlocks(),
+      mugBlocks: () => decorBlocks(mug),
       clock: () => clockLog.slice(),
       // Frames the right pedestal and the leather from in front and above for a close screenshot.
       lookAtDesk: () => {

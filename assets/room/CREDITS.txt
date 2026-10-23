@@ -28,14 +28,20 @@ Music: five instrumental tracks generated for this site with ElevenLabs (Eleven 
   plays them in the order 5, 1, 2, 6, 4
   The Eleven Music terms for the Creator plan require no attribution (checked 23 October 2026).
 
+Sound effects: generated for this site with ElevenLabs (sound effects)
+  files: sfx/hover-pass.mp3, sfx/hover-laptop.mp3, sfx/hover-cv.mp3, sfx/hover-radio.mp3, sfx/hover-phone.mp3,
+  sfx/hover-coffee.mp3, sfx/hover-cards.mp3, sfx/hover-poster.mp3, sfx/hover-trophy.mp3, sfx/hover-certificate.mp3,
+  sfx/hover-medal.mp3, sfx/hover-lamp.mp3, sfx/flip.mp3 and sfx/sip.mp3
+
 Font: Patrick Hand, Copyright (c) 2010-2012 Patrick Wagesreiter. Licence: SIL Open Font License 1.1, in
 fonts/OFL-patrick-hand.txt. The paper's handwriting uses fonts/patrick-hand-latin.woff2.
 
 The wood grain is drawn in room.js on a canvas; it uses no texture file. The desk, the trophies, the medals, the
-certificates, the card tray, the business cards, the telephone, the radio and the music notes are built in room.js;
-they use no model or image file. So are the decor: the bookshelf with its books, vases and basket, the trailing
+certificates, the card tray, the business cards, the telephone, the radio, the coffee mug with its steam and the music
+notes are built in room.js; they use no model or image file. So are the decor: the bookshelf with its books, vases and basket, the trailing
 plants, the tall plant with its broad leaves, the skirting boards and the wall clock. The floorboards, the desk's
-mahogany and leather, the rug, the basket weave, the leaves and the clock face are drawn in room.js on canvases.
+mahogany and leather, the rug, the basket weave, the leaves, the clock face and the coffee are drawn in room.js on
+canvases.
 
 Posters (posters/): poster-labforward.webp, poster-labtwin.webp, poster-thryve.webp, poster-dataverse.webp and
 poster-training.webp were generated for this site with Codex image generation. shot-opppaths.webp and

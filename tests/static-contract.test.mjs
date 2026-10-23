@@ -958,6 +958,56 @@ test('room.js makes the Audio element only inside a press handler, with preload 
   assert.match(canvasClick, /hit\.kind === 'radio'\) toggleMusic\(\);/, 'a click on the radio plays or pauses');
 });
 
+const SOUND_EFFECTS = ['hover-pass', 'hover-laptop', 'hover-cv', 'hover-radio', 'hover-phone', 'hover-coffee', 'hover-cards', 'hover-poster',
+  'hover-trophy', 'hover-certificate', 'hover-medal', 'hover-lamp', 'flip', 'sip'];
+
+test('the fourteen sound effects exist under assets/room/sfx/, room.js names them, and CREDITS.txt credits them', () => {
+  const js = readText('assets/room/room.js');
+  const credits = readText('assets/room/CREDITS.txt');
+  const table = js.match(/const SFX = \[([^\]]+)\];/);
+  assert.ok(table, 'the SFX table');
+  assert.deepEqual([...table[1].matchAll(/'([a-z-]+)'/g)].map((m) => m[1]).sort(), [...SOUND_EFFECTS].sort());
+  assert.deepEqual(fs.readdirSync(path.join(repoRoot, 'assets/room/sfx')).sort(), SOUND_EFFECTS.map((name) => `${name}.mp3`).sort(), 'sfx/ holds the fourteen files only');
+  for (const name of SOUND_EFFECTS) {
+    const size = fs.statSync(path.join(repoRoot, `assets/room/sfx/${name}.mp3`)).size;
+    assert.ok(size > 1000 && size < 16000, `sfx/${name}.mp3 is ${size} bytes`);
+    assert.ok(credits.includes(`sfx/${name}.mp3`), `CREDITS.txt does not name sfx/${name}.mp3`);
+  }
+  assert.ok(credits.includes('Sound effects: generated for this site with ElevenLabs (sound effects)'), 'CREDITS.txt credits the sound effects');
+});
+
+test('room.js makes the AudioContext only inside the first-press handler, and loads no sound before it', () => {
+  const js = readText('assets/room/room.js');
+  const fn = (name) => js.match(new RegExp(`\\n( +)function ${name}\\([^)]*\\) \\{\\n([\\s\\S]*?)\\n\\1\\}\\n`))?.[2] ?? '';
+  const count = (text, re) => (text.match(re) || []).length;
+  assert.equal(count(js, /new AudioContext\(/g), 1, 'one place makes the AudioContext');
+  assert.doesNotMatch(js, /webkitAudioContext|OfflineAudioContext/, 'no other audio context');
+  assert.match(fn('wakeSounds'), /sfx\.ctx = new AudioContext\(\);/, 'wakeSounds() makes it');
+  // wakeSounds() runs only from the first-press handler, which runs only from the room's pointerdown and keydown
+  // listeners (the music test counts those).
+  assert.equal(count(js, /\bwakeSounds\(/g), 1 + count(fn('firstPlay'), /\bwakeSounds\(/g), 'only the first-press handler calls wakeSounds()');
+  assert.match(fn('firstPlay'), /^\s*if \(event\.key !== 'Escape'\) wakeSounds\(event\);/, 'every press but Esc wakes the sounds');
+  // A sound file loads only through loadSound(), which runs only from loadSounds() and playSound(); both stop while
+  // there is no context.
+  assert.equal(count(js, /`sfx\/\$\{name\}\.mp3`/g), 1, 'one place builds a sound URL');
+  assert.match(fn('loadSound'), /fetch\(new URL\(`sfx\/\$\{name\}\.mp3`, import\.meta\.url\)\.href\)/, 'loadSound() fetches it');
+  assert.equal(count(js, /\bloadSound\(/g), 1 + count(fn('loadSounds'), /\bloadSound\(/g) + count(fn('playSound'), /\bloadSound\(/g), 'only loadSounds() and playSound() call loadSound()');
+  assert.match(fn('loadSounds'), /^\s*if \(!sfx\.ctx \|\| !sfx\.on \|\| sfx\.loading\) return;/, 'loadSounds() waits for the context');
+  assert.match(fn('playSound'), /^\s*if \(!name \|\| !sfx\.on \|\| !sfx\.ctx\) return false;/, 'playSound() waits for the context and the toggle');
+});
+
+test('the music bar holds the sound effects toggle after Next, named by its text, with aria-pressed', () => {
+  const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  assert.match(room, /data-room-next aria-label="Next track">(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+Next<\/button>\r?\n\s*<button class="ed-room__control" type="button" data-room-sfx aria-pressed="true">(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+<span data-room-sfx-label>Sounds on<\/span><\/button>/,
+    'the toggle follows Next, starts pressed, and its visible text is its name');
+  const js = readText('assets/room/room.js');
+  assert.match(js, /sfxButton\.setAttribute\('aria-pressed', String\(sfx\.on\)\);/, 'aria-pressed follows the toggle');
+  assert.match(js, /sfxLabel\.textContent = sfx\.on \? 'Sounds on' : 'Sounds off';/);
+  assert.match(js, /try \{ sfx\.on = localStorage\.getItem\('room\.sfx'\) !== 'off'; \} catch/, 'on unless stored off, read in try/catch');
+  assert.match(js, /try \{ localStorage\.setItem\('room\.sfx', sfx\.on \? 'on' : 'off'\); \} catch/, 'stored in try/catch');
+  assert.match(readText('assets/css/editorial.css'), /\.ed-room__control\[aria-pressed="true"\] \.ed-room__icon--muted, \.ed-room__control\[aria-pressed="false"\] \.ed-room__icon--sound \{ display: none; \}/, 'the icon follows the toggle');
+});
+
 test('the room shows a still image of the rest view for each theme while it loads', () => {
   for (const theme of ['day', 'night']) {
     const head = fs.readFileSync(path.join(repoRoot, `assets/room/still-${theme}.webp`)).subarray(0, 12);
