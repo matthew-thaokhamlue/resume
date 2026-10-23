@@ -89,14 +89,21 @@ const MOVE_MS = 900, FADE_MS = 400, NIGHT_FADE_MS = 600, FLIP_MS = 450;
 const DESK_EYE = { up: 0.94, back: 0.86, refH: 820 };
 // Rest: the whole room from beyond its open front, so both side walls show.
 const REST = { eye: [0.55, 1.62, 5.3], target: [0.55, 1.28, 0] };
+// The cassette player stands at the right end of the window sill, in front of the casing, so it never hides a pane.
+const CASSETTE = { x: 1.335, z: 0.07, turn: -0.35, scale: 0.9 };
+const TRACKS = 4;
+// The glow tour lights each station's objects in turn for TOUR_STEP_MS, up to PULSE, once the canvas has faded in
+// (CANVAS_FADE_MS, as in editorial.css). HOVER is the hover tint.
+const HOVER = 0.12, PULSE = 0.3, TOUR_STEP_MS = 600, CANVAS_FADE_MS = 600;
 
 // The lined paper, laid out in CSS px: it hangs at a fixed place in front of the camera, so its size on screen
 // never changes. Each line of text sits on a ruled line.
 const HAND = '"Patrick Hand", "Comic Sans MS", cursive';
 const PEN = '#1d2740';
 const NOTE = { body: 19, head: 23, title: 27, line: 32, left: 92, right: 34, top: 66, bottom: 64, chars: 70, bullet: 22, shadow: 18 };
-// Where the paper sits on the stage: on the left, below the Back button, up to SHARE of the width.
-const NOTE_BOX = { left: 24, top: 72, bottom: 20, share: 0.52, maxW: 720 };
+// Where the paper sits on the stage: on the left, below the Back button and above the station links, up to SHARE of
+// the width.
+const NOTE_BOX = { left: 24, top: 72, bottom: 48, share: 0.52, maxW: 720 };
 
 const clean = (el) => (el ? el.textContent.replace(/\s+/g, ' ').trim() : '');
 const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -760,6 +767,8 @@ export async function start(section) {
   const list = section.querySelector('[data-room-passes]');
   const live = section.querySelector('[data-room-live]');
   const backButton = section.querySelector('[data-room-back]');
+  const musicBox = section.querySelector('[data-room-music]');
+  const stationRow = section.querySelector('[data-room-stations]');
   const root = document.documentElement;
   const abort = new AbortController();
   const { signal } = abort;
@@ -773,7 +782,7 @@ export async function start(section) {
     tip?.remove();
     list.replaceChildren();
     live.replaceChildren();
-    if (backButton) backButton.hidden = true;
+    for (const el of [backButton, musicBox, stationRow]) if (el) el.hidden = true;
     throw error;
   }
 
@@ -788,7 +797,7 @@ export async function start(section) {
     const recLink = document.querySelector('#recommendations a[href*="linkedin.com"][href*="recommendations"]');
     if (!heroTitle || !heroSub || !aiTrigger || !cvLink) throw new Error('the hero lost its title, subline, AI Match button or CV link');
     if (!talkLink || !recLink) throw new Error('the page lost its LinkedIn or recommendations link');
-    if (!backButton) throw new Error('#room lost its Back button');
+    if (!backButton || !musicBox || !stationRow) throw new Error('#room lost its Back button, music control or station links');
     const results = [...document.querySelectorAll('.ed-result[data-reveal^="receipt-"]')].map((button) => {
       const id = button.dataset.reveal.replace(/^receipt-/, '');
       return {
@@ -832,6 +841,7 @@ export async function start(section) {
       model('desk_lamp_arm_01'),
       model('potted_plant_02'),
       model('classic_laptop'),
+      model('cassette_player'),
       firstView(HOME_VIEW, isNight()),
       Promise.all(POSTERS.map((p) => image(new URL(`posters/${p.image}`, import.meta.url).href))),
       Promise.all(quotes.map((q) => photo(q.image))),
@@ -951,7 +961,7 @@ export async function start(section) {
     sun.shadow.normalBias = 0.02;
     scene.add(hemi, windowLight, sun, sun.target);
 
-    const [experience, certificatesPage, portfolioPage, lampModel, plantModel, laptopModel, homeView, posterImages, photos] = await loads;
+    const [experience, certificatesPage, portfolioPage, lampModel, plantModel, laptopModel, cassetteModel, homeView, posterImages, photos] = await loads;
     const passes = readPasses(experience);
     const education = passes.find((p) => p.id === 'education').legs[0];
     if (!education.daad || education.degrees.length < 2) throw new Error('experience.html lost the DAAD line or a degree');
@@ -984,7 +994,7 @@ export async function start(section) {
       return entry;
     }
 
-    // ── Props: the Poly Haven lamp, plant and laptop ──
+    // ── Props: the Poly Haven lamp, plant, laptop and cassette player ──
     const lamp = new THREE.Group();
     lamp.position.set(1.45, DESK.top, 0.22);
     lamp.rotation.y = 2.4;
@@ -999,7 +1009,13 @@ export async function start(section) {
     laptop.position.set(LAPTOP.x, DESK.top, LAPTOP.z);
     laptop.scale.setScalar(LAPTOP.scale);
     laptop.userData.kind = 'laptop';
-    for (const [anchor, gltf] of [[lamp, lampModel], [plant, plantModel], [laptop, laptopModel]]) {
+    const cassette = new THREE.Group();
+    cassette.position.set(CASSETTE.x, WIN.y0 + SILL_UP, CASSETTE.z);
+    cassette.rotation.y = CASSETTE.turn;
+    cassette.scale.setScalar(CASSETTE.scale);
+    cassette.userData.kind = 'cassette';
+    const playerBox = new THREE.Box3().setFromObject(cassetteModel.scene);   // in model space, before it joins the room
+    for (const [anchor, gltf] of [[lamp, lampModel], [plant, plantModel], [laptop, laptopModel], [cassette, cassetteModel]]) {
       gltf.scene.traverse((o) => {
         if (!o.isMesh) return;
         o.material = o.material.clone();   // its own copy for the hover tint
@@ -1052,6 +1068,28 @@ export async function start(section) {
     }
     laptop.traverse((o) => { if (o.isMesh && o !== screen && o.material.map) o.material.emissiveMap = o.material.map; });
     laptop.updateMatrixWorld(true);
+
+    // The cassette player stands upright on the sill. A red LED on its front, with a soft halo, glows while music plays.
+    const player3d = cassetteModel.scene;
+    player3d.position.y = -playerBox.min.y;
+    player3d.traverse((o) => { if (o.isMesh && o.material.map) o.material.emissiveMap = o.material.map; });
+    const led = new THREE.Mesh(new THREE.SphereGeometry(0.005, 12, 8), new THREE.MeshStandardMaterial({ color: 0x4a0c08, emissive: 0xff2414, emissiveIntensity: 0, roughness: 0.3 }));
+    led.position.set(playerBox.max.x - 0.026, playerBox.max.y - playerBox.min.y - 0.03, playerBox.max.z + 0.002);
+    const haloCanvas = document.createElement('canvas');
+    haloCanvas.width = haloCanvas.height = 64;
+    const hg = haloCanvas.getContext('2d'), halo = hg.createRadialGradient(32, 32, 0, 32, 32, 32);
+    halo.addColorStop(0, 'rgba(255, 30, 15, 0.9)');
+    halo.addColorStop(0.35, 'rgba(230, 20, 10, 0.35)');
+    halo.addColorStop(1, 'rgba(200, 10, 5, 0)');
+    hg.fillStyle = halo;
+    hg.fillRect(0, 0, 64, 64);
+    const ledHalo = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(haloCanvas), depthWrite: false, toneMapped: false }));
+    ledHalo.scale.setScalar(0.04);
+    ledHalo.visible = false;
+    ledHalo.raycast = () => {};   // light only: a click or a landmark check passes through it
+    led.add(ledHalo);
+    cassette.add(led);
+    cassette.updateMatrixWorld(true);
 
     // ── The passes: a row along the front of the desk, each a little turned ──
     const PASS_H = Math.max(...passes.map(passHeight));
@@ -1621,7 +1659,7 @@ export async function start(section) {
       // The faces glow a little, so they stay readable in the dim room at night. The laptop screen glows more.
       glow = night ? 0.25 : 0.12;
       screenGlow = night ? 0.9 : 0.45;
-      for (const object of tintables) tint(object, object === hovered);
+      for (const object of tintables) tint(object);
       paper.material.color.set(night ? 0xe4e7ee : 0xffffff);
       renderer.shadowMap.needsUpdate = true;
       if (night !== shown.night) showView(viewWanted.key, NIGHT_FADE_MS);
@@ -1866,8 +1904,14 @@ export async function start(section) {
     const pointerAt = { x: 0, y: 0 };
     let pointerIn = false, hovered = null, tipHeld = false;
     const itemObjects = [...items.values()].map((e) => e.object);
-    const targets = [paper, ...itemObjects, shelfParts, trayGroup, phone, print, laptop, lamp, ...deskParts];
-    const tintables = [...itemObjects, phone, print, laptop];
+    const targets = [paper, ...itemObjects, shelfParts, trayGroup, phone, print, laptop, lamp, cassette, ...deskParts];
+    const tintables = [...itemObjects, phone, print, laptop, cassette];
+    // The objects of each station, in the order of the station links and of the glow tour.
+    const stationObjects = {
+      desk: passItems.map((e) => e.object), laptop: [laptop], projects: posterItems.map((e) => e.object),
+      awards: [...trophyItems, ...certItems, ...medalItems].map((e) => e.object), letters: cardItems.map((e) => e.object), contact: [phone],
+    };
+    let linked = [], pulse = null;   // the objects a station link lights, and the glow tour's pulse
 
     function pick() {
       if (!pointerIn) return null;
@@ -1881,16 +1925,25 @@ export async function start(section) {
       return null;
     }
 
-    function tint(object, on) {
+    // An object takes the grey hover tint when it is hovered or its station link has the pointer or the focus, and the
+    // glow tour's warm pulse on its turn. The LED keeps its own glow.
+    function tint(object) {
+      const lift = object === hovered || linked.includes(object) ? HOVER : 0;
+      const warm = pulse?.objects.includes(object) ? pulse.amount : 0;
+      const set = (color, grey) => color.setRGB(grey + warm, grey + warm * 0.82, grey + warm * 0.55);
       if (object === lamp) {
-        lamp.traverse((o) => { if (o.isMesh) o.material.emissive.setHex(on ? 0x3a2410 : 0x000000); });
+        lamp.traverse((o) => { if (o.isMesh) o.material.emissive.setHex(lift ? 0x3a2410 : 0x000000); });
       } else if (object === laptop) {
-        laptop.traverse((o) => { if (o.isMesh && o !== screen) o.material.emissive.setScalar(on ? 0.12 : 0); });
+        laptop.traverse((o) => { if (o.isMesh && o !== screen) set(o.material.emissive, lift); });
         screen.material.emissive.setScalar(1);
-        screen.material.emissiveIntensity = screenGlow + (on ? 0.12 : 0);
+        screen.material.emissiveIntensity = screenGlow + lift + warm;
       } else {
-        object.traverse((o) => { if (o.isMesh && o.material.emissive) o.material.emissive.setScalar(Math.min(0.45, (o.material.userData.lit ?? 0) * glow) + (on ? 0.12 : 0)); });
+        object.traverse((o) => { if (o.isMesh && o !== led && o.material.emissive) set(o.material.emissive, Math.min(0.45, (o.material.userData.lit ?? 0) * glow) + lift); });
       }
+    }
+    function tintAll() {
+      for (const object of tintables) tint(object);
+      invalidate();
     }
 
     // A light tint marks what a click would act on. With a paper open, only the station's other items light up: a
@@ -1898,13 +1951,14 @@ export async function start(section) {
     // wood, so they take no tint; their items do.
     function setHovered(hit) {
       const lit = hit && (hit.kind !== 'item' || hit.id || hit.object === phone);
-      const acts = hit && (paper.visible ? sameStation(hit) : ['item', 'lamp', 'laptop', 'screen', 'print'].includes(hit.kind));
+      const acts = hit && (paper.visible ? sameStation(hit) : ['item', 'lamp', 'laptop', 'screen', 'print', 'cassette'].includes(hit.kind));
       const next = acts && lit ? hit.object : null;
       showTip(acts ? hit : null);
       if (next === hovered) return;
-      if (hovered) tint(hovered, false);
-      if (next) tint(next, true);
+      const was = hovered;
       hovered = next;
+      if (was) tint(was);
+      if (next) tint(next);
     }
 
     // The tooltip, next to the pointer while the camera rests: what an object is, in the page's own words, and what a
@@ -1926,6 +1980,7 @@ export async function start(section) {
       if (hit.kind === 'lamp') return [['b', themeButton?.getAttribute('aria-label') || '']];
       if (hit.kind === 'screen' || hit.kind === 'laptop') return [['b', 'Evaluate role fit'], ['i', at !== 'laptop' ? CLOSER : hit.kind === 'screen' ? OPEN : '']];
       if (hit.kind === 'print') return [['b', clean(cvLink)], ['i', at === 'desk' ? OPEN : CLOSER]];
+      if (hit.kind === 'cassette') return [['b', 'Music'], ['span', `Track ${music.track + 1} / ${TRACKS}`], ['i', music.playing ? 'Click to pause' : 'Click to play']];
       if (hit.kind !== 'item') return null;
       if (hit.object === phone) return [['b', clean(talkLink)], ['i', READ]];
       if (!hit.id) return groupNames[hit.station] && hit.station !== at ? [['b', groupNames[hit.station]], ['i', CLOSER]] : null;
@@ -1953,7 +2008,7 @@ export async function start(section) {
       pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
       pointerAt.x = event.clientX;
       pointerAt.y = event.clientY;
-      pointerIn = true;
+      pointerIn = event.target === canvas;   // over a button of the room, nothing in 3D is hovered
     }
 
     section.addEventListener('pointermove', (event) => {
@@ -1973,7 +2028,7 @@ export async function start(section) {
 
     // Two clicks, always: from rest or another station a click on an object goes to its station, and only there does
     // an item open its paper. With a paper open, another item of the station opens its own paper at once. The
-    // telephone opens the contact paper at once.
+    // telephone opens the contact paper at once. The cassette player plays or pauses the music at any station.
     const sameStation = (hit) => hit?.kind === 'item' && !!hit.id && hit.station === state.station;
     canvas.addEventListener('click', (event) => {
       setPointer(event);
@@ -1989,6 +2044,7 @@ export async function start(section) {
       if (!hit) return;
       const at = state.station;
       if (hit.kind === 'lamp') document.querySelector('[data-action="toggle-theme"]')?.click();
+      else if (hit.kind === 'cassette') toggleMusic();
       else if (hit.kind === 'screen' && at === 'laptop') aiTrigger.click();
       else if (hit.kind === 'laptop' || hit.kind === 'screen') go('laptop');
       else if (hit.kind === 'print' && at === 'desk') cvLink.click();
@@ -2021,13 +2077,22 @@ export async function start(section) {
       else if (state.station !== 'rest') window.history.back();
     }
 
+    // Analytics count each station and each paper once per open, only after the visitor's consent (window.gtag).
+    const track = (event, params) => { if (typeof window.gtag === 'function') window.gtag('event', event, params); };
+
     function apply() {
       const next = readHash();
       if (next.station === state.station && next.item === state.item) return;
       const was = { ...state };
       Object.assign(state, next);
+      if (state.station !== 'rest' && state.station !== was.station) track('room_station_opened', { station: state.station });
+      if (state.item && (state.item !== was.item || state.station !== was.station)) track('room_item_opened', { station: state.station, item: state.item });
       section.classList.toggle('is-away', state.station !== 'rest');
       backButton.hidden = state.station === 'rest';
+      for (const link of stationLinks) {
+        if (link.dataset.roomStation === state.station) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      }
       const pass = (s) => (s.station === 'desk' ? s.item : null);
       if (pass(was) !== pass(state)) { lift(pass(was), false); lift(pass(state), true); }
       arrangeCards(state.station === 'letters', state.station === 'letters' ? state.item : null);
@@ -2052,7 +2117,8 @@ export async function start(section) {
     }, { signal });
 
     // ── The hidden HTML copy: one button per item in the room, the laptop and the CV, and the open paper's text in
-    // a live region. The open paper's links follow the button that opened it. ──
+    // a live region. The station links are the visible row. The open paper's links follow the button that opened it,
+    // or start the list for the contact paper, whose station link comes right before it. ──
     const paperLinks = document.createElement('li');
     const control = (text, onClick) => {
       const li = document.createElement('li');
@@ -2070,14 +2136,11 @@ export async function start(section) {
       itemControls.set(`${entry.station}/${entry.id}`, li);
       return li;
     };
-    const contactControl = control(contact.name, () => go('contact'));
-    itemControls.set('contact', contactControl);
     list.replaceChildren(
       ...passItems.map(itemControl),
       control('Evaluate role fit', () => aiTrigger.click()),
       control('View CV', () => cvLink.click()),
       ...[...trophyItems, ...certItems, ...medalItems, ...posterItems, ...cardItems].map(itemControl),
-      contactControl,
     );
 
     function announce(key) {
@@ -2100,8 +2163,113 @@ export async function start(section) {
         a.addEventListener('click', (event) => { event.preventDefault(); follow(link); });
         return a;
       }));
-      itemControls.get(key)?.after(paperLinks);
+      if (itemControls.has(key)) itemControls.get(key).after(paperLinks);
+      else list.prepend(paperLinks);
     }
+
+    // ── The station links: a click goes to the station the way a click on its objects does, and the pointer or the
+    // focus on a link lights the station's objects. ──
+    const stationLinks = [...stationRow.querySelectorAll('[data-room-station]')];
+    for (const link of stationLinks) {
+      const objects = stationObjects[link.dataset.roomStation];
+      if (!objects) throw new Error(`the station link ${link.dataset.roomStation} names no station`);
+      const light = (on) => { linked = on ? objects : []; tintAll(); };
+      link.addEventListener('click', () => go(link.dataset.roomStation), { signal });
+      for (const type of ['pointerenter', 'focus']) link.addEventListener(type, () => light(true), { signal });
+      for (const type of ['pointerleave', 'blur']) link.addEventListener(type, () => light(false), { signal });
+    }
+
+    // ── Music: four tracks that loop in order. The Audio element exists only after a press on the cassette player or
+    // a music button, so no music byte loads before it. room.music keeps the track and the position, and a return
+    // visit offers to resume there, never on its own. ──
+    const playLabel = musicBox.querySelector('[data-room-play-label]');
+    const trackLabel = musicBox.querySelector('[data-room-track]');
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem('room.music')); } catch { saved = null; }
+    const music = {
+      track: Number.isInteger(saved?.track) ? ((saved.track % TRACKS) + TRACKS) % TRACKS : 0,
+      time: Math.max(0, Number(saved?.time) || 0), resume: !!saved, playing: false,
+    };
+    let audio = null, savedSecond = -1;
+    const trackUrl = (i) => new URL(`music/track-${i + 1}.mp3`, import.meta.url).href;
+
+    function saveMusic() {
+      if (audio) music.time = audio.currentTime;
+      try { localStorage.setItem('room.music', JSON.stringify({ track: music.track, time: Math.round(music.time * 10) / 10 })); } catch { /* storage blocked */ }
+    }
+    // The control, the LED and the cassette player's tooltip follow the player.
+    function showMusic() {
+      music.playing = !!audio && !audio.paused;
+      musicBox.classList.toggle('is-playing', music.playing);
+      playLabel.textContent = music.playing ? 'Pause music' : music.resume ? 'Resume music' : 'Play music';
+      trackLabel.textContent = `Track ${music.track + 1} / ${TRACKS}`;
+      led.material.emissiveIntensity = music.playing ? 1.5 : 0;
+      ledHalo.visible = music.playing;
+      pointerDirty = true;
+      invalidate();
+    }
+    // The player, made by the first press.
+    function player() {
+      if (audio) return audio;
+      audio = new Audio();
+      audio.preload = 'none';
+      audio.src = trackUrl(music.track);
+      audio.currentTime = music.time;
+      audio.addEventListener('ended', () => setTrack(music.track + 1, true), { signal });
+      audio.addEventListener('timeupdate', () => {
+        const second = Math.floor(audio.currentTime);
+        if (second !== savedSecond) { savedSecond = second; saveMusic(); }
+      }, { signal });
+      for (const type of ['play', 'pause']) audio.addEventListener(type, showMusic, { signal });
+      return audio;
+    }
+    function play() {
+      music.resume = false;
+      audio.play().catch((error) => { console.warn('Room: the music did not play.', error); showMusic(); });
+    }
+    // A new track starts at its beginning; while the music is paused, nothing loads until the next press.
+    function setTrack(index, playing) {
+      music.track = (index + TRACKS) % TRACKS;
+      music.time = 0;
+      if (audio) audio.src = trackUrl(music.track);
+      if (playing) play();
+      saveMusic();
+      showMusic();
+    }
+    function toggleMusic() {
+      if (player().paused) play();
+      else { audio.pause(); saveMusic(); }
+    }
+    function nextTrack() {
+      setTrack(music.track + 1, !!audio && !audio.paused);
+    }
+    musicBox.querySelector('[data-room-play]').addEventListener('click', toggleMusic, { signal });
+    musicBox.querySelector('[data-room-next]').addEventListener('click', nextTrack, { signal });
+
+    // ── The glow tour: on a first visit, each station's objects glow in turn and then the cassette player, so a
+    // visitor sees what a click opens. Any pointer move over the room, click, key press or scroll ends it at once. ──
+    const tourLog = { start: null, end: null, endedBy: null, eventAt: null };
+    let tourTween = null, tourTimer = 0;
+    function startTour() {
+      const order = [...Object.entries(stationObjects), ['cassette', [cassette]]];
+      tourLog.start = performance.now();
+      tourTween = tween(order.length * TOUR_STEP_MS, (k) => {
+        const t = Math.min(order.length - 1e-6, k * order.length), i = Math.floor(t);
+        pulse = { name: order[i][0], objects: order[i][1], amount: PULSE * Math.sin(Math.PI * (t - i)) };
+        tintAll();
+      }, () => endTour({ type: 'done' }));
+    }
+    function endTour(event) {
+      clearTimeout(tourTimer);
+      if (!tourTween) return;
+      tweens.delete(tourTween);
+      tourTween = null;
+      pulse = null;
+      Object.assign(tourLog, { end: performance.now(), endedBy: event.type, eventAt: event.timeStamp ?? null });
+      tintAll();
+    }
+    section.addEventListener('pointermove', endTour, { signal });
+    for (const type of ['pointerdown', 'keydown', 'wheel', 'scroll']) window.addEventListener(type, endTour, { signal, passive: true });
 
     // ── Observers ──
     const resize = new ResizeObserver(() => {
@@ -2155,9 +2323,18 @@ export async function start(section) {
     renderer.shadowMap.needsUpdate = true;
     renderer.render(scene, camera);
     section.classList.add('is-ready');
+    showMusic();
+    musicBox.hidden = stationRow.hidden = false;
     resize.observe(stage);
     visibility.observe(section);
     theme.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    // The glow tour runs on the first visit that opens at rest; with storage blocked, it runs on every such load.
+    let toured = null;
+    try { toured = localStorage.getItem('room.toured'); } catch { toured = null; }
+    if (state.station === 'rest' && !toured) {
+      try { localStorage.setItem('room.toured', '1'); } catch { /* storage blocked */ }
+      tourTimer = setTimeout(startTour, CANVAS_FADE_MS);
+    }
 
     // ── Test hooks for the headless checks ──
     const ndc = new THREE.Vector3();
@@ -2253,7 +2430,10 @@ export async function start(section) {
     const zonePoint = (z) => (z ? paperPoint((z.x0 + z.x1) / 2, (z.y0 + z.y1) / 2) : null);
 
     window.__room = {
-      state: () => ({ ...state, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip }),
+      state: () => ({ ...state, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip, linked: Object.keys(stationObjects).find((s) => stationObjects[s] === linked) ?? null, touring: !!tourTween, glowing: pulse && { name: pulse.name, amount: +pulse.amount.toFixed(2) } }),
+      tour: () => ({ ...tourLog }),
+      music: () => ({ track: music.track + 1, playing: music.playing, time: audio ? +audio.currentTime.toFixed(2) : music.time, src: audio?.currentSrc || null, label: playLabel.textContent, trackText: trackLabel.textContent, led: led.material.emissiveIntensity }),
+      seekMusic: (s) => { if (audio) audio.currentTime = s; },
       landmarkVisible,
       landmarkSweep,
       textPx,
@@ -2265,7 +2445,7 @@ export async function start(section) {
       fades: () => fadeLog.map((f) => ({ file: f.file, ms: f.end && Math.round(f.end - f.start) })),
       itemPoint: (key) => { const e = items.get(key); return e && screenPoint(e.mesh ? e.mesh.localToWorld(new THREE.Vector3(-PASS.w / 4, PASS_H / 6, 0)) : centreOf(e.object)); },
       passPoint: (id) => window.__room.itemPoint(`desk/${id}`),
-      objectPoint: (name) => screenPoint(centreOf({ shelf: shelfParts, tray: trayGroup, phone, plant }[name])),
+      objectPoint: (name) => screenPoint(centreOf({ shelf: shelfParts, tray: trayGroup, phone, plant, cassette }[name])),
       screenPoint: () => screenPoint(centreOf(screen)),
       printPoint: () => screenPoint(print.getWorldPosition(new THREE.Vector3())),
       deskPoint: () => screenPoint(new THREE.Vector3(DX.x1 - 0.12, DESK.top, DX.z0 + 0.12)),

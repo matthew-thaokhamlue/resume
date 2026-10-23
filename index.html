@@ -161,10 +161,16 @@
     <section class="ed-room" id="room" aria-label="The room" hidden>
       <div class="ed-room__stage" data-room-stage></div>
       <button class="ed-room__back" type="button" data-room-back hidden><span aria-hidden="true">←</span> Back <kbd class="ed-room__key" aria-hidden="true">Esc</kbd></button>
+      <div class="ed-room__music" data-room-music hidden>
+        <button class="ed-room__control" type="button" data-room-play><svg class="ed-room__icon ed-room__icon--play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.5v11l9-5.5z"/></svg><svg class="ed-room__icon ed-room__icon--pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h3.2v11H3.5zm5.8 0h3.2v11H9.3z"/></svg><span data-room-play-label>Play music</span></button>
+        <button class="ed-room__control" type="button" data-room-next aria-label="Next track"><svg class="ed-room__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 2.5v11l8-5.5zm8.5 0h2.5v11H11z"/></svg>Next</button>
+        <span class="ed-room__track" data-room-track>Track 1 / 4</span>
+      </div>
       <div class="ed-room__intro">
         <p class="ed-room__name">Matthew Thaokhamlue · Product Builder</p>
         <p class="ed-room__cue">Click anything in the room: the boarding passes, the posters, the awards shelf, the business cards or the telephone.</p>
       </div>
+      <nav class="ed-room__stations" aria-label="Stations in the room" data-room-stations hidden><button type="button" data-room-station="desk">Passes</button><span aria-hidden="true">·</span><button type="button" data-room-station="laptop">Laptop</button><span aria-hidden="true">·</span><button type="button" data-room-station="projects">Projects</button><span aria-hidden="true">·</span><button type="button" data-room-station="awards">Awards</button><span aria-hidden="true">·</span><button type="button" data-room-station="letters">Letters</button><span aria-hidden="true">·</span><button type="button" data-room-station="contact">Contact</button></nav>
       <ul class="ed-room__passes" aria-label="The room" data-room-passes></ul>
       <div class="ed-sr-only" aria-live="polite" data-room-live></div>
     </section>

@@ -875,3 +875,57 @@ test('the room reads four results and seven testimonials from the home page, and
   assert.match(html, /<section class="ed-quotes" id="recommendations">[\s\S]*?<a class="ed-link" href="https:\/\/www\.linkedin\.com\/[^"]*recommendations[^"]*"/, 'the postcards click the recommendations link');
   assert.ok(js.includes(`'.ed-topbar a[href*="linkedin.com"][data-ga-event]'`) && js.includes(`'#recommendations a[href*="linkedin.com"][href*="recommendations"]'`), 'room.js finds both links');
 });
+
+test('the cassette player and its four tracks exist and are credited, and nothing autoplays', () => {
+  const credits = readText('assets/room/CREDITS.txt');
+  assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/models/cassette_player/cassette_player_1k.gltf')), 'the cassette player model');
+  assert.ok(credits.includes('cassette_player (Cassette Player)'), 'CREDITS.txt credits the cassette player');
+  for (let i = 1; i <= 4; i++) {
+    assert.ok(fs.statSync(path.join(repoRoot, `assets/room/music/track-${i}.mp3`)).size > 100000, `music/track-${i}.mp3 is missing`);
+    assert.ok(credits.includes(`track-${i}.mp3`), `CREDITS.txt does not name track-${i}.mp3`);
+  }
+  assert.match(credits, /four instrumental tracks\s+generated for this site with ElevenLabs \(Eleven Music\)/);
+  const scripts = ['assets/js', 'assets/room'].flatMap((dir) => fs.readdirSync(path.join(repoRoot, dir)).filter((name) => name.endsWith('.js')).map((name) => `${dir}/${name}`));
+  for (const file of [...listHtmlFiles().map(relative), ...scripts]) {
+    assert.doesNotMatch(readText(file), /autoplay/i, `${file} mentions autoplay`);
+  }
+  const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  assert.match(room, /<div class="ed-room__music" data-room-music hidden>/, 'the music control starts hidden');
+  assert.match(room, /<button class="ed-room__control" type="button" data-room-play>(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+<span data-room-play-label>Play music<\/span><\/button>/, 'the play button is named Play music');
+  assert.match(room, /<button class="ed-room__control" type="button" data-room-next aria-label="Next track">/, 'the next button is named Next track');
+});
+
+test('room.js makes the Audio element only inside a click handler, with preload none', () => {
+  const js = readText('assets/room/room.js');
+  const fn = (name) => js.match(new RegExp(`\\n( +)function ${name}\\(\\) \\{\\n([\\s\\S]*?)\\n\\1\\}\\n`))?.[2] ?? '';
+  const count = (text, re) => (text.match(re) || []).length;
+  assert.equal(count(js, /new Audio\(/g), 1, 'one place makes the Audio element');
+  assert.match(fn('player'), /audio = new Audio\(\);\n\s*audio\.preload = 'none';/, 'player() makes it, with preload none');
+  // player() runs only in toggleMusic(); toggleMusic() and nextTrack() run only from click listeners.
+  assert.equal(count(js, /\bplayer\(\)/g), 1 + count(fn('toggleMusic'), /\bplayer\(\)/g), 'only toggleMusic() calls player()');
+  const canvasClick = js.match(/\n( +)canvas\.addEventListener\('click', \(event\) => \{\n([\s\S]*?)\n\1\}, \{ signal \}\);/)?.[2] ?? '';
+  for (const name of ['toggleMusic', 'nextTrack']) {
+    const allowed = 1 + count(canvasClick, new RegExp(`\\b${name}\\(\\)`, 'g')) + count(js, new RegExp(`addEventListener\\('click', ${name}, \\{ signal \\}\\)`, 'g'));
+    assert.equal(count(js, new RegExp(`\\b${name}\\b`, 'g')), allowed, `${name} runs only from a click listener`);
+  }
+  assert.match(canvasClick, /hit\.kind === 'cassette'\) toggleMusic\(\);/, 'a click on the cassette player plays or pauses');
+});
+
+test('the room shows a still image of the rest view for each theme while it loads', () => {
+  for (const theme of ['day', 'night']) {
+    const head = fs.readFileSync(path.join(repoRoot, `assets/room/still-${theme}.webp`)).subarray(0, 12);
+    assert.equal(`${head.toString('latin1', 0, 4)}${head.toString('latin1', 8, 12)}`, 'RIFFWEBP', `still-${theme}.webp is a WebP file`);
+  }
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /html\.room-on \.ed-room \{ background-image: url\("\.\.\/room\/still-day\.webp"\); background-size: cover;/);
+  assert.match(css, /html\.room-on\[data-theme="dark"\] \.ed-room \{ background-image: url\("\.\.\/room\/still-night\.webp"\); \}/);
+});
+
+test('the station links name every room station', () => {
+  const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  const nav = room.match(/<nav class="ed-room__stations" aria-label="[^"]+" data-room-stations hidden>([\s\S]*?)<\/nav>/);
+  assert.ok(nav, 'the station links start hidden');
+  const links = [...nav[1].matchAll(/<button type="button" data-room-station="([a-z]+)">([^<]+)<\/button>/g)];
+  assert.deepEqual(links.map((m) => m[2]), ['Passes', 'Laptop', 'Projects', 'Awards', 'Letters', 'Contact']);
+  assert.deepEqual(links.map((m) => m[1]).sort(), [...ROOM_STATIONS].sort());
+});
