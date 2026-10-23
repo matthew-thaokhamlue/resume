@@ -1098,7 +1098,7 @@ export async function start(section) {
     tip?.remove();
     list.replaceChildren();
     live.replaceChildren();
-    for (const el of [backButton, musicBox, stationRow]) if (el) el.hidden = true;
+    for (const el of [backButton, musicBox, stationRow, ...section.querySelectorAll('[data-room-side]')]) if (el) el.hidden = true;
     throw error;
   }
 
@@ -1114,6 +1114,7 @@ export async function start(section) {
     if (!heroTitle || !heroSub || !aiTrigger || !cvLink) throw new Error('the hero lost its title, subline, AI Match button or CV link');
     if (!talkLink || !recLink) throw new Error('the page lost its LinkedIn or recommendations link');
     if (!backButton || !musicBox || !stationRow) throw new Error('#room lost its Back button, music control or station links');
+    if (section.querySelectorAll('[data-room-side]').length !== 2) throw new Error('#room lost its sideways arrows');
     const results = [...document.querySelectorAll('.ed-result[data-reveal^="receipt-"]')].map((button) => {
       const id = button.dataset.reveal.replace(/^receipt-/, '');
       return {
@@ -2017,6 +2018,7 @@ export async function start(section) {
         uv.setXY(i, (S + u * notes.W) / (notes.W + 2 * S), (S + v * notes.H) / (notes.H + 2 * S));
       }
       uv.needsUpdate = true;
+      section.style.setProperty('--ed-room-paper-right', `${NOTE_BOX.left + notes.W}px`);
       paperState.blank?.dispose();
       paperState.blank = texture(drawNotes(notes, 0, 0, true).canvas);
       flipBack.material.map = paperState.blank;
@@ -2050,6 +2052,7 @@ export async function start(section) {
         paperState.tween = tween(220, (t) => { paper.material.opacity = from * (1 - t); paper.position.x = paperState.x - t * 40 * k; }, () => { paper.visible = false; });
       }
       paperState.key = key;
+      section.classList.toggle('has-paper', !!key);
     }
 
     // Bends the turning page for the angle theta (0 flat on the paper, PI turned over to the left). The free edge
@@ -2750,19 +2753,44 @@ export async function start(section) {
       if (key) announce(key);
       if (pass(state)) showView(items.get(`desk/${state.item}`).pass.view);
       tip.hidden = true;
+      showSides();
       moveTo(poseFor(state));
     }
+
+    // ── Sideways: the three walls form one row, Projects, the desk and Awards. #laptop, #letters and #contact share
+    // the desk's neighbours. The arrows and the Left and Right keys go there; a move replaces the history entry, as
+    // any move from a station does. ──
+    const SIDES = { projects: [null, 'desk'], desk: ['projects', 'awards'], awards: ['desk', null] };
+    const sidesOf = (station) => (station === 'rest' ? [null, null] : SIDES[station] ?? SIDES.desk);
+    const sideButtons = ['left', 'right'].map((side) => section.querySelector(`[data-room-side="${side}"]`));
+    const stationName = (station) => clean(stationRow.querySelector(`[data-room-station="${station}"]`));
+    function showSides() {
+      sidesOf(state.station).forEach((to, i) => {
+        sideButtons[i].hidden = !to;
+        if (!to) return;
+        sideButtons[i].querySelector('[data-room-side-label]').textContent = stationName(to);
+        sideButtons[i].setAttribute('aria-label', `Go to ${stationName(to)}`);
+      });
+    }
+    // An arrow that hides under the focus hands it to the other arrow.
+    sideButtons.forEach((button, i) => button.addEventListener('click', () => {
+      const to = sidesOf(state.station)[i];
+      if (!to) return;
+      go(to);
+      if (button.hidden) sideButtons[1 - i].focus();
+    }, { signal }));
 
     window.addEventListener('hashchange', apply, { signal });
     backButton.addEventListener('click', back, { signal });
     document.addEventListener('keydown', (event) => {
       if (state.station === 'rest' || event.defaultPrevented || document.querySelector('dialog[open]')) return;
       if (event.key === 'Escape') { back(); return; }
+      // Left and Right turn the open paper's pages; with no paper open they move sideways.
       const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
-      if (step && paper.visible && !event.target.closest?.('input, textarea, select, [contenteditable]')) {
-        event.preventDefault();
-        turnPage(step);
-      }
+      if (!step || event.target.closest?.('input, textarea, select, [contenteditable]')) return;
+      const to = sidesOf(state.station)[step < 0 ? 0 : 1];
+      if (paperState.key) { event.preventDefault(); turnPage(step); }
+      else if (to) { event.preventDefault(); go(to); }
     }, { signal });
 
     // ── The hidden HTML copy: one button per item in the room, the laptop and the CV, and the open paper's text in

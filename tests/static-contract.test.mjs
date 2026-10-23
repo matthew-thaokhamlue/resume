@@ -842,6 +842,16 @@ test('the room finds the hero controls it clicks, and its Back button', () => {
   assert.match(readText('assets/css/editorial.css'), /\.ed-room__back\[hidden\] \{ display: none; \}/, 'the hidden attribute wins over its display');
 });
 
+test('the room holds two hidden sideways arrows, named by room.js from the station links', () => {
+  const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  assert.match(room, /<button class="ed-room__side ed-room__side--left" type="button" data-room-side="left" hidden><span aria-hidden="true">←<\/span> <span data-room-side-label><\/span><\/button>/);
+  assert.match(room, /<button class="ed-room__side ed-room__side--right" type="button" data-room-side="right" hidden><span data-room-side-label><\/span> <span aria-hidden="true">→<\/span><\/button>/);
+  assert.match(readText('assets/css/editorial.css'), /\.ed-room__side\[hidden\] \{ display: none; \}/, 'the hidden attribute wins over its display');
+  const js = readText('assets/room/room.js');
+  assert.match(js, /const SIDES = \{ projects: \[null, 'desk'\], desk: \['projects', 'awards'\], awards: \['desk', null\] \};/, 'the walls form one row');
+  assert.match(js, /setAttribute\('aria-label', `Go to \$\{stationName\(to\)\}`\)/, 'each arrow is named after its station');
+});
+
 test('every credential the shelf names exists in certificates.html with a verify link', () => {
   const js = readText('assets/room/room.js');
   const certificates = readText('certificates.html');
