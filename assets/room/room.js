@@ -214,10 +214,10 @@ function layoutPass(pass) {
 // The paper carries the summary and the bullets of each role. The pass beside it names the company and the role,
 // so only a pass with two legs repeats them as headings.
 function layoutPaper(pass) {
-  const PAD = 0.03, BULLET = 0.022;
+  const PAD = 0.024, BULLET = 0.022;
   const s = new Sheet(PAPER.w);
   s.y = PAD;
-  const body = { size: EM, x: PAD, maxW: PAPER.w - 2 * PAD, lead: 1.24, mark: 'body' };
+  const body = { size: EM, x: PAD, maxW: PAPER.w - 2 * PAD, lead: 1.2, mark: 'body' };
   pass.legs.forEach((leg, i) => {
     if (i) s.y += EM * 0.8;
     if (pass.legs.length > 1) {
@@ -226,7 +226,7 @@ function layoutPaper(pass) {
     }
     if (leg.summary) s.text(leg.summary, { ...body, color: INK_SOFT });
     for (const item of leg.items) {
-      s.y += EM * 0.22;
+      s.y += EM * 0.14;
       if (item.head) s.text(item.head, { ...body, weight: 600 });
       if (item.text) s.text(item.text, body);
       if (item.bullet) {
@@ -235,7 +235,7 @@ function layoutPaper(pass) {
       }
     }
   });
-  s.y += EM * 0.6;
+  s.y += EM * 0.45;
   s.text(LINK_TEXT, { ...body, weight: 500, color: CLAY_INK, link: true });
   s.y += PAD * 0.8;
   return s;
@@ -470,7 +470,7 @@ export async function start(section) {
     const passLayouts = passes.map(layoutPass);
     const PASS_H = Math.max(...passLayouts.map((s) => s.y));
     passLayouts.forEach((s) => { s.y = PASS_H; });
-    BOARD.h = passes.length * PASS_H + (passes.length + 1) * PASS_GAP + 2 * BOARD_PAD - 2 * PASS_GAP;
+    BOARD.h = passes.length * PASS_H + (passes.length - 1) * PASS_GAP + 2 * BOARD_PAD;
     BOARD.y0 = BOARD.cy - BOARD.h / 2;
     BOARD.y1 = BOARD.cy + BOARD.h / 2;
     const corkMap = new THREE.CanvasTexture(corkTexture());
@@ -671,9 +671,9 @@ export async function start(section) {
       const layout = paperLayouts.get(id);
       const passBox = new THREE.Box3().setFromObject(mesh);
       return fit({
-        x0: PAPER.x1 - PAPER.w - 0.012, x1: WIN.x0 - 0.005,
-        y0: Math.min(paperTop(id) - layout.y, passBox.min.y) - 0.012, y1: Math.max(paperTop(id), passBox.max.y) + 0.012,
-      }, undefined, 0.985);
+        x0: PAPER.x1 - PAPER.w - 0.006, x1: WIN.x0 - 0.03,
+        y0: Math.min(paperTop(id) - layout.y, passBox.min.y) - 0.006, y1: Math.max(paperTop(id), passBox.max.y) + 0.006,
+      }, undefined, 0.995);
     }
 
     function computePoses() {
@@ -793,8 +793,8 @@ export async function start(section) {
 
     section.addEventListener('pointermove', (event) => {
       setPointer(event);
-      look.toYaw = -pointer.x * MAX_TILT;
-      look.toPitch = -pointer.y * MAX_TILT;
+      look.toYaw = pointer.x * MAX_TILT;
+      look.toPitch = pointer.y * MAX_TILT;
       pointerDirty = true;
       invalidate();
     }, { signal });
@@ -1008,6 +1008,7 @@ export async function start(section) {
       textPx,
       passPoint: (id) => screenPoint(passById.get(id).mesh.getWorldPosition(new THREE.Vector3())),
       lampPoint: () => screenPoint(lampLight.getWorldPosition(new THREE.Vector3())),
+      linkPoint: () => paperLink && screenPoint(new THREE.Vector3((paperLink.x0 + paperLink.x1) / 2 / paperLink.w - 0.5, 0.5 - (paperLink.y0 + paperLink.y1) / 2 / paperLink.h, 0).applyMatrix4(paper.matrixWorld)),
       info: () => ({ ...renderer.info.render, ...renderer.info.memory, programs: renderer.info.programs.length }),
     };
   }
