@@ -895,15 +895,18 @@ test('the room reads four results and seven testimonials from the home page, and
   assert.ok(js.includes(`'.ed-topbar a[href*="linkedin.com"][data-ga-event]'`) && js.includes(`'#recommendations a[href*="linkedin.com"][href*="recommendations"]'`), 'room.js finds both links');
 });
 
-test('the four tracks exist, are credited and play in the order 3, 1, 2, 4, and nothing autoplays', () => {
+test('the five tracks exist, are credited and play in the order 5, 1, 2, 6, 4, and nothing autoplays', () => {
   const credits = readText('assets/room/CREDITS.txt');
   const js = readText('assets/room/room.js');
-  for (let i = 1; i <= 4; i++) {
+  for (const i of [1, 2, 4, 5, 6]) {
     assert.ok(fs.statSync(path.join(repoRoot, `assets/room/music/track-${i}.mp3`)).size > 100000, `music/track-${i}.mp3 is missing`);
     assert.ok(credits.includes(`track-${i}.mp3`), `CREDITS.txt does not name track-${i}.mp3`);
   }
-  assert.ok(credits.includes('Music: four instrumental tracks generated for this site with ElevenLabs (Eleven Music)'), 'CREDITS.txt credits the music');
-  assert.match(js, /const PLAY_ORDER = \[3, 1, 2, 4\];/, 'the swing track, track-3.mp3, plays first');
+  assert.ok(!fs.existsSync(path.join(repoRoot, 'assets/room/music/track-3.mp3')), 'track-3.mp3 left the mixtape');
+  assert.doesNotMatch(credits, /track-3\.mp3/, 'CREDITS.txt no longer names track-3.mp3');
+  assert.ok(credits.includes('Music: five instrumental tracks generated for this site with ElevenLabs (Eleven Music)'), 'CREDITS.txt credits the music');
+  assert.match(js, /const PLAY_ORDER = \[5, 1, 2, 6, 4\];/, 'the ballad, track-5.mp3, plays first');
+  assert.match(js, /localStorage\.setItem\('room\.music', JSON\.stringify\(\{ file: PLAY_ORDER\[music\.track\]/, 'the store keeps the file number');
   assert.match(js, /music\/track-\$\{PLAY_ORDER\[i\]\}\.mp3/, 'the track URL follows the play order');
   assert.ok(!fs.existsSync(path.join(repoRoot, 'assets/room/models/cassette_player')), 'the code-built radio replaces the cassette player model');
   assert.doesNotMatch(credits, /cassette_player/, 'CREDITS.txt no longer names the cassette player');

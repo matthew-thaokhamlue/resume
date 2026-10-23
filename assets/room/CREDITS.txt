@@ -23,9 +23,9 @@ potted_plant_04 (Potted Plant 04), author: James Ray Cock
   licence: CC0 1.0
   The two succulents on the window sill.
 
-Music: four instrumental tracks generated for this site with ElevenLabs (Eleven Music)
-  files: music/track-1.mp3, music/track-2.mp3, music/track-3.mp3 and music/track-4.mp3; the room plays them in the
-  order 3, 1, 2, 4
+Music: five instrumental tracks generated for this site with ElevenLabs (Eleven Music)
+  files: music/track-1.mp3, music/track-2.mp3, music/track-4.mp3, music/track-5.mp3 and music/track-6.mp3; the room
+  plays them in the order 5, 1, 2, 6, 4
   The Eleven Music terms for the Creator plan require no attribution (checked 23 October 2026).
 
 Font: Patrick Hand, Copyright (c) 2010-2012 Patrick Wagesreiter. Licence: SIL Open Font License 1.1, in

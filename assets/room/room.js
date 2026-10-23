@@ -100,8 +100,8 @@ const TALL_PLANT = { x: 2.28, z: 0.2 };
 const CLOCK = { x: 1.88, y: 2.0, r: 0.16 };
 const FLOOR = { tile: 1.2 };
 const RUG = { x: 0.55, z: 1.65, w: 2.3, d: 1.9 };
-// The play order of the four tracks by file number: the 1940s swing track, track-3.mp3, plays first.
-const PLAY_ORDER = [3, 1, 2, 4];
+// The play order of the five tracks by file number: the ballad, track-5.mp3, plays first.
+const PLAY_ORDER = [5, 1, 2, 6, 4];
 const TRACKS = PLAY_ORDER.length;
 // Music notes rise from the radio while it plays: one every NOTES.every ms, each for NOTES.life ms, at most NOTES.max.
 const NOTES = { every: 600, life: 2000, max: 6, rise: 0.3, size: 0.06, fps: 30 };
@@ -2808,17 +2808,18 @@ export async function start(section) {
       for (const type of ['pointerleave', 'blur']) link.addEventListener(type, () => light(false), { signal });
     }
 
-    // ── Music: four tracks that loop in PLAY_ORDER. The Audio element exists only after a press, so no music byte
+    // ── Music: five tracks that loop in PLAY_ORDER. The Audio element exists only after a press, so no music byte
     // loads before it: the visitor's first press in the room, or a press on the radio or a music button. room.music
-    // keeps the track, the position and whether the visitor paused; a visitor who paused is offered "Resume music"
-    // and never hears music start without pressing Play. ──
+    // keeps the track's file number, the position and whether the visitor paused; a visitor who paused is offered
+    // "Resume music" and never hears music start without pressing Play. A stored track that is no longer in the play
+    // order, or a store from before the file number, starts the first track from its beginning. ──
     const playLabel = musicBox.querySelector('[data-room-play-label]');
     const trackLabel = musicBox.querySelector('[data-room-track]');
     let saved = null;
     try { saved = JSON.parse(localStorage.getItem('room.music')); } catch { saved = null; }
+    const savedTrack = PLAY_ORDER.indexOf(saved?.file);
     const music = {
-      track: Number.isInteger(saved?.track) ? ((saved.track % TRACKS) + TRACKS) % TRACKS : 0,
-      time: Math.max(0, Number(saved?.time) || 0), paused: saved?.paused === true, playing: false,
+      track: Math.max(0, savedTrack), time: savedTrack < 0 ? 0 : Math.max(0, Number(saved?.time) || 0), paused: saved?.paused === true, playing: false,
     };
     music.resume = music.paused;
     let audio = null, savedSecond = -1;
@@ -2826,7 +2827,7 @@ export async function start(section) {
 
     function saveMusic() {
       if (audio) music.time = audio.currentTime;
-      try { localStorage.setItem('room.music', JSON.stringify({ track: music.track, time: Math.round(music.time * 10) / 10, paused: music.paused })); } catch { /* storage blocked */ }
+      try { localStorage.setItem('room.music', JSON.stringify({ file: PLAY_ORDER[music.track], time: Math.round(music.time * 10) / 10, paused: music.paused })); } catch { /* storage blocked */ }
     }
     // The control, the LED and the radio's tooltip follow the player.
     function showMusic() {
