@@ -899,21 +899,27 @@ function plankTexture() {
   return c;
 }
 
-// The rug: cream wool with a fine fluffy speckle and a soft band near its edge.
+// The rug: warm cream wool with rounded corners, its pile drawn as short light and shaded strokes.
 function rugTexture() {
   const c = document.createElement('canvas');
   c.width = 1024;
   c.height = 768;
   const g = c.getContext('2d'), rand = random(31);
-  g.fillStyle = '#efe6d6';
-  g.fillRect(0, 0, c.width, c.height);
-  for (let i = 0; i < 30000; i++) {
-    g.fillStyle = rand() < 0.5 ? `rgba(255, 252, 244, ${0.3 + rand() * 0.4})` : `rgba(160, 140, 110, ${0.06 + rand() * 0.12})`;
-    g.fillRect(rand() * c.width, rand() * c.height, 1 + rand() * 2.5, 1 + rand() * 2.5);
+  g.beginPath();
+  g.roundRect(6, 6, c.width - 12, c.height - 12, 40);
+  g.fillStyle = '#e9d6b8';
+  g.fill();
+  g.clip();
+  g.lineCap = 'round';
+  for (let i = 0; i < 60000; i++) {
+    const x = rand() * c.width, y = rand() * c.height, a = rand() * Math.PI * 2, len = 2 + rand() * 4;
+    g.strokeStyle = rand() < 0.55 ? `rgba(255, 246, 230, ${0.35 + rand() * 0.4})` : `rgba(150, 118, 82, ${0.1 + rand() * 0.16})`;
+    g.lineWidth = 1 + rand() * 1.5;
+    g.beginPath();
+    g.moveTo(x, y);
+    g.lineTo(x + Math.cos(a) * len, y + Math.sin(a) * len);
+    g.stroke();
   }
-  g.strokeStyle = 'rgba(185, 165, 135, 0.3)';
-  g.lineWidth = 12;
-  g.strokeRect(34, 34, c.width - 68, c.height - 68);
   return c;
 }
 
@@ -1945,7 +1951,7 @@ export async function start(section) {
     decor.add(terracotta, soil, heartLeaves, vines);
 
     // The rug in front of the desk: cream wool on the floor.
-    const rug = new THREE.Mesh(new THREE.PlaneGeometry(RUG.w, RUG.d).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: texture(rugTexture()), roughness: 1 }));
+    const rug = new THREE.Mesh(new THREE.PlaneGeometry(RUG.w, RUG.d).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: texture(rugTexture()), alphaTest: 0.5, roughness: 1 }));
     rug.position.set(RUG.x, 0.004, RUG.z);
     decor.add(rug);
 
