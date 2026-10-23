@@ -1012,7 +1012,7 @@
   .ed-room__stage canvas { display: block; opacity: 0; transition: opacity 0.6s var(--ed-ease-soft); }
   .ed-room.is-ready .ed-room__stage canvas { opacity: 1; }
   /* the intro sits at the lower left on a small blurred block, clear of the poster wall; room.js adds is-away at a station */
-  .ed-room__intro { position: absolute; left: var(--ed-gutter-x); bottom: 24px; z-index: 1; max-width: min(34rem, calc(100% - 2 * var(--ed-gutter-x))); padding: 18px 24px 20px; border-radius: 16px; background: rgba(var(--ed-bg-rgb), 0.84); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: var(--ed-card-shadow); pointer-events: none; transition: opacity var(--ed-d-base) var(--ed-ease-soft), visibility var(--ed-d-base); }
+  .ed-room__intro { position: absolute; left: var(--ed-gutter-x); bottom: 24px; z-index: 1; max-width: min(44rem, calc(100% - 2 * var(--ed-gutter-x))); padding: 18px 24px 20px; border-radius: 16px; background: rgba(var(--ed-bg-rgb), 0.84); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: var(--ed-card-shadow); pointer-events: none; transition: opacity var(--ed-d-base) var(--ed-ease-soft), visibility var(--ed-d-base); }
   .ed-room.is-away .ed-room__intro { opacity: 0; visibility: hidden; }
   .ed-room__name { margin: 0; font-family: var(--ed-display); font-size: clamp(1.4rem, 2vw, 2rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; color: var(--ed-ink); }
   .ed-room__cue { margin: 10px 0 0; max-width: 44ch; font-size: 1.05rem; line-height: 1.45; color: var(--ed-ink-soft); }

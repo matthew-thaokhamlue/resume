@@ -1482,6 +1482,7 @@ export async function start(section) {
     // city stays until a reload. A night image loads only at night. ──
     const shown = { key: HOME_VIEW, night: homeView.night, file: homeView.file };
     let viewWanted = { key: HOME_VIEW, night: shown.night }, viewTween = null;
+    const fadeLog = [];
     const atZ = (eye, p, z) => eye.clone().lerp(p, (z - eye.z) / (p.z - eye.z));
 
     // What the window shows, measured at the frame as the rest eye sees it: shift is how far a view point moves
@@ -1558,11 +1559,14 @@ export async function start(section) {
       viewB.material.opacity = 0;
       viewB.visible = true;
       Object.assign(shown, { key, night, file: found.file });
+      const log = { file: found.file, start: performance.now(), end: null };
+      fadeLog.push(log);
       viewTween = tween(ms, (k) => { viewB.material.opacity = k; }, () => {
         placeView(viewA, key, found.texture);
         viewA.material.color.copy(viewB.material.color);
         viewB.visible = false;
         viewTween = null;
+        log.end = performance.now();
       });
     }
 
@@ -2203,6 +2207,7 @@ export async function start(section) {
       paperText: () => paperState.notes?.pages.flat().filter(Boolean).map((l) => l.text).join(' ') ?? null,
       flips: () => flipLog.map((f) => ({ step: f.step, ms: f.end && Math.round(f.end - f.start) })),
       setFlipMs: (ms) => { flipMs = ms; },
+      fades: () => fadeLog.map((f) => ({ file: f.file, ms: f.end && Math.round(f.end - f.start) })),
       itemPoint: (key) => { const e = items.get(key); return e && screenPoint(e.mesh ? e.mesh.localToWorld(new THREE.Vector3(-PASS.w / 4, PASS_H / 6, 0)) : centreOf(e.object)); },
       passPoint: (id) => window.__room.itemPoint(`desk/${id}`),
       objectPoint: (name) => screenPoint(centreOf({ shelf: shelfParts, tray: trayGroup, phone, plant }[name])),
