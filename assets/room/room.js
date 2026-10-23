@@ -1,6 +1,6 @@
 /*
  * room.js — the 3D room on the home page: a wide room with a wooden window above a long desk. On the desk lie five
- * boarding passes, a laptop, a CV printout, a letter tray with postcards and a telephone. An awards shelf hangs on
+ * boarding passes, a laptop, a CV printout, a tray of business cards and a telephone. An awards shelf hangs on
  * the right wall and framed posters on the left wall. A chosen item shows its text on a lined paper held in front of
  * the camera. room-boot.js imports this module behind ?room=1 and calls start(section). start() resolves after the
  * first frame. Until then any failure removes every listener and rejects, and room-boot.js hides the room. All text
@@ -67,7 +67,7 @@ const PASS = { w: 0.264, stub: 0.06, gap: 0.026, band: 0.012, r: 0.01, pad: 0.01
 const LAPTOP = { x: 0.55, z: 0.37, scale: 0.55, tilt: 0.2 };   // tilt: the lid leans back by this angle in radians
 const PRINT = { x: 0.04, z: 0.35, w: 0.21, h: 0.297, turn: 0.16 };
 const TRAY = { x: -0.31, z: 0.4, w: 0.27, d: 0.2, turn: -0.1 };
-const CARD = { w: 0.17, h: 0.115 };
+const CARD = { w: 0.17, h: 0.11 };   // a business card: 85 x 55 mm, at twice the size
 const PHONE = { x: 1.2, z: 0.52, turn: -0.45 };
 // The awards shelf on the right wall and the poster wall on the left wall, as ranges along the wall (z).
 const SHELF = { z0: 0.66, z1: 2.46, low: 1.0, high: 1.42, depth: 0.25, hooks: 2.13 };
@@ -528,46 +528,47 @@ function labelFace(title) {
   return f;
 }
 
-// The front of a postcard: the photo in a stamp frame, the name and the role. Without a photo the stamp shows the
-// initials.
-function postcardFace(quote, photo) {
+// The front of a business card: the name, the job title and the company, and the photo in a round frame. Without a
+// photo the frame shows the initials. The role splits at its last " at " into the title and the company.
+function cardFace(quote, photo) {
   const f = new Face(CARD.w, CARD.h, 2800), { g, ppm: p } = f;
-  g.fillStyle = '#fbf6ec';
-  g.fillRect(0, 0, f.canvas.width, f.canvas.height);
-  const sx = 0.012 * p, sy = 0.014 * p, sw = 0.05 * p, sh = 0.062 * p, tooth = 0.0022 * p;
+  const W = f.canvas.width, H = f.canvas.height;
+  g.fillStyle = '#fbfaf6';
+  g.fillRect(0, 0, W, H);
+  g.fillStyle = CLAY;
+  g.fillRect(0, 0, 0.005 * p, H);
+  const r = 0.022 * p, cx = W - 0.012 * p - r, cy = 0.012 * p + r;
   g.save();
-  g.shadowColor = 'rgba(0, 0, 0, 0.18)';
-  g.shadowBlur = 0.003 * p;
-  g.fillStyle = '#ffffff';
-  g.fillRect(sx, sy, sw, sh);
-  g.restore();
-  // The stamp's perforated edge.
-  g.fillStyle = '#fbf6ec';
-  for (let x = sx; x <= sx + sw; x += tooth * 2.2) for (const y of [sy, sy + sh]) { g.beginPath(); g.arc(x, y, tooth * 0.7, 0, Math.PI * 2); g.fill(); }
-  for (let y = sy; y <= sy + sh; y += tooth * 2.2) for (const x of [sx, sx + sw]) { g.beginPath(); g.arc(x, y, tooth * 0.7, 0, Math.PI * 2); g.fill(); }
-  const ix = sx + 0.004 * p, iy = sy + 0.004 * p, iw = sw - 0.008 * p, ih = sh - 0.008 * p;
+  g.beginPath();
+  g.arc(cx, cy, r, 0, Math.PI * 2);
+  g.clip();
   if (photo) {
-    const k = Math.max(iw / photo.width, ih / photo.height);
-    const cw = iw / k, ch = ih / k;
-    g.drawImage(photo, (photo.width - cw) / 2, (photo.height - ch) / 2, cw, ch, ix, iy, iw, ih);
+    const k = Math.max((2 * r) / photo.width, (2 * r) / photo.height), cw = (2 * r) / k, ch = (2 * r) / k;
+    g.drawImage(photo, (photo.width - cw) / 2, (photo.height - ch) / 2, cw, ch, cx - r, cy - r, 2 * r, 2 * r);
   } else {
-    g.fillStyle = '#e7ddcb';
-    g.fillRect(ix, iy, iw, ih);
-    const initials = quote.name.split(' ').map((w) => w[0]).join('').slice(0, 2);
+    g.fillStyle = '#ece4d6';
+    g.fillRect(cx - r, cy - r, 2 * r, 2 * r);
     g.fillStyle = '#6b5a3e';
-    g.font = `600 ${0.022 * p}px ${SANS}`;
+    g.font = `600 ${0.017 * p}px ${SANS}`;
     g.textAlign = 'center';
-    g.fillText(initials, ix + iw / 2, iy + ih / 2 + 0.008 * p);
+    g.fillText(quote.name.split(' ').map((w) => w[0]).join('').slice(0, 2), cx, cy + 0.006 * p);
   }
-  // Two postmark rings over the stamp's corner.
-  g.strokeStyle = 'rgba(80, 70, 60, 0.35)';
-  g.lineWidth = 0.0008 * p;
-  for (const r of [0.011, 0.014]) { g.beginPath(); g.arc(sx + sw + 0.004 * p, sy + 0.01 * p, r * p, 0, Math.PI * 2); g.stroke(); }
-  const x = 0.074, maxW = CARD.w - x - 0.01;
-  const base = f.write(quote.name, x, 0.03, 0.0155, { weight: 600, maxW, lines: 2, lead: 1.1, mark: 'name' });
-  f.write(quote.role, x, base + 0.003, 0.0105, { color: INK_SOFT, maxW, lines: 3, lead: 1.2, mark: 'role' });
-  g.fillStyle = 'rgba(80, 70, 60, 0.25)';
-  for (let i = 0; i < 3; i++) g.fillRect(x * p, (0.088 + i * 0.008) * p, maxW * p, 0.0006 * p);
+  g.restore();
+  g.strokeStyle = 'rgba(29, 27, 24, 0.18)';
+  g.lineWidth = 0.0006 * p;
+  g.beginPath();
+  g.arc(cx, cy, r, 0, Math.PI * 2);
+  g.stroke();
+  const at = quote.role.lastIndexOf(' at ');
+  const title = at < 0 ? quote.role : quote.role.slice(0, at), company = at < 0 ? '' : quote.role.slice(at + 4);
+  const x = 0.016, wide = CARD.w - x - 0.014;
+  const next = f.write(quote.name, x, 0.03, 0.016, { weight: 600, maxW: (cx - r) / p - 0.008 - x, lines: 2, lead: 1.08, mark: 'name' });
+  // A short clay rule under the name, then the title, and the company at the foot of the card.
+  const rule = next - 0.016 * 1.08 + 0.0065;
+  g.fillStyle = CLAY;
+  g.fillRect(x * p, rule * p, 0.022 * p, 0.0009 * p);
+  f.write(title, x, rule + 0.0135, 0.0105, { color: INK_SOFT, maxW: wide, lines: 2, lead: 1.2, mark: 'role' });
+  if (company) f.write(company, x, CARD.h - 0.013, 0.0115, { weight: 600, maxW: wide, mark: 'company' });
   return f;
 }
 
@@ -822,7 +823,7 @@ export async function start(section) {
     const hand = new FontFace('Patrick Hand', `url("${new URL('fonts/patrick-hand-latin.woff2', import.meta.url).href}") format("woff2")`);
     const model = (id) => new GLTFLoader().loadAsync(new URL(`models/${id}/${id}_1k.gltf`, import.meta.url).href);
     const image = (url) => new THREE.ImageLoader().loadAsync(url);
-    // A postcard without a photo, or with a photo that fails, shows the initials instead.
+    // A business card without a photo, or with a photo that fails, shows the initials instead.
     const photo = (src) => (src ? image(new URL(src, document.baseURI).href).catch(() => null) : Promise.resolve(null));
     const loads = Promise.all([
       fetchPage('experience.html'),
@@ -1222,7 +1223,7 @@ export async function start(section) {
       return entry;
     });
 
-    // ── The letter tray at the desk's left end, with the postcards ──
+    // ── The tray at the desk's left end, with a business card for each recommendation ──
     const tray = item('letters', null, {});
     const trayGroup = tray.object;
     trayGroup.position.set(TRAY.x, DESK.top, TRAY.z);
@@ -1245,7 +1246,7 @@ export async function start(section) {
         doc: { blocks: [{ title: quote.name }, { line: quote.role }, { gap: 1 }, { text: quote.text }], links: [{ text: 'All recommendations on LinkedIn', el: recLink }] },
       });
       const card = entry.object;
-      const face = faceMesh(postcardFace(quote, photos[i]), { side: THREE.DoubleSide });
+      const face = faceMesh(cardFace(quote, photos[i]), { side: THREE.DoubleSide });
       face.castShadow = true;
       card.add(face);
       const rand = random(40 + i);
@@ -1795,7 +1796,7 @@ export async function start(section) {
       renderer.shadowMap.needsUpdate = true;
     }
 
-    // #letters fans the postcards out above the desk; leaving it puts them back in the tray. A chosen card comes
+    // #letters fans the business cards out above the desk; leaving it puts them back in the tray. A chosen card comes
     // forward a little.
     let fanned = false, chosenCard = null;
     const cardTweens = new Map();
@@ -1997,7 +1998,7 @@ export async function start(section) {
     }, { signal });
 
     // ── Stations and URLs: rest has no hash. The stations are #desk, #laptop, #awards (the shelf), #projects (the
-    // posters), #letters (the postcards) and #contact (the telephone); a chosen item is #<station>/<id>. ──
+    // posters), #letters (the business cards) and #contact (the telephone); a chosen item is #<station>/<id>. ──
     const state = { station: 'rest', item: null };
     const keyOf = (s) => (s.item ? `${s.station}/${s.item}` : s.station === 'contact' ? 'contact' : null);
     const docFor = (key) => (key === 'contact' ? contact.doc : items.get(key).doc);

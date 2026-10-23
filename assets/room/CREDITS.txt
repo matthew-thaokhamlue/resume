@@ -21,7 +21,7 @@ Font: Patrick Hand, Copyright (c) 2010-2012 Patrick Wagesreiter. Licence: SIL Op
 fonts/OFL-patrick-hand.txt. The paper's handwriting uses fonts/patrick-hand-latin.woff2.
 
 The wood grain is drawn in room.js on a canvas; it uses no texture file. The trophies, the medals, the
-certificates, the letter tray, the postcards and the telephone are built in room.js; they use no model file.
+certificates, the card tray, the business cards and the telephone are built in room.js; they use no model file.
 
 Posters (posters/): poster-labforward.webp, poster-labtwin.webp, poster-thryve.webp, poster-dataverse.webp and
 poster-training.webp were generated for this site with Codex image generation. shot-opppaths.webp and
