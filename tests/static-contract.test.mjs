@@ -708,8 +708,8 @@ test('the seven testimonial tiles keep exact excerpts and share the existing dia
   assert.match(html, /class="ed-reveal__close"[^>]*data-action="close-testimonial"/);
 });
 
-// The 3D room (step 1, behind ?room=1): the gate, the markup, the module files and the role sections.
-const ROOM_STATIONS = ['tickets'];
+// The 3D room (behind ?room=1): the gate, the markup, the module files, the role sections and the hero hooks.
+const ROOM_STATIONS = ['desk', 'laptop'];
 
 test('index.html loads the room gate right after theme.js, and #room starts hidden with no inline script', () => {
   const html = readText('index.html');
@@ -790,4 +790,29 @@ test('assets/room/CREDITS.txt names the CC0 licence and every model', () => {
   for (const model of fs.readdirSync(path.join(repoRoot, 'assets/room/models'))) {
     assert.ok(credits.includes(`${model} (`), `CREDITS.txt does not credit ${model}`);
   }
+});
+
+test('the room loads Patrick Hand from its own folder and credits it', () => {
+  const js = readText('assets/room/room.js');
+  assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/fonts/patrick-hand-latin.woff2')), 'the font file');
+  assert.match(readText('assets/room/fonts/OFL-patrick-hand.txt'), /SIL Open Font License, Version 1\.1/);
+  assert.match(js, /new FontFace\('Patrick Hand', `url\("\$\{new URL\('fonts\/patrick-hand-latin\.woff2', import\.meta\.url\)\.href\}"\)/, 'room.js loads the font with the FontFace API');
+  const credits = readText('assets/room/CREDITS.txt');
+  assert.match(credits, /Patrick Hand/);
+  assert.ok(credits.includes('fonts/OFL-patrick-hand.txt') && credits.includes('fonts/patrick-hand-latin.woff2'), 'CREDITS.txt names the font file and its licence');
+  assert.doesNotMatch(readText('index.html'), /Patrick\+Hand|Patrick Hand/, 'no page loads Patrick Hand from Google Fonts');
+});
+
+test('the room finds the hero controls it clicks, and its Back button', () => {
+  const html = readText('index.html');
+  const top = html.match(/<section[^>]*id="top"[\s\S]*?<\/section>/)[0];
+  assert.match(top, /<h1[^>]*id="home-title"[^>]*>[^<]+<\/h1>/, 'the laptop screen reads the H1');
+  assert.match(top, /<p class="ed-home-sub">[^<]+<\/p>/, 'the laptop screen reads the subline');
+  assert.match(top, /<button id="ai-match-trigger"/, 'the laptop clicks the AI Match button');
+  assert.match(top, /<a [^>]*href="cv\.html"[^>]*\s+data-ga-event="resume_downloaded"/, 'the printout clicks the CV link');
+  const room = html.match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  const back = room.match(/<button class="ed-room__back" type="button" data-room-back hidden>([\s\S]*?)<\/button>/);
+  assert.ok(back, '#room holds a hidden Back button');
+  assert.equal(back[1].replace(/<(span|kbd)[^>]*aria-hidden="true"[^>]*>[^<]*<\/\1>/g, '').trim(), 'Back', 'its accessible name is Back');
+  assert.match(readText('assets/css/editorial.css'), /\.ed-room__back\[hidden\] \{ display: none; \}/, 'the hidden attribute wins over its display');
 });

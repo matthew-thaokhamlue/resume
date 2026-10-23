@@ -160,11 +160,12 @@
   <main>
     <section class="ed-room" id="room" aria-label="Room with boarding passes" hidden>
       <div class="ed-room__stage" data-room-stage></div>
+      <button class="ed-room__back" type="button" data-room-back hidden><span aria-hidden="true">←</span> Back <kbd class="ed-room__key" aria-hidden="true">Esc</kbd></button>
       <div class="ed-room__intro">
         <p class="ed-room__name">Matthew Thaokhamlue · Product Builder</p>
-        <p class="ed-room__cue">Click the boarding passes by the window to see where I have worked.</p>
+        <p class="ed-room__cue">Click the boarding passes on the desk to see where I have worked.</p>
       </div>
-      <ul class="ed-room__passes" aria-label="Boarding passes" data-room-passes></ul>
+      <ul class="ed-room__passes" aria-label="The desk" data-room-passes></ul>
       <div class="ed-sr-only" aria-live="polite" data-room-live></div>
     </section>
     <section class="ed-home-section ed-home-overview" id="top" aria-labelledby="home-title">

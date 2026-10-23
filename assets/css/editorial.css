@@ -1021,6 +1021,11 @@
   .ed-room__pass { position: absolute; left: var(--ed-gutter-x); bottom: 24px; z-index: 2; max-width: calc(100% - 2 * var(--ed-gutter-x)); padding: 10px 16px; border: 0; border-radius: 10px; background: var(--ed-bg); color: var(--ed-ink); font: inherit; font-size: 0.95rem; text-align: left; box-shadow: var(--ed-card-shadow); }
   .ed-room__pass:not(:focus) { width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .ed-room__pass:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 3px; }
+  /* room.js shows the Back button at every station; it sits above the paper, on a blurred ground that reads on day and night views */
+  .ed-room__back { position: absolute; left: var(--ed-gutter-x); top: 16px; z-index: 3; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 14px; border: 1px solid var(--ed-hairline); border-radius: 999px; background: rgba(var(--ed-bg-rgb), 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--ed-ink); font: inherit; font-size: 0.95rem; line-height: 1.2; box-shadow: var(--ed-card-shadow); }
+  .ed-room__back[hidden] { display: none; }
+  .ed-room__back:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 3px; }
+  .ed-room__key { padding: 1px 6px; border: 1px solid var(--ed-hairline); border-radius: 5px; font-family: var(--ed-mono); font-size: 0.72rem; color: var(--ed-ink-soft); }
 
 /* ── editorial-results (home) ── */
   .ed-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 56px; border-top: 1px solid var(--ed-hairline); }

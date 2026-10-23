@@ -1,18 +1,19 @@
 /*
- * room.js — step 1 of the 3D room on the home page: a wide room with a wooden window above the desk,
- * a cork board with five boarding passes, a paper with the chosen role beside the board, and the view
- * of that role's city in the window. room-boot.js imports this module behind ?room=1 and calls
- * start(section). start() resolves after the first frame. Until then any failure removes every
- * listener and rejects, and room-boot.js hides the room. The role text comes from experience.html,
- * read the same way as assets/js/ai-match.js.
+ * room.js — the 3D room on the home page: a wide room with a wooden window above a long desk. On the desk lie
+ * five boarding passes, a laptop and a CV printout. A chosen pass shows its role on a lined paper held in front
+ * of the camera, and the window shows that role's city. room-boot.js imports this module behind ?room=1 and
+ * calls start(section). start() resolves after the first frame. Until then any failure removes every listener
+ * and rejects, and room-boot.js hides the room. The role text comes from experience.html, read the same way as
+ * assets/js/ai-match.js. The laptop and the printout click the hero's own AI Match button and CV link.
  */
 import * as THREE from './vendor/three.module.min.js';
 import { GLTFLoader } from './vendor/loaders/GLTFLoader.js';
 import { RoundedBoxGeometry } from './vendor/geometries/RoundedBoxGeometry.js';
 
-const PASSENGER = 'MATTHEW THAOKHAMLUE';
+const NAME = 'Matthew Thaokhamlue';
+const PASSENGER = NAME.toUpperCase();
 const LINK_TEXT = 'The full role on the Experience page';
-// The passes, top to bottom on the board: their role sections in experience.html, the print and the view.
+// The passes, left to right on the desk: their role sections in experience.html, the print and the view.
 const PASSES = [
   { id: 'sema', roles: ['role-sema'], code: 'SFO', city: 'San Francisco', view: 'sanfrancisco-sema-day.webp' },
   { id: 'lab', roles: ['role-labtwin', 'role-labforward'], code: 'BER', city: 'Berlin', view: 'berlin-lab-day.webp' },
@@ -35,24 +36,35 @@ const VIEWS = {
 // Units are metres. The back wall's room-side face is z = 0, and x runs to the right.
 const WALL_H = 2.8, WALL_T = 0.2;
 const ROOM = { x0: -3.4, x1: 2.6, z1: 4.6 };
-const WIN = { x0: -0.2, x1: 1.3, y0: 1.0, y1: 2.3 };   // the opening in the back wall, as wide as the desk
+const WIN = { x0: -0.2, x1: 1.3, y0: 1.0, y1: 2.3 };   // the opening in the back wall
 const LINING = 0.025, CASING = 0.075, SILL_OUT = 0.16, FRAME_Z = -0.12, F = 0.06, MUL = 0.042;
-const DESK = { x: 0.55, z: 0.4, w: 1.5, d: 0.7, top: 0.78 };
-const PASS_W = 0.56, BOARD_PAD = 0.025, PASS_GAP = 0.022;
-const BOARD = { x1: WIN.x0 - CASING - 0.035, cy: 1.6 };
-BOARD.x0 = BOARD.x1 - PASS_W - 2 * BOARD_PAD;
-const PAPER = { w: 0.95, x1: BOARD.x0 - 0.035, z: 0.012, slide: 0.3 };
-// Text sizes in metres. EM is the smallest text on a pass and on the paper; at the pass pose it shows
-// at about 17 CSS px. Textures carry about twice the CSS px per metre of that pose.
+// The sill top sits above the opening's bottom face, so the two never share a plane.
+const SILL_UP = 0.006;
+const DESK = { x: 0.55, z: 0.47, w: 2.1, d: 0.9, top: 0.78 };
+// The passes lie in a row along the front of the desk; each one overlaps the next by PASS_W - PASS_STEP.
+const PASS_W = 0.44, PASS_STEP = 0.4, PASS_PAD = 0.022, PASS_LIFT = 0.03;
+const LAPTOP = { x: 0.55, z: 0.37, scale: 0.55, tilt: 0.2 };   // tilt: the lid leans back by this angle in radians
+const PRINT = { x: 0.04, z: 0.35, w: 0.21, h: 0.297, turn: 0.16 };
+// Text sizes in metres. EM is the smallest text on a pass. Textures carry TEX_PPM px per metre.
 const EM = 0.0205, TEX_PPM = 1750;
 const SANS = '"Instrument Sans", "Helvetica Neue", Arial, sans-serif';
 const MONO = '"IBM Plex Mono", ui-monospace, Menlo, monospace';
-const INK = '#1d1b18', INK_SOFT = '#45413b', CLAY = '#c45a38', CLAY_INK = '#a8431f';
+const INK = '#1d1b18', INK_SOFT = '#45413b', CLAY = '#c45a38';
 // The window view: an image plane behind the window, so the eye's orbit gives parallax. MAX_IMG_H is the
 // largest image height as seen at the frame from the rest eye; VIEW_MARGIN keeps a landmark off the wood.
 const VIEW_Z = -5, MAX_IMG_H = 1.45, VIEW_PAD = 4, VIEW_MARGIN = 0.012;
 const MAX_TILT = THREE.MathUtils.degToRad(3);
 const MOVE_MS = 900, FADE_MS = 400;
+// The desk station: the eye sits up and back from the desk's front edge. A narrow stage moves it further back.
+const DESK_EYE = { up: 1.0, back: 0.92 };
+
+// The lined paper, laid out in CSS px: it hangs at a fixed place in front of the camera, so its size on screen
+// never changes. Each line of text sits on a ruled line.
+const HAND = '"Patrick Hand", "Comic Sans MS", cursive';
+const PEN = '#1d2740';
+const NOTE = { body: 19, head: 23, title: 27, line: 32, left: 92, right: 34, top: 66, bottom: 64, chars: 70, bullet: 22, shadow: 18 };
+// Where the paper sits on the stage: on the left, below the Back button, up to SHARE of the width.
+const NOTE_BOX = { left: 24, top: 72, bottom: 20, share: 0.52, maxW: 720 };
 
 const clean = (el) => (el ? el.textContent.replace(/\s+/g, ' ').trim() : '');
 const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -92,13 +104,16 @@ function readRole(doc, id) {
   return { company, role, dates, summary: clean(section.querySelector('[data-role-summary]')), items, link: id };
 }
 
+// The role line repeats nothing: when the dates already start with the role, as Sema's do, only the dates print.
+const roleLine = (leg) => (leg.dates[0]?.startsWith(leg.role) ? '' : leg.role);
+
 async function loadRoles() {
   const response = await fetch(new URL('experience.html', document.baseURI));
   if (!response.ok) throw new Error(`experience.html returned ${response.status}`);
   const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
   return PASSES.map((pass) => {
     const legs = pass.roles.map((id) => readRole(doc, id));
-    const name = legs.map((leg) => [leg.company, leg.role, leg.dates.join(' · ')].filter(Boolean).join(', ')).join('; ');
+    const name = legs.map((leg) => [leg.company, roleLine(leg), leg.dates.join(' · ')].filter(Boolean).join(', ')).join('; ');
     return { ...pass, legs, name, link: legs[legs.length - 1].link };
   });
 }
@@ -108,13 +123,14 @@ async function loadRoles() {
 const measure = document.createElement('canvas').getContext('2d');
 const font = (size, weight, family) => `${weight} ${size * TEX_PPM}px ${family}`;
 
-function wrap(text, f, maxW) {
+// Breaks text into lines no wider than maxW (in the font's px) and, when given, no longer than chars.
+function wrap(text, f, maxW, chars = Infinity) {
   measure.font = f;
   const lines = [];
   let line = '';
   for (const word of text.split(' ')) {
     const next = line ? `${line} ${word}` : word;
-    if (line && measure.measureText(next).width > maxW * TEX_PPM) { lines.push(line); line = word; } else line = next;
+    if (line && (next.length > chars || measure.measureText(next).width > maxW)) { lines.push(line); line = word; } else line = next;
   }
   if (line) lines.push(line);
   return lines;
@@ -124,21 +140,21 @@ class Sheet {
   constructor(w) { this.w = w; this.y = 0; this.ops = []; this.marks = []; }
 
   // Writes wrapped text in lines of size * lead; mark names the line for the text-size check.
-  text(str, { size, weight = 400, family = SANS, color = INK, x = 0, maxW = this.w - x, lead = 1.3, mark, link }) {
+  text(str, { size, weight = 400, family = SANS, color = INK, x = 0, maxW = this.w - x, lead = 1.3, mark }) {
     const f = font(size, weight, family);
-    for (const line of wrap(str, f, maxW)) {
+    for (const line of wrap(str, f, maxW * TEX_PPM)) {
       const base = this.y + size * (0.82 + (lead - 1) / 2);
-      this.ops.push({ text: line, f, color, x, base, link });
+      this.ops.push({ text: line, f, color, x, base });
       if (mark) this.marks.push({ mark, size, x, base });
       this.y += size * lead;
     }
   }
 
-  // Writes runs side by side on one baseline when they fit, else each on its own line.
-  runs(parts, { x = 0, lead = 1.3 } = {}) {
+  // Writes runs side by side on one baseline when they fit in maxW, else each on its own line.
+  runs(parts, { x = 0, lead = 1.3, maxW = this.w - 2 * x } = {}) {
     let width = 0;
     for (const p of parts) { measure.font = font(p.size, p.weight || 400, p.family || SANS); width += measure.measureText(p.text).width / TEX_PPM; }
-    if (width > this.w - 2 * x) { for (const p of parts) this.text(p.text.trim(), { ...p, x }); return; }
+    if (width > maxW) { for (const p of parts) this.text(p.text.trim(), { ...p, x, maxW }); return; }
     const size = Math.max(...parts.map((p) => p.size));
     const base = this.y + size * (0.82 + (lead - 1) / 2);
     let at = x;
@@ -166,79 +182,206 @@ class Sheet {
       g.fillStyle = op.color;
       g.textAlign = op.align || 'left';
       g.fillText(op.text, op.x * TEX_PPM, op.base * TEX_PPM);
-      if (op.link) {
-        const w = g.measureText(op.text).width;
-        g.fillRect(op.x * TEX_PPM, op.base * TEX_PPM + 4, w, 3);
-        this.link = { x0: op.x * TEX_PPM, x1: op.x * TEX_PPM + w, y0: (op.base - EM * 1.1) * TEX_PPM, y1: (op.base + EM * 0.5) * TEX_PPM };
-      }
     }
     return canvas;
   }
 }
 
-const BAND = 0.04, PASS_PAD = 0.024;
+const BAND = 0.032;
 
+// The front of a pass. The next pass covers its right edge, so the text keeps clear of that strip.
 function layoutPass(pass) {
   const s = new Sheet(PASS_W);
   s.ops.push({ rect: true, x: 0, y: 0, w: PASS_W, h: BAND, color: CLAY });
   const bandBase = BAND / 2 + EM * 0.36;
-  s.ops.push({ text: 'BOARDING PASS', f: font(EM, 500, MONO), color: '#ffffff', x: PASS_PAD, base: bandBase });
-  s.ops.push({ text: PASSENGER, f: font(EM, 500, MONO), color: '#ffffff', x: PASS_W - PASS_PAD, base: bandBase, align: 'right' });
-  s.y = BAND + 0.008;
+  s.ops.push({ text: 'BOARDING PASS', f: font(EM * 0.76, 500, MONO), color: '#ffffff', x: PASS_PAD, base: bandBase });
+  s.ops.push({ text: PASSENGER, f: font(EM * 0.76, 500, MONO), color: '#ffffff', x: PASS_STEP - PASS_PAD, base: bandBase, align: 'right' });
+  s.y = BAND + 0.006;
+  const maxW = PASS_STEP - 2 * PASS_PAD;
   s.runs([
-    { text: pass.code, size: 0.056, weight: 600, mark: 'code' },
+    { text: pass.code, size: 0.058, weight: 600, mark: 'code' },
     { text: `  ${pass.city}`, size: 0.024, weight: 500, color: INK_SOFT },
-  ], { x: PASS_PAD, lead: 1.08 });
-  s.y += 0.004;
-  const inner = { x: PASS_PAD, maxW: PASS_W - 2 * PASS_PAD };
-  if (pass.legs.length === 1) {
-    const [leg] = pass.legs;
-    s.text(leg.company, { size: 0.032, weight: 600, lead: 1.15, mark: 'company', ...inner });
-    s.text(leg.role, { size: 0.023, lead: 1.2, mark: 'role', ...inner });
-    s.y += 0.003;
-    for (const part of leg.dates) s.text(part, { size: EM, family: MONO, color: INK_SOFT, lead: 1.28, mark: 'dates', ...inner });
-  } else {
-    pass.legs.forEach((leg, i) => {
-      if (i) s.y += 0.004;
-      s.runs([
-        { text: leg.company, size: 0.032, weight: 600, mark: 'company' },
-        { text: `  ${leg.dates.join(' · ')}`, size: EM, family: MONO, color: INK_SOFT, mark: 'dates' },
-      ], { x: PASS_PAD, lead: 1.15 });
-      s.text(leg.role, { size: 0.023, lead: 1.2, mark: 'role', ...inner });
-    });
-  }
-  s.y += 0.016;
+  ], { x: PASS_PAD, lead: 1.05, maxW });
+  const inner = { x: PASS_PAD, maxW };
+  pass.legs.forEach((leg, i) => {
+    s.y += i ? 0.008 : 0.002;
+    s.text(leg.company, { size: 0.038, weight: 600, lead: 1.1, mark: 'company', ...inner });
+    const role = roleLine(leg);
+    if (role) s.text(role, { size: 0.021, lead: 1.2, mark: 'role', ...inner });
+    for (const part of leg.dates) s.text(part, { size: EM * 0.9, family: MONO, color: INK_SOFT, lead: 1.25, mark: 'dates', ...inner });
+  });
+  s.y += 0.014;
   return s;
 }
 
-// The paper carries the summary and the bullets of each role. The pass beside it names the company and the role,
-// so only a pass with two legs repeats them as headings.
-function layoutPaper(pass) {
-  const PAD = 0.024, BULLET = 0.022;
-  const s = new Sheet(PAPER.w);
-  s.y = PAD;
-  const body = { size: EM, x: PAD, maxW: PAPER.w - 2 * PAD, lead: 1.2, mark: 'body' };
+// The CV printout: the title and the name, then grey bars for the printed lines.
+function layoutPrint() {
+  const s = new Sheet(PRINT.w);
+  const x = 0.022, rand = random(7);
+  s.y = 0.02;
+  s.text('CV', { size: 0.05, weight: 600, x, lead: 1.05 });
+  s.text(NAME, { size: 0.0145, weight: 500, x, lead: 1.4 });
+  s.y += 0.012;
+  for (let i = 0; i < 17; i++) {
+    if (i % 6 === 0) { s.ops.push({ rect: true, x, y: s.y, w: 0.06, h: 0.005, color: '#b9b2a6' }); s.y += 0.012; }
+    s.ops.push({ rect: true, x, y: s.y, w: (PRINT.w - 2 * x) * (0.6 + rand() * 0.4), h: 0.0032, color: '#d8d2c8' });
+    s.y += 0.0095;
+  }
+  s.y = PRINT.h;
+  return s;
+}
+
+// The laptop screen, drawn like the hero: the name, the page's H1 and subline, and the AI Match button.
+const SCREEN = { w: 1024, aspect: 0.449 / 0.367 };
+function drawScreen(title, sub) {
+  const c = document.createElement('canvas');
+  const W = c.width = SCREEN.w, H = c.height = Math.round(SCREEN.w / SCREEN.aspect);
+  const g = c.getContext('2d');
+  g.fillStyle = '#fffdf8';
+  g.fillRect(0, 0, W, H);
+  const x = 84;
+  g.fillStyle = INK;
+  g.font = `600 36px ${SANS}`;
+  g.fillText(NAME, x, 112);
+  g.fillStyle = 'rgba(17, 17, 17, 0.12)';
+  g.fillRect(x, 146, W - 2 * x, 2);
+  let y = 300;
+  g.fillStyle = INK;
+  g.font = `500 112px ${SANS}`;
+  for (const line of wrap(title, g.font, W - 2 * x)) { g.fillText(line, x, y); y += 118; }
+  g.fillStyle = INK_SOFT;
+  g.font = `400 42px ${SANS}`;
+  y -= 34;
+  for (const line of wrap(sub, g.font, W - 2 * x)) { g.fillText(line, x, y); y += 54; }
+  const label = 'Evaluate role fit';
+  g.font = `500 40px ${SANS}`;
+  const bw = g.measureText(label).width + 96, by = y + 30, bh = 92;
+  g.fillStyle = CLAY;
+  g.beginPath();
+  g.roundRect(x, by, bw, bh, bh / 2);
+  g.fill();
+  g.fillStyle = '#ffffff';
+  g.fillText(label, x + 48, by + 60);
+  return { canvas: c, title: 112 / H };
+}
+
+// ── The lined paper ──
+
+// Lays out a pass's paper for a paper of W x H CSS px: the headings, the role, every bullet and the link, as
+// pages of ruled lines. A heading stays with the line after it, a wrapped bullet stays on one page when it fits,
+// and a page never starts with a blank line.
+function layoutNotes(pass, W, H) {
+  const textW = W - NOTE.left - NOTE.right;
+  const rows = Math.max(6, Math.floor((H - NOTE.top - NOTE.bottom) / NOTE.line));
+  const lines = [];
+  const blank = () => { if (lines.length && lines[lines.length - 1]) lines.push(null); };
+  const write = (text, { size = NOTE.body, x = 0, keep = false, link = false, lead = '' } = {}) => {
+    const wrapped = wrap(text, `${size}px ${HAND}`, textW - x, NOTE.chars);
+    wrapped.forEach((t, i) => {
+      lines.push({ text: t, size, x: NOTE.left + x, keep: keep || i < wrapped.length - 1, link, lead: i ? '' : lead });
+    });
+  };
   pass.legs.forEach((leg, i) => {
-    if (i) s.y += EM * 0.8;
-    if (pass.legs.length > 1) {
-      s.text(`${leg.company} · ${leg.role}`, { ...body, weight: 600 });
-      s.y += EM * 0.15;
-    }
-    if (leg.summary) s.text(leg.summary, { ...body, color: INK_SOFT });
+    if (i) { blank(); lines.push(null); }
+    write(leg.company, { size: NOTE.title, keep: true });
+    const role = roleLine(leg);
+    if (leg.dates.length && role) write(role, { keep: true });
+    for (const part of leg.dates) write(part, { keep: true });
+    if (leg.summary) { blank(); write(leg.summary); }
     for (const item of leg.items) {
-      s.y += EM * 0.14;
-      if (item.head) s.text(item.head, { ...body, weight: 600 });
-      if (item.text) s.text(item.text, body);
-      if (item.bullet) {
-        s.ops.push({ text: '•', f: font(EM, 400, SANS), color: CLAY, x: PAD, base: s.y + EM * 0.97 });
-        s.text(item.bullet, { ...body, x: PAD + BULLET, maxW: body.maxW - BULLET });
-      }
+      if (item.head) { blank(); write(item.head, { size: NOTE.head, keep: true }); }
+      if (item.text) write(item.text);
+      if (item.bullet) write(item.bullet, { x: NOTE.bullet, lead: '–' });
     }
   });
-  s.y += EM * 0.45;
-  s.text(LINK_TEXT, { ...body, weight: 500, color: CLAY_INK, link: true });
-  s.y += PAD * 0.8;
-  return s;
+  blank();
+  write(LINK_TEXT, { link: true });
+
+  const pages = [[]];
+  lines.forEach((line, i) => {
+    let page = pages[pages.length - 1];
+    let run = 0;
+    while (lines[i + run]?.keep) run++;
+    if (page.length && (page.length >= rows || (run && page.length + run + 1 > rows))) { page = []; pages.push(page); }
+    if (line || page.length) page.push(line);
+  });
+  for (const page of pages) while (page.length && !page[page.length - 1]) page.pop();
+  return { W, H, rows, pages: pages.filter((page) => page.length) };
+}
+
+const noteBase = (row) => NOTE.top + (row + 1) * NOTE.line - 7;
+
+// Draws one page: white paper with a soft shadow, pale blue rules, a double red margin, three punch holes, the
+// handwriting and, when there is more than one page, two arrows and the page number. Returns the hit zones.
+function drawNotes(notes, index) {
+  const { W, H, pages } = notes, S = NOTE.shadow;
+  const c = document.createElement('canvas');
+  c.width = (W + 2 * S) * 2;
+  c.height = (H + 2 * S) * 2;
+  const g = c.getContext('2d');
+  g.scale(2, 2);
+  g.translate(S, S);
+  g.save();
+  g.shadowColor = 'rgba(28, 24, 20, 0.32)';
+  g.shadowBlur = 16;
+  g.shadowOffsetY = 5;
+  g.fillStyle = '#fefefc';
+  g.fillRect(0, 0, W, H);
+  g.restore();
+  g.fillStyle = 'rgba(92, 140, 210, 0.45)';
+  for (let y = NOTE.top + NOTE.line; y < H - 8; y += NOTE.line) g.fillRect(0, y, W, 1);
+  g.fillStyle = 'rgba(214, 70, 70, 0.7)';
+  g.fillRect(NOTE.left - 20, 0, 1.2, H);
+  g.fillRect(NOTE.left - 15, 0, 1.2, H);
+  // The punch holes go through the paper, so the room shows in them.
+  g.globalCompositeOperation = 'destination-out';
+  for (const f of [0.14, 0.5, 0.86]) { g.beginPath(); g.arc(34, f * H, 10, 0, Math.PI * 2); g.fill(); }
+  g.globalCompositeOperation = 'source-over';
+  g.strokeStyle = 'rgba(28, 24, 20, 0.18)';
+  for (const f of [0.14, 0.5, 0.86]) { g.beginPath(); g.arc(34, f * H, 10.5, 0, Math.PI * 2); g.stroke(); }
+
+  const zones = {};
+  g.fillStyle = PEN;
+  g.strokeStyle = PEN;
+  g.textBaseline = 'alphabetic';
+  pages[index].forEach((line, row) => {
+    if (!line) return;
+    const base = noteBase(row);
+    g.font = `${line.size}px ${HAND}`;
+    if (line.lead) g.fillText(line.lead, NOTE.left, base);
+    g.fillText(line.text, line.x, base);
+    if (line.link) {
+      const w = g.measureText(line.text).width;
+      g.fillRect(line.x, base + 3, w, 1.5);
+      zones.link = { x0: line.x - 4, x1: line.x + w + 4, y0: base - line.size, y1: base + 8 };
+    }
+  });
+  if (pages.length > 1) {
+    const y = H - NOTE.bottom / 2 - 2, r = 15;
+    const arrows = { prev: W - NOTE.right - 128, next: W - NOTE.right - 16 };
+    g.font = `${NOTE.body}px ${HAND}`;
+    g.textAlign = 'center';
+    g.fillText(`${index + 1} / ${pages.length}`, (arrows.prev + arrows.next) / 2, y + 6);
+    g.textAlign = 'left';
+    g.lineWidth = 1.6;
+    g.lineCap = g.lineJoin = 'round';
+    for (const [side, x] of Object.entries(arrows)) {
+      const on = side === 'prev' ? index > 0 : index < pages.length - 1;
+      g.globalAlpha = on ? 1 : 0.25;
+      g.beginPath();
+      g.arc(x, y, r, 0, Math.PI * 2);
+      g.stroke();
+      const d = side === 'prev' ? -1 : 1;
+      g.beginPath();
+      g.moveTo(x - d * 4, y - 7);
+      g.lineTo(x + d * 4, y);
+      g.lineTo(x - d * 4, y + 7);
+      g.stroke();
+      g.globalAlpha = 1;
+      if (on) zones[side] = { x0: x - r - 6, x1: x + r + 6, y0: y - r - 6, y1: y + r + 6 };
+    }
+  }
+  return { canvas: c, zones };
 }
 
 // ── Procedural textures ──
@@ -273,21 +416,15 @@ function woodTexture() {
   return c;
 }
 
-function corkTexture() {
-  const c = document.createElement('canvas');
-  c.width = c.height = 512;
-  const g = c.getContext('2d');
-  const rand = random(5);
-  g.fillStyle = '#c29467';
-  g.fillRect(0, 0, 512, 512);
-  for (let i = 0; i < 9000; i++) {
-    const r = 0.6 + rand() * 2.2, shade = rand();
-    g.fillStyle = shade < 0.55 ? `rgba(110, 66, 32, ${0.2 + rand() * 0.45})` : `rgba(232, 196, 150, ${0.2 + rand() * 0.4})`;
-    g.beginPath();
-    g.arc(rand() * 512, rand() * 512, r, 0, Math.PI * 2);
-    g.fill();
-  }
-  return c;
+// A small paper clip: one wire bent into three loops, lying flat, its long side along z.
+function clipGeometry() {
+  const path = new THREE.Path()
+    .moveTo(0.010, -0.0015).lineTo(0.026, -0.0015)
+    .absarc(0.026, 0.0005, 0.002, -Math.PI / 2, Math.PI / 2, false).lineTo(0.004, 0.0025)
+    .absarc(0.004, -0.0005, 0.003, Math.PI / 2, Math.PI * 1.5, false).lineTo(0.030, -0.0035)
+    .absarc(0.030, 0.0005, 0.004, -Math.PI / 2, Math.PI / 2, false).lineTo(0.012, 0.0045);
+  const points = path.getSpacedPoints(160).map((p) => new THREE.Vector3(p.y, 0, p.x));
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 240, 0.0006, 6);
 }
 
 // ── The module entry ──
@@ -296,6 +433,7 @@ export async function start(section) {
   const stage = section.querySelector('[data-room-stage]');
   const list = section.querySelector('[data-room-passes]');
   const live = section.querySelector('[data-room-live]');
+  const backButton = section.querySelector('[data-room-back]');
   const root = document.documentElement;
   const abort = new AbortController();
   const { signal } = abort;
@@ -308,10 +446,19 @@ export async function start(section) {
     if (renderer) { renderer.dispose(); renderer.domElement.remove(); }
     list.replaceChildren();
     live.replaceChildren();
+    if (backButton) backButton.hidden = true;
     throw error;
   }
 
   async function build(renderer) {
+    // The hero's own controls: the laptop and the printout click them, so AI Match and the CV link work as there.
+    const heroTitle = clean(document.getElementById('home-title'));
+    const heroSub = clean(document.querySelector('#top .ed-home-sub'));
+    const aiTrigger = document.getElementById('ai-match-trigger');
+    const cvLink = document.querySelector('#top a[href="cv.html"][data-ga-event="resume_downloaded"]');
+    if (!heroTitle || !heroSub || !aiTrigger || !cvLink) throw new Error('the hero lost its title, subline, AI Match button or CV link');
+    if (!backButton) throw new Error('#room lost its Back button');
+
     const canvas = renderer.domElement;
     canvas.setAttribute('aria-hidden', 'true');
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
@@ -320,7 +467,7 @@ export async function start(section) {
     renderer.toneMappingExposure = 1.1;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    // Only the sun casts shadows, and nothing that casts one moves, so the map renders on a change only.
+    // Only the sun casts shadows, so the map renders again only when a shadow caster moves or the light changes.
     renderer.shadowMap.autoUpdate = false;
     stage.appendChild(canvas);
     const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
@@ -328,11 +475,17 @@ export async function start(section) {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x1b1a18);
     const camera = new THREE.PerspectiveCamera(45, stage.clientWidth / stage.clientHeight, 0.05, 40);
+    scene.add(camera);   // the paper hangs from the camera
 
+    const hand = new FontFace('Patrick Hand', `url("${new URL('fonts/patrick-hand-latin.woff2', import.meta.url).href}") format("woff2")`);
+    const model = (id) => new GLTFLoader().loadAsync(new URL(`models/${id}/${id}_1k.gltf`, import.meta.url).href);
     const loads = Promise.all([
       loadRoles(),
-      ...['desk_lamp_arm_01', 'potted_plant_02'].map((id) => new GLTFLoader().loadAsync(new URL(`models/${id}/${id}_1k.gltf`, import.meta.url).href)),
+      model('desk_lamp_arm_01'),
+      model('potted_plant_02'),
+      model('classic_laptop'),
       loadView(HOME_VIEW),
+      hand.load().then((face) => document.fonts.add(face)),
       Promise.all(['400', '500', '600'].map((w) => document.fonts.load(`${w} 20px "Instrument Sans"`, 'Aa→–•'))
         .concat(['400', '500'].map((w) => document.fonts.load(`${w} 20px "IBM Plex Mono"`, 'Aa–')))),
     ]);
@@ -385,6 +538,8 @@ export async function start(section) {
     const SIDE = flat(0xcdbfab);
     box(WALL_T, WALL_H, ROOM.z1 + WALL_T, SIDE, ROOM.x0 - WALL_T / 2, WALL_H / 2, ROOM.z1 / 2 - WALL_T / 2);
     box(WALL_T, WALL_H, ROOM.z1 + WALL_T, SIDE, ROOM.x1 + WALL_T / 2, WALL_H / 2, ROOM.z1 / 2 - WALL_T / 2);
+    // The ceiling closes the room above the walls, where the dark background showed at the top left.
+    const ceiling = box(ROOM.x1 - ROOM.x0 + 2 * WALL_T, 0.1, ROOM.z1 + WALL_T, flat(0xe3dbcf), (ROOM.x0 + ROOM.x1) / 2, WALL_H + 0.05, ROOM.z1 / 2 - WALL_T / 2);
 
     // The window: a wooden lining in the opening, a casing on the wall, a deep sill, and a sash with one
     // mullion. The two panes are full height, so a tall landmark fits one pane.
@@ -395,7 +550,7 @@ export async function start(section) {
     woodBox(WIN.x0 - CASING, WIN.x0 + 0.006, WIN.y0 - 0.02, WIN.y1 + CASING, 0, 0.024);
     woodBox(WIN.x1 - 0.006, WIN.x1 + CASING, WIN.y0 - 0.02, WIN.y1 + CASING, 0, 0.024);
     woodBox(WIN.x0 - CASING, WIN.x1 + CASING, WIN.y1 - 0.006, WIN.y1 + CASING, 0, 0.026);
-    woodBox(WIN.x0 - CASING - 0.05, WIN.x1 + CASING + 0.05, WIN.y0 - 0.036, WIN.y0, -WALL_T, SILL_OUT);
+    woodBox(WIN.x0 - CASING - 0.05, WIN.x1 + CASING + 0.05, WIN.y0 - 0.036, WIN.y0 + SILL_UP, -WALL_T, SILL_OUT);
     woodBox(WIN.x0 - CASING, WIN.x1 + CASING, WIN.y0 - 0.12, WIN.y0 - 0.036, 0, 0.022);
     const SASH = { z0: FRAME_Z - 0.03, z1: FRAME_Z + 0.03 };
     const CX = (IN.x0 + IN.x1) / 2;
@@ -410,14 +565,17 @@ export async function start(section) {
     ];
     const SASH_OPEN = { x0: IN.x0 + F, x1: IN.x1 - F, y0: WIN.y0 + F, y1: IN.y1 - F };
 
-    // The desk under the window.
-    woodBox(DESK.x - DESK.w / 2, DESK.x + DESK.w / 2, DESK.top - 0.04, DESK.top, DESK.z - DESK.d / 2, DESK.z + DESK.d / 2);
+    // The desk under the window. A click on any part of it counts as the desk.
+    const DX = { x0: DESK.x - DESK.w / 2, x1: DESK.x + DESK.w / 2, z0: DESK.z - DESK.d / 2, z1: DESK.z + DESK.d / 2 };
+    const deskParts = [woodBox(DX.x0, DX.x1, DESK.top - 0.04, DESK.top, DX.z0, DX.z1)];
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
       const x = DESK.x + sx * (DESK.w / 2 - 0.05), z = DESK.z + sz * (DESK.d / 2 - 0.05);
-      woodBox(x - 0.025, x + 0.025, 0, DESK.top - 0.04, z - 0.025, z + 0.025);
+      deskParts.push(woodBox(x - 0.025, x + 0.025, 0, DESK.top - 0.04, z - 0.025, z + 0.025));
     }
+    for (const part of deskParts) part.userData.kind = 'desk';
 
     scene.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
+    ceiling.castShadow = false;
 
     // ── The window view ──
     const viewMaterial = () => new THREE.MeshBasicMaterial({ toneMapped: false, transparent: true, depthWrite: false });
@@ -443,19 +601,24 @@ export async function start(section) {
     sun.shadow.normalBias = 0.02;
     scene.add(hemi, windowLight, sun, sun.target);
 
-    const [passes, lampModel, plantModel, homeTexture] = await loads;
+    const [passes, lampModel, plantModel, laptopModel, homeTexture] = await loads;
 
-    // ── Props: the Poly Haven lamp and plant ──
+    // ── Props: the Poly Haven lamp, plant and laptop ──
     const lamp = new THREE.Group();
-    lamp.position.set(1.0, DESK.top, 0.3);
+    lamp.position.set(1.45, DESK.top, 0.22);
     lamp.rotation.y = 2.4;
     lamp.scale.setScalar(0.8);
+    lamp.userData.kind = 'lamp';
     const lampLight = new THREE.PointLight(0xffb066, 0.4, 0, 2);
     lampLight.position.set(-0.005, 0.66, -0.18);   // just below the bulb, in model space
     const plant = new THREE.Group();
-    plant.position.set(1.8, 0, 0.45);
+    plant.position.set(2.05, 0, 0.5);
     plant.rotation.y = 0.5;
-    for (const [anchor, gltf] of [[lamp, lampModel], [plant, plantModel]]) {
+    const laptop = new THREE.Group();
+    laptop.position.set(LAPTOP.x, DESK.top, LAPTOP.z);
+    laptop.scale.setScalar(LAPTOP.scale);
+    laptop.userData.kind = 'laptop';
+    for (const [anchor, gltf] of [[lamp, lampModel], [plant, plantModel], [laptop, laptopModel]]) {
       gltf.scene.traverse((o) => {
         if (!o.isMesh) return;
         o.material = o.material.clone();   // its own copy for the hover tint
@@ -466,29 +629,28 @@ export async function start(section) {
     }
     lamp.add(lampLight);
 
-    // ── The cork board and the passes ──
+    // The laptop's lid leans back, and its screen shows the hero on a canvas that glows a little.
+    const lid = laptopModel.scene.getObjectByName('classic_laptop_screen');
+    let screen = null;
+    lid?.traverse((o) => { if (o.isMesh && o.material.name === 'classic_laptop_screen') screen = o; });
+    if (!screen) throw new Error('the laptop model lost its screen');
+    lid.rotation.x = -LAPTOP.tilt;
+    const screenArt = drawScreen(heroTitle, heroSub);
+    const screenMap = new THREE.CanvasTexture(screenArt.canvas);
+    screenMap.colorSpace = THREE.SRGBColorSpace;
+    screenMap.flipY = false;                       // glTF UVs start at the top
+    screenMap.wrapS = THREE.RepeatWrapping;        // the screen's u runs from 1 to 2
+    screenMap.anisotropy = anisotropy;
+    screen.material = new THREE.MeshStandardMaterial({ map: screenMap, emissiveMap: screenMap, emissive: 0xffffff, roughness: 0.35 });
+    screen.userData.kind = 'screen';
+    laptop.traverse((o) => { if (o.isMesh && o !== screen && o.material.map) o.material.emissiveMap = o.material.map; });
+    laptop.updateMatrixWorld(true);
+
+    // ── The passes: a row along the front of the desk, each a little turned and overlapping the next ──
     const passLayouts = passes.map(layoutPass);
     const PASS_H = Math.max(...passLayouts.map((s) => s.y));
     passLayouts.forEach((s) => { s.y = PASS_H; });
-    BOARD.h = passes.length * PASS_H + (passes.length - 1) * PASS_GAP + 2 * BOARD_PAD;
-    BOARD.y0 = BOARD.cy - BOARD.h / 2;
-    BOARD.y1 = BOARD.cy + BOARD.h / 2;
-    const corkMap = new THREE.CanvasTexture(corkTexture());
-    corkMap.colorSpace = THREE.SRGBColorSpace;
-    corkMap.wrapS = corkMap.wrapT = THREE.RepeatWrapping;
-    corkMap.repeat.set((BOARD.x1 - BOARD.x0) / 0.5, BOARD.h / 0.5);
-    const cork = box(BOARD.x1 - BOARD.x0, BOARD.h, 0.02, new THREE.MeshStandardMaterial({ map: corkMap, roughness: 0.95 }), (BOARD.x0 + BOARD.x1) / 2, BOARD.cy, 0.01);
-    cork.userData.kind = 'board';
-    cork.receiveShadow = true;
-    const RIM = 0.03;
-    woodBox(BOARD.x0 - RIM, BOARD.x1 + RIM, BOARD.y1, BOARD.y1 + RIM, 0, 0.035);
-    woodBox(BOARD.x0 - RIM, BOARD.x1 + RIM, BOARD.y0 - RIM, BOARD.y0, 0, 0.035);
-    woodBox(BOARD.x0 - RIM, BOARD.x0, BOARD.y0, BOARD.y1, 0, 0.035);
-    woodBox(BOARD.x1, BOARD.x1 + RIM, BOARD.y0, BOARD.y1, 0, 0.035);
-
-    const TILT = [-1.4, 1.1, -0.7, 1.5, -1.0], SHIFT = [0, 0.01, -0.008, 0.006, -0.005];
-    const pinGeometry = new THREE.SphereGeometry(0.011, 16, 12);
-    const pinMaterial = new THREE.MeshStandardMaterial({ color: 0xc45a38, roughness: 0.4 });
+    const TURN = [2.5, -1.8, 2.2, -2.6, 1.6], SHIFT = [0.004, -0.01, 0.008, -0.006, 0.01];
     const passMeshes = passes.map((pass, i) => {
       const layout = passLayouts[i];
       const map = new THREE.CanvasTexture(layout.draw('#fbf7ef'));
@@ -496,64 +658,121 @@ export async function start(section) {
       map.anisotropy = anisotropy;
       const material = new THREE.MeshStandardMaterial({ map, emissiveMap: map, emissive: 0x000000, roughness: 0.9 });
       const mesh = new THREE.Mesh(new THREE.PlaneGeometry(PASS_W, PASS_H), material);
-      mesh.position.set((BOARD.x0 + BOARD.x1) / 2 + SHIFT[i], BOARD.y1 - BOARD_PAD - PASS_H / 2 - i * (PASS_H + PASS_GAP), 0.021 + i * 0.0004);
-      mesh.rotation.z = THREE.MathUtils.degToRad(TILT[i]);
+      mesh.rotation.x = -Math.PI / 2;
+      mesh.receiveShadow = true;
       mesh.userData = { kind: 'pass', id: pass.id, layout };
-      const pin = new THREE.Mesh(pinGeometry, pinMaterial);
-      pin.position.set(-0.04, PASS_H / 2 - 0.018, 0.008);   // between the two band labels
-      mesh.add(pin);
-      scene.add(mesh);
+      // Each pass lies a little above the one on its left, so the overlaps never share a plane.
+      const holder = new THREE.Group();
+      holder.position.set(DESK.x + (i - (passes.length - 1) / 2) * PASS_STEP, DESK.top + 0.0012 + i * 0.0007, DX.z1 - 0.03 - PASS_H / 2 + SHIFT[i]);
+      holder.rotation.y = THREE.MathUtils.degToRad(TURN[i]);
+      holder.userData.base = holder.position.y;
+      holder.add(mesh);
+      scene.add(holder);
       return mesh;
     });
     const passById = new Map(passes.map((pass, i) => [pass.id, { pass, mesh: passMeshes[i] }]));
 
-    // ── The paper: it slides out from behind the board when a pass is chosen ──
-    const paper = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ roughness: 0.92, transparent: true, opacity: 0 }));
+    // ── The CV printout beside the laptop, with a paper clip at its top edge ──
+    const printMap = new THREE.CanvasTexture(layoutPrint().draw('#fdfcf8'));
+    printMap.colorSpace = THREE.SRGBColorSpace;
+    printMap.anisotropy = anisotropy;
+    const print = new THREE.Mesh(new THREE.PlaneGeometry(PRINT.w, PRINT.h), new THREE.MeshStandardMaterial({ map: printMap, emissiveMap: printMap, emissive: 0x000000, roughness: 0.92 }));
+    print.rotation.x = -Math.PI / 2;
+    print.receiveShadow = true;
+    print.userData.kind = 'print';
+    const printHolder = new THREE.Group();
+    printHolder.position.set(PRINT.x, DESK.top + 0.0012, PRINT.z);
+    printHolder.rotation.y = PRINT.turn;
+    const clip = new THREE.Mesh(clipGeometry(), new THREE.MeshStandardMaterial({ color: 0xb9bfc7, metalness: 0.3, roughness: 0.3 }));
+    clip.position.set(-0.05, 0.0009, -PRINT.h / 2 - 0.008);
+    printHolder.add(print, clip);
+    scene.add(printHolder);
+
+    // ── The paper: a sheet held in front of the camera on the left, so the window stays in view on the right ──
+    const PAPER_D = 0.5;
+    const paper = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthTest: false, depthWrite: false, toneMapped: false }));
+    paper.renderOrder = 10;
     paper.visible = false;
     paper.userData.kind = 'paper';
-    scene.add(paper);
-    const paperLayouts = new Map(passes.map((pass) => [pass.id, layoutPaper(pass)]));
-    // The paper hangs level with the chosen pass, so the pass pose frames both at the largest size.
-    function paperTop(id) {
-      const height = paperLayouts.get(id).y, centre = passById.get(id).mesh.position.y;
-      return THREE.MathUtils.clamp(centre + height / 2, height + 0.4, WALL_H - 0.12);
-    }
-    let paperShown = null, paperTween = null, paperLink = null;
+    camera.add(paper);
+    const paperState = { id: null, notes: null, page: 0, zones: {}, x: 0, tween: null };
 
-    function drawPaper(id) {
-      const layout = paperLayouts.get(id);
-      const map = new THREE.CanvasTexture(layout.draw('#fffdf8'));
+    // The paper's size in CSS px for the current stage, and the world size of one CSS px at the paper.
+    function noteBox() {
+      const w = stage.clientWidth, h = stage.clientHeight;
+      return { W: Math.round(Math.min(NOTE_BOX.maxW, w * NOTE_BOX.share - NOTE_BOX.left)), H: Math.round(h - NOTE_BOX.top - NOTE_BOX.bottom), w, h, k: (2 * PAPER_D * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))) / h };
+    }
+
+    function drawPaper() {
+      const { notes, page } = paperState;
+      const { canvas: sheet, zones } = drawNotes(notes, page);
+      const map = new THREE.CanvasTexture(sheet);
       map.colorSpace = THREE.SRGBColorSpace;
-      map.anisotropy = anisotropy;
       paper.material.map?.dispose();
-      paper.material.map = paper.material.emissiveMap = map;
+      paper.material.map = map;
       paper.material.needsUpdate = true;
-      paper.scale.set(PAPER.w, layout.y, 1);
-      paper.position.set(PAPER.x1 - PAPER.w / 2, paperTop(id) - layout.y / 2, PAPER.z);
-      paper.userData.layout = layout;
-      paperLink = { ...layout.link, w: map.image.width, h: map.image.height };
+      paperState.zones = zones;
     }
 
-    function slidePaper(id) {
-      if (paperShown === id) return;
-      if (paperTween) tweens.delete(paperTween);
-      const x1 = PAPER.x1 - PAPER.w / 2;
+    function placePaper() {
+      const { notes } = paperState;
+      const { w, h, k } = noteBox(), S = NOTE.shadow;
+      paper.scale.set((notes.W + 2 * S) * k, (notes.H + 2 * S) * k, 1);
+      paperState.x = (-w / 2 + NOTE_BOX.left - S + notes.W / 2 + S) * k;
+      paper.position.set(paperState.x, (h / 2 - NOTE_BOX.top - notes.H / 2) * k, -PAPER_D);
+      paper.rotation.z = -0.008;
+    }
+
+    function layoutPaper(id, page = 0) {
+      const box = noteBox();
+      paperState.notes = layoutNotes(passById.get(id).pass, box.W, box.H);
+      paperState.page = Math.min(page, paperState.notes.pages.length - 1);
+      drawPaper();
+      placePaper();
+    }
+
+    function showPaper(id) {
+      if (paperState.id === id) return;
+      if (paperState.tween) tweens.delete(paperState.tween);
+      const k = noteBox().k;
       if (id) {
-        drawPaper(id);
+        layoutPaper(id);
         paper.visible = true;
-        paperTween = tween(450, (k) => {
-          const e = easeOut(k);
-          paper.position.x = x1 + (1 - e) * PAPER.slide;
+        paperState.tween = tween(380, (t) => {
+          const e = easeOut(t);
+          paper.position.x = paperState.x - (1 - e) * 60 * k;
           paper.material.opacity = e;
         });
       } else if (paper.visible) {
         const from = paper.material.opacity;
-        paperTween = tween(250, (k) => {
-          paper.position.x = x1 + k * PAPER.slide;
-          paper.material.opacity = from * (1 - k);
-        }, () => { paper.visible = false; });
+        paperState.tween = tween(220, (t) => { paper.material.opacity = from * (1 - t); paper.position.x = paperState.x - t * 40 * k; }, () => { paper.visible = false; });
       }
-      paperShown = id;
+      paperState.id = id;
+    }
+
+    // A page turn: the paper dims, the next page replaces it, and it comes back.
+    function turnPage(step) {
+      const { notes, page } = paperState;
+      if (!notes || !paper.visible) return;
+      const next = page + step;
+      if (next < 0 || next >= notes.pages.length) return;
+      paperState.page = next;
+      if (paperState.tween) tweens.delete(paperState.tween);
+      let swapped = false;
+      paperState.tween = tween(260, (t) => {
+        if (t >= 0.5 && !swapped) { swapped = true; drawPaper(); }
+        paper.material.opacity = 1 - 0.75 * Math.sin(Math.PI * t);
+        paper.position.x = paperState.x - step * Math.sin(Math.PI * t) * 12 * noteBox().k;
+      });
+    }
+
+    function clickPaper(uv) {
+      const { notes, zones } = paperState, S = NOTE.shadow;
+      const x = uv.x * (notes.W + 2 * S) - S, y = (1 - uv.y) * (notes.H + 2 * S) - S;
+      const inside = (z) => z && x >= z.x0 && x <= z.x1 && y >= z.y0 && y <= z.y1;
+      if (inside(zones.prev)) turnPage(-1);
+      else if (inside(zones.next)) turnPage(1);
+      else if (inside(zones.link)) window.location.href = `experience.html#${passById.get(paperState.id).pass.link}`;
     }
 
     // ── Views: a pass cross-fades the window to its city; the last city stays until a reload ──
@@ -561,13 +780,13 @@ export async function start(section) {
     const atZ = (eye, p, z) => eye.clone().lerp(p, (z - eye.z) / (p.z - eye.z));
 
     // What the window shows, measured at the frame as the rest eye sees it: shift is how far a view point moves
-    // over the rest orbit, and need is the part of the view that any rest or tickets eye sees through the sash.
+    // over the rest orbit, and need is the part of the view that the eyes of every station see through the sash.
     function viewBounds() {
       const E = poses.rest.eye, centre = new THREE.Vector3(CX, (SASH_OPEN.y0 + SASH_OPEN.y1) / 2, FRAME_Z);
       const ref = atZ(E, centre, VIEW_Z);
       const need = { x0: Infinity, x1: -Infinity, y0: Infinity };
       let shift = 0;
-      for (const pose of [poses.rest, poses.tickets]) for (const yaw of [-1, 0, 1]) for (const pitch of [-1, 0, 1]) {
+      for (const pose of [poses.rest, poses.desk, poses.paper]) for (const yaw of [-1, 0, 1]) for (const pitch of [-1, 0, 1]) {
         const eye = orbitEye(pose.eye, pose.target, yaw * MAX_TILT, pitch * MAX_TILT, new THREE.Vector3());
         if (pose === poses.rest) {
           const seen = atZ(eye, ref, FRAME_Z);
@@ -636,6 +855,7 @@ export async function start(section) {
     }
 
     // ── Light: html[data-theme="dark"] is night ──
+    let glow = 0, screenGlow = 0;
     function applyLighting() {
       const night = root.getAttribute('data-theme') === 'dark';
       sun.intensity = night ? 0 : 3.5;
@@ -644,19 +864,22 @@ export async function start(section) {
       windowLight.intensity = night ? 0.9 : 2;
       windowLight.color.set(night ? 0x8ea6ff : 0xfff0dc);
       for (const view of [viewA, viewB]) view.material.color.set(night ? 0x5a6a9a : 0xffffff);
-      // The paper glows a little, so the passes and the sheet stay readable in the dim corner and at night.
+      // The passes and the printout glow a little, so they stay readable in the dim room at night. The laptop
+      // screen glows more at night.
       glow = night ? 0.25 : 0.12;
-      for (const mesh of passMeshes) tint(mesh, mesh === hovered);
-      paper.material.emissive.setScalar(glow);
+      screenGlow = night ? 0.9 : 0.45;
+      for (const object of [...passMeshes, print, laptop]) tint(object, object === hovered);
+      paper.material.color.set(night ? 0xe4e7ee : 0xffffff);
       renderer.shadowMap.needsUpdate = true;
       invalidate();
     }
 
-    // ── Camera: three poses, a 900 ms move between them, and the mouse orbit on top ──
+    // ── Camera: the stations, a 900 ms move between them, and the mouse orbit on top ──
     const poses = {};
     const cam = { eye: new THREE.Vector3(), target: new THREE.Vector3() };   // the pose before the orbit
     const look = { yaw: 0, pitch: 0, toYaw: 0, toPitch: 0 };
     const spherical = new THREE.Spherical();
+    const probeCamera = new THREE.PerspectiveCamera();
 
     // Fits a box on the wall into the view from the direction dir; fill is the share of the view it takes.
     function fit(box, dir = new THREE.Vector3(0, 0, 1), fill = 0.96) {
@@ -666,25 +889,78 @@ export async function start(section) {
       return { eye: dir.clone().normalize().multiplyScalar(d).add(target), target };
     }
 
-    function passPose(id) {
-      const { mesh } = passById.get(id);
-      const layout = paperLayouts.get(id);
-      const passBox = new THREE.Box3().setFromObject(mesh);
-      return fit({
-        x0: PAPER.x1 - PAPER.w - 0.006, x1: WIN.x0 - 0.03,
-        y0: Math.min(paperTop(id) - layout.y, passBox.min.y) - 0.006, y1: Math.max(paperTop(id), passBox.max.y) + 0.006,
-      }, undefined, 0.995);
+    // Where a point shows in a pose, in normalised device coordinates.
+    function ndcIn(pose, p) {
+      probeCamera.fov = camera.fov;
+      probeCamera.aspect = camera.aspect;
+      probeCamera.updateProjectionMatrix();
+      probeCamera.position.copy(pose.eye);
+      probeCamera.lookAt(pose.target);
+      probeCamera.updateMatrixWorld();
+      return p.clone().project(probeCamera);
+    }
+
+    // The desk station: up and back from the desk's front edge, the front edge low in the view, and the passes
+    // inside the width.
+    function deskPose() {
+      const t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const span = new THREE.Box3();
+      for (const mesh of passMeshes) span.expandByObject(mesh);
+      let pose;
+      for (let scale = 1, i = 0; i < 16; i++, scale *= 1.05) {
+        const eye = new THREE.Vector3(DESK.x, DESK.top + DESK_EYE.up * scale, DX.z1 + DESK_EYE.back * scale);
+        const pitch = Math.atan2(eye.y - DESK.top, eye.z - DX.z1) - Math.atan(0.9 * t);
+        pose = { eye, target: eye.clone().add(new THREE.Vector3(0, -Math.sin(pitch), -Math.cos(pitch)).multiplyScalar(eye.z / Math.cos(pitch))) };
+        const wide = [span.min.x, span.max.x].some((x) => Math.abs(ndcIn(pose, new THREE.Vector3(x, DESK.top, span.max.z)).x) > 0.95);
+        if (!wide) break;
+      }
+      return pose;
+    }
+
+    // The paper station: the eye on the line from the window's centre through the rest eye, so a landmark shows where
+    // it shows at rest, far enough for the window to fit the right part of the view; the view turns until it does.
+    function paperPose() {
+      const t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const centre = new THREE.Vector3(CX, (WIN.y0 - 0.12 + WIN.y1 + CASING) / 2, 0);
+      const w = WIN.x1 - WIN.x0 + 2 * (CASING + 0.05), h = WIN.y1 - WIN.y0 + CASING + 0.12;
+      const d = Math.max(w / (0.8 * t * camera.aspect), h / (1.55 * t));
+      const eye = poses.rest.eye.clone().sub(centre).normalize().multiplyScalar(d).add(centre);
+      const pose = { eye, target: centre.clone() };
+      for (let i = 0; i < 6; i++) {
+        const p = ndcIn(pose, centre);
+        pose.target.x -= (1 - 0.8 / 2 - 0.04 - p.x) * d * t * camera.aspect;
+        pose.target.y -= (0.04 - p.y) * d * t;
+      }
+      return pose;
+    }
+
+    // The laptop station: in front of the screen and high enough that the top of the view ends on the sash's bottom
+    // rail, so the city never shows from this close. The screen fills about half the view.
+    function laptopPose() {
+      const half = THREE.MathUtils.degToRad(camera.fov / 2), t = Math.tan(half);
+      const centre = new THREE.Box3().setFromObject(screen).getCenter(new THREE.Vector3());
+      const s = LAPTOP.scale;
+      const d = Math.max((0.367 * s) / (0.95 * t), (0.449 * s) / (1.3 * t * camera.aspect));
+      let eye;
+      for (let e = LAPTOP.tilt; e < 1.2; e += 0.02) {
+        eye = new THREE.Vector3(0, Math.sin(e), Math.cos(e)).multiplyScalar(d).add(centre);
+        if (eye.y - (eye.z - FRAME_Z) * Math.tan(e - half) <= WIN.y0 + F) break;
+      }
+      return { eye, target: centre };
     }
 
     function computePoses() {
-      // Rest: the board, the window and the desk on the right two thirds; the intro line takes the left.
-      const right = 2.0, left = BOARD.x0 - 0.12;
+      scene.updateMatrixWorld();
+      // Rest: the desk, the window and the plant on the right two thirds; the intro line takes the left.
+      const right = 2.25, left = DX.x0 - 0.1;
       poses.rest = fit({ x0: right - (right - left) / 0.64, x1: right, y0: 0.32, y1: 2.5, z: 0 }, new THREE.Vector3(0.7, 0.25, 3.1), 1);
-      poses.tickets = fit({ x0: BOARD.x0 - RIM - 0.05, x1: WIN.x1 + CASING + 0.07, y0: Math.min(BOARD.y0 - RIM, WIN.y0 - 0.12) - 0.04, y1: Math.max(BOARD.y1 + RIM, WIN.y1 + CASING) + 0.04 }, new THREE.Vector3(0, -0.06, 1));
+      poses.desk = deskPose();
+      poses.paper = paperPose();
+      poses.laptop = laptopPose();
     }
 
     function poseFor(state) {
-      return state.pass ? passPose(state.pass) : poses[state.station];
+      return state.pass ? poses.paper : poses[state.station];
     }
 
     // The mouse orbits the eye about the target by up to 3 degrees, so the view behind the window shifts.
@@ -710,6 +986,20 @@ export async function start(section) {
         cam.eye.lerpVectors(eye0, pose.eye, e);
         cam.target.lerpVectors(target0, pose.target, e);
       }, () => { camTween = null; });
+    }
+
+    // A chosen pass lifts a little off the desk and tilts towards the eye.
+    const lifts = new Map();
+    function lift(id, up) {
+      if (!id) return;
+      const mesh = passById.get(id).mesh, holder = mesh.parent;
+      tweens.delete(lifts.get(id));
+      const y0 = holder.position.y, r0 = mesh.rotation.x;
+      lifts.set(id, tween(300, (k) => {
+        const e = easeOut(k);
+        holder.position.y = y0 + ((up ? holder.userData.base + PASS_LIFT : holder.userData.base) - y0) * e;
+        mesh.rotation.x = r0 + ((up ? -Math.PI / 2 + 0.14 : -Math.PI / 2) - r0) * e;
+      }));
     }
 
     // ── Render on demand ──
@@ -753,32 +1043,34 @@ export async function start(section) {
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
     let pointerIn = false, hovered = null;
-    const targets = [...passMeshes, cork, lamp, paper];
+    const targets = [paper, ...passMeshes, print, laptop, lamp, ...deskParts];
 
     function pick() {
       if (!pointerIn) return null;
       raycaster.setFromCamera(pointer, camera);
       for (const hit of raycaster.intersectObjects(targets, true)) {
         let o = hit.object;
-        while (o && !o.userData.kind && o !== lamp) o = o.parent;
-        if (o === paper && !paper.visible) continue;
-        if (o === lamp) return { kind: 'lamp', object: lamp };
-        if (o) return { kind: o.userData.kind, object: o, id: o.userData.id, uv: hit.uv };
+        while (o && !o.userData.kind) o = o.parent;
+        if (!o || (o === paper && !paperState.id)) continue;
+        return { kind: o.userData.kind, object: o.userData.kind === 'screen' ? laptop : o, id: o.userData.id, uv: hit.uv };
       }
       return null;
     }
 
-    let glow = 0;
     function tint(object, on) {
       if (object === lamp) {
         lamp.traverse((o) => { if (o.isMesh) o.material.emissive.setHex(on ? 0x3a2410 : 0x000000); });
-      } else if (object.userData.kind === 'pass') {
+      } else if (object === laptop) {
+        laptop.traverse((o) => { if (o.isMesh && o !== screen) o.material.emissive.setScalar(on ? 0.12 : 0); });
+        screen.material.emissiveIntensity = screenGlow + (on ? 0.12 : 0);
+      } else {
         object.material.emissive.setScalar(glow + (on ? 0.12 : 0));
       }
     }
 
+    // A light tint marks what a click would act on; with the paper open, a click only closes it.
     function setHovered(hit) {
-      const next = hit && (hit.kind === 'pass' || hit.kind === 'lamp') ? hit.object : null;
+      const next = !paper.visible && hit && ['pass', 'lamp', 'laptop', 'screen', 'print'].includes(hit.kind) ? hit.object : null;
       if (next === hovered) return;
       if (hovered) tint(hovered, false);
       if (next) tint(next, true);
@@ -804,42 +1096,56 @@ export async function start(section) {
       pointerDirty = true;
       invalidate();
     }, { signal });
+
+    // Two clicks, always: from rest a click on the desk or a pass goes to the desk, and only there does a pass open.
     canvas.addEventListener('click', (event) => {
       setPointer(event);
       const hit = pick();
-      if (!hit) return;
-      if (hit.kind === 'pass') choose(hit.id);
-      else if (hit.kind === 'board' && state.station === 'rest') choose(null);
-      else if (hit.kind === 'board' && state.pass) choose(null);
-      else if (hit.kind === 'lamp') document.querySelector('[data-action="toggle-theme"]')?.click();
-      else if (hit.kind === 'paper' && hit.uv && paperLink) {
-        const x = hit.uv.x * paperLink.w, y = (1 - hit.uv.y) * paperLink.h;
-        if (x >= paperLink.x0 && x <= paperLink.x1 && y >= paperLink.y0 && y <= paperLink.y1) window.location.href = `experience.html#${passById.get(paperShown).pass.link}`;
+      if (state.pass) {
+        if (hit?.kind === 'paper' && hit.uv) clickPaper(hit.uv);
+        else go('desk');
+        return;
       }
+      if (!hit) return;
+      const at = state.station;
+      if (hit.kind === 'lamp') document.querySelector('[data-action="toggle-theme"]')?.click();
+      else if (hit.kind === 'screen' && at === 'laptop') aiTrigger.click();
+      else if ((hit.kind === 'laptop' || hit.kind === 'screen') && at !== 'laptop') go('laptop');
+      else if (hit.kind === 'pass' && at === 'desk') go(`desk/${hit.id}`);
+      else if (hit.kind === 'print' && at === 'desk') cvLink.click();
+      else if (['pass', 'print', 'desk'].includes(hit.kind) && at !== 'desk') go('desk');
     }, { signal });
 
-    // ── Stations and URLs: rest has no hash, the board is #tickets, a chosen pass is #tickets/<id> ──
+    // ── Stations and URLs: rest has no hash, the desk is #desk, a chosen pass is #desk/<id>, the laptop is #laptop ──
     const state = { station: 'rest', pass: null };
     function readHash() {
-      const m = window.location.hash.match(/^#tickets(?:\/([a-z]+))?$/);
+      const m = window.location.hash.match(/^#(desk|laptop)(?:\/([a-z]+))?$/);
       if (!m) return { station: 'rest', pass: null };
-      return { station: 'tickets', pass: passById.has(m[1]) ? m[1] : null };
+      return { station: m[1], pass: m[1] === 'desk' && passById.has(m[2]) ? m[2] : null };
     }
 
-    // Entering from rest adds one history entry; at the board a new pass replaces it, so Back leaves the board.
-    function choose(id) {
-      const hash = id ? `tickets/${id}` : 'tickets';
+    // Entering a station from rest adds one history entry; every later move replaces it, so Back returns to rest.
+    function go(hash) {
       if (state.station === 'rest') { window.location.hash = hash; return; }
       window.history.replaceState(null, '', `#${hash}`);
       apply();
     }
 
+    // One level back, for Esc and the Back button: a paper closes to the desk, and a station returns to rest.
+    function back() {
+      if (state.pass) go('desk');
+      else if (state.station !== 'rest') window.history.back();
+    }
+
     function apply() {
       const next = readHash();
       if (next.station === state.station && next.pass === state.pass) return;
+      const was = state.pass;
       Object.assign(state, next);
       section.classList.toggle('is-away', state.station !== 'rest');
-      slidePaper(state.pass);
+      backButton.hidden = state.station === 'rest';
+      if (was !== state.pass) { lift(was, false); lift(state.pass, true); }
+      showPaper(state.pass);
       if (state.pass) {
         const { pass } = passById.get(state.pass);
         showView(pass.view);
@@ -849,34 +1155,47 @@ export async function start(section) {
     }
 
     window.addEventListener('hashchange', apply, { signal });
+    backButton.addEventListener('click', back, { signal });
     document.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape' || state.station === 'rest' || event.defaultPrevented || document.querySelector('dialog[open]')) return;
-      window.history.back();
+      if (state.station === 'rest' || event.defaultPrevented || document.querySelector('dialog[open]')) return;
+      if (event.key === 'Escape') { back(); return; }
+      const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
+      if (step && paper.visible && !event.target.closest?.('input, textarea, select, [contenteditable]')) {
+        event.preventDefault();
+        turnPage(step);
+      }
     }, { signal });
 
-    // ── The hidden HTML copy: one button per pass, and the chosen paper as text in a live region ──
-    // After a pass is chosen, a link to its full role follows the buttons, like the link on the paper.
+    // ── The hidden HTML copy: one button per pass, the laptop and the CV, and the chosen paper in a live region ──
+    // After a pass is chosen, a link to its full role follows the pass buttons, like the link on the paper.
     const fullRole = document.createElement('a');
     fullRole.className = 'ed-room__pass';
     fullRole.textContent = LINK_TEXT;
     fullRole.hidden = true;
-    const linkItem = document.createElement('li');
-    linkItem.appendChild(fullRole);
-    list.replaceChildren(...passes.map((pass) => {
+    const control = (text, onClick) => {
       const item = document.createElement('li');
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'ed-room__pass';
-      button.textContent = pass.name;
-      button.addEventListener('click', () => choose(pass.id), { signal });
+      button.textContent = text;
+      button.addEventListener('click', onClick, { signal });
       item.appendChild(button);
       return item;
-    }), linkItem);
+    };
+    const linkItem = document.createElement('li');
+    linkItem.appendChild(fullRole);
+    list.replaceChildren(
+      ...passes.map((pass) => control(pass.name, () => go(`desk/${pass.id}`))),
+      linkItem,
+      control('Evaluate role fit', () => aiTrigger.click()),
+      control('View CV', () => cvLink.click()),
+    );
 
     function announce(pass) {
       const blocks = [];
       for (const leg of pass.legs) {
-        if (leg.summary) blocks.push(`${leg.company}, ${leg.role}.`, leg.summary);
+        blocks.push(`${[leg.company, roleLine(leg), ...leg.dates].filter(Boolean).join(', ')}.`);
+        if (leg.summary) blocks.push(leg.summary);
         for (const item of leg.items) blocks.push([item.head, item.text, item.bullet].filter(Boolean).join(': '));
       }
       live.replaceChildren(...blocks.map((text) => Object.assign(document.createElement('p'), { textContent: text })));
@@ -894,6 +1213,7 @@ export async function start(section) {
       computePoses();
       placeView(viewA, viewShown, viewA.material.map);
       if (viewB.visible) placeView(viewB, viewB.userData.file, viewB.material.map);
+      if (paperState.id) layoutPaper(paperState.id, paperState.page);
       if (camTween) tweens.delete(camTween);
       camTween = null;
       const pose = poseFor(state);
@@ -916,7 +1236,7 @@ export async function start(section) {
     applyLighting();
     cam.eye.copy(poses.rest.eye);
     cam.target.copy(poses.rest.target);
-    // A load with #tickets or #tickets/<id> opens that state above a rest entry, so Esc and Back return to rest.
+    // A load with #desk, #desk/<id> or #laptop opens that state above a rest entry, so Esc and Back return to rest.
     const opened = readHash();
     if (opened.station !== 'rest') {
       const hash = window.location.hash;
@@ -929,6 +1249,7 @@ export async function start(section) {
       cam.target.copy(pose.target);
     }
     placeCamera(cam.eye, cam.target, 0, 0);
+    renderer.shadowMap.needsUpdate = true;
     renderer.render(scene, camera);
     section.classList.add('is-ready');
     resize.observe(stage);
@@ -938,7 +1259,7 @@ export async function start(section) {
     // ── Test hooks for the headless checks ──
     const ndc = new THREE.Vector3();
     const probe = new THREE.Raycaster();
-    const shown = (o) => { for (; o; o = o.parent) if (!o.visible) return false; return true; };
+    const isShown = (o) => { for (; o; o = o.parent) if (!o.visible) return false; return true; };
     // The landmark counts as visible when its top, middle and base are on screen and a ray from the eye to
     // each reaches the view first, past the frame, the mullions and the walls. margin is the smallest
     // distance from a landmark point to its pane's edge, measured at the frame.
@@ -950,7 +1271,7 @@ export async function start(section) {
         if (Math.abs(ndc.x) > 1 || Math.abs(ndc.y) > 1) return false;
         const dir = p.clone().sub(camera.position).normalize();
         probe.set(camera.position, dir);
-        const hit = probe.intersectObjects(scene.children, true).find((h) => shown(h.object) || h.object === viewB);
+        const hit = probe.intersectObjects(scene.children, true).find((h) => h.object !== paper && (isShown(h.object) || h.object === viewB));
         const atFrame = camera.position.clone().addScaledVector(dir, (FRAME_Z - camera.position.z) / dir.z);
         margin = Math.min(margin, atFrame.x - pane.x0, pane.x1 - atFrame.x, atFrame.y - pane.y0, pane.y1 - atFrame.y);
         return hit && (hit.object === viewA || hit.object === viewB);
@@ -958,14 +1279,15 @@ export async function start(section) {
       return { visible, margin: +margin.toFixed(3) };
     }
 
-    // Checks a view at the rest pose over the corners of the orbit, then puts the shown view back.
-    async function landmarkSweep(file = viewShown) {
+    // Checks a view at a station over the corners of the orbit, then puts the shown view back.
+    async function landmarkSweep(file = viewShown, station = 'rest') {
       const texture = await loadView(file);
       placeView(viewA, file, texture);
       const { pane, heightAtFrame, covers } = viewA.userData;
-      const out = { file, pane: PANES.indexOf(pane) ? 'right' : 'left', heightAtFrame, covers, corners: {} };
+      const out = { file, station, pane: PANES.indexOf(pane) ? 'right' : 'left', heightAtFrame, covers, corners: {} };
+      const pose = poses[station];
       for (const yaw of [-3, 0, 3]) for (const pitch of [-3, 0, 3]) {
-        placeCamera(poses.rest.eye, poses.rest.target, THREE.MathUtils.degToRad(yaw), THREE.MathUtils.degToRad(pitch));
+        placeCamera(pose.eye, pose.target, THREE.MathUtils.degToRad(yaw), THREE.MathUtils.degToRad(pitch));
         out.corners[`${yaw},${pitch}`] = landmarkVisible();
       }
       placeView(viewA, viewShown, await loadView(viewShown));
@@ -974,41 +1296,64 @@ export async function start(section) {
       return out;
     }
 
-    // The projected size of the em box (and the cap height) of each marked text line, in CSS px.
-    const capRatio = (() => { measure.font = font(1, 400, SANS); return measure.measureText('H').actualBoundingBoxAscent / TEX_PPM; })();
-    function projectedEm(mesh, w, h, mark) {
-      const a = new THREE.Vector3(mark.x + 0.05 - w / 2, h / 2 - mark.base, 0).applyMatrix4(mesh.matrixWorld).project(camera);
-      const b = new THREE.Vector3(mark.x + 0.05 - w / 2, h / 2 - mark.base + mark.size, 0).applyMatrix4(mesh.matrixWorld).project(camera);
+    // The projected size of the em box of a text line, in CSS px: from the baseline up by the font size, in the
+    // plane's own units (w x h, centred on its origin).
+    function projectedEm(mesh, w, h, x, base, size) {
+      const a = new THREE.Vector3(x - w / 2, h / 2 - base, 0).applyMatrix4(mesh.matrixWorld).project(camera);
+      const b = new THREE.Vector3(x - w / 2, h / 2 - base + size, 0).applyMatrix4(mesh.matrixWorld).project(camera);
       return Math.hypot((a.x - b.x) * canvas.clientWidth, (a.y - b.y) * canvas.clientHeight) / 2;
     }
-    function textPx(id = state.pass) {
-      if (!id) return null;
-      const { mesh } = passById.get(id);
-      const result = { pass: id, capRatio: +capRatio.toFixed(3) };
-      for (const mark of mesh.userData.layout.marks) {
-        const px = projectedEm(mesh, PASS_W, PASS_H, mark);
-        result[mark.mark] = Math.min(result[mark.mark] ?? Infinity, +px.toFixed(2));
+    const capRatio = (family) => { measure.font = `100px ${family}`; return +(measure.measureText('H').actualBoundingBoxAscent / 100).toFixed(3); };
+    // Each pass's marked lines, the smallest text on the paper's page, and the title on the laptop screen.
+    function textPx() {
+      const result = { capRatio: { sans: capRatio(SANS), hand: capRatio(HAND) }, passes: {} };
+      for (const [id, { mesh }] of passById) {
+        const out = result.passes[id] = {};
+        for (const m of mesh.userData.layout.marks) out[m.mark] = Math.min(out[m.mark] ?? Infinity, +projectedEm(mesh, PASS_W, PASS_H, m.x + 0.03, m.base, m.size).toFixed(2));
       }
-      if (paper.visible && paperShown === id) {
-        const layout = paper.userData.layout;
-        for (const mark of layout.marks) result.paperBody = Math.min(result.paperBody ?? Infinity, +projectedEm(paper, 1, 1, { ...mark, x: mark.x / PAPER.w, base: mark.base / layout.y, size: mark.size / layout.y }).toFixed(2));
+      if (paper.visible && paperState.notes) {
+        const { W, H, pages } = paperState.notes, S = NOTE.shadow;
+        let least = Infinity;
+        pages[paperState.page].forEach((line, row) => {
+          if (line) least = Math.min(least, projectedEm(paper, 1, 1, (S + line.x) / (W + 2 * S), (S + noteBase(row)) / (H + 2 * S), line.size / (H + 2 * S)));
+        });
+        result.paper = { smallest: +least.toFixed(2), page: paperState.page + 1, pages: pages.length };
       }
+      const top = new THREE.Vector3(0, 0.425, 0.0064).applyMatrix4(screen.matrixWorld).project(camera);
+      const bottom = new THREE.Vector3(0, 0.058, 0.0064).applyMatrix4(screen.matrixWorld).project(camera);
+      result.screenTitle = +((Math.hypot((top.x - bottom.x) * canvas.clientWidth, (top.y - bottom.y) * canvas.clientHeight) / 2) * screenArt.title).toFixed(2);
       return result;
     }
 
     function screenPoint(p) {
-      const v = p.project(camera), rect = canvas.getBoundingClientRect();
+      const v = p.clone().project(camera), rect = canvas.getBoundingClientRect();
       return { x: rect.left + ((v.x + 1) / 2) * rect.width, y: rect.top + ((1 - v.y) / 2) * rect.height };
     }
+    // A point on the paper, from CSS px on the paper.
+    const paperPoint = (x, y) => {
+      const { W, H } = paperState.notes, S = NOTE.shadow;
+      return screenPoint(new THREE.Vector3((S + x) / (W + 2 * S) - 0.5, 0.5 - (S + y) / (H + 2 * S), 0).applyMatrix4(paper.matrixWorld));
+    };
+    const zonePoint = (name) => { const z = paperState.zones[name]; return z ? paperPoint((z.x0 + z.x1) / 2, (z.y0 + z.y1) / 2) : null; };
 
     window.__room = {
-      state: () => ({ ...state, settled: tweens.size === 0, view: viewShown }),
+      state: () => ({ ...state, settled: tweens.size === 0, view: viewShown, page: paperState.page, hover: hovered?.userData.kind ?? null }),
       landmarkVisible,
       landmarkSweep,
       textPx,
-      passPoint: (id) => screenPoint(passById.get(id).mesh.getWorldPosition(new THREE.Vector3())),
+      passPoint: (id) => screenPoint(passById.get(id).mesh.localToWorld(new THREE.Vector3(-PASS_W / 4, PASS_H / 4, 0))),
+      screenPoint: () => screenPoint(new THREE.Box3().setFromObject(screen).getCenter(new THREE.Vector3())),
+      printPoint: () => screenPoint(print.getWorldPosition(new THREE.Vector3())),
+      deskPoint: () => screenPoint(new THREE.Vector3(DX.x1 - 0.12, DESK.top, DX.z0 + 0.12)),
       lampPoint: () => screenPoint(lampLight.getWorldPosition(new THREE.Vector3())),
-      linkPoint: () => paperLink && screenPoint(new THREE.Vector3((paperLink.x0 + paperLink.x1) / 2 / paperLink.w - 0.5, 0.5 - (paperLink.y0 + paperLink.y1) / 2 / paperLink.h, 0).applyMatrix4(paper.matrixWorld)),
+      linkPoint: () => zonePoint('link'),
+      paperRect: () => {
+        if (!paper.visible) return null;
+        const [a, b] = [[-0.5, 0.5], [0.5, -0.5]].map(([x, y]) => screenPoint(new THREE.Vector3(x, y, 0).applyMatrix4(paper.matrixWorld)));
+        return { left: a.x, top: a.y, right: b.x, bottom: b.y };
+      },
+      landmarkScreen: () => viewA.userData.landmark.map((p) => screenPoint(p)),
+      arrowPoint: (side) => zonePoint(side),
       info: () => ({ ...renderer.info.render, ...renderer.info.memory, programs: renderer.info.programs.length }),
     };
   }
