@@ -48,6 +48,11 @@ poster-training.webp were generated for this site with Codex image generation. s
 shot-remarcable.webp are screenshots of Matthew's own sites, Opportunity Paths and Remarcable Living; room.js
 sets each on a poster.
 
+Window views (views/): the twelve day and night city views were generated for this site with Codex image
+generation. Each night view is an edit of its day view.
+
+Still images: still-day.webp and still-night.webp are renders of this room, made with room.js itself.
+
 three.js 0.169.0 (MIT licence, Copyright 2010-2024 Three.js Authors), vendored from
 https://cdn.jsdelivr.net/npm/three@0.169.0/: build/three.module.min.js,
 examples/jsm/loaders/GLTFLoader.js, examples/jsm/utils/BufferGeometryUtils.js and
