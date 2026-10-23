@@ -884,7 +884,7 @@ test('the cassette player and its four tracks exist and are credited, and nothin
     assert.ok(fs.statSync(path.join(repoRoot, `assets/room/music/track-${i}.mp3`)).size > 100000, `music/track-${i}.mp3 is missing`);
     assert.ok(credits.includes(`track-${i}.mp3`), `CREDITS.txt does not name track-${i}.mp3`);
   }
-  assert.match(credits, /four instrumental tracks\s+generated for this site with ElevenLabs \(Eleven Music\)/);
+  assert.ok(credits.includes('Music: four instrumental tracks generated for this site with ElevenLabs (Eleven Music)'), 'CREDITS.txt credits the music');
   const scripts = ['assets/js', 'assets/room'].flatMap((dir) => fs.readdirSync(path.join(repoRoot, dir)).filter((name) => name.endsWith('.js')).map((name) => `${dir}/${name}`));
   for (const file of [...listHtmlFiles().map(relative), ...scripts]) {
     assert.doesNotMatch(readText(file), /autoplay/i, `${file} mentions autoplay`);

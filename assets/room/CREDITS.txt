@@ -22,9 +22,9 @@ cassette_player (Cassette Player), author: Oday Abuzaeed
   file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/cassette_player/cassette_player_1k.gltf (glTF, 1k textures)
   licence: CC0 1.0
 
-Music (music/): track-1.mp3, track-2.mp3, track-3.mp3 and track-4.mp3. Music: four instrumental tracks
-generated for this site with ElevenLabs (Eleven Music). The Eleven Music terms for the Creator plan require no
-attribution (checked 23 October 2026).
+Music: four instrumental tracks generated for this site with ElevenLabs (Eleven Music)
+  files: music/track-1.mp3, music/track-2.mp3, music/track-3.mp3 and music/track-4.mp3
+  The Eleven Music terms for the Creator plan require no attribution (checked 23 October 2026).
 
 Font: Patrick Hand, Copyright (c) 2010-2012 Patrick Wagesreiter. Licence: SIL Open Font License 1.1, in
 fonts/OFL-patrick-hand.txt. The paper's handwriting uses fonts/patrick-hand-latin.woff2.
