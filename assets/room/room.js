@@ -82,8 +82,9 @@ const INK = '#1d1b18', INK_SOFT = '#45413b', CLAY = '#c45a38';
 const VIEW_Z = -5, MAX_VIEW_H = 3.73, VIEW_PAD = 4, VIEW_MARGIN = 0.012;
 const MAX_TILT = THREE.MathUtils.degToRad(3);
 const MOVE_MS = 900, FADE_MS = 400, NIGHT_FADE_MS = 600, FLIP_MS = 450;
-// The desk station: the eye sits up and back from the desk's front edge. A narrow stage moves it further back.
-const DESK_EYE = { up: 1.0, back: 0.92 };
+// The desk station: the eye sits up and back from the desk's front edge, for a stage REF_H px tall. A shorter stage
+// brings it closer, so the pass text keeps its size on screen; a narrow stage moves it further back.
+const DESK_EYE = { up: 0.94, back: 0.86, refH: 820 };
 // Rest: the whole room from beyond its open front, so both side walls show.
 const REST = { eye: [0.05, 1.68, 6.05], target: [-0.12, 1.3, 0] };
 
@@ -1318,6 +1319,7 @@ export async function start(section) {
     camera.add(flip);
     const paperState = { key: null, doc: null, notes: null, page: 0, zones: { links: [] }, x: 0, tween: null, blank: null, flip: null };
     const flipLog = [];
+    let flipMs = FLIP_MS;   // a test hook slows the turn for the mid-turn screenshots
 
     // The paper's size in CSS px for the current stage, and the world size of one CSS px at the paper.
     function noteBox() {
@@ -1348,7 +1350,9 @@ export async function start(section) {
       // The turning page covers the sheet only, without the shadow around it; its UVs pick the sheet from the canvas.
       flip.position.set(paperState.x - (notes.W / 2) * k, paper.position.y - (notes.W / 2) * k * Math.sin(-0.008), -PAPER_D + 0.0005);
       flip.rotation.z = -0.008;
-      flip.scale.set(notes.W * k, notes.H * k, notes.W * k * 0.45);
+      // The page lifts by 15 % of its width at most: the hinge sits at the view's left edge, and a page that rises
+      // further towards the camera turns out of view.
+      flip.scale.set(notes.W * k, notes.H * k, notes.W * k * 0.15);
       const uv = flipGeometry.attributes.uv, n = FLIP_SEGMENTS + 1;
       for (let i = 0; i < uv.count; i++) {
         const u = (i % n) / FLIP_SEGMENTS, v = i < n ? 1 : 0;
@@ -1438,7 +1442,7 @@ export async function start(section) {
       bendPage(from, step);
       flip.visible = true;
       const f = paperState.flip = {
-        tween: tween(FLIP_MS, (t) => bendPage(from + (to - from) * easeInOut(t), step), () => f.end()),
+        tween: tween(flipMs, (t) => bendPage(from + (to - from) * easeInOut(t), step), () => f.end()),
         end() {
           paperState.flip = null;
           flip.visible = false;
@@ -1625,7 +1629,7 @@ export async function start(section) {
       const span = new THREE.Box3();
       for (const { mesh } of passItems) span.expandByObject(mesh);
       let pose;
-      for (let scale = 1, i = 0; i < 16; i++, scale *= 1.05) {
+      for (let scale = Math.min(1, stage.clientHeight / DESK_EYE.refH), i = 0; i < 16; i++, scale *= 1.05) {
         const eye = new THREE.Vector3(DESK.x, DESK.top + DESK_EYE.up * scale, DX.z1 + DESK_EYE.back * scale);
         const pitch = Math.atan2(eye.y - DESK.top, eye.z - DX.z1) - Math.atan(0.9 * t);
         pose = { eye, target: eye.clone().add(new THREE.Vector3(0, -Math.sin(pitch), -Math.cos(pitch)).multiplyScalar(eye.z / Math.cos(pitch))) };
@@ -2198,6 +2202,7 @@ export async function start(section) {
       items: () => [...items.keys()],
       paperText: () => paperState.notes?.pages.flat().filter(Boolean).map((l) => l.text).join(' ') ?? null,
       flips: () => flipLog.map((f) => ({ step: f.step, ms: f.end && Math.round(f.end - f.start) })),
+      setFlipMs: (ms) => { flipMs = ms; },
       itemPoint: (key) => { const e = items.get(key); return e && screenPoint(e.mesh ? e.mesh.localToWorld(new THREE.Vector3(-PASS.w / 4, PASS_H / 6, 0)) : centreOf(e.object)); },
       passPoint: (id) => window.__room.itemPoint(`desk/${id}`),
       objectPoint: (name) => screenPoint(centreOf({ shelf: shelfParts, tray: trayGroup, phone, plant }[name])),
