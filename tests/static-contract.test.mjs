@@ -852,12 +852,10 @@ test('the room holds two hidden sideways arrows, named by room.js from the stati
   assert.match(js, /setAttribute\('aria-label', `Go to \$\{stationName\(to\)\}`\)/, 'each arrow is named after its station');
 });
 
-test('the decor and the cat stay out of the click targets, and the cat climbs 2.5 s after the desk', () => {
+test('the decor stays out of the click targets', () => {
   const js = readText('assets/room/room.js');
   const targets = js.match(/const targets = \[([^\]]+)\];/)[1];
-  for (const name of ['decor', 'cat', 'bookMesh', 'broadLeaves', 'heartLeaves']) assert.ok(!new RegExp(`\\b${name}\\b`).test(targets), `${name} would take clicks`);
-  assert.match(js, /const CAT = \{[^}]*delay: 2500 \};/, 'the cat waits 2.5 s');
-  assert.match(js, /decor\.add\(cat\);/, 'the cat is decor, so the landmark check sees it');
+  for (const name of ['decor', 'bookMesh', 'broadLeaves', 'heartLeaves']) assert.ok(!new RegExp(`\\b${name}\\b`).test(targets), `${name} would take clicks`);
 });
 
 test('every credential the shelf names exists in certificates.html with a verify link', () => {

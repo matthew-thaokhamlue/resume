@@ -101,9 +101,6 @@ const TALL_PLANT = { x: 2.28, z: 0.2 };
 const CLOCK = { x: 1.88, y: 2.0, r: 0.16 };
 const FLOOR = { tile: 1.2 };
 const RUG = { x: 0.55, z: 1.65, w: 2.3, d: 1.9 };
-// The cat's way onto the sill, as (x, z): it starts on the desk behind the radio, lands on the sill inside the
-// window, and sits at the sill's left end, clear of both panes, facing the room turned by face. delay is in ms.
-const CAT = { from: [-0.36, 0.09], land: [-0.12, 0.07], seat: [-0.255, 0.09], face: 0.25, delay: 2500 };
 // The play order of the five tracks by file number: the ballad, track-5.mp3, plays first.
 const PLAY_ORDER = [5, 1, 2, 6, 4];
 const TRACKS = PLAY_ORDER.length;
@@ -1968,149 +1965,6 @@ export async function start(section) {
     decor.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
     rug.castShadow = clockFace.castShadow = false;
 
-    // ── The cat, built from simple shapes. The first time the visitor reaches #desk, CAT.delay ms after the camera
-    // arrives, it climbs onto the window sill from the desk behind the radio, walks a few steps to the sill's left
-    // end, clear of both panes, sits down and curls its tail around its paws. It stays for the rest of the visit and
-    // flicks its tail or twitches an ear every 6 to 10 s. It is decor: no tooltip and no click. Frames render only
-    // while it moves. ──
-    const fur = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.85 });
-    // A part of the cat: a geometry placed by position, scale and rotation, in one colour.
-    function catPart(geometry, hex, position, scale = [1, 1, 1], rotation = [0, 0, 0]) {
-      geometry.applyMatrix4(new THREE.Matrix4().compose(new THREE.Vector3(...position), new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation)), new THREE.Vector3(...scale)));
-      const c = new THREE.Color(hex), colors = new Float32Array(geometry.attributes.position.count * 3);
-      for (let i = 0; i < colors.length; i += 3) colors.set([c.r, c.g, c.b], i);
-      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-      return geometry;
-    }
-    const GINGER = 0xe0995a, CREAM = 0xf5e2c4, PINK = 0xe8a3a0, DARK = 0x2a1c15;
-    const ball = () => new THREE.SphereGeometry(1, 20, 14);
-    const ear = (hex, position, scale, tilt) => catPart(new THREE.ConeGeometry(0.019, 0.04, 12), hex, position, scale, [0, 0, tilt]);
-    const furMesh = (parts) => new THREE.Mesh(mergeGeometries(parts), fur);
-    // The hips carry the body, the legs and the neck; sitting tips the body up about them. The neck keeps the head level.
-    const cat = new THREE.Group(), hips = new THREE.Group(), neck = new THREE.Group(), earPivot = new THREE.Group();
-    const HIP = 0.079;
-    hips.add(furMesh([
-      catPart(ball(), GINGER, [0, 0.03, 0.065], [0.048, 0.05, 0.095]),
-      catPart(ball(), CREAM, [0, 0.018, 0.135], [0.033, 0.038, 0.03]),
-      ...[-1, 1].map((s) => catPart(ball(), GINGER, [s * 0.03, 0.02, 0.005], [0.024, 0.04, 0.045])),
-    ]));
-    neck.position.set(0, 0.06, 0.15);
-    neck.add(furMesh([
-      catPart(ball(), GINGER, [0, 0.03, 0.02], [0.05, 0.045, 0.044]),
-      ear(GINGER, [-0.028, 0.074, 0.012], [1, 1, 0.55], 0.35),
-      ear(PINK, [-0.027, 0.071, 0.017], [0.6, 0.7, 0.3], 0.35),
-      ...[-1, 1].map((s) => catPart(ball(), CREAM, [s * 0.011, 0.014, 0.056], [0.016, 0.013, 0.012])),
-      catPart(ball(), PINK, [0, 0.024, 0.066], [0.006, 0.0045, 0.004]),
-      ...[-1, 1].map((s) => catPart(ball(), DARK, [s * 0.019, 0.034, 0.057], [0.0085, 0.0105, 0.005])),
-      ...[-1, 1].map((s) => catPart(ball(), 0xffffff, [s * 0.017 + 0.002, 0.038, 0.0615], [0.0028, 0.0028, 0.0015])),
-    ]));
-    earPivot.position.set(0.026, 0.06, 0.012);
-    earPivot.add(furMesh([ear(GINGER, [0.002, 0.014, 0], [1, 1, 0.55], -0.35), ear(PINK, [0.001, 0.011, 0.005], [0.6, 0.7, 0.3], -0.35)]));
-    neck.add(earPivot);
-    hips.add(neck);
-    // Four legs that hang from their tops, with cream paws.
-    const legGeometry = catPart(new THREE.CapsuleGeometry(0.012, 0.055, 4, 10), GINGER, [0, -0.0395, 0]);
-    const paw = new THREE.Color(CREAM);
-    for (let i = 0; i < legGeometry.attributes.position.count; i++) if (legGeometry.attributes.position.getY(i) < -0.062) legGeometry.attributes.color.setXYZ(i, paw.r, paw.g, paw.b);
-    const catLegs = [[-0.024, 0.12], [0.024, 0.12], [-0.03, 0], [0.03, 0]].map(([x, z]) => {
-      const leg = new THREE.Mesh(legGeometry, fur);
-      leg.position.set(x, 0, z);
-      hips.add(leg);
-      return leg;
-    });
-    const catTail = new THREE.Mesh(new THREE.BufferGeometry(), fur);
-    cat.add(hips, catTail);
-    cat.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
-    cat.visible = false;
-    decor.add(cat);
-
-    // The pose: where the cat stands and faces, and how far it sits, crouches, stretches in a hop, walks (the legs'
-    // swing and phase), curls its tail, flicks it and twitches an ear.
-    const catPose = { x: 0, y: 0, z: 0, heading: 0, scale: 1, sit: 0, crouch: 0, stretch: 0, hop: 0, walk: 0, phase: 0, curl: 0, flick: 0, twitch: 0 };
-    // The tail's points behind a standing cat, from its base, and wrapped round the paws of a sitting cat.
-    const TAIL_UP = [[0, 0.02, -0.03], [0.004, 0.08, -0.06], [0.012, 0.15, -0.05], [0.02, 0.19, -0.015]].map((p) => new THREE.Vector3(...p));
-    const TAIL_WRAP = [[0.045, 0.012, -0.075], [0.085, 0.012, -0.01], [0.07, 0.012, 0.06], [0.025, 0.012, 0.085]].map((p) => new THREE.Vector3(...p));
-    function poseCat() {
-      const p = catPose, pitch = -0.95 * p.sit + 0.25 * p.stretch - 0.12 * p.crouch;
-      cat.position.set(p.x, p.y + p.hop, p.z);
-      cat.rotation.y = p.heading;
-      cat.scale.setScalar(p.scale);
-      hips.position.set(0, HIP - 0.042 * p.sit - 0.025 * p.crouch, -0.06);
-      hips.rotation.x = pitch;
-      neck.rotation.x = -pitch;
-      earPivot.rotation.z = -0.5 * p.twitch;
-      // Diagonal legs swing together. The front legs stay upright and reach the ground; the hind legs fold forward.
-      const swing = 0.5 * p.walk * Math.sin(p.phase), shoulder = hips.position.y + 0.12 * Math.sin(-pitch);
-      catLegs.forEach((leg, i) => {
-        const s = (i === 0 || i === 3 ? 1 : -1) * swing;
-        if (i < 2) {
-          leg.rotation.x = -pitch + s - 0.5 * p.stretch;
-          leg.scale.y = Math.max(0.6, shoulder / HIP);
-        } else {
-          leg.rotation.x = -pitch - p.sit * Math.PI / 2 + s + 0.6 * p.stretch;
-          leg.scale.y = 1 - 0.3 * p.sit - 0.25 * p.crouch;
-        }
-      });
-      const base = new THREE.Vector3(0, 0.03, -0.03).applyEuler(hips.rotation).add(hips.position);
-      const points = [base, ...TAIL_UP.map((u, i) => base.clone().add(u).lerp(TAIL_WRAP[i], p.curl))];
-      points[3].y += 0.02 * p.flick;
-      points[4].y += 0.045 * p.flick;
-      points[4].x -= 0.035 * p.flick;
-      catTail.geometry.dispose();
-      catTail.geometry = catPart(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 28, 0.0105, 8), GINGER, [0, 0, 0]);
-    }
-    poseCat();
-
-    let catState = 'hidden', catWait = 0, catIdle = 0, catSlow = 1;
-    const catLog = { start: null, sat: null, idle: [] };
-    // Plays keys one after another. A key eases the pose from where it is to its values over ms; a pulse rises and
-    // falls back over the same time.
-    function playCat(keys, done) {
-      const [ms, to, pulse = {}, ease = easeInOut] = keys[0], from = { ...catPose };
-      tween(ms * catSlow, (k) => {
-        const e = ease(k);
-        for (const key in to) catPose[key] = from[key] + (to[key] - from[key]) * e;
-        for (const key in pulse) catPose[key] = pulse[key] * Math.sin(Math.PI * e);
-        poseCat();
-        renderer.shadowMap.needsUpdate = true;
-      }, () => (keys.length > 1 ? playCat(keys.slice(1), done) : done?.()));
-    }
-    function climbCat() {
-      catState = 'climbing';
-      catLog.start = performance.now();
-      Object.assign(catPose, { x: CAT.from[0], y: DESK.top, z: CAT.from[1], heading: Math.PI / 2, scale: 0.01, sit: 0, crouch: 0, stretch: 0, hop: 0, walk: 0, phase: 0, curl: 0, flick: 0, twitch: 0 });
-      cat.visible = true;
-      const linear = (k) => k;
-      playCat([
-        [300, { scale: 1 }, {}, easeOut],
-        [260, { crouch: 1 }],
-        [520, { x: CAT.land[0], y: sillTop, z: CAT.land[1], crouch: 0 }, { hop: 0.11, stretch: 1 }],
-        [420, { heading: -Math.PI / 2, walk: 1, phase: Math.PI }, {}, linear],
-        [900, { x: CAT.seat[0], z: CAT.seat[1], phase: Math.PI * 4 }, {}, linear],
-        [420, { heading: CAT.face, walk: 0, phase: Math.PI * 5 }],
-        [650, { sit: 1 }],
-        [700, { curl: 1 }],
-      ], sitCat);
-    }
-    function sitCat() {
-      catState = 'sitting';
-      catLog.sat = performance.now();
-      idleCat();
-    }
-    function idleCat() {
-      catIdle = setTimeout(() => {
-        const flick = Math.random() < 0.6;
-        catLog.idle.push({ at: Math.round(performance.now()), kind: flick ? 'flick' : 'twitch' });
-        playCat([[flick ? 700 : 320, {}, flick ? { flick: 1 } : { twitch: 1 }]], idleCat);
-      }, 6000 + Math.random() * 4000);
-    }
-    // The camera's arrival at #desk starts the wait; leaving #desk before the cat climbs cancels it.
-    function catArrive(at) {
-      if (at === 'desk' && catState === 'hidden' && !catWait) catWait = setTimeout(() => { catWait = 0; climbCat(); }, CAT.delay);
-      if (at !== 'desk' && catWait) { clearTimeout(catWait); catWait = 0; }
-    }
-    signal.addEventListener('abort', () => { clearTimeout(catWait); clearTimeout(catIdle); });
-
     // ── The paper: a sheet held in front of the camera on the left, so the room stays in view on the right ──
     const PAPER_D = 0.5;
     const sheetMaterial = (side) => new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthTest: false, depthWrite: false, toneMapped: false, side });
@@ -2574,7 +2428,7 @@ export async function start(section) {
         const e = easeInOut(k);
         cam.eye.lerpVectors(eye0, pose.eye, e);
         cam.target.lerpVectors(target0, pose.target, e);
-      }, () => { camTween = null; catArrive(state.station); });
+      }, () => { camTween = null; });
     }
 
     // A chosen pass lifts a little off the desk and tilts towards the eye. It moves inside its holder, so a lift and
@@ -2888,7 +2742,6 @@ export async function start(section) {
       const was = { ...state };
       Object.assign(state, next);
       if (state.station !== 'rest' && state.station !== was.station) track('room_station_opened', { station: state.station });
-      if (state.station !== 'desk') catArrive(state.station);
       if (state.item && (state.item !== was.item || state.station !== was.station)) track('room_item_opened', { station: state.station, item: state.item });
       section.classList.toggle('is-away', state.station !== 'rest');
       backButton.hidden = state.station === 'rest';
@@ -3172,7 +3025,6 @@ export async function start(section) {
       const pose = poseFor(state);
       cam.eye.copy(pose.eye);
       cam.target.copy(pose.target);
-      catArrive(state.station);   // the camera has arrived, as at the end of its move
       invalidate();
     });
     const visibility = new IntersectionObserver(([entry]) => {
@@ -3291,7 +3143,7 @@ export async function start(section) {
               p.copy(c).add(i === 8 ? corner.set(0, 0, 0) : corner).sub(camera.position);
               ray.set(camera.position, p.clone().normalize());
               ray.far = p.length() - 0.002;
-              if (ray.intersectObject(decor, true).some((h) => isShown(h.object))) hidden++;
+              if (ray.intersectObject(decor, true).length) hidden++;
             }
             if (hidden) out.push({ pose: name, yaw, pitch, item: key, hidden });
           }
@@ -3360,7 +3212,7 @@ export async function start(section) {
     const zonePoint = (z) => (z ? paperPoint((z.x0 + z.x1) / 2, (z.y0 + z.y1) / 2) : null);
 
     window.__room = {
-      state: () => ({ ...state, cat: catState, spread: { ...spreadOut }, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip, linked: Object.keys(stationObjects).find((s) => stationObjects[s] === linked) ?? null, touring: !!tourTween, glowing: pulse && { name: pulse.name, amount: +pulse.amount.toFixed(2) } }),
+      state: () => ({ ...state, spread: { ...spreadOut }, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip, linked: Object.keys(stationObjects).find((s) => stationObjects[s] === linked) ?? null, touring: !!tourTween, glowing: pulse && { name: pulse.name, amount: +pulse.amount.toFixed(2) } }),
       tour: () => ({ ...tourLog }),
       music: () => ({ track: music.track + 1, playing: music.playing, time: audio ? +audio.currentTime.toFixed(2) : music.time, src: audio?.currentSrc || null, label: playLabel.textContent, trackText: trackLabel.textContent, led: led.material.emissiveIntensity }),
       seekMusic: (s) => { if (audio) audio.currentTime = s; },
@@ -3388,19 +3240,6 @@ export async function start(section) {
         invalidate();
       },
       decorBlocks,
-      cat: () => ({ state: catState, ...catLog, point: cat.visible ? screenPoint(centreOf(cat)) : null }),
-      setCatSlow: (k) => { catSlow = k; },
-      // Puts the cat in its seat at once, as after its climb, for the checks that need it there.
-      catSit: () => {
-        clearTimeout(catWait);
-        catWait = 0;
-        Object.assign(catPose, { x: CAT.seat[0], y: WIN.y0 + SILL_UP, z: CAT.seat[1], heading: CAT.face, scale: 1, sit: 1, curl: 1, crouch: 0, stretch: 0, hop: 0, walk: 0, flick: 0, twitch: 0 });
-        poseCat();
-        cat.visible = true;
-        if (catState !== 'sitting') sitCat();
-        renderer.shadowMap.needsUpdate = true;
-        invalidate();
-      },
       clock: () => clockLog.slice(),
       // Frames the bookshelf from in front for a close screenshot; any move of the room puts the camera back.
       lookAtBookshelf: () => {
