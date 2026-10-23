@@ -1321,11 +1321,12 @@ export async function start(section) {
       bodyGeometry.translate(0, B, -0.095);
       bodyGeometry.rotateY(-Math.PI / 2);   // the profile's x runs along z: the front faces +z
       phone.add(new THREE.Mesh(bodyGeometry, red));
-      // The dial on the sloped front: a disc with ten finger holes over a dark plate and a cream centre.
+      // The dial on the sloped front: a disc with ten finger holes over a dark plate and a cream centre. The holes sit
+      // 30 degrees apart, clear of each other, and leave a gap at the lower right for the finger stop.
       const dialShape = new THREE.Shape().absarc(0, 0, 0.05, 0, Math.PI * 2);
       for (let i = 0; i < 10; i++) {
-        const a = Math.PI * 0.35 + i * 0.13 * Math.PI;
-        dialShape.holes.push(new THREE.Path().absarc(Math.cos(a) * 0.035, Math.sin(a) * 0.035, 0.0082, 0, Math.PI * 2));
+        const a = Math.PI * 0.17 + i * (Math.PI / 6);
+        dialShape.holes.push(new THREE.Path().absarc(Math.cos(a) * 0.036, Math.sin(a) * 0.036, 0.0072, 0, Math.PI * 2));
       }
       const dial = new THREE.Mesh(new THREE.ExtrudeGeometry(dialShape, { depth: 0.004, bevelEnabled: false, curveSegments: 18 }), new THREE.MeshStandardMaterial({ color: 0xe9e2d4, metalness: 0.3, roughness: 0.3 }));
       const centre = new THREE.Mesh(new THREE.CylinderGeometry(0.019, 0.019, 0.006, 24), cream);
@@ -1334,15 +1335,23 @@ export async function start(section) {
       const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.054, 0.054, 0.003, 40), new THREE.MeshStandardMaterial({ color: 0x2b211c, roughness: 0.5 }));
       plate.rotation.x = Math.PI / 2;
       plate.position.z = -0.0015;
+      const stop = new THREE.Mesh(new RoundedBoxGeometry(0.012, 0.004, 0.004, 2, 0.0015), new THREE.MeshStandardMaterial({ color: 0xc9ccd2, metalness: 0.6, roughness: 0.3 }));
+      stop.position.set(Math.cos(-0.26) * 0.047, Math.sin(-0.26) * 0.047, 0.006);
+      stop.rotation.z = -0.26;
       const dialGroup = new THREE.Group();
-      dialGroup.add(plate, dial, centre);
+      dialGroup.add(plate, dial, centre, stop);
       const tilt = Math.atan2(slope.z0 - slope.z1, H);   // the slope leans back by this angle from upright
       const n = new THREE.Vector3(0, Math.sin(tilt), Math.cos(tilt));
       dialGroup.position.set(0, H / 2 + B, (slope.z0 + slope.z1) / 2).addScaledVector(n, B + 0.002);
       dialGroup.rotation.x = -tilt;
       phone.add(dialGroup);
       // The cradle's two prongs and the handset lying across them.
-      for (const side of [-1, 1]) box(0.024, 0.03, 0.032, red, side * 0.068, H + 2 * B + 0.01, -0.03, phone);
+      const prong = new RoundedBoxGeometry(0.022, 0.03, 0.03, 2, 0.007);
+      for (const side of [-1, 1]) {
+        const mesh = new THREE.Mesh(prong, red);
+        mesh.position.set(side * 0.068, H + 2 * B + 0.008, -0.03);
+        phone.add(mesh);
+      }
       const handle = new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.1, 0, 0), new THREE.Vector3(0, 0.03, 0), new THREE.Vector3(0.1, 0, 0)), 24, 0.0145, 10), red);
       handle.position.set(0, H + 2 * B + 0.038, -0.03);
       phone.add(handle);
