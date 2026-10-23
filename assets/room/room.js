@@ -2438,7 +2438,17 @@ export async function start(section) {
       renderer.shadowMap.needsUpdate = true;
     }
 
-    // #desk fans the passes out of the pile into the row, the top one first; leaving the desk stacks them back, the
+    // Piles first: at #desk the passes stay in their pile and at #letters the cards stay in the tray, until a click on
+    // the pile spreads them or a paper opens. Leaving the station stacks them again.
+    const spreadOut = { desk: false, letters: false };
+    function spreadPile(station) {
+      spreadOut[station] = true;
+      if (station === 'desk') arrangePasses(true);
+      else arrangeCards(true, null);
+      pointerDirty = true;
+    }
+
+    // Spreading fans the passes out of the pile into the row, the top one first; stacking them puts them back, the
     // bottom one first. Each rises a little on its way, as the business cards do.
     let spread = false;
     const passTweens = new Map();
@@ -2459,7 +2469,7 @@ export async function start(section) {
       });
     }
 
-    // #letters fans the business cards out above the desk; leaving it puts them back in the tray. A chosen card comes
+    // Spreading the cards fans them out above the desk; stacking them puts them back in the tray. A chosen card comes
     // forward a little.
     let fanned = false, chosenCard = null;
     const cardTweens = new Map();
@@ -2530,7 +2540,7 @@ export async function start(section) {
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
     const pointerAt = { x: 0, y: 0 };
-    let pointerIn = false, hovered = null, tipHeld = false;
+    let pointerIn = false, hovered = null, hoveredPile = null, tipHeld = false;
     const itemObjects = [...items.values()].map((e) => e.object);
     const targets = [paper, ...itemObjects, shelfParts, trayGroup, phone, print, laptop, lamp, radio, ...deskParts];
     const tintables = [...itemObjects, phone, print, laptop, radio];
@@ -2540,6 +2550,9 @@ export async function start(section) {
       awards: [...trophyItems, ...certItems, ...medalItems].map((e) => e.object), letters: cardItems.map((e) => e.object), contact: [phone],
     };
     let linked = [], pulse = null;   // the objects a station link lights, and the glow tour's pulse
+    // A pile counts as one object while it is stacked: the passes, and the cards with their tray.
+    const piles = { desk: stationObjects.desk, letters: stationObjects.letters };
+    const stacked = (hit) => hit?.kind === 'item' && !!piles[hit.station] && !spreadOut[hit.station];
 
     function pick() {
       if (!pointerIn) return null;
@@ -2556,7 +2569,7 @@ export async function start(section) {
     // An object takes the grey hover tint when it is hovered or its station link has the pointer or the focus, and the
     // glow tour's warm pulse on its turn. The LED keeps its own glow.
     function tint(object) {
-      const lift = object === hovered || linked.includes(object) ? HOVER : 0;
+      const lift = object === hovered || linked.includes(object) || hoveredPile?.includes(object) ? HOVER : 0;
       const warm = pulse?.objects.includes(object) ? pulse.amount : 0;
       const set = (color, grey) => color.setRGB(grey + warm, grey + warm * 0.82, grey + warm * 0.55);
       if (object === lamp) {
@@ -2576,17 +2589,18 @@ export async function start(section) {
 
     // A light tint marks what a click would act on. With a paper open, only the station's other items light up: a
     // click on one opens its paper, and any other click closes the paper. The shelf and the tray share the room's
-    // wood, so they take no tint; their items do.
+    // wood, so they take no tint; their items do. A stacked pile lights as a whole.
     function setHovered(hit) {
-      const lit = hit && (hit.kind !== 'item' || hit.id || hit.object === phone);
+      const pile = stacked(hit) ? piles[hit.station] : null;
+      const lit = hit && (pile || hit.kind !== 'item' || hit.id || hit.object === phone);
       const acts = hit && (paper.visible ? sameStation(hit) : ['item', 'lamp', 'laptop', 'screen', 'print', 'radio'].includes(hit.kind));
-      const next = acts && lit ? hit.object : null;
+      const next = acts && lit ? (pile ? pile[0] : hit.object) : null, nextPile = next && pile;
       showTip(acts ? hit : null);
-      if (next === hovered) return;
-      const was = hovered;
+      if (next === hovered && nextPile === hoveredPile) return;
+      const was = hoveredPile ?? [hovered];
       hovered = next;
-      if (was) tint(was);
-      if (next) tint(next);
+      hoveredPile = nextPile;
+      for (const object of [...was, ...(hoveredPile ?? [hovered])]) if (object) tint(object);
     }
 
     // The tooltip, next to the pointer while the camera rests: what an object is, in the page's own words, and what a
@@ -2602,7 +2616,8 @@ export async function start(section) {
       awards: clean(document.querySelector('.ed-topbar__nav a[href="certificates.html"]')),
       letters: clean(document.getElementById('team-title')),
     };
-    const CLOSER = 'Click to go closer', READ = 'Click to read', OPEN = 'Click to open';
+    const CLOSER = 'Click to go closer', READ = 'Click to read', OPEN = 'Click to open', SPREAD = 'Click to spread';
+    const pileNames = { desk: ['Boarding passes', 'passes'], letters: [groupNames.letters, 'cards'] };
     function tipRows(hit) {
       const at = state.station;
       if (hit.kind === 'lamp') return [['b', themeButton?.getAttribute('aria-label') || '']];
@@ -2611,6 +2626,7 @@ export async function start(section) {
       if (hit.kind === 'radio') return [['b', 'Music'], ['span', `Track ${music.track + 1} / ${TRACKS}`], ['i', music.playing ? 'Click to pause' : 'Click to play']];
       if (hit.kind !== 'item') return null;
       if (hit.object === phone) return [['b', clean(talkLink)], ['i', READ]];
+      if (stacked(hit)) return [['b', pileNames[hit.station][0]], ['span', `${piles[hit.station].length} ${pileNames[hit.station][1]}`], ['i', hit.station === at ? SPREAD : CLOSER]];
       if (!hit.id) return groupNames[hit.station] && hit.station !== at ? [['b', groupNames[hit.station]], ['i', CLOSER]] : null;
       return [...items.get(`${hit.station}/${hit.id}`).tip, ['i', hit.station === at ? READ : CLOSER]];
     }
@@ -2655,8 +2671,9 @@ export async function start(section) {
     }, { signal });
 
     // Two clicks, always: from rest or another station a click on an object goes to its station, and only there does
-    // an item open its paper. With a paper open, another item of the station opens its own paper at once. The
-    // telephone opens the contact paper at once. The radio plays or pauses the music at any station.
+    // an item open its paper. At #desk and #letters a click on the stacked pile spreads it first. With a paper open,
+    // another item of the station opens its own paper at once. The telephone opens the contact paper at once. The
+    // radio plays or pauses the music at any station.
     const sameStation = (hit) => hit?.kind === 'item' && !!hit.id && hit.station === state.station;
     canvas.addEventListener('click', (event) => {
       setPointer(event);
@@ -2678,6 +2695,7 @@ export async function start(section) {
       else if (hit.kind === 'print' && at === 'desk') cvLink.click();
       else if (hit.kind === 'print' || hit.kind === 'desk') { if (at !== 'desk') go('desk'); }
       else if (hit.kind === 'item' && hit.station !== at) go(hit.station);
+      else if (stacked(hit)) spreadPile(at);
       else if (hit.kind === 'item' && hit.id) go(`${hit.station}/${hit.id}`);
     }, { signal });
 
@@ -2723,8 +2741,10 @@ export async function start(section) {
       }
       const pass = (s) => (s.station === 'desk' ? s.item : null);
       if (pass(was) !== pass(state)) { lift(pass(was), false); lift(pass(state), true); }
-      arrangePasses(state.station === 'desk');
-      arrangeCards(state.station === 'letters', state.station === 'letters' ? state.item : null);
+      // A paper spreads its pile; leaving a station stacks it.
+      for (const station of ['desk', 'letters']) spreadOut[station] = state.station === station && (spreadOut[station] || !!state.item);
+      arrangePasses(spreadOut.desk);
+      arrangeCards(spreadOut.letters, state.station === 'letters' ? state.item : null);
       const key = keyOf(state);
       showPaper(key);
       if (key) announce(key);
@@ -3156,7 +3176,7 @@ export async function start(section) {
     const zonePoint = (z) => (z ? paperPoint((z.x0 + z.x1) / 2, (z.y0 + z.y1) / 2) : null);
 
     window.__room = {
-      state: () => ({ ...state, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip, linked: Object.keys(stationObjects).find((s) => stationObjects[s] === linked) ?? null, touring: !!tourTween, glowing: pulse && { name: pulse.name, amount: +pulse.amount.toFixed(2) } }),
+      state: () => ({ ...state, spread: { ...spreadOut }, pass: state.station === 'desk' ? state.item : null, settled: tweens.size === 0, view: shown.key, viewFile: shown.file, page: paperState.page, hover: hovered?.userData.kind === 'item' ? `${hovered.userData.station}/${hovered.userData.id}` : hovered?.userData.kind ?? null, tip: !tip.hidden, flipping: !!paperState.flip, linked: Object.keys(stationObjects).find((s) => stationObjects[s] === linked) ?? null, touring: !!tourTween, glowing: pulse && { name: pulse.name, amount: +pulse.amount.toFixed(2) } }),
       tour: () => ({ ...tourLog }),
       music: () => ({ track: music.track + 1, playing: music.playing, time: audio ? +audio.currentTime.toFixed(2) : music.time, src: audio?.currentSrc || null, label: playLabel.textContent, trackText: trackLabel.textContent, led: led.material.emissiveIntensity }),
       seekMusic: (s) => { if (audio) audio.currentTime = s; },
