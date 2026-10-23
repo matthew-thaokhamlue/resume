@@ -1011,11 +1011,11 @@
   .ed-room__stage, .ed-room__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .ed-room__stage canvas { display: block; opacity: 0; transition: opacity 0.6s var(--ed-ease-soft); }
   .ed-room.is-ready .ed-room__stage canvas { opacity: 1; }
-  /* the intro sits on the left over a soft gradient; room.js adds is-away at a station, where the paper takes that side */
-  .ed-room__intro { position: absolute; left: 0; top: 0; bottom: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; width: min(36rem, 46%); padding: 0 5rem 0 var(--ed-gutter-x); background: linear-gradient(90deg, rgba(var(--ed-bg-rgb), 0.9), rgba(var(--ed-bg-rgb), 0.7) 60%, rgba(var(--ed-bg-rgb), 0)); pointer-events: none; transition: opacity var(--ed-d-base) var(--ed-ease-soft), visibility var(--ed-d-base); }
+  /* the intro sits at the lower left on a small blurred block, clear of the poster wall; room.js adds is-away at a station */
+  .ed-room__intro { position: absolute; left: var(--ed-gutter-x); bottom: 24px; z-index: 1; max-width: min(34rem, calc(100% - 2 * var(--ed-gutter-x))); padding: 18px 24px 20px; border-radius: 16px; background: rgba(var(--ed-bg-rgb), 0.84); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: var(--ed-card-shadow); pointer-events: none; transition: opacity var(--ed-d-base) var(--ed-ease-soft), visibility var(--ed-d-base); }
   .ed-room.is-away .ed-room__intro { opacity: 0; visibility: hidden; }
-  .ed-room__name { margin: 0; font-family: var(--ed-display); font-size: clamp(1.6rem, 2.6vw, 2.4rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; color: var(--ed-ink); }
-  .ed-room__cue { margin: 14px 0 0; max-width: 30ch; font-size: 1.05rem; line-height: 1.45; color: var(--ed-ink-soft); }
+  .ed-room__name { margin: 0; font-family: var(--ed-display); font-size: clamp(1.4rem, 2vw, 2rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; color: var(--ed-ink); }
+  .ed-room__cue { margin: 10px 0 0; max-width: 44ch; font-size: 1.05rem; line-height: 1.45; color: var(--ed-ink-soft); }
   .ed-room__passes { margin: 0; padding: 0; list-style: none; }
   /* The pass buttons stay hidden on screen until one has focus; then it shows at the bottom left with the site focus ring. */
   .ed-room__pass { position: absolute; left: var(--ed-gutter-x); bottom: 24px; z-index: 2; max-width: calc(100% - 2 * var(--ed-gutter-x)); padding: 10px 16px; border: 0; border-radius: 10px; background: var(--ed-bg); color: var(--ed-ink); font: inherit; font-size: 0.95rem; text-align: left; box-shadow: var(--ed-card-shadow); }
@@ -1026,6 +1026,12 @@
   .ed-room__back[hidden] { display: none; }
   .ed-room__back:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 3px; }
   .ed-room__key { padding: 1px 6px; border: 1px solid var(--ed-hairline); border-radius: 5px; font-family: var(--ed-mono); font-size: 0.72rem; color: var(--ed-ink-soft); }
+  /* the pass tooltip: room.js places it next to the pointer and hides it on a click and during camera moves; screen readers use the hidden pass buttons */
+  .ed-room__tip { position: absolute; left: 0; top: 0; z-index: 4; max-width: 340px; padding: 10px 14px; border: 1px solid var(--ed-hairline); border-radius: 10px; background: var(--ed-bg); color: var(--ed-ink); box-shadow: var(--ed-card-shadow); font-size: 0.875rem; line-height: 1.4; pointer-events: none; }
+  .ed-room__tip[hidden] { display: none; }
+  .ed-room__tip b { display: block; font-weight: 600; }
+  .ed-room__tip b:not(:first-child) { margin-top: 8px; }
+  .ed-room__tip span { display: block; color: var(--ed-ink-soft); }
 
 /* ── editorial-results (home) ── */
   .ed-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 56px; border-top: 1px solid var(--ed-hairline); }

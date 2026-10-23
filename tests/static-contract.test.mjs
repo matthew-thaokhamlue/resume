@@ -709,7 +709,7 @@ test('the seven testimonial tiles keep exact excerpts and share the existing dia
 });
 
 // The 3D room (behind ?room=1): the gate, the markup, the module files, the role sections and the hero hooks.
-const ROOM_STATIONS = ['desk', 'laptop'];
+const ROOM_STATIONS = ['desk', 'laptop', 'awards', 'projects', 'letters', 'contact'];
 
 test('index.html loads the room gate right after theme.js, and #room starts hidden with no inline script', () => {
   const html = readText('index.html');
@@ -776,6 +776,12 @@ test('the boarding passes name role sections that exist, and views that exist wi
     assert.match(js, new RegExp(`'${escapeRegExp(view)}': \\{ u: \\[`), `${id}: VIEWS has no landmark for ${view}`);
   }
   assert.match(js, /roles: \['role-labtwin', 'role-labforward'\]/, 'the lab pass flies LabTwin, then Labforward');
+  const views = js.match(/const VIEWS = \{([\s\S]*?)\n\};/)[1];
+  const nights = [...views.matchAll(/'([^']+-day\.webp)': \{[^}]*night: '([^']+-night\.webp)' \}/g)];
+  assert.equal(nights.length, [...views.matchAll(/-day\.webp': \{/g)].length, 'every view has a night image');
+  for (const [, day, night] of nights) {
+    assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/views', night)), `the night view ${night} of ${day} is missing`);
+  }
 });
 
 test('no element in index.html has an id equal to a room station hash', () => {
@@ -815,4 +821,57 @@ test('the room finds the hero controls it clicks, and its Back button', () => {
   assert.ok(back, '#room holds a hidden Back button');
   assert.equal(back[1].replace(/<(span|kbd)[^>]*aria-hidden="true"[^>]*>[^<]*<\/\1>/g, '').trim(), 'Back', 'its accessible name is Back');
   assert.match(readText('assets/css/editorial.css'), /\.ed-room__back\[hidden\] \{ display: none; \}/, 'the hidden attribute wins over its display');
+});
+
+test('every credential the shelf names exists in certificates.html with a verify link', () => {
+  const js = readText('assets/room/room.js');
+  const certificates = readText('certificates.html');
+  const ids = [
+    ...js.match(/const CERTIFICATES = \[([^\]]+)\]/)[1].matchAll(/'(credential-\d+)'/g),
+    ...js.match(/const MEDALS = \[([\s\S]*?)\n\];/)[1].matchAll(/'(credential-\d+)'/g),
+  ].map((m) => m[1]);
+  assert.equal(ids.length, 14, 'five certificates and nine medals');
+  assert.equal(new Set(ids).size, 14, 'no credential shows twice');
+  for (const id of ids) {
+    const dialog = certificates.match(new RegExp(`<dialog class="ed-reveal" id="${id}"[\\s\\S]*?</dialog>`));
+    assert.ok(dialog, `certificates.html has no #${id}`);
+    assert.match(dialog[0], /<a class="ed-reveal__link" href="https:[^"]+" target="_blank"[^>]*data-ga-event="credential_verified" data-ga-params='\{[^']+\}'>/, `#${id} lost its verify link`);
+    assert.match(dialog[0], /<p><a class="ed-reveal__link" href="[^"]+">[^<]+<\/a><\/p>/, `#${id} lost its internal link`);
+  }
+  const education = readText('experience.html').match(/id="role-education">[\s\S]*?<\/section>/)[0];
+  assert.match(education, /class="ed-stage__desc">Master [^<]*\. [^<]*DAAD[^<]*\. Bachelor/, 'the DAAD line sits between the two degrees');
+});
+
+test('every poster names a portfolio reveal with a case page, and its image exists and is credited', () => {
+  const js = readText('assets/room/room.js');
+  const portfolio = readText('portfolio.html');
+  const credits = readText('assets/room/CREDITS.txt');
+  const posters = [...js.match(/const POSTERS = \[([\s\S]*?)\n\];/)[1].matchAll(/\{ id: '([a-z]+)', image: '([^']+)'/g)];
+  assert.equal(posters.length, 7);
+  for (const [, id, image] of posters) {
+    const dialog = portfolio.match(new RegExp(`<dialog class="ed-reveal" id="project-${id}"[\\s\\S]*?</dialog>`));
+    assert.ok(dialog, `portfolio.html has no #project-${id}`);
+    const links = [...dialog[0].matchAll(/<a class="ed-reveal__link" href="([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(links.length, 1, `#project-${id} links one case page`);
+    assert.ok(fs.existsSync(path.join(repoRoot, links[0])), `#project-${id} links ${links[0]}, which does not exist`);
+    assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/posters', image)), `posters/${image} is missing`);
+    assert.ok(credits.includes(image), `CREDITS.txt does not name ${image}`);
+  }
+  assert.match(credits, /generated for this site with Codex image generation/);
+  assert.match(credits, /screenshots of Matthew's own sites/);
+});
+
+test('the room reads four results and seven testimonials from the home page, and the links it clicks', () => {
+  const html = readText('index.html');
+  const js = readText('assets/room/room.js');
+  const results = [...html.matchAll(/<button class="ed-result" type="button" data-action="open-reveal" data-reveal="(receipt-[a-z]+)"[^>]*><b>[^<]+<\/b><span>[^<]+<\/span><small>[^<]+<\/small>/g)].map((m) => m[1]);
+  assert.equal(results.length, 4, 'four results');
+  for (const id of results) assert.match(html, new RegExp(`<dialog class="ed-reveal" id="${id}"`), `#${id} is missing`);
+  assert.ok(js.includes(`'.ed-result[data-reveal^="receipt-"]'`), 'room.js reads the result buttons');
+  const quotes = [...html.matchAll(/<button type="button" class="ed-tile ed-quote"[^>]*?data-name="[^"]+" data-role="[^"]*"\s+data-image="[^"]*"\s+data-text="[^"]+"/g)];
+  assert.equal(quotes.length, 7, 'seven testimonials');
+  assert.ok(js.includes(`'.ed-quote[data-name][data-text]'`), 'room.js reads the testimonial buttons');
+  assert.match(html, /<header class="ed-topbar">[\s\S]*?<a class="ed-btn ed-btn--accent" href="https:\/\/www\.linkedin\.com\/[^"]+"[^>]*\s+data-ga-event="external_link_clicked"/, 'the telephone clicks the LinkedIn link in the top bar');
+  assert.match(html, /<section class="ed-quotes" id="recommendations">[\s\S]*?<a class="ed-link" href="https:\/\/www\.linkedin\.com\/[^"]*recommendations[^"]*"/, 'the postcards click the recommendations link');
+  assert.ok(js.includes(`'.ed-topbar a[href*="linkedin.com"][data-ga-event]'`) && js.includes(`'#recommendations a[href*="linkedin.com"][href*="recommendations"]'`), 'room.js finds both links');
 });

@@ -20,7 +20,13 @@ classic_laptop (Classic Laptop), author: Arrangemonk
 Font: Patrick Hand, Copyright (c) 2010-2012 Patrick Wagesreiter. Licence: SIL Open Font License 1.1, in
 fonts/OFL-patrick-hand.txt. The paper's handwriting uses fonts/patrick-hand-latin.woff2.
 
-The wood grain is drawn in room.js on a canvas; it uses no texture file.
+The wood grain is drawn in room.js on a canvas; it uses no texture file. The trophies, the medals, the
+certificates, the letter tray, the postcards and the telephone are built in room.js; they use no model file.
+
+Posters (posters/): poster-labforward.webp, poster-labtwin.webp, poster-thryve.webp, poster-dataverse.webp and
+poster-training.webp were generated for this site with Codex image generation. shot-opppaths.webp and
+shot-remarcable.webp are screenshots of Matthew's own sites, Opportunity Paths and Remarcable Living; room.js
+sets each on a poster.
 
 three.js 0.169.0 (MIT licence, Copyright 2010-2024 Three.js Authors), vendored from
 https://cdn.jsdelivr.net/npm/three@0.169.0/: build/three.module.min.js,
