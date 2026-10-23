@@ -1,0 +1,21 @@
+Credits for the 3D room on the home page (assets/room/).
+
+Models from Poly Haven. Licence: CC0 1.0 Universal (public domain), https://polyhaven.com/license
+
+desk_lamp_arm_01 (Desk Lamp Arm 01), authors: Yann Kervran, Kuutti Siitonen
+  page: https://polyhaven.com/a/desk_lamp_arm_01
+  file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/desk_lamp_arm_01/desk_lamp_arm_01_1k.gltf (glTF, 1k textures)
+  licence: CC0 1.0
+
+potted_plant_02 (Potted Plant 02), authors: Rico Cilliers
+  page: https://polyhaven.com/a/potted_plant_02
+  file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/potted_plant_02/potted_plant_02_1k.gltf (glTF, 1k textures)
+  licence: CC0 1.0
+
+The wood grain and the cork are drawn in room.js on a canvas; they use no texture file.
+
+three.js 0.169.0 (MIT licence, Copyright 2010-2024 Three.js Authors), vendored from
+https://cdn.jsdelivr.net/npm/three@0.169.0/: build/three.module.min.js,
+examples/jsm/loaders/GLTFLoader.js, examples/jsm/utils/BufferGeometryUtils.js and
+examples/jsm/geometries/RoundedBoxGeometry.js. Each bare "three" import points to
+vendor/three.module.min.js instead.

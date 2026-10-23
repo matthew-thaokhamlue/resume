@@ -707,3 +707,87 @@ test('the seven testimonial tiles keep exact excerpts and share the existing dia
   assert.match(html, /<dialog id="testimonial-modal" aria-labelledby="modal-name" class="ed-reveal"/);
   assert.match(html, /class="ed-reveal__close"[^>]*data-action="close-testimonial"/);
 });
+
+// The 3D room (step 1, behind ?room=1): the gate, the markup, the module files and the role sections.
+const ROOM_STATIONS = ['tickets'];
+
+test('index.html loads the room gate right after theme.js, and #room starts hidden with no inline script', () => {
+  const html = readText('index.html');
+  assert.match(html, /<script src="assets\/js\/theme\.js\?v=[^"]+"><\/script>\r?\n<script src="assets\/js\/room-boot\.js\?v=[^"]+"><\/script>/);
+  assert.match(html, /<main>\r?\n\s*<section class="ed-room" id="room"/, '#room is the first child of <main>');
+  const room = html.match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/);
+  assert.ok(room, '#room exists');
+  assert.match(room[0], /^<section[^>]*\shidden>/, '#room starts hidden');
+  assert.doesNotMatch(room[1], /<script|\son[a-z]+=/i, '#room holds no inline script or handler');
+  assert.doesNotMatch(room[1], /<h1/i, 'the page keeps its one H1 in #top');
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /html\.room-on #room \{ display: block; \}/, 'only html.room-on shows the room');
+  assert.doesNotMatch(css.match(/\n {2}\.ed-room \{[^}]*\}/)[0], /display/, 'a display on .ed-room would override the hidden attribute');
+});
+
+test('room-boot.js returns before any work unless the query has room=1', () => {
+  const js = readText('assets/js/room-boot.js');
+  function run(search) {
+    const touched = [];
+    const trap = (name) => new Proxy({}, { get: (_, key) => { touched.push(`${name}.${String(key)}`); return undefined; } });
+    const window = new Proxy({ location: { search } }, { get: (target, key) => (key === 'location' ? target.location : (touched.push(`window.${String(key)}`), undefined)) });
+    try { vm.runInNewContext(js, { window, document: trap('document'), console: trap('console') }); } catch { /* a guard read undefined */ }
+    return touched;
+  }
+  for (const search of ['', '?room=0', '?room=10', '?force=1', '?x=1&room=12']) {
+    assert.deepEqual(run(search), [], `"${search}" must not reach the guards`);
+  }
+  assert.ok(run('?room=1').length > 0 && run('?x=1&room=1&force=1').length > 0, 'room=1 runs the guards');
+  assert.ok(js.includes('/swiftshader|llvmpipe|softpipe|lavapipe|software|basic render/i'), 'the renderer check');
+  assert.match(js, /getContext\('webgl2', force \? undefined : \{ failIfMajorPerformanceCaveat: true \}\)/, 'force=1 skips the renderer check only');
+  assert.match(js, /matchMedia\('\(pointer: fine\)'\)/);
+  assert.match(js, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+  assert.match(js, /import\(new URL\('assets\/room\/room\.js\?v=[^']+', document\.baseURI\)\.href\)/, 'the module URL resolves against the page');
+});
+
+test('every import under assets/room/ is relative and points at a file that exists', () => {
+  const dir = path.join(repoRoot, 'assets/room');
+  const files = fs.readdirSync(dir, { recursive: true }).filter((name) => name.endsWith('.js'));
+  assert.ok(files.includes('room.js'), 'assets/room/room.js exists');
+  for (const name of files) {
+    const js = fs.readFileSync(path.join(dir, name), 'utf8');
+    // Import and export statements start a line: "import ... from", "} from", "export ... from", or a bare import.
+    const specifiers = [...js.matchAll(/^\s*(?:import\b[^'"\n]*?\bfrom|\}\s*from|export\b[^'"\n]*?\bfrom|import)\s*(['"])([^'"]+)\1/gm)].map((m) => m[2]);
+    assert.ok(name !== 'room.js' || specifiers.length >= 3, 'room.js imports three.js and its addons');
+    for (const spec of specifiers) {
+      assert.ok(spec.startsWith('./') || spec.startsWith('../'), `${name} imports the bare specifier "${spec}"`);
+      assert.ok(fs.existsSync(path.resolve(dir, path.dirname(name), spec)), `${name} imports ${spec}, which does not exist`);
+    }
+  }
+});
+
+test('the boarding passes name role sections that exist, and views that exist with a landmark', () => {
+  const js = readText('assets/room/room.js');
+  const experience = readText('experience.html');
+  const table = js.match(/const PASSES = \[([\s\S]*?)\n\];/);
+  assert.ok(table, 'the PASSES table');
+  const passes = [...table[1].matchAll(/\{ id: '([a-z]+)', roles: \[([^\]]+)\][^}]*view: '([^']+)' \}/g)];
+  assert.deepEqual(passes.map((m) => m[1]), ['sema', 'lab', 'thryve', 'ey', 'education']);
+  for (const [, id, roles, view] of passes) {
+    for (const [, role] of roles.matchAll(/'([^']+)'/g)) {
+      assert.match(experience, new RegExp(`<section class="(?:ed-reveal__inner|ed-role)" id="${role}"`), `${id}: experience.html has no #${role}`);
+    }
+    assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/views', view)), `${id}: views/${view} is missing`);
+    assert.match(js, new RegExp(`'${escapeRegExp(view)}': \\{ u: \\[`), `${id}: VIEWS has no landmark for ${view}`);
+  }
+  assert.match(js, /roles: \['role-labtwin', 'role-labforward'\]/, 'the lab pass flies LabTwin, then Labforward');
+});
+
+test('no element in index.html has an id equal to a room station hash', () => {
+  const ids = [...readText('index.html').matchAll(/\bid\s*=\s*(["'])(.*?)\1/g)].map((m) => m[2]);
+  for (const station of ROOM_STATIONS) assert.ok(!ids.includes(station), `id="${station}" would open as a reveal target`);
+  for (const station of ROOM_STATIONS) assert.ok(readText('assets/room/room.js').includes(`#${station}`), `room.js reads the #${station} hash`);
+});
+
+test('assets/room/CREDITS.txt names the CC0 licence and every model', () => {
+  const credits = readText('assets/room/CREDITS.txt');
+  assert.match(credits, /CC0 1\.0/);
+  for (const model of fs.readdirSync(path.join(repoRoot, 'assets/room/models'))) {
+    assert.ok(credits.includes(`${model} (`), `CREDITS.txt does not credit ${model}`);
+  }
+});
