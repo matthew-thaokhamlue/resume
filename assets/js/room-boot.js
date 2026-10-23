@@ -1,17 +1,18 @@
 /*
- * room-boot.js — the gate for the 3D room on the home page (step 1, behind ?room=1).
+ * room-boot.js is the gate for the 3D room, the default home page in stage 2.
  *
- * Loaded in <head> right after theme.js. Without room=1 in the query it does nothing,
- * so no file under assets/room/ loads. With room=1 the room runs only with a fine
- * pointer, a window of at least 761 x 500 px, no reduced-motion request, and WebGL 2
- * on a hardware renderer. force=1 skips the renderer check only, for headless tests.
+ * index.html loads the gate in <head> right after theme.js.
+ * ?static=true keeps today's home page and loads nothing under assets/room/.
+ * Phones, small windows, reduced motion and no hardware WebGL 2 also keep today's home page.
+ * The room needs a fine pointer and a window of at least 761 x 500 px.
+ * force=1 skips the renderer check only, for headless tests.
  * When a check fails, the home page stays as it is. When all pass, html.room-on shows
  * #room at once, and the module loads after DOMContentLoaded. If the module, the
  * renderer, a model, the view or the experience.html fetch fails, the room hides again.
  */
 (() => {
   'use strict';
-  if (!/[?&]room=1\b/.test(window.location.search)) return;
+  if (/[?&]static=true\b/.test(window.location.search)) return;
 
   const root = document.documentElement;
   const force = /[?&]force=1\b/.test(window.location.search);

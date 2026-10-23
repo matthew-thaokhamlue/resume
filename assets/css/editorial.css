@@ -1003,7 +1003,7 @@
   /* the ring ignores touch drags, so the drag hint shows only with a hover pointer */
   @media (hover: none) { .ed-loop-hint { display: none; } }
 
-/* ── editorial-room (home, behind ?room=1) ── */
+/* ── editorial-room (the default home page) ── */
   /* room-boot.js sets html.room-on only when every guard passes. Without it, #room keeps its hidden attribute and takes no space.
      The intro line and the warm ground show at once; room.js adds is-ready on the first frame, and the canvas fades in. */
   html.room-on #room { display: block; }
@@ -1012,7 +1012,7 @@
   .ed-room__stage canvas { display: block; opacity: 0; transition: opacity 0.6s var(--ed-ease-soft); }
   .ed-room.is-ready .ed-room__stage canvas { opacity: 1; }
   /* The still image of the rest view shows at once, and the canvas fades in over it. To render the stills again after
-     a layout change: serve the repo, open index.html?room=1&force=1 in headless Chrome (SwiftShader) at 1440 x 900 with
+     a layout change: serve the repo, open index.html?force=1 in headless Chrome (SwiftShader) at 1440 x 900 with
      the cookie banner dismissed and localStorage room.toured set, keep the pointer off the room, hide every element in
      #room except the stage, and capture #room (1440 x 820) with CDP Page.captureScreenshot as WebP at quality 78. Do
      it once per theme, and save the files as assets/room/still-day.webp and assets/room/still-night.webp. */

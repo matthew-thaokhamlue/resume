@@ -3,7 +3,7 @@
  * boarding passes in a pile, a laptop, a CV printout, a tray of business cards, a telephone, a radio and a mug of
  * coffee. An awards shelf hangs on the right wall and framed posters on the left wall. A chosen item shows its text on
  * a lined paper held in front of the camera. Objects play short sounds on hover and on click. room-boot.js imports
- * this module behind ?room=1 and calls start(section). start() resolves after the first frame. Until then any failure
+ * this module when every guard passes and calls start(section). start() resolves after the first frame. Until then any failure
  * removes every listener and rejects, and room-boot.js hides the room. All text comes from the site's own pages:
  * experience.html, certificates.html and portfolio.html, read the same way as assets/js/ai-match.js, and the home page
  * itself. Where the home page has a link or a button, the room clicks it.
