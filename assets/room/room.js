@@ -63,11 +63,15 @@ const LINING = 0.025, CASING = 0.075, SILL_OUT = 0.16, FRAME_Z = -0.12, F = 0.06
 // The sill top sits above the opening's bottom face, so the two never share a plane.
 const SILL_UP = 0.006;
 const DESK = { x: 0.55, z: 0.47, w: 2.1, d: 0.9, top: 0.78 };
+// The desk's two pedestals, each w wide with four drawers sized by shares from the bottom up. The stiles, the rails
+// and the gap round each drawer front, the plinth's top and the feet's height are in metres.
+const PEDESTAL = { w: 0.63, shares: [137, 110, 97, 75], stile: 0.028, rail: 0.014, gap: 0.004, plinth: 0.1, feet: 0.058 };
+const LEATHER_INSET = 0.045;   // the leather top's inset from the rim
 // The passes lie in a row along the front of the desk with small gaps: a stub, a perforation and a body.
 const PASS = { w: 0.264, stub: 0.06, gap: 0.026, band: 0.012, r: 0.01, pad: 0.012, code: 0.05, company: 0.032, lift: 0.03 };
 const LAPTOP = { x: 0.55, z: 0.37, scale: 0.55, tilt: 0.2 };   // tilt: the lid leans back by this angle in radians
 // The CV printout lies at the telephone's front-left, between the laptop and the phone and behind the spread passes.
-const PRINT = { x: 0.93, z: 0.55, w: 0.15, h: 0.212, turn: 0.12 };
+const PRINT = { x: 0.89, z: 0.55, w: 0.15, h: 0.212, turn: 0.12 };
 const TRAY = { x: -0.31, z: 0.47, w: 0.27, d: 0.2, turn: -0.1 };
 const CARD = { w: 0.17, h: 0.11 };   // a business card: 85 x 55 mm, at twice the size
 const PHONE = { x: 1.2, z: 0.52, turn: -0.45 };
@@ -806,18 +810,22 @@ function drawNotes(notes, index, number = index, blank = false) {
 
 // ── Procedural textures and shapes ──
 
-function woodTexture() {
+// The colours of a wood: its base, its dark and light bands and its grain lines, and the seed of its pattern. The room
+// is walnut; the desk is a warmer, redder mahogany.
+const WALNUT = { base: '#93603a', dark: '120, 72, 38', light: '178, 122, 76', grain: '64, 34, 16', seed: 11 };
+const MAHOGANY = { base: '#a0503a', dark: '132, 60, 40', light: '172, 88, 60', grain: '108, 44, 28', seed: 13 };
+function woodTexture({ base, dark, light, grain, seed } = WALNUT) {
   const c = document.createElement('canvas');
   c.width = 1024;
   c.height = 512;
   const g = c.getContext('2d');
-  const rand = random(11);
-  g.fillStyle = '#93603a';
+  const rand = random(seed);
+  g.fillStyle = base;
   g.fillRect(0, 0, c.width, c.height);
   // Broad colour bands, then fine grain lines; whole sine cycles keep the texture seamless along x.
   for (let i = 0; i < 26; i++) {
     const y0 = rand() * c.height, amp = 4 + rand() * 14, cycles = 1 + Math.floor(rand() * 3), phase = rand() * 6.3, w = 10 + rand() * 40;
-    g.strokeStyle = rand() < 0.5 ? `rgba(120, 72, 38, ${0.25 + rand() * 0.3})` : `rgba(178, 122, 76, ${0.2 + rand() * 0.3})`;
+    g.strokeStyle = rand() < 0.5 ? `rgba(${dark}, ${0.25 + rand() * 0.3})` : `rgba(${light}, ${0.2 + rand() * 0.3})`;
     g.lineWidth = w;
     for (const dy of [-c.height, 0, c.height]) {
       g.beginPath();
@@ -827,7 +835,7 @@ function woodTexture() {
   }
   for (let i = 0; i < 220; i++) {
     const y0 = rand() * c.height, amp = 2 + rand() * 10, cycles = 1 + Math.floor(rand() * 3), phase = rand() * 6.3;
-    g.strokeStyle = `rgba(64, 34, 16, ${0.15 + rand() * 0.4})`;
+    g.strokeStyle = `rgba(${grain}, ${0.15 + rand() * 0.4})`;
     g.lineWidth = 0.8 + rand() * 2.4;
     g.beginPath();
     for (let x = 0; x <= c.width; x += 16) g.lineTo(x, y0 + Math.sin((x / c.width) * cycles * Math.PI * 2 + phase) * amp);
@@ -894,6 +902,36 @@ function plankTexture() {
     g.fillStyle = 'rgba(96, 62, 34, 0.55)';
     g.fillRect(b * w, 0, 2, S);   // the gap between two boards
   }
+  return c;
+}
+
+// The desk's leather, w x h metres: olive with faint mottling, a darker worn edge and a thin gold tooled line near the
+// edge.
+function leatherTexture(w, h) {
+  const c = document.createElement('canvas');
+  c.width = 2048;
+  c.height = Math.round((2048 * h) / w);
+  const g = c.getContext('2d'), rand = random(43), m = c.width / w;   // m: canvas px per metre
+  g.fillStyle = '#70683e';
+  g.fillRect(0, 0, c.width, c.height);
+  for (let i = 0; i < 500; i++) {
+    const x = rand() * c.width, y = rand() * c.height, r = 20 + rand() * 120;
+    const spot = g.createRadialGradient(x, y, 0, x, y, r);
+    spot.addColorStop(0, rand() < 0.5 ? `rgba(40, 40, 18, ${0.03 + rand() * 0.05})` : `rgba(160, 150, 96, ${0.03 + rand() * 0.04})`);
+    spot.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    g.fillStyle = spot;
+    g.fillRect(x - r, y - r, 2 * r, 2 * r);
+  }
+  for (let i = 0; i < 30000; i++) {
+    g.fillStyle = rand() < 0.5 ? 'rgba(30, 30, 10, 0.08)' : 'rgba(200, 190, 140, 0.06)';
+    g.fillRect(rand() * c.width, rand() * c.height, 1.5, 1.5);
+  }
+  g.strokeStyle = 'rgba(30, 28, 12, 0.35)';
+  g.lineWidth = 0.012 * m;
+  g.strokeRect(0, 0, c.width, c.height);
+  g.strokeStyle = '#c9a24e';
+  g.lineWidth = 0.0025 * m;
+  g.strokeRect(0.014 * m, 0.014 * m, c.width - 0.028 * m, c.height - 0.028 * m);
   return c;
 }
 
@@ -1255,14 +1293,104 @@ export async function start(section) {
     ];
     const SASH_OPEN = { x0: IN.x0 + F, x1: IN.x1 - F, y0: WIN.y0 + F, y1: IN.y1 - F };
 
-    // The desk under the window. A click on any part of it counts as the desk.
+    const texture = (source) => {
+      const map = new THREE.CanvasTexture(source);
+      map.colorSpace = THREE.SRGBColorSpace;
+      map.anisotropy = anisotropy;
+      return map;
+    };
+
+    // The desk under the window: a mahogany pedestal desk with a leather top. Each pedestal has four drawers and
+    // stands on a plinth with bracket feet; a shallow centre drawer sits over an arched kneehole. The wood renders as
+    // one mesh, the leather and the brass escutcheons as one each. A click on any part of it counts as the desk.
     const DX = { x0: DESK.x - DESK.w / 2, x1: DESK.x + DESK.w / 2, z0: DESK.z - DESK.d / 2, z1: DESK.z + DESK.d / 2 };
-    const deskParts = [woodBox(DX.x0, DX.x1, DESK.top - 0.04, DESK.top, DX.z0, DX.z1)];
-    for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
-      const x = DESK.x + sx * (DESK.w / 2 - 0.05), z = DESK.z + sz * (DESK.d / 2 - 0.05);
-      deskParts.push(woodBox(x - 0.025, x + 0.025, 0, DESK.top - 0.04, z - 0.025, z + 0.025));
+    function buildDesk() {
+      const { w: PW, shares, stile, rail, gap, plinth, feet } = PEDESTAL;
+      const front = DX.z1 - 0.025, back = DX.z0 + 0.01, under = 0.738;   // the carcase under the top's overhang
+      const mahoganyMap = texture(woodTexture(MAHOGANY));
+      mahoganyMap.wrapS = mahoganyMap.wrapT = THREE.RepeatWrapping;
+      const deskWood = new THREE.Group();
+      // A board of the desk. shade darkens it: the panel seen through the gap round each drawer front is dark.
+      const board = (x0, x1, y0, y1, z0, z1, round = 0.006, shade = 1) => { woodBox(x0, x1, y0, y1, z0, z1, deskWood, round).userData.shade = shade; };
+      // A shape cut from a board of the given depth; its grain runs along x or z at the boards' scale.
+      function cutBoard(shape, depth, x, z, alongZ = false) {
+        const geometry = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false });
+        if (alongZ) geometry.rotateY(-Math.PI / 2);
+        const mesh = new THREE.Mesh(geometry);
+        mesh.position.set(x, 0, z);
+        mesh.userData.metres = true;
+        deskWood.add(mesh);
+      }
+      // The top: a slab with a rounded edge over a thin moulding.
+      board(DX.x0, DX.x1, 0.752, DESK.top, DX.z0, DX.z1, 0.008);
+      board(DX.x0 + 0.01, DX.x1 - 0.01, under, 0.7525, DX.z0, DX.z1 - 0.01, 0.005);
+      // The drawer openings of a pedestal, [y0, y1] from the bottom, with a rail between two.
+      const tall = under - plinth - 5 * rail, sum = shares.reduce((a, b) => a + b);
+      const rows = [];
+      for (let i = 0, y = plinth + rail; i < shares.length; i++) {
+        const h = (tall * shares[i]) / sum;
+        rows.push([y, y + h]);
+        y += h + rail;
+      }
+      // A drawer front in its opening, a little proud of the frame, with its escutcheon high on the front.
+      const keys = [];
+      function drawer(x0, x1, [y0, y1]) {
+        board(x0 + gap, x1 - gap, y0 + gap, y1 - gap, front - 0.006, front + 0.004, 0.004);
+        keys.push([(x0 + x1) / 2, Math.max((y0 + y1) / 2, y1 - 0.045)]);
+      }
+      // The bracket base of one side, length l: a foot at each end, the apron between them cut away in an ogee.
+      const bracket = (l, f = 0.075, c = 0.036) => new THREE.Shape().moveTo(0, 0).lineTo(f, 0)
+        .bezierCurveTo(f + 0.006, c * 0.8, f + 0.014, c * 0.3, f + 0.03, c).lineTo(l - f - 0.03, c)
+        .bezierCurveTo(l - f - 0.014, c * 0.3, l - f - 0.006, c * 0.8, l - f, 0)
+        .lineTo(l, 0).lineTo(l, feet).lineTo(0, feet).closePath();
+      for (const x0 of [DX.x0 + 0.025, DX.x1 - 0.025 - PW]) {
+        const x1 = x0 + PW, sx0 = x0 + stile, sx1 = x1 - stile;
+        board(x0, x1, plinth, under, front - 0.02, front - 0.01, 0.002, 0.35);
+        for (const x of [x0, x1 - 0.02]) board(x, x + 0.02, plinth, under, back, front - 0.01);
+        for (const x of [x0, sx1]) board(x, x + stile, plinth, under, front - 0.01, front, 0.003);
+        board(sx0, sx1, plinth, plinth + rail, front - 0.01, front, 0.003);
+        for (const [, y1] of rows) board(sx0, sx1, y1, y1 + rail, front - 0.01, front, 0.003);
+        for (const row of rows) drawer(sx0, sx1, row);
+        // The plinth, and under it the bracket feet round a dark core that shows through the cut-outs.
+        const px0 = x0 - 0.012, px1 = x1 + 0.012, pz1 = front + 0.012;
+        board(px0, px1, feet, plinth, back, pz1, 0.008);
+        board(x0 + 0.02, x1 - 0.02, 0.004, feet, back, front - 0.01, 0.002, 0.25);
+        cutBoard(bracket(px1 - px0), 0.018, px0, pz1 - 0.018);
+        cutBoard(bracket(pz1 - back), 0.018, px0 + 0.018, back, true);
+        cutBoard(bracket(pz1 - back), 0.018, px1, back, true);
+      }
+      // The centre drawer between the pedestals, and under it the apron with its arch: a flat top and round corners.
+      const kx0 = DX.x0 + 0.025 + PW, kx1 = DX.x1 - 0.025 - PW, frieze = rows[shares.length - 2][1], r = 0.1;
+      board(kx0, kx1, frieze, under, front - 0.02, front - 0.01, 0.002, 0.35);
+      for (const y of [frieze, under - rail]) board(kx0, kx1, y, y + rail, front - 0.01, front, 0.003);
+      drawer(kx0, kx1, rows[shares.length - 1]);
+      const w = kx1 - kx0, low = frieze - 0.035 - r;
+      cutBoard(new THREE.Shape().moveTo(0, frieze).lineTo(w, frieze).lineTo(w, low)
+        .absarc(w - r, low, r, 0, Math.PI / 2, false).lineTo(r, low + r)
+        .absarc(r, low, r, Math.PI / 2, Math.PI, false).closePath(), 0.018, kx0, front - 0.018);
+      board(kx0, kx1, feet, frieze, back, back + 0.015, 0.003, 0.7);   // the kneehole's back
+      deskWood.updateMatrixWorld(true);
+      const deskMesh = new THREE.Mesh(mergeGeometries(deskWood.children.map((m) => {
+        const geometry = m.geometry.applyMatrix4(m.matrixWorld), p = geometry.attributes.position;
+        if (m.userData.metres) for (let i = 0; i < p.count; i++) geometry.attributes.uv.setXY(i, (p.getX(i) + p.getZ(i)) / 0.9, p.getY(i) / 0.16);
+        return geometry.setAttribute('color', new THREE.Float32BufferAttribute(new Array(p.count * 3).fill(m.userData.shade ?? 1), 3));
+      })), new THREE.MeshStandardMaterial({ map: mahoganyMap, vertexColors: true, roughness: 0.5 }));
+      // The leather lies inside the rim, a hair above the wood and below everything on the desk.
+      const leatherSize = [DESK.w - 2 * LEATHER_INSET, DESK.d - 2 * LEATHER_INSET];
+      const leather = new THREE.Mesh(new THREE.PlaneGeometry(...leatherSize).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: texture(leatherTexture(...leatherSize)), roughness: 0.7 }));
+      leather.position.set(DESK.x, DESK.top + 0.0004, DESK.z);
+      // A brass escutcheon on each drawer: a round plate with a dark keyhole.
+      const plate = new THREE.CylinderGeometry(0.017, 0.017, 0.002, 24).rotateX(Math.PI / 2);
+      const keyhole = new THREE.ShapeGeometry(new THREE.Shape().moveTo(-0.0024, -0.0065).lineTo(0.0024, -0.0065)
+        .absarc(0, 0.0025, 0.003, -1.1, Math.PI + 1.1, false).closePath()).translate(0, 0, 0.0011);
+      for (const [geometry, shade] of [[plate, 1], [keyhole, 0.08]]) geometry.setAttribute('color', new THREE.Float32BufferAttribute(new Array(geometry.attributes.position.count * 3).fill(shade), 3));
+      const brass = new THREE.InstancedMesh(mergeGeometries([plate, keyhole]), new THREE.MeshStandardMaterial({ color: 0xe2b85e, metalness: 0.08, roughness: 0.35, vertexColors: true }), keys.length);
+      keys.forEach(([x, y], i) => brass.setMatrixAt(i, new THREE.Matrix4().makeTranslation(x, y, front + 0.005)));
+      return [deskMesh, leather, brass];
     }
+    const deskParts = buildDesk();
     for (const part of deskParts) part.userData.kind = 'desk';
+    scene.add(...deskParts);
 
     scene.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
     ceiling.castShadow = false;
@@ -1296,12 +1424,6 @@ export async function start(section) {
     const education = passes.find((p) => p.id === 'education').legs[0];
     if (!education.daad || education.degrees.length < 2) throw new Error('experience.html lost the DAAD line or a degree');
 
-    const texture = (source) => {
-      const map = new THREE.CanvasTexture(source);
-      map.colorSpace = THREE.SRGBColorSpace;
-      map.anisotropy = anisotropy;
-      return map;
-    };
     // A flat face that shows a canvas. It glows a little, like the passes, so it stays readable at night.
     const faces = [];
     function faceMesh(face, { alphaTest = 0, roughness = 0.85, side = THREE.FrontSide, lit = 1 } = {}) {
@@ -3241,6 +3363,12 @@ export async function start(section) {
       },
       decorBlocks,
       clock: () => clockLog.slice(),
+      // Frames the right pedestal and the leather from in front and above for a close screenshot.
+      lookAtDesk: () => {
+        cam.target.set(1.05, 0.5, 0.6);
+        cam.eye.set(1.75, 1.2, 2.05);
+        invalidate();
+      },
       // Frames the bookshelf from in front for a close screenshot; any move of the room puts the camera back.
       lookAtBookshelf: () => {
         cam.target.set((BOOKSHELF.x0 + BOOKSHELF.x1) / 2, 1.08, 0.1);
@@ -3248,7 +3376,8 @@ export async function start(section) {
         invalidate();
       },
       screenPoint: () => screenPoint(centreOf(screen)),
-      printPoint: () => screenPoint(print.getWorldPosition(new THREE.Vector3())),
+      // A point on the CV printout: u and v run from -1 to 1 across its width and up its height; 0, 0 is its centre.
+      printPoint: (u = 0, v = 0) => screenPoint(print.localToWorld(new THREE.Vector3((u * PRINT.w) / 2, (v * PRINT.h) / 2, 0))),
       deskPoint: () => screenPoint(new THREE.Vector3(DX.x1 - 0.12, DESK.top, DX.z0 + 0.12)),
       lampPoint: () => screenPoint(lampLight.getWorldPosition(new THREE.Vector3())),
       linkPoint: (i = 0) => zonePoint(paperState.zones.links.find((z) => z.link === i)),

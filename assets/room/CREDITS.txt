@@ -31,11 +31,11 @@ Music: five instrumental tracks generated for this site with ElevenLabs (Eleven 
 Font: Patrick Hand, Copyright (c) 2010-2012 Patrick Wagesreiter. Licence: SIL Open Font License 1.1, in
 fonts/OFL-patrick-hand.txt. The paper's handwriting uses fonts/patrick-hand-latin.woff2.
 
-The wood grain is drawn in room.js on a canvas; it uses no texture file. The trophies, the medals, the
+The wood grain is drawn in room.js on a canvas; it uses no texture file. The desk, the trophies, the medals, the
 certificates, the card tray, the business cards, the telephone, the radio and the music notes are built in room.js;
 they use no model or image file. So are the decor: the bookshelf with its books, vases and basket, the trailing
-plants, the tall plant with its broad leaves, the skirting boards and the wall clock. The floorboards, the rug, the
-basket weave, the leaves and the clock face are drawn in room.js on canvases.
+plants, the tall plant with its broad leaves, the skirting boards and the wall clock. The floorboards, the desk's
+mahogany and leather, the rug, the basket weave, the leaves and the clock face are drawn in room.js on canvases.
 
 Posters (posters/): poster-labforward.webp, poster-labtwin.webp, poster-thryve.webp, poster-dataverse.webp and
 poster-training.webp were generated for this site with Codex image generation. shot-opppaths.webp and
