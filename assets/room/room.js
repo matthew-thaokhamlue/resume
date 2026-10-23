@@ -3171,6 +3171,7 @@ export async function start(section) {
       const pose = poseFor(state);
       cam.eye.copy(pose.eye);
       cam.target.copy(pose.target);
+      catArrive(state.station);   // the camera has arrived, as at the end of its move
       invalidate();
     });
     const visibility = new IntersectionObserver(([entry]) => {
