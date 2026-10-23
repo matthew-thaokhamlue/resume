@@ -114,6 +114,7 @@
     #ai-match-modal[open] { display: flex; }
   </style>
 <script src="assets/js/theme.js?v=20260615"></script>
+<script src="assets/js/room-boot.js?v=20261023-room"></script>
 </head>
 
 <body class="ed-page ed-home-page">
@@ -157,6 +158,15 @@
   </div>
 
   <main>
+    <section class="ed-room" id="room" aria-label="Room with boarding passes" hidden>
+      <div class="ed-room__stage" data-room-stage></div>
+      <div class="ed-room__intro">
+        <p class="ed-room__name">Matthew Thaokhamlue · Senior AI Product Manager</p>
+        <p class="ed-room__cue">Click the boarding passes by the window to see where I have worked.</p>
+      </div>
+      <ul class="ed-room__passes" aria-label="Boarding passes" data-room-passes></ul>
+      <div class="ed-sr-only" aria-live="polite" data-room-live></div>
+    </section>
     <section class="ed-home-section ed-home-overview" id="top" aria-labelledby="home-title">
       <div class="ed-shell ed-home-overview__inner">
         <div class="ed-home-hero">

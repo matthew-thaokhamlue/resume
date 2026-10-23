@@ -1003,6 +1003,25 @@
   /* the ring ignores touch drags, so the drag hint shows only with a hover pointer */
   @media (hover: none) { .ed-loop-hint { display: none; } }
 
+/* ── editorial-room (home, behind ?room=1) ── */
+  /* room-boot.js sets html.room-on only when every guard passes. Without it, #room keeps its hidden attribute and takes no space.
+     The intro line and the warm ground show at once; room.js adds is-ready on the first frame, and the canvas fades in. */
+  html.room-on #room { display: block; }
+  .ed-room { position: relative; height: var(--ed-home-screen-h); overflow: hidden; isolation: isolate; background: var(--ed-accent-tint); scroll-snap-align: start; }
+  .ed-room__stage, .ed-room__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ed-room__stage canvas { display: block; opacity: 0; transition: opacity 0.6s var(--ed-ease-soft); }
+  .ed-room.is-ready .ed-room__stage canvas { opacity: 1; }
+  /* the intro sits on the left over a soft gradient; room.js adds is-away at a station, where the paper takes that side */
+  .ed-room__intro { position: absolute; left: 0; top: 0; bottom: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; width: min(36rem, 46%); padding: 0 5rem 0 var(--ed-gutter-x); background: linear-gradient(90deg, rgba(var(--ed-bg-rgb), 0.9), rgba(var(--ed-bg-rgb), 0.7) 60%, rgba(var(--ed-bg-rgb), 0)); pointer-events: none; transition: opacity var(--ed-d-base) var(--ed-ease-soft), visibility var(--ed-d-base); }
+  .ed-room.is-away .ed-room__intro { opacity: 0; visibility: hidden; }
+  .ed-room__name { margin: 0; font-family: var(--ed-display); font-size: clamp(1.6rem, 2.6vw, 2.4rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; color: var(--ed-ink); }
+  .ed-room__cue { margin: 14px 0 0; max-width: 30ch; font-size: 1.05rem; line-height: 1.45; color: var(--ed-ink-soft); }
+  .ed-room__passes { margin: 0; padding: 0; list-style: none; }
+  /* The pass buttons stay hidden on screen until one has focus; then it shows at the bottom left with the site focus ring. */
+  .ed-room__pass { position: absolute; left: var(--ed-gutter-x); bottom: 24px; z-index: 2; max-width: calc(100% - 2 * var(--ed-gutter-x)); padding: 10px 16px; border: 0; border-radius: 10px; background: var(--ed-bg); color: var(--ed-ink); font: inherit; font-size: 0.95rem; text-align: left; box-shadow: var(--ed-card-shadow); }
+  .ed-room__pass:not(:focus) { width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .ed-room__pass:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 3px; }
+
 /* ── editorial-results (home) ── */
   .ed-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 56px; border-top: 1px solid var(--ed-hairline); }
   .ed-result { position: relative; display: grid; align-content: start; gap: 6px; padding: 28px 20px 8px 0; border: 0; background: none; color: var(--ed-ink); font: inherit; text-align: left; cursor: pointer; }
