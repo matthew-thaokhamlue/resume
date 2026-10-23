@@ -1,6 +1,6 @@
 /*
  * room.js — the 3D room on the home page: a wide room with a wooden window above a long desk. On the desk lie five
- * boarding passes, a laptop, a CV printout, a tray of business cards and a telephone. An awards shelf hangs on
+ * boarding passes in a pile, a laptop, a CV printout, a tray of business cards, a telephone and a radio. An awards shelf hangs on
  * the right wall and framed posters on the left wall. A chosen item shows its text on a lined paper held in front of
  * the camera. room-boot.js imports this module behind ?room=1 and calls start(section). start() resolves after the
  * first frame. Until then any failure removes every listener and rejects, and room-boot.js hides the room. All text
@@ -66,7 +66,7 @@ const DESK = { x: 0.55, z: 0.47, w: 2.1, d: 0.9, top: 0.78 };
 const PASS = { w: 0.264, stub: 0.06, gap: 0.026, band: 0.012, r: 0.01, pad: 0.012, code: 0.05, company: 0.032, lift: 0.03 };
 const LAPTOP = { x: 0.55, z: 0.37, scale: 0.55, tilt: 0.2 };   // tilt: the lid leans back by this angle in radians
 const PRINT = { x: 0.04, z: 0.35, w: 0.21, h: 0.297, turn: 0.16 };
-const TRAY = { x: -0.31, z: 0.4, w: 0.27, d: 0.2, turn: -0.1 };
+const TRAY = { x: -0.31, z: 0.47, w: 0.27, d: 0.2, turn: -0.1 };
 const CARD = { w: 0.17, h: 0.11 };   // a business card: 85 x 55 mm, at twice the size
 const PHONE = { x: 1.2, z: 0.52, turn: -0.45 };
 // The awards shelf on the right wall and the poster wall on the left wall, as ranges along the wall (z).
@@ -89,9 +89,13 @@ const MOVE_MS = 900, FADE_MS = 400, NIGHT_FADE_MS = 600, FLIP_MS = 450;
 const DESK_EYE = { up: 0.94, back: 0.86, refH: 820 };
 // Rest: the whole room from beyond its open front, so both side walls show.
 const REST = { eye: [0.55, 1.62, 5.3], target: [0.55, 1.28, 0] };
-// The cassette player stands at the right end of the window sill, in front of the casing, so it never hides a pane.
-const CASSETTE = { x: 1.335, z: 0.07, turn: -0.35, scale: 0.9 };
-const TRACKS = 4;
+// The radio stands at the back left corner of the desk, in front of the sill and below it, so it never hides a pane.
+const RADIO = { x: -0.3, z: 0.245, turn: 0.22, w: 0.26, h: 0.15, d: 0.12 };
+// The play order of the four tracks by file number: the 1940s swing track, track-3.mp3, plays first.
+const PLAY_ORDER = [3, 1, 2, 4];
+const TRACKS = PLAY_ORDER.length;
+// Music notes rise from the radio while it plays: one every NOTES.every ms, each for NOTES.life ms, at most NOTES.max.
+const NOTES = { every: 600, life: 2000, max: 6, rise: 0.3, size: 0.06, fps: 30 };
 // The glow tour lights each station's objects in turn for TOUR_STEP_MS, up to PULSE, once the canvas has faded in
 // (CANVAS_FADE_MS, as in editorial.css). HOVER is the hover tint.
 const HOVER = 0.12, PULSE = 0.3, TOUR_STEP_MS = 600, CANVAS_FADE_MS = 600;
@@ -579,6 +583,91 @@ function cardFace(quote, photo) {
   return f;
 }
 
+// The radio's speaker grille: gold metal with a fine grid of round holes.
+function grilleFace(w, h) {
+  const f = new Face(w, h, 2400), { g, ppm: p } = f;
+  const grad = g.createLinearGradient(0, 0, f.canvas.width, f.canvas.height);
+  grad.addColorStop(0, '#b8924a');
+  grad.addColorStop(0.5, '#dcbf7e');
+  grad.addColorStop(1, '#b08944');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, f.canvas.width, f.canvas.height);
+  g.fillStyle = 'rgba(40, 28, 14, 0.78)';
+  const step = 0.0042 * p, r = 0.0011 * p;
+  for (let y = step / 2; y < f.canvas.height; y += step) for (let x = step / 2; x < f.canvas.width; x += step) { g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill(); }
+  return f;
+}
+
+// The radio's right panel: brushed gold, its streaks running across.
+function panelFace(w, h) {
+  const f = new Face(w, h, 2400), { g } = f, rand = random(17);
+  g.fillStyle = '#d7bb7c';
+  g.fillRect(0, 0, f.canvas.width, f.canvas.height);
+  for (let y = 0; y < f.canvas.height; y += 2) {
+    g.fillStyle = `rgba(${rand() < 0.5 ? '255, 240, 200' : '120, 90, 40'}, ${0.05 + rand() * 0.12})`;
+    g.fillRect(0, y, f.canvas.width, 1 + rand() * 2);
+  }
+  return f;
+}
+
+// The tuning dial's ring: dark brown with a ring of cream tick marks, every fifth one longer. No numbers.
+function dialFace(r) {
+  const f = new Face(2 * r, 2 * r, 2400), { g } = f;
+  const R = f.canvas.width / 2;
+  g.beginPath();
+  g.arc(R, R, R * 0.98, 0, Math.PI * 2);
+  g.fillStyle = '#3b2518';
+  g.fill();
+  g.strokeStyle = '#efe2c4';
+  g.lineCap = 'round';
+  for (let i = 0; i < 40; i++) {
+    const a = (i / 40) * Math.PI * 2, long = i % 5 === 0;
+    g.lineWidth = R * (long ? 0.035 : 0.022);
+    g.beginPath();
+    g.moveTo(R + Math.cos(a) * R * (long ? 0.74 : 0.8), R + Math.sin(a) * R * (long ? 0.74 : 0.8));
+    g.lineTo(R + Math.cos(a) * R * 0.9, R + Math.sin(a) * R * 0.9);
+    g.stroke();
+  }
+  return f;
+}
+
+// A music note in white ink, tinted by its sprite: an eighth note, a beamed pair or a sixteenth.
+function noteArt(kind) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const g = c.getContext('2d');
+  g.fillStyle = '#ffffff';
+  const head = (x, y) => { g.save(); g.translate(x, y); g.rotate(-0.38); g.beginPath(); g.ellipse(0, 0, 15, 10.5, 0, 0, Math.PI * 2); g.fill(); g.restore(); };
+  const stem = (x, top, bottom) => g.fillRect(x - 3, top, 6, bottom - top);
+  const flag = (x, y) => {
+    g.beginPath();
+    g.moveTo(x, y);
+    g.bezierCurveTo(x + 4, y + 16, x + 28, y + 22, x + 20, y + 52);
+    g.bezierCurveTo(x + 21, y + 32, x + 10, y + 27, x, y + 24);
+    g.closePath();
+    g.fill();
+  };
+  if (kind === 1) {
+    head(30, 104);
+    head(94, 92);
+    stem(41, 24, 102);
+    stem(105, 12, 90);
+    g.beginPath();
+    g.moveTo(38, 24);
+    g.lineTo(108, 10);
+    g.lineTo(108, 25);
+    g.lineTo(38, 39);
+    g.closePath();
+    g.fill();
+  } else {
+    head(46, 100);
+    stem(58, 12, 98);
+    flag(58, 12);
+    if (kind === 2) flag(58, 32);
+  }
+  return c;
+}
+
 // ── The lined paper ──
 
 // Lays out a paper for a sheet of W x H CSS px: titles, lines, headings, text, bullets and the links, as pages of
@@ -841,7 +930,6 @@ export async function start(section) {
       model('desk_lamp_arm_01'),
       model('potted_plant_02'),
       model('classic_laptop'),
-      model('cassette_player'),
       firstView(HOME_VIEW, isNight()),
       Promise.all(POSTERS.map((p) => image(new URL(`posters/${p.image}`, import.meta.url).href))),
       Promise.all(quotes.map((q) => photo(q.image))),
@@ -868,9 +956,9 @@ export async function start(section) {
     const woodRand = random(3);
     // A wooden board with slightly rounded edges. Its UVs run in metres along the longest side, so the
     // grain follows each board and keeps one scale.
-    function woodBox(x0, x1, y0, y1, z0, z1, parent = scene) {
+    function woodBox(x0, x1, y0, y1, z0, z1, parent = scene, round = 0.009) {
       const size = [x1 - x0, y1 - y0, z1 - z0];
-      const geometry = new RoundedBoxGeometry(...size, 2, Math.min(0.009, ...size.map((v) => v / 3)));
+      const geometry = new RoundedBoxGeometry(...size, round > 0.009 ? 4 : 2, Math.min(round, ...size.map((v) => v / 3)));
       const long = size.indexOf(Math.max(...size));
       const [a, b] = [0, 1, 2].filter((i) => i !== long);
       const position = geometry.attributes.position, uv = geometry.attributes.uv;
@@ -961,7 +1049,7 @@ export async function start(section) {
     sun.shadow.normalBias = 0.02;
     scene.add(hemi, windowLight, sun, sun.target);
 
-    const [experience, certificatesPage, portfolioPage, lampModel, plantModel, laptopModel, cassetteModel, homeView, posterImages, photos] = await loads;
+    const [experience, certificatesPage, portfolioPage, lampModel, plantModel, laptopModel, homeView, posterImages, photos] = await loads;
     const passes = readPasses(experience);
     const education = passes.find((p) => p.id === 'education').legs[0];
     if (!education.daad || education.degrees.length < 2) throw new Error('experience.html lost the DAAD line or a degree');
@@ -994,7 +1082,7 @@ export async function start(section) {
       return entry;
     }
 
-    // ── Props: the Poly Haven lamp, plant, laptop and cassette player ──
+    // ── Props: the Poly Haven lamp, plant and laptop ──
     const lamp = new THREE.Group();
     lamp.position.set(1.45, DESK.top, 0.22);
     lamp.rotation.y = 2.4;
@@ -1009,13 +1097,7 @@ export async function start(section) {
     laptop.position.set(LAPTOP.x, DESK.top, LAPTOP.z);
     laptop.scale.setScalar(LAPTOP.scale);
     laptop.userData.kind = 'laptop';
-    const cassette = new THREE.Group();
-    cassette.position.set(CASSETTE.x, WIN.y0 + SILL_UP, CASSETTE.z);
-    cassette.rotation.y = CASSETTE.turn;
-    cassette.scale.setScalar(CASSETTE.scale);
-    cassette.userData.kind = 'cassette';
-    const playerBox = new THREE.Box3().setFromObject(cassetteModel.scene);   // in model space, before it joins the room
-    for (const [anchor, gltf] of [[lamp, lampModel], [plant, plantModel], [laptop, laptopModel], [cassette, cassetteModel]]) {
+    for (const [anchor, gltf] of [[lamp, lampModel], [plant, plantModel], [laptop, laptopModel]]) {
       gltf.scene.traverse((o) => {
         if (!o.isMesh) return;
         o.material = o.material.clone();   // its own copy for the hover tint
@@ -1069,12 +1151,67 @@ export async function start(section) {
     laptop.traverse((o) => { if (o.isMesh && o !== screen && o.material.map) o.material.emissiveMap = o.material.map; });
     laptop.updateMatrixWorld(true);
 
-    // The cassette player stands upright on the sill. A red LED on its front, with a soft halo, glows while music plays.
-    const player3d = cassetteModel.scene;
-    player3d.position.y = -playerBox.min.y;
-    player3d.traverse((o) => { if (o.isMesh && o.material.map) o.material.emissiveMap = o.material.map; });
-    const led = new THREE.Mesh(new THREE.SphereGeometry(0.005, 12, 8), new THREE.MeshStandardMaterial({ color: 0x4a0c08, emissive: 0xff2414, emissiveIntensity: 0, roughness: 0.3 }));
-    led.position.set(playerBox.max.x - 0.026, playerBox.max.y - playerBox.min.y - 0.03, playerBox.max.z + 0.002);
+    // ── The radio at the desk's back left corner, built in code: a walnut box with rounded edges, a gold speaker grille
+    // on its left two thirds, and a brushed gold panel with a large tuning dial and three small knurled knobs. It
+    // stands on four dark feet and carries a thin telescopic antenna. A red LED above the grille glows while it plays. ──
+    const radio = new THREE.Group();
+    radio.userData.kind = 'radio';
+    const FOOT = 0.009, BORDER = 0.02;
+    const walnut = wood.clone();
+    walnut.color.setHex(0x7a5848);   // the room's grain, darkened to walnut
+    const radioBox = woodBox(-RADIO.w / 2, RADIO.w / 2, FOOT, FOOT + RADIO.h, -RADIO.d / 2, RADIO.d / 2, radio, 0.024);
+    radioBox.material = walnut;
+    const radioGold = (roughness = 0.35) => new THREE.MeshStandardMaterial({ color: 0xc9a45a, metalness: 0.7, roughness });
+    const radioFront = RADIO.d / 2 + 0.0008, faceH = RADIO.h - 2 * BORDER, faceY = FOOT + RADIO.h / 2;
+    const grilleW = (RADIO.w - 2 * BORDER) * 0.64, panelW = RADIO.w - 2 * BORDER - grilleW;
+    const grille = faceMesh(grilleFace(grilleW, faceH), { roughness: 0.5 });
+    grille.material.metalness = 0.5;
+    grille.position.set(-RADIO.w / 2 + BORDER + grilleW / 2, faceY, radioFront);
+    const radioPanel = faceMesh(panelFace(panelW, faceH), { roughness: 0.4 });
+    radioPanel.material.metalness = 0.55;
+    const panelX = RADIO.w / 2 - BORDER - panelW / 2;
+    radioPanel.position.set(panelX, faceY, radioFront);
+    radio.add(grille, radioPanel);
+    // The tuning dial: a dark ring of tick marks around a large gold knob with a small pointer.
+    const dialY = faceY + faceH * 0.14, dialR = Math.min(panelW, faceH) * 0.36;
+    const ring = faceMesh(dialFace(dialR), { alphaTest: 0.5, roughness: 0.6 });
+    ring.position.set(panelX, dialY, radioFront + 0.0006);
+    const dialKnob = new THREE.Mesh(new THREE.CylinderGeometry(dialR * 0.66, dialR * 0.7, 0.012, 48), radioGold(0.25));
+    dialKnob.rotation.x = Math.PI / 2;
+    dialKnob.position.set(panelX, dialY, radioFront + 0.006);
+    const dialPointer = new THREE.Mesh(new THREE.BoxGeometry(0.004, dialR * 0.3, 0.006), radioGold(0.25));
+    dialPointer.position.set(panelX + dialR * 0.45, dialY + dialR * 0.45, radioFront + 0.012);
+    dialPointer.rotation.z = -Math.PI / 4;
+    radio.add(ring, dialKnob, dialPointer);
+    // Three small knurled knobs in a row below the dial; their flat-shaded facets read as knurling.
+    const knurled = new THREE.CylinderGeometry(0.0085, 0.0085, 0.009, 18);
+    for (const k of [-1, 0, 1]) {
+      const small = new THREE.Mesh(knurled, new THREE.MeshStandardMaterial({ color: 0xc9a45a, metalness: 0.7, roughness: 0.35, flatShading: true }));
+      small.rotation.x = Math.PI / 2;
+      small.position.set(panelX + k * panelW * 0.3, faceY - faceH * 0.32, radioFront + 0.0045);
+      radio.add(small);
+    }
+    // Four small dark feet.
+    const feet = new THREE.MeshStandardMaterial({ color: 0x1e1a17, roughness: 0.7 });
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(0.03, FOOT, 0.022, feet, sx * (RADIO.w / 2 - 0.035), FOOT / 2, sz * (RADIO.d / 2 - 0.025), radio);
+    // The telescopic antenna: three thinner and thinner chrome sections from the top's back right, leaning left.
+    const chrome = new THREE.MeshStandardMaterial({ color: 0xd8dce2, metalness: 0.85, roughness: 0.25 });
+    const antenna = new THREE.Group();
+    let along = 0;
+    for (const [r, len] of [[0.0026, 0.1], [0.002, 0.09], [0.0015, 0.08]]) {
+      const part = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 10), chrome);
+      part.position.y = along + len / 2;
+      antenna.add(part);
+      along += len - 0.004;
+    }
+    const tipCap = new THREE.Mesh(new THREE.CylinderGeometry(0.0032, 0.0032, 0.008, 10), chrome);
+    tipCap.position.y = along + 0.002;
+    antenna.add(tipCap);
+    antenna.position.set(RADIO.w / 2 - 0.04, FOOT + RADIO.h - 0.004, -RADIO.d / 2 + 0.025);
+    antenna.rotation.z = 0.62;
+    radio.add(antenna);
+    const led = new THREE.Mesh(new THREE.SphereGeometry(0.0035, 12, 8), new THREE.MeshStandardMaterial({ color: 0x4a0c08, emissive: 0xff2414, emissiveIntensity: 0, roughness: 0.3 }));
+    led.position.set(-RADIO.w / 2 + BORDER + grilleW - 0.008, faceY + faceH / 2 - 0.008, radioFront + 0.002);
     const haloCanvas = document.createElement('canvas');
     haloCanvas.width = haloCanvas.height = 64;
     const hg = haloCanvas.getContext('2d'), halo = hg.createRadialGradient(32, 32, 0, 32, 32, 32);
@@ -1084,24 +1221,39 @@ export async function start(section) {
     hg.fillStyle = halo;
     hg.fillRect(0, 0, 64, 64);
     const ledHalo = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(haloCanvas), depthWrite: false, toneMapped: false }));
-    ledHalo.scale.setScalar(0.04);
+    ledHalo.scale.setScalar(0.03);
     ledHalo.visible = false;
     ledHalo.raycast = () => {};   // light only: a click or a landmark check passes through it
     led.add(ledHalo);
-    cassette.add(led);
-    cassette.updateMatrixWorld(true);
+    radio.add(led);
+    radio.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
+    radio.position.set(RADIO.x, DESK.top, RADIO.z);
+    radio.rotation.y = RADIO.turn;
+    scene.add(radio);
+    radio.updateMatrixWorld(true);
+    const grilleSpot = grille.localToWorld(new THREE.Vector3(0, 0, 0.01));   // where the music notes start
 
-    // ── The passes: a row along the front of the desk, each a little turned ──
+    // ── The passes: one pile at the front left of the desk, Sema on top. Each pass lies shifted up and to the right of
+    // the one below it and turned a little, so the top one shows whole. #desk fans them out into a row along the front
+    // of the desk, each a little turned; leaving the desk stacks them back. ──
     const PASS_H = Math.max(...passes.map(passHeight));
     const TURN = [2.5, -1.8, 2.2, -2.6, 1.6], SHIFT = [0.004, -0.008, 0.006, -0.005, 0.008];
+    const PILE = { x: -0.22, z: 0.78, dx: 0.046, dz: 0.004, turn: 14, dturn: -6 };
     const passItems = passes.map((pass, i) => {
       const mesh = faceMesh(passFace(pass, PASS_H), { alphaTest: 0.5, roughness: 0.9 });
       mesh.rotation.x = -Math.PI / 2;
       const entry = item('desk', pass.id, { name: pass.name, doc: passDoc(pass), tip: passTip(pass), pass, mesh });
       const holder = entry.object;
-      holder.position.set(DESK.x + (i - (passes.length - 1) / 2) * (PASS.w + PASS.gap), DESK.top + 0.0012 + i * 0.0004, DX.z1 - 0.035 - PASS_H / 2 + SHIFT[i]);
-      holder.rotation.y = THREE.MathUtils.degToRad(TURN[i]);
-      holder.userData.base = holder.position.y;
+      const row = new THREE.Object3D();
+      row.position.set(DESK.x + (i - (passes.length - 1) / 2) * (PASS.w + PASS.gap), DESK.top + 0.0012 + i * 0.0004, DX.z1 - 0.035 - PASS_H / 2 + SHIFT[i]);
+      row.rotation.y = THREE.MathUtils.degToRad(TURN[i]);
+      const level = passes.length - 1 - i;   // the pass's level in the pile, from the bottom
+      const pile = new THREE.Object3D();
+      pile.position.set(PILE.x + level * PILE.dx, DESK.top + 0.0012 + level * 0.0016, PILE.z + level * PILE.dz);
+      pile.rotation.y = THREE.MathUtils.degToRad(PILE.turn + level * PILE.dturn);
+      entry.places = { row, pile };
+      holder.position.copy(pile.position);
+      holder.quaternion.copy(pile.quaternion);
       holder.add(mesh);
       scene.add(holder);
       return entry;
@@ -1670,6 +1822,7 @@ export async function start(section) {
       screenGlow = night ? 0.9 : 0.45;
       for (const object of tintables) tint(object);
       paper.material.color.set(night ? 0xe4e7ee : 0xffffff);
+      tintNotes();
       renderer.shadowMap.needsUpdate = true;
       if (night !== shown.night) showView(viewWanted.key, NIGHT_FADE_MS);
       invalidate();
@@ -1716,8 +1869,16 @@ export async function start(section) {
     // inside the width.
     function deskPose() {
       const t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      // The passes as they lie in the row, wherever they are now.
       const span = new THREE.Box3();
-      for (const { mesh } of passItems) span.expandByObject(mesh);
+      for (const { mesh, places } of passItems) {
+        const ghost = new THREE.Object3D();
+        ghost.position.copy(places.row.position);
+        ghost.quaternion.copy(places.row.quaternion);
+        ghost.updateMatrixWorld(true);
+        const w = PASS.w / 2, h = mesh.geometry.parameters.height / 2;
+        for (const [x, z] of [[-w, -h], [w, -h], [-w, h], [w, h]]) span.expandByPoint(new THREE.Vector3(x, 0, z).applyMatrix4(ghost.matrixWorld));
+      }
       let pose;
       for (let scale = Math.min(1, stage.clientHeight / DESK_EYE.refH), i = 0; i < 16; i++, scale *= 1.05) {
         const eye = new THREE.Vector3(DESK.x, DESK.top + DESK_EYE.up * scale, DX.z1 + DESK_EYE.back * scale);
@@ -1827,20 +1988,42 @@ export async function start(section) {
       }, () => { camTween = null; });
     }
 
-    // A chosen pass lifts a little off the desk and tilts towards the eye.
+    // A chosen pass lifts a little off the desk and tilts towards the eye. It moves inside its holder, so a lift and
+    // a move between the pile and the row never fight.
     const lifts = new Map();
     function lift(id, up) {
       const entry = id && items.get(`desk/${id}`);
       if (!entry) return;
-      const { mesh, object: holder } = entry;
+      const { mesh } = entry;
       tweens.delete(lifts.get(id));
-      const y0 = holder.position.y, r0 = mesh.rotation.x;
+      const y0 = mesh.position.y, r0 = mesh.rotation.x;
       lifts.set(id, tween(300, (k) => {
         const e = easeOut(k);
-        holder.position.y = y0 + ((up ? holder.userData.base + PASS.lift : holder.userData.base) - y0) * e;
+        mesh.position.y = y0 + ((up ? PASS.lift : 0) - y0) * e;
         mesh.rotation.x = r0 + ((up ? -Math.PI / 2 + 0.14 : -Math.PI / 2) - r0) * e;
       }));
       renderer.shadowMap.needsUpdate = true;
+    }
+
+    // #desk fans the passes out of the pile into the row, the top one first; leaving the desk stacks them back, the
+    // bottom one first. Each rises a little on its way, as the business cards do.
+    let spread = false;
+    const passTweens = new Map();
+    function arrangePasses(open) {
+      if (open === spread) return;
+      spread = open;
+      passItems.forEach((entry, i) => {
+        const holder = entry.object, place = entry.places[open ? 'row' : 'pile'];
+        const p0 = holder.position.clone(), q0 = holder.quaternion.clone();
+        tweens.delete(passTweens.get(entry));
+        const delay = (open ? i : passes.length - 1 - i) * 0.06;
+        passTweens.set(entry, tween(900, (k) => {
+          const e = easeInOut(Math.min(1, Math.max(0, (k - delay) / (1 - delay))));
+          holder.position.lerpVectors(p0, place.position, e);
+          holder.position.y += Math.sin(Math.PI * e) * 0.06;
+          holder.quaternion.slerpQuaternions(q0, place.quaternion, e);
+        }, () => { renderer.shadowMap.needsUpdate = true; }));
+      });
     }
 
     // #letters fans the business cards out above the desk; leaving it puts them back in the tray. A chosen card comes
@@ -1901,9 +2084,12 @@ export async function start(section) {
       const turning = Math.abs(look.toYaw - look.yaw) > 1e-4 || Math.abs(look.toPitch - look.pitch) > 1e-4;
       placeCamera(cam.eye, cam.target, look.yaw, look.pitch);
       if (pointerDirty || turning || tweens.size) { pointerDirty = false; setHovered(pick()); }
-      if (cardTweens.size && [...cardTweens.values()].some((t) => tweens.has(t))) renderer.shadowMap.needsUpdate = true;
+      if ([...cardTweens.values(), ...passTweens.values()].some((t) => tweens.has(t))) renderer.shadowMap.needsUpdate = true;
+      const singing = updateNotes(now);
       renderer.render(scene, camera);
+      clearTimeout(noteTimer);
       if (tweens.size || turning) invalidate();
+      else if (singing) noteTimer = setTimeout(invalidate, 1000 / NOTES.fps);
       else last = 0;
     }
 
@@ -1913,8 +2099,8 @@ export async function start(section) {
     const pointerAt = { x: 0, y: 0 };
     let pointerIn = false, hovered = null, tipHeld = false;
     const itemObjects = [...items.values()].map((e) => e.object);
-    const targets = [paper, ...itemObjects, shelfParts, trayGroup, phone, print, laptop, lamp, cassette, ...deskParts];
-    const tintables = [...itemObjects, phone, print, laptop, cassette];
+    const targets = [paper, ...itemObjects, shelfParts, trayGroup, phone, print, laptop, lamp, radio, ...deskParts];
+    const tintables = [...itemObjects, phone, print, laptop, radio];
     // The objects of each station, in the order of the station links and of the glow tour.
     const stationObjects = {
       desk: passItems.map((e) => e.object), laptop: [laptop], projects: posterItems.map((e) => e.object),
@@ -1960,7 +2146,7 @@ export async function start(section) {
     // wood, so they take no tint; their items do.
     function setHovered(hit) {
       const lit = hit && (hit.kind !== 'item' || hit.id || hit.object === phone);
-      const acts = hit && (paper.visible ? sameStation(hit) : ['item', 'lamp', 'laptop', 'screen', 'print', 'cassette'].includes(hit.kind));
+      const acts = hit && (paper.visible ? sameStation(hit) : ['item', 'lamp', 'laptop', 'screen', 'print', 'radio'].includes(hit.kind));
       const next = acts && lit ? hit.object : null;
       showTip(acts ? hit : null);
       if (next === hovered) return;
@@ -1989,7 +2175,7 @@ export async function start(section) {
       if (hit.kind === 'lamp') return [['b', themeButton?.getAttribute('aria-label') || '']];
       if (hit.kind === 'screen' || hit.kind === 'laptop') return [['b', 'Evaluate role fit'], ['i', at !== 'laptop' ? CLOSER : hit.kind === 'screen' ? OPEN : '']];
       if (hit.kind === 'print') return [['b', clean(cvLink)], ['i', at === 'desk' ? OPEN : CLOSER]];
-      if (hit.kind === 'cassette') return [['b', 'Music'], ['span', `Track ${music.track + 1} / ${TRACKS}`], ['i', music.playing ? 'Click to pause' : 'Click to play']];
+      if (hit.kind === 'radio') return [['b', 'Music'], ['span', `Track ${music.track + 1} / ${TRACKS}`], ['i', music.playing ? 'Click to pause' : 'Click to play']];
       if (hit.kind !== 'item') return null;
       if (hit.object === phone) return [['b', clean(talkLink)], ['i', READ]];
       if (!hit.id) return groupNames[hit.station] && hit.station !== at ? [['b', groupNames[hit.station]], ['i', CLOSER]] : null;
@@ -2037,7 +2223,7 @@ export async function start(section) {
 
     // Two clicks, always: from rest or another station a click on an object goes to its station, and only there does
     // an item open its paper. With a paper open, another item of the station opens its own paper at once. The
-    // telephone opens the contact paper at once. The cassette player plays or pauses the music at any station.
+    // telephone opens the contact paper at once. The radio plays or pauses the music at any station.
     const sameStation = (hit) => hit?.kind === 'item' && !!hit.id && hit.station === state.station;
     canvas.addEventListener('click', (event) => {
       setPointer(event);
@@ -2053,7 +2239,7 @@ export async function start(section) {
       if (!hit) return;
       const at = state.station;
       if (hit.kind === 'lamp') document.querySelector('[data-action="toggle-theme"]')?.click();
-      else if (hit.kind === 'cassette') toggleMusic();
+      else if (hit.kind === 'radio') toggleMusic();
       else if (hit.kind === 'screen' && at === 'laptop') aiTrigger.click();
       else if (hit.kind === 'laptop' || hit.kind === 'screen') go('laptop');
       else if (hit.kind === 'print' && at === 'desk') cvLink.click();
@@ -2104,6 +2290,7 @@ export async function start(section) {
       }
       const pass = (s) => (s.station === 'desk' ? s.item : null);
       if (pass(was) !== pass(state)) { lift(pass(was), false); lift(pass(state), true); }
+      arrangePasses(state.station === 'desk');
       arrangeCards(state.station === 'letters', state.station === 'letters' ? state.item : null);
       const key = keyOf(state);
       showPaper(key);
@@ -2188,25 +2375,27 @@ export async function start(section) {
       for (const type of ['pointerleave', 'blur']) link.addEventListener(type, () => light(false), { signal });
     }
 
-    // ── Music: four tracks that loop in order. The Audio element exists only after a press on the cassette player or
-    // a music button, so no music byte loads before it. room.music keeps the track and the position, and a return
-    // visit offers to resume there, never on its own. ──
+    // ── Music: four tracks that loop in PLAY_ORDER. The Audio element exists only after a press, so no music byte
+    // loads before it: the visitor's first press in the room, or a press on the radio or a music button. room.music
+    // keeps the track, the position and whether the visitor paused; a visitor who paused is offered "Resume music"
+    // and never hears music start without pressing Play. ──
     const playLabel = musicBox.querySelector('[data-room-play-label]');
     const trackLabel = musicBox.querySelector('[data-room-track]');
     let saved = null;
     try { saved = JSON.parse(localStorage.getItem('room.music')); } catch { saved = null; }
     const music = {
       track: Number.isInteger(saved?.track) ? ((saved.track % TRACKS) + TRACKS) % TRACKS : 0,
-      time: Math.max(0, Number(saved?.time) || 0), resume: !!saved, playing: false,
+      time: Math.max(0, Number(saved?.time) || 0), paused: saved?.paused === true, playing: false,
     };
+    music.resume = music.paused;
     let audio = null, savedSecond = -1;
-    const trackUrl = (i) => new URL(`music/track-${i + 1}.mp3`, import.meta.url).href;
+    const trackUrl = (i) => new URL(`music/track-${PLAY_ORDER[i]}.mp3`, import.meta.url).href;
 
     function saveMusic() {
       if (audio) music.time = audio.currentTime;
-      try { localStorage.setItem('room.music', JSON.stringify({ track: music.track, time: Math.round(music.time * 10) / 10 })); } catch { /* storage blocked */ }
+      try { localStorage.setItem('room.music', JSON.stringify({ track: music.track, time: Math.round(music.time * 10) / 10, paused: music.paused })); } catch { /* storage blocked */ }
     }
-    // The control, the LED and the cassette player's tooltip follow the player.
+    // The control, the LED and the radio's tooltip follow the player.
     function showMusic() {
       music.playing = !!audio && !audio.paused;
       musicBox.classList.toggle('is-playing', music.playing);
@@ -2223,7 +2412,10 @@ export async function start(section) {
       audio = new Audio();
       audio.preload = 'none';
       audio.src = trackUrl(music.track);
-      audio.currentTime = music.time;
+      // With preload none the browser ignores a start position set before it knows the track, so the stored position
+      // is set once the track's metadata arrives.
+      const at = music.time;
+      if (at > 0) audio.addEventListener('loadedmetadata', () => { if (audio.src === trackUrl(music.track)) audio.currentTime = at; }, { signal, once: true });
       audio.addEventListener('ended', () => setTrack(music.track + 1, true), { signal });
       audio.addEventListener('timeupdate', () => {
         const second = Math.floor(audio.currentTime);
@@ -2233,8 +2425,9 @@ export async function start(section) {
       return audio;
     }
     function play() {
-      music.resume = false;
+      music.resume = music.paused = false;
       audio.play().catch((error) => { console.warn('Room: the music did not play.', error); showMusic(); });
+      saveMusic();
     }
     // A new track starts at its beginning; while the music is paused, nothing loads until the next press.
     function setTrack(index, playing) {
@@ -2247,20 +2440,65 @@ export async function start(section) {
     }
     function toggleMusic() {
       if (player().paused) play();
-      else { audio.pause(); saveMusic(); }
+      else { audio.pause(); music.paused = true; saveMusic(); }
     }
     function nextTrack() {
       setTrack(music.track + 1, !!audio && !audio.paused);
     }
     musicBox.querySelector('[data-room-play]').addEventListener('click', toggleMusic, { signal });
     musicBox.querySelector('[data-room-next]').addEventListener('click', nextTrack, { signal });
+    // The visitor's first press in the room, a click anywhere in it or a key, starts the music alongside what the press
+    // does: once per page load, and only when the visitor never paused it. The Play button starts it by its own click.
+    // Esc gives the page no right to play sound, so it waits for the next press.
+    let firstPress = false;
+    function firstPlay(event) {
+      if (firstPress || event.key === 'Escape') return;
+      firstPress = true;
+      if (music.paused || event.target.closest?.('[data-room-play]')) return;
+      player();
+      play();
+    }
+    section.addEventListener('pointerdown', firstPlay, { signal, capture: true });
+    section.addEventListener('keydown', firstPlay, { signal, capture: true });
 
-    // ── The glow tour: on a first visit, each station's objects glow in turn and then the cassette player, so a
+    // ── Music notes: while the music plays, notes rise from the radio's grille, drift sideways with a wobble and fade
+    // out. They are the one thing that draws frames without a change of state, at up to NOTES.fps, until the last one
+    // has faded after a pause. ──
+    const noteMaps = [0, 1, 2].map((kind) => texture(noteArt(kind)));
+    const notes = [];
+    const noteInk = new THREE.Color();
+    let lastNote = -Infinity, noteTimer = 0, noteCount = 0;
+    const noteUp = new THREE.Vector3(0, 1, 0), noteSide = new THREE.Vector3(1, 0, 0).applyQuaternion(radio.quaternion);
+    function updateNotes(now) {
+      if (music.playing && now - lastNote >= NOTES.every && notes.length < NOTES.max) {
+        lastNote = now;
+        const rand = random(++noteCount);
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: noteMaps[noteCount % 3], color: noteInk, transparent: true, depthWrite: false, toneMapped: false, opacity: 0 }));
+        sprite.raycast = () => {};   // decoration only: clicks and landmark checks pass through
+        sprite.scale.setScalar(NOTES.size * (0.85 + rand() * 0.3));
+        scene.add(sprite);
+        notes.push({ sprite, born: now, start: grilleSpot.clone().addScaledVector(noteSide, (rand() - 0.5) * 0.08), drift: (rand() - 0.5) * 0.12, phase: rand() * 6.3 });
+      }
+      for (let i = notes.length - 1; i >= 0; i--) {
+        const n = notes[i], age = (now - n.born) / NOTES.life;
+        if (age >= 1) { scene.remove(n.sprite); n.sprite.material.dispose(); notes.splice(i, 1); continue; }
+        n.sprite.position.copy(n.start).addScaledVector(noteUp, NOTES.rise * age).addScaledVector(noteSide, n.drift * age + Math.sin(n.phase + age * 9) * 0.01);
+        n.sprite.material.rotation = Math.sin(n.phase + age * 7) * 0.25;
+        n.sprite.material.opacity = Math.min(1, age * 6) * Math.min(1, (1 - age) * 2.5);
+      }
+      return music.playing || notes.length > 0;
+    }
+    function tintNotes() {
+      noteInk.set(isNight() ? 0xf2ede4 : 0x2a2420);
+      for (const n of notes) n.sprite.material.color.copy(noteInk);
+    }
+
+    // ── The glow tour: on a first visit, each station's objects glow in turn and then the radio, so a
     // visitor sees what a click opens. Any pointer move over the room, click, key press or scroll ends it at once. ──
     const tourLog = { start: null, end: null, endedBy: null, eventAt: null };
     let tourTween = null, tourTimer = 0;
     function startTour() {
-      const order = [...Object.entries(stationObjects), ['cassette', [cassette]]];
+      const order = [...Object.entries(stationObjects), ['radio', [radio]]];
       tourLog.start = performance.now();
       tourTween = tween(order.length * TOUR_STEP_MS, (k) => {
         const t = Math.min(order.length - 1e-6, k * order.length), i = Math.floor(t);
@@ -2322,7 +2560,7 @@ export async function start(section) {
       window.history.replaceState(null, '', window.location.pathname + window.location.search);
       window.history.pushState(null, '', hash);
       apply();
-      for (const t of [camTween, ...cardTweens.values()]) if (t && tweens.has(t)) { tweens.delete(t); t.step(1); t.done?.(); }
+      for (const t of [camTween, ...cardTweens.values(), ...passTweens.values()]) if (t && tweens.has(t)) { tweens.delete(t); t.step(1); t.done?.(); }
       camTween = null;
       const pose = poseFor(state);
       cam.eye.copy(pose.eye);
@@ -2454,7 +2692,18 @@ export async function start(section) {
       fades: () => fadeLog.map((f) => ({ file: f.file, ms: f.end && Math.round(f.end - f.start) })),
       itemPoint: (key) => { const e = items.get(key); return e && screenPoint(e.mesh ? e.mesh.localToWorld(new THREE.Vector3(-PASS.w / 4, PASS_H / 6, 0)) : centreOf(e.object)); },
       passPoint: (id) => window.__room.itemPoint(`desk/${id}`),
-      objectPoint: (name) => screenPoint(centreOf({ shelf: shelfParts, tray: trayGroup, phone, plant, cassette }[name])),
+      objectPoint: (name) => screenPoint(centreOf({ shelf: shelfParts, tray: trayGroup, phone, plant, radio }[name])),
+      notes: () => notes.length,
+      radioPoint: () => screenPoint(grilleSpot),
+      // Frames the pile of passes from above and in front for a close screenshot; any move of the room puts the camera back.
+      lookAtPile: () => {
+        const c = new THREE.Box3();
+        for (const e of passItems) c.expandByObject(e.mesh);
+        const centre = c.getCenter(new THREE.Vector3());
+        cam.target.copy(centre);
+        cam.eye.copy(centre).add(new THREE.Vector3(0, 0.42, 0.34));
+        invalidate();
+      },
       screenPoint: () => screenPoint(centreOf(screen)),
       printPoint: () => screenPoint(print.getWorldPosition(new THREE.Vector3())),
       deskPoint: () => screenPoint(new THREE.Vector3(DX.x1 - 0.12, DESK.top, DX.z0 + 0.12)),

@@ -876,15 +876,18 @@ test('the room reads four results and seven testimonials from the home page, and
   assert.ok(js.includes(`'.ed-topbar a[href*="linkedin.com"][data-ga-event]'`) && js.includes(`'#recommendations a[href*="linkedin.com"][href*="recommendations"]'`), 'room.js finds both links');
 });
 
-test('the cassette player and its four tracks exist and are credited, and nothing autoplays', () => {
+test('the four tracks exist, are credited and play in the order 3, 1, 2, 4, and nothing autoplays', () => {
   const credits = readText('assets/room/CREDITS.txt');
-  assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/models/cassette_player/cassette_player_1k.gltf')), 'the cassette player model');
-  assert.ok(credits.includes('cassette_player (Cassette Player)'), 'CREDITS.txt credits the cassette player');
+  const js = readText('assets/room/room.js');
   for (let i = 1; i <= 4; i++) {
     assert.ok(fs.statSync(path.join(repoRoot, `assets/room/music/track-${i}.mp3`)).size > 100000, `music/track-${i}.mp3 is missing`);
     assert.ok(credits.includes(`track-${i}.mp3`), `CREDITS.txt does not name track-${i}.mp3`);
   }
   assert.ok(credits.includes('Music: four instrumental tracks generated for this site with ElevenLabs (Eleven Music)'), 'CREDITS.txt credits the music');
+  assert.match(js, /const PLAY_ORDER = \[3, 1, 2, 4\];/, 'the swing track, track-3.mp3, plays first');
+  assert.match(js, /music\/track-\$\{PLAY_ORDER\[i\]\}\.mp3/, 'the track URL follows the play order');
+  assert.ok(!fs.existsSync(path.join(repoRoot, 'assets/room/models/cassette_player')), 'the code-built radio replaces the cassette player model');
+  assert.doesNotMatch(credits, /cassette_player/, 'CREDITS.txt no longer names the cassette player');
   const scripts = ['assets/js', 'assets/room'].flatMap((dir) => fs.readdirSync(path.join(repoRoot, dir)).filter((name) => name.endsWith('.js')).map((name) => `${dir}/${name}`));
   for (const file of [...listHtmlFiles().map(relative), ...scripts]) {
     assert.doesNotMatch(readText(file), /autoplay/i, `${file} mentions autoplay`);
@@ -895,20 +898,26 @@ test('the cassette player and its four tracks exist and are credited, and nothin
   assert.match(room, /<button class="ed-room__control" type="button" data-room-next aria-label="Next track">/, 'the next button is named Next track');
 });
 
-test('room.js makes the Audio element only inside a click handler, with preload none', () => {
+test('room.js makes the Audio element only inside a press handler, with preload none, and never at load', () => {
   const js = readText('assets/room/room.js');
-  const fn = (name) => js.match(new RegExp(`\\n( +)function ${name}\\(\\) \\{\\n([\\s\\S]*?)\\n\\1\\}\\n`))?.[2] ?? '';
+  const fn = (name) => js.match(new RegExp(`\\n( +)function ${name}\\([^)]*\\) \\{\\n([\\s\\S]*?)\\n\\1\\}\\n`))?.[2] ?? '';
   const count = (text, re) => (text.match(re) || []).length;
   assert.equal(count(js, /new Audio\(/g), 1, 'one place makes the Audio element');
   assert.match(fn('player'), /audio = new Audio\(\);\n\s*audio\.preload = 'none';/, 'player() makes it, with preload none');
-  // player() runs only in toggleMusic(); toggleMusic() and nextTrack() run only from click listeners.
-  assert.equal(count(js, /\bplayer\(\)/g), 1 + count(fn('toggleMusic'), /\bplayer\(\)/g), 'only toggleMusic() calls player()');
+  // player() runs only in toggleMusic() and firstPlay(). toggleMusic() and nextTrack() run only from click listeners,
+  // and firstPlay() only from the room's pointerdown and keydown listeners: a call at load time breaks these counts.
+  assert.equal(count(js, /\bplayer\(\)/g), 1 + count(fn('toggleMusic'), /\bplayer\(\)/g) + count(fn('firstPlay'), /\bplayer\(\)/g), 'only toggleMusic() and firstPlay() call player()');
+  assert.equal(count(fn('firstPlay'), /\bplayer\(\)/g), 1, 'the first press makes the player');
   const canvasClick = js.match(/\n( +)canvas\.addEventListener\('click', \(event\) => \{\n([\s\S]*?)\n\1\}, \{ signal \}\);/)?.[2] ?? '';
   for (const name of ['toggleMusic', 'nextTrack']) {
     const allowed = 1 + count(canvasClick, new RegExp(`\\b${name}\\(\\)`, 'g')) + count(js, new RegExp(`addEventListener\\('click', ${name}, \\{ signal \\}\\)`, 'g'));
     assert.equal(count(js, new RegExp(`\\b${name}\\b`, 'g')), allowed, `${name} runs only from a click listener`);
   }
-  assert.match(canvasClick, /hit\.kind === 'cassette'\) toggleMusic\(\);/, 'a click on the cassette player plays or pauses');
+  const firstListeners = count(js, /section\.addEventListener\('(?:pointerdown|keydown)', firstPlay, \{ signal, capture: true \}\);/g);
+  assert.equal(firstListeners, 2, 'a pointerdown or a key press in the room starts the music');
+  assert.equal(count(js, /\bfirstPlay\b/g), 1 + firstListeners, 'firstPlay runs only from those two listeners');
+  assert.match(fn('firstPlay'), /if \(firstPress \|\| event\.key === 'Escape'\) return;\n\s*firstPress = true;\n\s*if \(music\.paused \|\| event\.target\.closest\?\.\('\[data-room-play\]'\)\) return;/, 'once per load, never after a pause, and never from the Play button');
+  assert.match(canvasClick, /hit\.kind === 'radio'\) toggleMusic\(\);/, 'a click on the radio plays or pauses');
 });
 
 test('the room shows a still image of the rest view for each theme while it loads', () => {

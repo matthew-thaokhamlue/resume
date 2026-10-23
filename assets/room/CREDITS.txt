@@ -17,20 +17,17 @@ classic_laptop (Classic Laptop), author: Arrangemonk
   file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/classic_laptop/classic_laptop_1k.gltf (glTF, 1k textures)
   licence: CC0 1.0
 
-cassette_player (Cassette Player), author: Oday Abuzaeed
-  page: https://polyhaven.com/a/cassette_player
-  file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/cassette_player/cassette_player_1k.gltf (glTF, 1k textures)
-  licence: CC0 1.0
-
 Music: four instrumental tracks generated for this site with ElevenLabs (Eleven Music)
-  files: music/track-1.mp3, music/track-2.mp3, music/track-3.mp3 and music/track-4.mp3
+  files: music/track-1.mp3, music/track-2.mp3, music/track-3.mp3 and music/track-4.mp3; the room plays them in the
+  order 3, 1, 2, 4
   The Eleven Music terms for the Creator plan require no attribution (checked 23 October 2026).
 
 Font: Patrick Hand, Copyright (c) 2010-2012 Patrick Wagesreiter. Licence: SIL Open Font License 1.1, in
 fonts/OFL-patrick-hand.txt. The paper's handwriting uses fonts/patrick-hand-latin.woff2.
 
 The wood grain is drawn in room.js on a canvas; it uses no texture file. The trophies, the medals, the
-certificates, the card tray, the business cards and the telephone are built in room.js; they use no model file.
+certificates, the card tray, the business cards, the telephone, the radio and the music notes are built in room.js;
+they use no model or image file.
 
 Posters (posters/): poster-labforward.webp, poster-labtwin.webp, poster-thryve.webp, poster-dataverse.webp and
 poster-training.webp were generated for this site with Codex image generation. shot-opppaths.webp and
