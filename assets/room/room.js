@@ -3195,6 +3195,7 @@ export async function start(section) {
     function wakeSounds(event) {
       if (sfx.ctx) { if (sfx.ctx.state === 'suspended') sfx.ctx.resume().catch(() => {}); return; }
       try { sfx.ctx = new AudioContext(); } catch (error) { console.warn('Room: the sound effects did not start.', error); return; }
+      sfx.ctx.resume().catch(() => {});   // some browsers make a context suspended even inside a press
       const first = event.type === 'pointerdown' && event.target === canvas ? soundOf(pickAt(ndcOf(event, new THREE.Vector2()))) : null;
       loadSounds(first);
     }
