@@ -50,7 +50,7 @@
     const section = document.getElementById('room');
     if (!section) { fail(null, new Error('#room is missing')); return; }
     section.hidden = false;
-    import(new URL('assets/room/room.js?v=20261023-desk2', document.baseURI).href)
+    import(new URL('assets/room/room.js?v=20261023-sfx', document.baseURI).href)
       .then((room) => room.start(section))
       .catch((error) => fail(section, error));
   });
