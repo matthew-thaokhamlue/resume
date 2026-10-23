@@ -10,6 +10,7 @@
 import * as THREE from './vendor/three.module.min.js';
 import { GLTFLoader } from './vendor/loaders/GLTFLoader.js';
 import { RoundedBoxGeometry } from './vendor/geometries/RoundedBoxGeometry.js';
+import { mergeGeometries } from './vendor/utils/BufferGeometryUtils.js';
 
 const NAME = 'Matthew Thaokhamlue';
 const LINK_TEXT = 'The full role on the Experience page';
@@ -91,6 +92,14 @@ const DESK_EYE = { up: 0.94, back: 0.86, refH: 820 };
 const REST = { eye: [0.55, 1.62, 5.3], target: [0.55, 1.28, 0] };
 // The radio stands at the back left corner of the desk, in front of the sill and below it, so it never hides a pane.
 const RADIO = { x: -0.3, z: 0.245, turn: 0.22, w: 0.26, h: 0.15, d: 0.12 };
+// The decor. The bookshelf stands in the back left corner, clear of the desk and of the posters' sight lines; the
+// tall plant stands in the back right corner, its leaves clear of the shelf's sight lines; the clock hangs right of
+// the window. FLOOR.tile is the size of one floorboard texture in metres.
+const BOOKSHELF = { x0: -1.25, x1: -0.53, d: 0.25, h: 1.95 };
+const TALL_PLANT = { x: 2.28, z: 0.2 };
+const CLOCK = { x: 1.88, y: 2.0, r: 0.16 };
+const FLOOR = { tile: 1.2 };
+const RUG = { x: 0.55, z: 1.65, w: 2.3, d: 1.9 };
 // The play order of the four tracks by file number: the 1940s swing track, track-3.mp3, plays first.
 const PLAY_ORDER = [3, 1, 2, 4];
 const TRACKS = PLAY_ORDER.length;
@@ -849,6 +858,224 @@ function cordGeometry(points, turns, radius) {
   return new THREE.TubeGeometry(curve, turns * 14, 0.0028, 6);
 }
 
+// ── The decor's canvases and shapes ──
+
+// Light oak floorboards that run along z, eight to a tile. The board ends wrap, so the tile repeats without a seam.
+function plankTexture() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 1024;
+  const g = c.getContext('2d'), rand = random(29), S = c.width, w = S / 8;
+  for (let b = 0; b < 8; b++) {
+    let y = rand() * S;
+    for (const stop = y + S; y < stop;) {
+      const len = Math.min(S * (0.4 + rand() * 0.5), stop - y), tone = rand();
+      const grain = Array.from({ length: 9 }, () => [rand() * w, 4 + rand() * 18, rand() * 6.3, 0.08 + rand() * 0.18, 1 + rand() * 2]);
+      for (const y0 of [y, y - S]) {
+        g.save();
+        g.beginPath();
+        g.rect(b * w, y0, w, len);
+        g.clip();
+        g.fillStyle = `rgb(${(212 + tone * 22) | 0}, ${(166 + tone * 20) | 0}, ${(116 + tone * 16) | 0})`;
+        g.fillRect(b * w, y0, w, len);
+        for (const [x, amp, phase, alpha, lw] of grain) {
+          g.strokeStyle = `rgba(150, 100, 58, ${alpha})`;
+          g.lineWidth = lw;
+          g.beginPath();
+          for (let yy = y0; yy <= y0 + len; yy += 16) g.lineTo(b * w + x + Math.sin(yy / 90 + phase) * amp * 0.3, yy);
+          g.stroke();
+        }
+        g.fillStyle = 'rgba(96, 62, 34, 0.5)';
+        g.fillRect(b * w, y0 + len - 1.5, w, 2);   // the board's end
+        g.restore();
+      }
+      y += len;
+    }
+    g.fillStyle = 'rgba(96, 62, 34, 0.55)';
+    g.fillRect(b * w, 0, 2, S);   // the gap between two boards
+  }
+  return c;
+}
+
+// The rug: cream wool with a fine fluffy speckle and a soft band near its edge.
+function rugTexture() {
+  const c = document.createElement('canvas');
+  c.width = 1024;
+  c.height = 768;
+  const g = c.getContext('2d'), rand = random(31);
+  g.fillStyle = '#efe6d6';
+  g.fillRect(0, 0, c.width, c.height);
+  for (let i = 0; i < 30000; i++) {
+    g.fillStyle = rand() < 0.5 ? `rgba(255, 252, 244, ${0.3 + rand() * 0.4})` : `rgba(160, 140, 110, ${0.06 + rand() * 0.12})`;
+    g.fillRect(rand() * c.width, rand() * c.height, 1 + rand() * 2.5, 1 + rand() * 2.5);
+  }
+  g.strokeStyle = 'rgba(185, 165, 135, 0.3)';
+  g.lineWidth = 12;
+  g.strokeRect(34, 34, c.width - 68, c.height - 68);
+  return c;
+}
+
+// A basket weave: straw strands that pass over and under each other in a checker.
+function weaveTexture() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const g = c.getContext('2d'), n = 16;
+  for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) {
+    const across = (i + j) % 2 === 0, x = i * n, y = j * n;
+    const grad = across ? g.createLinearGradient(0, y, 0, y + n) : g.createLinearGradient(x, 0, x + n, 0);
+    grad.addColorStop(0, '#8a6334');
+    grad.addColorStop(0.5, '#d8b77c');
+    grad.addColorStop(1, '#8a6334');
+    g.fillStyle = grad;
+    g.fillRect(x, y, n, n);
+  }
+  return c;
+}
+
+// A broad leaf on a long stalk, like a banana plant's, with its base at the bottom: the blade, its side veins, a pale
+// midrib and a few tears at the edge.
+function broadLeafArt() {
+  const c = document.createElement('canvas');
+  c.width = 256;
+  c.height = 1024;
+  const g = c.getContext('2d'), rand = random(37), cx = 128, top = 16, base = 600;
+  g.fillStyle = '#5c7d38';
+  g.fillRect(cx - 6, base - 10, 12, c.height - base + 10);
+  g.beginPath();
+  g.moveTo(cx, base);
+  g.bezierCurveTo(cx - 150, base - 110, cx - 135, top + 120, cx, top);
+  g.bezierCurveTo(cx + 135, top + 120, cx + 150, base - 110, cx, base);
+  const grad = g.createLinearGradient(0, 0, c.width, 0);
+  grad.addColorStop(0, '#3a6428');
+  grad.addColorStop(0.5, '#5e9040');
+  grad.addColorStop(1, '#36602a');
+  g.fillStyle = grad;
+  g.fill();
+  g.save();
+  g.clip();
+  g.strokeStyle = 'rgba(28, 58, 18, 0.35)';
+  g.lineWidth = 1.5;
+  for (let y = top + 24; y < base; y += 13) for (const d of [-1, 1]) {
+    g.beginPath();
+    g.moveTo(cx, y);
+    g.quadraticCurveTo(cx + d * 60, y - 12, cx + d * 130, y - 46);
+    g.stroke();
+  }
+  g.restore();
+  g.strokeStyle = '#c3d297';
+  g.lineWidth = 6;
+  g.beginPath();
+  g.moveTo(cx, base + 6);
+  g.lineTo(cx, top + 12);
+  g.stroke();
+  g.globalCompositeOperation = 'destination-out';
+  for (let i = 0; i < 7; i++) {
+    const y = top + 90 + rand() * (base - top - 170), d = rand() < 0.5 ? -1 : 1;
+    g.beginPath();
+    g.moveTo(cx + d * 140, y - 48);
+    g.lineTo(cx + d * (26 + rand() * 40), y);
+    g.lineTo(cx + d * 140, y - 42);
+    g.fill();
+  }
+  return c;
+}
+
+// A heart-shaped leaf, like a pothos leaf, its base at the bottom: green with pale streaks and a midrib.
+function heartLeafArt() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const g = c.getContext('2d'), rand = random(41);
+  g.beginPath();
+  g.moveTo(64, 116);
+  g.bezierCurveTo(32, 132, -4, 82, 24, 48);
+  g.bezierCurveTo(40, 28, 56, 16, 64, 4);
+  g.bezierCurveTo(72, 16, 88, 28, 104, 48);
+  g.bezierCurveTo(132, 82, 96, 132, 64, 116);
+  const grad = g.createLinearGradient(0, 128, 128, 0);
+  grad.addColorStop(0, '#3c7a2e');
+  grad.addColorStop(1, '#5f9a3e');
+  g.fillStyle = grad;
+  g.fill();
+  g.save();
+  g.clip();
+  g.strokeStyle = 'rgba(214, 226, 150, 0.35)';
+  for (let i = 0; i < 6; i++) {
+    g.lineWidth = 2 + rand() * 4;
+    g.beginPath();
+    g.moveTo(64, 112);
+    g.quadraticCurveTo(64 + (rand() - 0.5) * 60, 70, 20 + rand() * 88, 20 + rand() * 40);
+    g.stroke();
+  }
+  g.restore();
+  g.strokeStyle = 'rgba(200, 222, 150, 0.8)';
+  g.lineWidth = 2.5;
+  g.beginPath();
+  g.moveTo(64, 116);
+  g.lineTo(64, 10);
+  g.stroke();
+  return c;
+}
+
+// The clock face at h:m: cream, a ring of tick marks with every fifth one longer, and the two hands. No numbers.
+function drawClock(c, h, m) {
+  const g = c.getContext('2d'), R = c.width / 2;
+  g.clearRect(0, 0, c.width, c.height);
+  g.beginPath();
+  g.arc(R, R, R, 0, Math.PI * 2);
+  g.fillStyle = '#f6efe2';
+  g.fill();
+  g.strokeStyle = '#3b2f25';
+  g.lineCap = 'round';
+  for (let i = 0; i < 60; i++) {
+    const a = (i / 60) * Math.PI * 2, long = i % 5 === 0;
+    g.lineWidth = R * (long ? 0.035 : 0.012);
+    g.beginPath();
+    g.moveTo(R + Math.sin(a) * R * (long ? 0.76 : 0.84), R - Math.cos(a) * R * (long ? 0.76 : 0.84));
+    g.lineTo(R + Math.sin(a) * R * 0.9, R - Math.cos(a) * R * 0.9);
+    g.stroke();
+  }
+  g.save();
+  g.shadowColor = 'rgba(40, 30, 20, 0.35)';
+  g.shadowBlur = R * 0.03;
+  g.shadowOffsetY = R * 0.02;
+  g.strokeStyle = '#2a2420';
+  for (const [a, len, width] of [[((h % 12) + m / 60) / 12, 0.5, 0.055], [m / 60, 0.74, 0.034]]) {
+    g.lineWidth = R * width;
+    g.beginPath();
+    g.moveTo(R - Math.sin(a * Math.PI * 2) * R * 0.1, R + Math.cos(a * Math.PI * 2) * R * 0.1);
+    g.lineTo(R + Math.sin(a * Math.PI * 2) * R * len, R - Math.cos(a * Math.PI * 2) * R * len);
+    g.stroke();
+  }
+  g.beginPath();
+  g.arc(R, R, R * 0.05, 0, Math.PI * 2);
+  g.fillStyle = '#2a2420';
+  g.fill();
+  g.restore();
+}
+
+// A leaf on its stalk: a strip of unit length and width w that rises from the origin along +y and arches over
+// towards +z, bend radians at its tip. The blade folds up along its midrib.
+function archedLeaf(w, bend, fold) {
+  const geometry = new THREE.PlaneGeometry(w, 1, 4, 24);
+  geometry.translate(0, 0.5, 0);
+  const p = geometry.attributes.position, steps = 96, line = [[0, 0, 0]];
+  for (let i = 1; i <= steps; i++) {
+    const [y, z] = line[i - 1], a = bend * ((i - 0.5) / steps) ** 2;
+    line.push([y + Math.cos(a) / steps, z + Math.sin(a) / steps, a]);
+  }
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), [y, z, a] = line[Math.round(p.getY(i) * steps)], lift = fold * Math.abs(x);
+    p.setXYZ(i, x, y + lift * Math.sin(a), z - lift * Math.cos(a));
+  }
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+// A pot turned on a lathe, radius r and height h, with its inner wall down to the soil.
+function potGeometry(r, h) {
+  return new THREE.LatheGeometry([[0, 0], [r * 0.74, 0], [r * 0.8, h * 0.06], [r * 0.94, h * 0.8], [r, h * 0.9], [r * 1.02, h], [r * 0.9, h], [r * 0.87, h * 0.86]]
+    .map(([x, y]) => new THREE.Vector2(x, y)), 32);
+}
+
 // ── The module entry ──
 
 export async function start(section) {
@@ -930,6 +1157,7 @@ export async function start(section) {
       model('desk_lamp_arm_01'),
       model('potted_plant_02'),
       model('classic_laptop'),
+      model('potted_plant_04'),
       firstView(HOME_VIEW, isNight()),
       Promise.all(POSTERS.map((p) => image(new URL(`posters/${p.image}`, import.meta.url).href))),
       Promise.all(quotes.map((q) => photo(q.image))),
@@ -975,7 +1203,13 @@ export async function start(section) {
     }
 
     const WALL = flat(0xd8cab6);
-    box(ROOM.x1 - ROOM.x0, 0.02, ROOM.z1 + WALL_T, flat(0x8a6446), (ROOM.x0 + ROOM.x1) / 2, -0.01, ROOM.z1 / 2 - WALL_T / 2);
+    // The floor: light oak boards, one texture tile per FLOOR.tile metres.
+    const plankMap = new THREE.CanvasTexture(plankTexture());
+    plankMap.colorSpace = THREE.SRGBColorSpace;
+    plankMap.wrapS = plankMap.wrapT = THREE.RepeatWrapping;
+    plankMap.repeat.set((ROOM.x1 - ROOM.x0) / FLOOR.tile, (ROOM.z1 + WALL_T) / FLOOR.tile);
+    plankMap.anisotropy = anisotropy;
+    box(ROOM.x1 - ROOM.x0, 0.02, ROOM.z1 + WALL_T, new THREE.MeshStandardMaterial({ map: plankMap, roughness: 0.6 }), (ROOM.x0 + ROOM.x1) / 2, -0.01, ROOM.z1 / 2 - WALL_T / 2);
     // The back wall is one extruded shape with the window hole, so the sun shines through the opening.
     const wallShape = new THREE.Shape().moveTo(ROOM.x0 - WALL_T, 0).lineTo(ROOM.x1 + WALL_T, 0).lineTo(ROOM.x1 + WALL_T, WALL_H).lineTo(ROOM.x0 - WALL_T, WALL_H).closePath();
     wallShape.holes.push(new THREE.Path().moveTo(WIN.x0, WIN.y0).lineTo(WIN.x1, WIN.y0).lineTo(WIN.x1, WIN.y1).lineTo(WIN.x0, WIN.y1).closePath());
@@ -1049,7 +1283,7 @@ export async function start(section) {
     sun.shadow.normalBias = 0.02;
     scene.add(hemi, windowLight, sun, sun.target);
 
-    const [experience, certificatesPage, portfolioPage, lampModel, plantModel, laptopModel, homeView, posterImages, photos] = await loads;
+    const [experience, certificatesPage, portfolioPage, lampModel, plantModel, laptopModel, succulentModel, homeView, posterImages, photos] = await loads;
     const passes = readPasses(experience);
     const education = passes.find((p) => p.id === 'education').legs[0];
     if (!education.daad || education.degrees.length < 2) throw new Error('experience.html lost the DAAD line or a degree');
@@ -1091,7 +1325,7 @@ export async function start(section) {
     const lampLight = new THREE.PointLight(0xffb066, 0.4, 0, 2);
     lampLight.position.set(-0.005, 0.66, -0.18);   // just below the bulb, in model space
     const plant = new THREE.Group();
-    plant.position.set(2.2, 0, 0.3);
+    plant.position.set(2.2, 0, 1.25);
     plant.rotation.y = 0.5;
     const laptop = new THREE.Group();
     laptop.position.set(LAPTOP.x, DESK.top, LAPTOP.z);
@@ -1523,6 +1757,205 @@ export async function start(section) {
       phone.rotation.y = PHONE.turn;
       scene.add(phone);
     }
+
+    // ── Decor: skirting boards, the rug, the bookshelf, the plants and the wall clock. None of it is clickable. It
+    // sits in one group, so the landmark check sees it and the hover and click checks never do. ──
+    const decor = new THREE.Group();
+    scene.add(decor);
+    const sillTop = WIN.y0 + SILL_UP;
+    // The skirting, the bookshelf's boards and the clock's rim share the room's wood and render as one mesh.
+    const woodParts = new THREE.Group();
+    woodBox(ROOM.x0, ROOM.x1, 0, 0.08, 0, 0.014, woodParts, 0.004);
+    for (const x of [ROOM.x0, ROOM.x1 - 0.014]) woodBox(x, x + 0.014, 0, 0.08, 0, ROOM.z1, woodParts, 0.004);
+    const B = BOOKSHELF, side = 0.022, board = 0.022, cell = (B.h - 0.06 - 6 * board) / 5;
+    for (const x of [B.x0, B.x1 - side]) woodBox(x, x + side, 0, B.h, 0, B.d, woodParts);
+    woodBox(B.x0 + side, B.x1 - side, 0.01, B.h - 0.01, 0, 0.012, woodParts);
+    woodBox(B.x0 + side, B.x1 - side, 0, 0.06, B.d - 0.03, B.d - 0.012, woodParts);
+    // floors[i] is the top of board i, from the bottom board to the top of the shelf.
+    const floors = [];
+    for (let i = 0; i < 6; i++) {
+      const y = 0.06 + i * (cell + board);
+      woodBox(B.x0 + side, B.x1 - side, y, y + board, 0.012, B.d, woodParts);
+      floors.push(y + board);
+    }
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(CLOCK.r, 0.02, 10, 48).toNonIndexed(), wood);   // the boards carry no index
+    rim.position.set(CLOCK.x, CLOCK.y, 0.02);
+    woodParts.add(rim);
+    woodParts.updateMatrixWorld(true);
+    decor.add(new THREE.Mesh(mergeGeometries(woodParts.children.map((m) => m.geometry.applyMatrix4(m.matrixWorld))), wood));
+
+    // The books: one instanced box, each with its own size and colour, its spine to the room with two faint bands and
+    // no text. They stand in rows, the last one of a row may lean on its neighbour, and one short stack lies flat.
+    const spineArt = document.createElement('canvas');
+    spineArt.width = 32;
+    spineArt.height = 128;
+    const sg = spineArt.getContext('2d');
+    sg.fillStyle = '#ffffff';
+    sg.fillRect(0, 0, 32, 128);
+    sg.fillStyle = 'rgba(60, 40, 20, 0.22)';
+    for (const y of [12, 108]) sg.fillRect(0, y, 32, 5);
+    const books = [], bookRand = random(53), BOOK_COLORS = [0xb5654a, 0x3f7d78, 0x94a888, 0xe9dfc8, 0xdc9a5f];
+    const inner = { x0: B.x0 + side + 0.004, x1: B.x1 - side - 0.004 };
+    const book = (x, y, size, lean = 0) => books.push({ position: new THREE.Vector3(x, y, B.d - 0.02 - size.z / 2), lean, size, turn: (bookRand() - 0.5) * 0.05 });
+    const bookSize = () => new THREE.Vector3(0.02 + bookRand() * 0.022, 0.19 + bookRand() * 0.11, 0.15 + bookRand() * 0.05);
+    // A row of upright books from x0 up to x1 on the board at floor; returns where the row ends.
+    function row(x0, x1, floor) {
+      let x = x0;
+      for (let size = bookSize(); x + size.x <= x1; size = bookSize()) {
+        book(x + size.x / 2, floor + size.y / 2, size);
+        x += size.x + 0.0015;
+      }
+      return x;
+    }
+    // A book that leans by angle on the book that ends at x: it stands on its lower left edge, its top on the neighbour.
+    function leaning(x, floor, angle) {
+      const size = bookSize(), px = x + size.y * Math.sin(angle);
+      book(px + (size.x / 2) * Math.cos(angle) - (size.y / 2) * Math.sin(angle), floor + (size.x / 2) * Math.sin(angle) + (size.y / 2) * Math.cos(angle), size, angle);
+      return px + size.x * Math.cos(angle);
+    }
+    leaning(row(inner.x1 - 0.12, inner.x1 - 0.1, floors[0]) + 0.06, floors[0], 0.12);
+    leaning(row(inner.x0, inner.x0 + 0.5, floors[1]), floors[1], 0.28);
+    leaning(row(inner.x0, inner.x0 + 0.36, floors[2]), floors[2], 0.22);
+    row(inner.x1 - 0.13, inner.x1, floors[2]);
+    row(inner.x0, inner.x0 + 0.2, floors[3]);
+    let stackTop = floors[3];
+    for (let i = 0; i < 3; i++) {
+      const size = new THREE.Vector3(0.21 + bookRand() * 0.03, 0.026 + bookRand() * 0.01, 0.15 + bookRand() * 0.03);
+      books.push({ position: new THREE.Vector3(inner.x0 + 0.35, stackTop + size.y / 2, B.d - 0.02 - size.z / 2), lean: 0, size, turn: (bookRand() - 0.5) * 0.16 });
+      stackTop += size.y;
+    }
+    row(inner.x1 - 0.2, inner.x1, floors[3]);
+    leaning(row(inner.x0, inner.x0 + 0.4, floors[4]), floors[4], 0.2);
+    const bookMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ map: texture(spineArt), roughness: 0.8 }), books.length);
+    books.forEach((b, i) => {
+      bookMesh.setMatrixAt(i, new THREE.Matrix4().compose(b.position, new THREE.Quaternion().setFromEuler(new THREE.Euler(0, b.turn, b.lean)), b.size));
+      bookMesh.setColorAt(i, new THREE.Color(BOOK_COLORS[i % BOOK_COLORS.length]).multiplyScalar(0.85 + bookRand() * 0.2));
+    });
+    decor.add(bookMesh);
+
+    // Two small round clay vases, one on the flat stack and one at the top shelf's right end.
+    const clay = new THREE.MeshStandardMaterial({ color: 0xb86a45, roughness: 0.85 });
+    const vaseGeometry = new THREE.LatheGeometry([[0, 0], [0.03, 0], [0.046, 0.015], [0.054, 0.045], [0.048, 0.075], [0.028, 0.095], [0.017, 0.105], [0.02, 0.12]]
+      .map(([x, y]) => new THREE.Vector2(x, y)), 28);
+    const vases = new THREE.InstancedMesh(vaseGeometry, clay, 2);
+    vases.setMatrixAt(0, new THREE.Matrix4().setPosition(inner.x0 + 0.35, stackTop, B.d - 0.1));
+    vases.setMatrixAt(1, new THREE.Matrix4().makeScale(0.9, 1.1, 0.9).setPosition(inner.x1 - 0.12, floors[4], B.d - 0.1));
+    decor.add(vases);
+    // A woven basket on the bottom board.
+    const weaveMap = texture(weaveTexture());
+    weaveMap.wrapS = weaveMap.wrapT = THREE.RepeatWrapping;
+    weaveMap.repeat.set(7, 1);
+    const basket = new THREE.Mesh(new THREE.CylinderGeometry(0.75, Math.SQRT1_2, 1, 4, 1, true, Math.PI / 4), new THREE.MeshStandardMaterial({ map: weaveMap, roughness: 0.9, side: THREE.DoubleSide }));
+    basket.scale.set(0.42, 0.19, 0.2);
+    basket.position.set(inner.x0 + 0.23, floors[0] + 0.095, B.d - 0.13);
+    decor.add(basket);
+
+    // The trailing plants: heart leaves along vines that hang from a clay pot. All their leaves are one instanced mesh,
+    // all their vines one mesh, and all their pots one instanced mesh.
+    const leafPlaces = [], vineParts = [], pots = [], soils = [];
+    function placeLeaf(base, dir, face, size) {
+      const y = dir.clone().normalize(), z = face.clone().addScaledVector(y, -face.dot(y)).normalize(), x = new THREE.Vector3().crossVectors(y, z);
+      leafPlaces.push(new THREE.Matrix4().makeBasis(x, y, z).scale(new THREE.Vector3(size, size, size)).setPosition(base));
+    }
+    // A pot of radius r standing at at, with leaves around its rim and vines that hang through the points of vines
+    // (relative to the rim's centre). Its leaves turn towards face.
+    function trailing(at, r, vines, face, seed) {
+      const rand = random(seed), h = r * 1.4, rim = at.clone().setY(at.y + h * 0.88);
+      pots.push(new THREE.Matrix4().makeScale(r, h, r).setPosition(at));
+      soils.push(new THREE.Matrix4().makeScale(r * 0.87, 1, r * 0.87).setPosition(rim));
+      for (let i = 0; i < 14; i++) {
+        const a = (i / 14) * Math.PI * 2 + rand() * 0.5, out = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
+        placeLeaf(rim.clone().addScaledVector(out, r * (0.2 + rand() * 0.4)), out.clone().setY(0.6 + rand() * 0.8), face.clone().setY(0.8), (0.055 + rand() * 0.025) * Math.min(1, r / 0.06));
+      }
+      for (const points of vines) {
+        const curve = new THREE.CatmullRomCurve3([rim.clone(), ...points.map(([x, y, z]) => rim.clone().add(new THREE.Vector3(x, y, z)))]);
+        vineParts.push(new THREE.TubeGeometry(curve, 32, 0.0022, 4));
+        const n = Math.floor(curve.getLength() / 0.034);
+        for (let i = 1; i <= n; i++) {
+          const t = i / n, tangent = curve.getTangentAt(t);
+          const across = new THREE.Vector3().crossVectors(tangent, face).normalize().multiplyScalar(i % 2 ? 1 : -1);
+          const turn = face.clone().add(new THREE.Vector3(rand() - 0.5, rand() - 0.3, rand() - 0.5).multiplyScalar(0.6));
+          placeLeaf(curve.getPointAt(t), across.addScaledVector(face, 0.5).addScaledVector(tangent, 0.4), turn, (0.042 + rand() * 0.02) * (1 - t * 0.3));
+        }
+      }
+    }
+    // On top of the bookshelf, its vines down the right side and over the front edge.
+    trailing(new THREE.Vector3(B.x1 - 0.17, B.h, B.d / 2), 0.07, [
+      [[0.12, 0.0, 0.05], [0.2, -0.12, 0.08], [0.22, -0.4, 0.06], [0.21, -0.72, 0.1]],
+      [[0.1, 0.01, 0.0], [0.21, -0.1, -0.02], [0.23, -0.3, 0.02], [0.22, -0.5, 0.0]],
+      [[0.08, 0.0, 0.1], [0.18, -0.1, 0.16], [0.2, -0.28, 0.17]],
+      [[0.0, 0.0, 0.1], [0.0, -0.08, 0.17], [0.02, -0.22, 0.18]],
+      [[-0.12, 0.0, 0.06], [-0.24, -0.02, 0.12], [-0.3, -0.12, 0.17]],
+    ], new THREE.Vector3(0, 0, 1), 61);
+    // At the room's end of the awards shelf's low board, its vines down the outside of the end board.
+    trailing(new THREE.Vector3(WX - 0.075, SHELF.low, SHELF.z1 - 0.052), 0.048, [
+      [[0.0, 0.0, 0.07], [-0.02, -0.08, 0.1], [-0.03, -0.3, 0.1], [-0.05, -0.52, 0.12]],
+      [[-0.04, 0.0, 0.07], [-0.07, -0.1, 0.1], [-0.08, -0.28, 0.11]],
+      [[0.02, 0.0, 0.06], [0.03, -0.12, 0.09], [0.04, -0.4, 0.09], [0.03, -0.62, 0.11]],
+    ], new THREE.Vector3(-1, 0, 0.5).normalize(), 67);
+    // On the window sill, right of the right pane, its vines over the sill's edge.
+    trailing(new THREE.Vector3(1.255, sillTop, 0.06), 0.042, [
+      [[0.0, 0.0, 0.06], [0.0, -0.04, 0.11], [-0.01, -0.14, 0.12]],
+      [[0.03, 0.0, 0.05], [0.04, -0.05, 0.11], [0.05, -0.2, 0.12]],
+    ], new THREE.Vector3(0, 0.2, 1).normalize(), 71);
+
+    // The tall plant in the back right corner: broad arching leaves on long stalks in a cream ceramic pot. Its leaves
+    // point into the room and along the back wall, never towards the awards shelf.
+    const tallPot = new THREE.Mesh(potGeometry(0.18, 0.42), new THREE.MeshStandardMaterial({ color: 0xece3d2, roughness: 0.45, side: THREE.DoubleSide }));
+    tallPot.position.set(TALL_PLANT.x, 0, TALL_PLANT.z);
+    decor.add(tallPot);
+    const soilTop = new THREE.Vector3(TALL_PLANT.x, 0.42 * 0.86, TALL_PLANT.z);
+    soils.push(new THREE.Matrix4().makeScale(0.18 * 0.87, 1, 0.18 * 0.87).setPosition(soilTop));
+    // Each leaf: its turn about the stalk's base, its tilt out (+) or back (-), and its length.
+    const BROAD = [[0, -0.42, 1.3], [-0.35, -0.3, 1.22], [0.3, -0.36, 1.1], [0.65, -0.28, 0.95], [-0.85, -0.12, 1.28], [-1.3, 0.12, 1.18],
+      [-1.75, 0.22, 1.02], [-2.2, 0.08, 1.12], [-2.7, -0.2, 0.98], [-0.6, -0.5, 1.38], [-1.55, -0.32, 1.32]];
+    const broadLeaves = new THREE.InstancedMesh(archedLeaf(0.25, 0.9, 0.25), new THREE.MeshStandardMaterial({ map: texture(broadLeafArt()), alphaTest: 0.5, side: THREE.DoubleSide, roughness: 0.65 }), BROAD.length);
+    BROAD.forEach(([turn, tilt, length], i) => {
+      broadLeaves.setMatrixAt(i, new THREE.Matrix4().compose(soilTop.clone().add(new THREE.Vector3(Math.sin(turn) * 0.03, 0, Math.cos(turn) * 0.03)),
+        new THREE.Quaternion().setFromEuler(new THREE.Euler(tilt, turn, 0, 'YXZ')), new THREE.Vector3(length, length, length)));
+    });
+    decor.add(broadLeaves);
+
+    // A small succulent in a cream pot at the sill's right end, and a smaller one by the mullion: the Poly Haven model,
+    // its four parts merged into one mesh.
+    succulentModel.scene.updateMatrixWorld(true);
+    const succulentParts = [];
+    let succulentMaterial = null;
+    succulentModel.scene.traverse((o) => { if (o.isMesh) { succulentParts.push(o.geometry.clone().applyMatrix4(o.matrixWorld)); succulentMaterial = o.material; } });
+    const succulentGeometry = mergeGeometries(succulentParts);
+    for (const [x, scale, turn] of [[1.37, 0.68, 0.4], [CX + 0.11, 0.5, 2.1]]) {
+      const pot = new THREE.Mesh(succulentGeometry, succulentMaterial);
+      pot.position.set(x, sillTop, 0.06);
+      pot.scale.setScalar(scale);
+      pot.rotation.y = turn;
+      decor.add(pot);
+    }
+
+    const terracotta = new THREE.InstancedMesh(potGeometry(1, 1), new THREE.MeshStandardMaterial({ color: 0xb8643f, roughness: 0.85, side: THREE.DoubleSide }), pots.length);
+    pots.forEach((m, i) => terracotta.setMatrixAt(i, m));
+    const soil = new THREE.InstancedMesh(new THREE.CircleGeometry(1, 20).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x3b2a1e, roughness: 1 }), soils.length);
+    soils.forEach((m, i) => soil.setMatrixAt(i, m));
+    const heartLeaves = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1).translate(0, 0.5, 0), new THREE.MeshStandardMaterial({ map: texture(heartLeafArt()), alphaTest: 0.5, side: THREE.DoubleSide, roughness: 0.6 }), leafPlaces.length);
+    leafPlaces.forEach((m, i) => heartLeaves.setMatrixAt(i, m));
+    const vines = new THREE.Mesh(mergeGeometries(vineParts), new THREE.MeshStandardMaterial({ color: 0x4f6e2c, roughness: 0.8 }));
+    decor.add(terracotta, soil, heartLeaves, vines);
+
+    // The rug in front of the desk: cream wool on the floor.
+    const rug = new THREE.Mesh(new THREE.PlaneGeometry(RUG.w, RUG.d).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: texture(rugTexture()), roughness: 1 }));
+    rug.position.set(RUG.x, 0.004, RUG.z);
+    decor.add(rug);
+
+    // The wall clock right of the window. Its face shows the visitor's local time, redrawn once a minute.
+    const clockArt = document.createElement('canvas');
+    clockArt.width = clockArt.height = 512;
+    const clockNow = new Date();
+    drawClock(clockArt, clockNow.getHours(), clockNow.getMinutes());
+    const clockMap = texture(clockArt);
+    const clockFace = new THREE.Mesh(new THREE.CircleGeometry(CLOCK.r - 0.004, 48), new THREE.MeshStandardMaterial({ map: clockMap, roughness: 0.5 }));
+    clockFace.position.set(CLOCK.x, CLOCK.y, 0.012);
+    decor.add(clockFace);
+    decor.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
+    rug.castShadow = clockFace.castShadow = false;
 
     // ── The paper: a sheet held in front of the camera on the left, so the room stays in view on the right ──
     const PAPER_D = 0.5;
@@ -2575,6 +3008,18 @@ export async function start(section) {
     resize.observe(stage);
     visibility.observe(section);
     theme.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    // The clock's hands move once a minute: one frame at each minute boundary, and no other.
+    const clockLog = [];
+    const nextMinute = () => 60000 - (Date.now() % 60000) + 20;
+    let clockTimer = setTimeout(function tickClock() {
+      const now = new Date();
+      drawClock(clockArt, now.getHours(), now.getMinutes());
+      clockMap.needsUpdate = true;
+      clockLog.push(Math.round(performance.now()));
+      invalidate();
+      clockTimer = setTimeout(tickClock, nextMinute());
+    }, nextMinute());
+    signal.addEventListener('abort', () => clearTimeout(clockTimer));
     // The glow tour runs on the first visit that opens at rest; with storage blocked, it runs on every such load.
     let toured = null;
     try { toured = localStorage.getItem('room.toured'); } catch { toured = null; }
@@ -2619,6 +3064,39 @@ export async function start(section) {
         out.corners[`${yaw},${pitch}`] = landmarkVisible();
       }
       placeView(viewA, keep.key, keep.map);
+      placeCamera(cam.eye, cam.target, look.yaw, look.pitch);
+      invalidate();
+      return out;
+    }
+
+    // Which items the decor hides: rays from each pose's eye, over the corners of the orbit, to the centre and the
+    // eight inset corners of each item's box. A ray counts when it meets the decor before its point. The passes count
+    // at rest and at the desk, where they show; their paper pose looks at the window.
+    function decorBlocks() {
+      const out = [], ray = new THREE.Raycaster(), p = new THREE.Vector3(), corner = new THREE.Vector3();
+      const all = [...items.values()].map((e) => [`${e.station}/${e.id}`, e.object]);
+      const check = (name, pose, list) => {
+        for (const yaw of [-3, 0, 3]) for (const pitch of [-3, 0, 3]) {
+          placeCamera(pose.eye, pose.target, THREE.MathUtils.degToRad(yaw), THREE.MathUtils.degToRad(pitch));
+          for (const [key, object] of list) {
+            const box = new THREE.Box3().setFromObject(object), c = box.getCenter(new THREE.Vector3()), half = box.getSize(new THREE.Vector3()).multiplyScalar(0.46);
+            let hidden = 0;
+            for (let i = 0; i < 9; i++) {
+              corner.set(i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? 1 : -1).multiply(half);
+              p.copy(c).add(i === 8 ? corner.set(0, 0, 0) : corner).sub(camera.position);
+              ray.set(camera.position, p.clone().normalize());
+              ray.far = p.length() - 0.002;
+              if (ray.intersectObject(decor, true).length) hidden++;
+            }
+            if (hidden) out.push({ pose: name, yaw, pitch, item: key, hidden });
+          }
+        }
+      };
+      check('rest', poses.rest, [...all, ['phone', phone], ['laptop', screen], ['print', print], ['lamp', lamp], ['radio', radio]]);
+      for (const station of ['desk', 'awards', 'projects', 'letters']) check(station, poses[station], all.filter(([key]) => key.startsWith(`${station}/`)));
+      check('laptop', poses.laptop, [['laptop', screen]]);
+      check('contact', poses.contact, [['phone', phone]]);
+      for (const [key, object] of all) if (!key.startsWith('desk/')) check(key, itemPoses.get(items.get(key)), [[key, object]]);
       placeCamera(cam.eye, cam.target, look.yaw, look.pitch);
       invalidate();
       return out;
@@ -2702,6 +3180,14 @@ export async function start(section) {
         const centre = c.getCenter(new THREE.Vector3());
         cam.target.copy(centre);
         cam.eye.copy(centre).add(new THREE.Vector3(0, 0.42, 0.34));
+        invalidate();
+      },
+      decorBlocks,
+      clock: () => clockLog.slice(),
+      // Frames the bookshelf from in front for a close screenshot; any move of the room puts the camera back.
+      lookAtBookshelf: () => {
+        cam.target.set((BOOKSHELF.x0 + BOOKSHELF.x1) / 2, 1.08, 0.1);
+        cam.eye.set((BOOKSHELF.x0 + BOOKSHELF.x1) / 2 + 0.3, 1.25, 3.1);
         invalidate();
       },
       screenPoint: () => screenPoint(centreOf(screen)),

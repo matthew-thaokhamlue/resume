@@ -798,6 +798,25 @@ test('assets/room/CREDITS.txt names the CC0 licence and every model', () => {
   }
 });
 
+test('every model room.js loads has its 1k glTF files, stays under 3 MB and is credited with its Poly Haven page', () => {
+  const js = readText('assets/room/room.js');
+  const credits = readText('assets/room/CREDITS.txt');
+  const ids = [...js.matchAll(/\bmodel\('([a-z0-9_]+)'\)/g)].map((m) => m[1]);
+  assert.ok(ids.includes('potted_plant_04'), 'the window sill succulent is a model');
+  for (const id of ids) {
+    const dir = path.join(repoRoot, 'assets/room/models', id);
+    const gltf = JSON.parse(fs.readFileSync(path.join(dir, `${id}_1k.gltf`), 'utf8'));
+    const files = [`${id}_1k.gltf`, ...gltf.buffers.map((b) => b.uri), ...gltf.images.map((i) => i.uri)];
+    let bytes = 0;
+    for (const file of files) {
+      assert.ok(fs.existsSync(path.join(dir, file)), `models/${id}/${file} is missing`);
+      bytes += fs.statSync(path.join(dir, file)).size;
+    }
+    assert.ok(bytes < 3e6, `models/${id} is ${bytes} bytes`);
+    assert.ok(credits.includes(`${id} (`) && credits.includes(`https://polyhaven.com/a/${id}`), `CREDITS.txt does not credit ${id}`);
+  }
+});
+
 test('the room loads Patrick Hand from its own folder and credits it', () => {
   const js = readText('assets/room/room.js');
   assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/fonts/patrick-hand-latin.woff2')), 'the font file');

@@ -17,6 +17,12 @@ classic_laptop (Classic Laptop), author: Arrangemonk
   file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/classic_laptop/classic_laptop_1k.gltf (glTF, 1k textures)
   licence: CC0 1.0
 
+potted_plant_04 (Potted Plant 04), author: James Ray Cock
+  page: https://polyhaven.com/a/potted_plant_04
+  file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/potted_plant_04/potted_plant_04_1k.gltf (glTF, 1k textures)
+  licence: CC0 1.0
+  The two succulents on the window sill.
+
 Music: four instrumental tracks generated for this site with ElevenLabs (Eleven Music)
   files: music/track-1.mp3, music/track-2.mp3, music/track-3.mp3 and music/track-4.mp3; the room plays them in the
   order 3, 1, 2, 4
@@ -27,7 +33,9 @@ fonts/OFL-patrick-hand.txt. The paper's handwriting uses fonts/patrick-hand-lati
 
 The wood grain is drawn in room.js on a canvas; it uses no texture file. The trophies, the medals, the
 certificates, the card tray, the business cards, the telephone, the radio and the music notes are built in room.js;
-they use no model or image file.
+they use no model or image file. So are the decor: the bookshelf with its books, vases and basket, the trailing
+plants, the tall plant with its broad leaves, the skirting boards and the wall clock. The floorboards, the rug, the
+basket weave, the leaves and the clock face are drawn in room.js on canvases.
 
 Posters (posters/): poster-labforward.webp, poster-labtwin.webp, poster-thryve.webp, poster-dataverse.webp and
 poster-training.webp were generated for this site with Codex image generation. shot-opppaths.webp and
