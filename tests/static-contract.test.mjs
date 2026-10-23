@@ -708,7 +708,7 @@ test('the seven testimonial tiles keep exact excerpts and share the existing dia
   assert.match(html, /class="ed-reveal__close"[^>]*data-action="close-testimonial"/);
 });
 
-// The 3D room (behind ?room=1): the gate, the markup, the module files, the role sections and the hero hooks.
+// The default 3D room: the gate, the markup, the module files, the role sections and the hero hooks.
 const ROOM_STATIONS = ['desk', 'laptop', 'awards', 'projects', 'letters', 'contact'];
 
 test('index.html loads the room gate right after theme.js, and #room starts hidden with no inline script', () => {
@@ -725,7 +725,7 @@ test('index.html loads the room gate right after theme.js, and #room starts hidd
   assert.doesNotMatch(css.match(/\n {2}\.ed-room \{[^}]*\}/)[0], /display/, 'a display on .ed-room would override the hidden attribute');
 });
 
-test('room-boot.js returns before any work unless the query has room=1', () => {
+test('room-boot.js returns before any work when the query has static=true', () => {
   const js = readText('assets/js/room-boot.js');
   function run(search) {
     const touched = [];
@@ -734,10 +734,12 @@ test('room-boot.js returns before any work unless the query has room=1', () => {
     try { vm.runInNewContext(js, { window, document: trap('document'), console: trap('console') }); } catch { /* a guard read undefined */ }
     return touched;
   }
-  for (const search of ['', '?room=0', '?room=10', '?force=1', '?x=1&room=12']) {
+  for (const search of ['?static=true', '?x=1&static=true', '?static=true&room=1', '?static=true&force=1']) {
     assert.deepEqual(run(search), [], `"${search}" must not reach the guards`);
   }
-  assert.ok(run('?room=1').length > 0 && run('?x=1&room=1&force=1').length > 0, 'room=1 runs the guards');
+  for (const search of ['', '?room=1', '?force=1', '?static=false', '?static=trueish', '?x=static=true']) {
+    assert.ok(run(search).length > 0, `"${search}" must reach the guards`);
+  }
   assert.ok(js.includes('/swiftshader|llvmpipe|softpipe|lavapipe|software|basic render/i'), 'the renderer check');
   assert.match(js, /getContext\('webgl2', force \? undefined : \{ failIfMajorPerformanceCaveat: true \}\)/, 'force=1 skips the renderer check only');
   assert.match(js, /matchMedia\('\(pointer: fine\)'\)/);
