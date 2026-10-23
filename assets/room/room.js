@@ -66,8 +66,8 @@ const DESK = { x: 0.55, z: 0.47, w: 2.1, d: 0.9, top: 0.78 };
 // The passes lie in a row along the front of the desk with small gaps: a stub, a perforation and a body.
 const PASS = { w: 0.264, stub: 0.06, gap: 0.026, band: 0.012, r: 0.01, pad: 0.012, code: 0.05, company: 0.032, lift: 0.03 };
 const LAPTOP = { x: 0.55, z: 0.37, scale: 0.55, tilt: 0.2 };   // tilt: the lid leans back by this angle in radians
-// The CV printout lies in front of the telephone, right of where the last pass lies when the passes are spread.
-const PRINT = { x: 1.44, z: 0.745, w: 0.21, h: 0.297, turn: 0.16 };
+// The CV printout lies at the telephone's front-left, between the laptop and the phone and behind the spread passes.
+const PRINT = { x: 0.93, z: 0.55, w: 0.15, h: 0.212, turn: 0.12 };
 const TRAY = { x: -0.31, z: 0.47, w: 0.27, d: 0.2, turn: -0.1 };
 const CARD = { w: 0.17, h: 0.11 };   // a business card: 85 x 55 mm, at twice the size
 const PHONE = { x: 1.2, z: 0.52, turn: -0.45 };
@@ -2917,7 +2917,8 @@ export async function start(section) {
     const SIDES = { projects: [null, 'desk'], desk: ['projects', 'awards'], awards: ['desk', null] };
     const sidesOf = (station) => (station === 'rest' ? [null, null] : SIDES[station] ?? SIDES.desk);
     const sideButtons = ['left', 'right'].map((side) => section.querySelector(`[data-room-side="${side}"]`));
-    const stationName = (station) => clean(stationRow.querySelector(`[data-room-station="${station}"]`));
+    // The arrows call the desk "Desk"; the links row names it after the passes.
+    const stationName = (station) => (station === 'desk' ? 'Desk' : clean(stationRow.querySelector(`[data-room-station="${station}"]`)));
     function showSides() {
       sidesOf(state.station).forEach((to, i) => {
         sideButtons[i].hidden = !to;
