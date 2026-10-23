@@ -56,7 +56,7 @@ const VIEWS = {
 
 // Units are metres. The back wall's room-side face is z = 0, and x runs to the right.
 const WALL_H = 2.8, WALL_T = 0.2;
-const ROOM = { x0: -2.9, x1: 2.6, z1: 4.6 };
+const ROOM = { x0: -1.45, x1: 2.55, z1: 4.6 };
 const WIN = { x0: -0.2, x1: 1.3, y0: 1.0, y1: 2.3 };   // the opening in the back wall
 const LINING = 0.025, CASING = 0.075, SILL_OUT = 0.16, FRAME_Z = -0.12, F = 0.06, MUL = 0.042;
 // The sill top sits above the opening's bottom face, so the two never share a plane.
@@ -70,7 +70,7 @@ const TRAY = { x: -0.31, z: 0.4, w: 0.27, d: 0.2, turn: -0.1 };
 const CARD = { w: 0.17, h: 0.115 };
 const PHONE = { x: 1.2, z: 0.52, turn: -0.45 };
 // The awards shelf on the right wall and the poster wall on the left wall, as ranges along the wall (z).
-const SHELF = { z0: 0.82, z1: 2.62, low: 1.0, high: 1.42, depth: 0.25, hooks: 2.13 };
+const SHELF = { z0: 0.66, z1: 2.46, low: 1.0, high: 1.42, depth: 0.25, hooks: 2.13 };
 const CERT = { w: 0.28, h: 0.198, frame: 0.012 };
 const POSTER = { w: 0.4, h: 0.56, frame: 0.014, rows: [1.98, 1.13], step: 0.55, z: 1.2 };
 // Text sizes in metres. Textures carry TEX_PPM px per metre.
@@ -80,13 +80,15 @@ const INK = '#1d1b18', INK_SOFT = '#45413b', CLAY = '#c45a38';
 // The window view: an image plane behind the window, so the eye's orbit gives parallax. MAX_VIEW_H is the largest
 // image height on that plane; VIEW_MARGIN keeps a landmark off the wood.
 const VIEW_Z = -5, MAX_VIEW_H = 3.73, VIEW_PAD = 4, VIEW_MARGIN = 0.012;
-const MAX_TILT = THREE.MathUtils.degToRad(3);
+// The mouse orbit turns the eye by up to MAX_TILT, and a pose farther than ORBIT_D from its target turns less, so the
+// eye never travels farther than at ORBIT_D. The far rest overview then keeps the window's parallax small.
+const MAX_TILT = THREE.MathUtils.degToRad(3), ORBIT_D = 3.1;
 const MOVE_MS = 900, FADE_MS = 400, NIGHT_FADE_MS = 600, FLIP_MS = 450;
 // The desk station: the eye sits up and back from the desk's front edge, for a stage REF_H px tall. A shorter stage
 // brings it closer, so the pass text keeps its size on screen; a narrow stage moves it further back.
 const DESK_EYE = { up: 0.94, back: 0.86, refH: 820 };
 // Rest: the whole room from beyond its open front, so both side walls show.
-const REST = { eye: [0.05, 1.68, 6.05], target: [-0.12, 1.3, 0] };
+const REST = { eye: [0.55, 1.62, 5.3], target: [0.55, 1.28, 0] };
 
 // The lined paper, laid out in CSS px: it hangs at a fixed place in front of the camera, so its size on screen
 // never changes. Each line of text sits on a ruled line.
@@ -156,6 +158,21 @@ function readPasses(doc) {
     const short = SHORT[pass.id] ?? legs.map((leg) => leg.company.replace(/\s+(Technologies Inc\.|GmbH)$/, '')).join(' → ');
     return { ...pass, legs, name, short, link: legs[legs.length - 1].link };
   });
+}
+
+// A pass's tooltip: each leg's company with its role and dates, or, for education, the two degrees.
+function passTip(pass) {
+  const rows = [];
+  for (const leg of pass.legs) {
+    rows.push(['b', leg.company]);
+    if (leg.degrees) for (const d of leg.degrees) rows.push(['span', d]);
+    else {
+      const role = roleLine(leg);
+      if (role) rows.push(['span', role]);
+      for (const part of leg.dates) rows.push(['span', part]);
+    }
+  }
+  return rows;
 }
 
 // A pass's paper: each leg's company, role and dates, the summary, every bullet and the Sema subheads.
@@ -557,8 +574,9 @@ function postcardFace(quote, photo) {
 // ── The lined paper ──
 
 // Lays out a paper for a sheet of W x H CSS px: titles, lines, headings, text, bullets and the links, as pages of
-// ruled lines. A heading stays with the line after it, a wrapped bullet stays on one page when it fits, and a page
-// never starts with a blank line.
+// ruled lines. A heading stays with the line after it, and a wrapped bullet stays on one page when it fits on one.
+// A paragraph flows on to the next page, so a long quote starts under its name. A page never starts with a blank
+// line.
 function layoutNotes(doc, W, H) {
   const textW = W - NOTE.left - NOTE.right;
   const rows = Math.max(6, Math.floor((H - NOTE.top - NOTE.bottom) / NOTE.line));
@@ -569,10 +587,11 @@ function layoutNotes(doc, W, H) {
     while (have < lines.length && !lines[lines.length - 1 - have]) have++;
     for (; have < n; have++) lines.push(null);
   };
-  const write = (text, { size = NOTE.body, x = 0, keep = false, link = -1, lead = '' } = {}) => {
+  // keep holds a line to the next one; together holds a wrapped block's lines to each other.
+  const write = (text, { size = NOTE.body, x = 0, keep = false, together = false, link = -1, lead = '' } = {}) => {
     const wrapped = wrap(text, `${size}px ${HAND}`, textW - x, NOTE.chars);
     wrapped.forEach((t, i) => {
-      lines.push({ text: t, size, x: NOTE.left + x, keep: keep || i < wrapped.length - 1, link, lead: i ? '' : lead });
+      lines.push({ text: t, size, x: NOTE.left + x, keep: keep || (together && i < wrapped.length - 1), link, lead: i ? '' : lead });
     });
   };
   for (const b of doc.blocks) {
@@ -581,7 +600,7 @@ function layoutNotes(doc, W, H) {
     else if (b.line) write(b.line, { keep: true });
     else if (b.head) { blank(); write(b.head, { size: NOTE.head, keep: true }); }
     else if (b.text) write(b.text);
-    else if (b.bullet) write(b.bullet, { x: NOTE.bullet, lead: '–' });
+    else if (b.bullet) write(b.bullet, { x: NOTE.bullet, lead: '–', together: true });
   }
   blank();
   doc.links.forEach((link, i) => write(link.text, { link: i, keep: i < doc.links.length - 1 }));
@@ -591,7 +610,8 @@ function layoutNotes(doc, W, H) {
     let page = pages[pages.length - 1];
     let run = 0;
     while (lines[i + run]?.keep) run++;
-    if (page.length && (page.length >= rows || (run && page.length + run + 1 > rows))) { page = []; pages.push(page); }
+    // A held block moves to a new page only when it fits on one.
+    if (page.length && (page.length >= rows || (run && run + 1 <= rows && page.length + run + 1 > rows))) { page = []; pages.push(page); }
     if (line || page.length) page.push(line);
   });
   for (const page of pages) while (page.length && !page[page.length - 1]) page.pop();
@@ -972,7 +992,7 @@ export async function start(section) {
     const lampLight = new THREE.PointLight(0xffb066, 0.4, 0, 2);
     lampLight.position.set(-0.005, 0.66, -0.18);   // just below the bulb, in model space
     const plant = new THREE.Group();
-    plant.position.set(2.12, 0, 0.42);
+    plant.position.set(2.2, 0, 0.3);
     plant.rotation.y = 0.5;
     const laptop = new THREE.Group();
     laptop.position.set(LAPTOP.x, DESK.top, LAPTOP.z);
@@ -1038,7 +1058,7 @@ export async function start(section) {
     const passItems = passes.map((pass, i) => {
       const mesh = faceMesh(passFace(pass, PASS_H), { alphaTest: 0.5, roughness: 0.9 });
       mesh.rotation.x = -Math.PI / 2;
-      const entry = item('desk', pass.id, { name: pass.name, doc: passDoc(pass), pass, mesh });
+      const entry = item('desk', pass.id, { name: pass.name, doc: passDoc(pass), tip: passTip(pass), pass, mesh });
       const holder = entry.object;
       holder.position.set(DESK.x + (i - (passes.length - 1) / 2) * (PASS.w + PASS.gap), DESK.top + 0.0012 + i * 0.0004, DX.z1 - 0.035 - PASS_H / 2 + SHIFT[i]);
       holder.rotation.y = THREE.MathUtils.degToRad(TURN[i]);
@@ -1073,10 +1093,14 @@ export async function start(section) {
     const gold = () => new THREE.MeshStandardMaterial({ color: 0xd8a640, metalness: 0.65, roughness: 0.3, side: THREE.DoubleSide });
     const cupProfile = [[0.034, 0], [0.034, 0.006], [0.013, 0.016], [0.009, 0.05], [0.015, 0.058], [0.009, 0.066], [0.011, 0.08], [0.03, 0.098], [0.05, 0.13], [0.058, 0.165], [0.061, 0.172], [0.055, 0.172], [0.05, 0.14]].map(([r, y]) => new THREE.Vector2(r, y));
     const cupGeometry = new THREE.LatheGeometry(cupProfile, 40);
-    const handleGeometry = new THREE.TorusGeometry(0.03, 0.0055, 8, 20, Math.PI);
+    // A handle runs from inside the cup wall below the rim, out and down, and back into the wall where the cup
+    // narrows, so both of its ends meet the cup.
+    const handleGeometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3([[0.048, 0.158], [0.07, 0.163], [0.088, 0.152], [0.094, 0.132], [0.084, 0.113], [0.06, 0.104], [0.03, 0.105]]
+      .map(([x, y]) => new THREE.Vector3(x, y, 0))), 32, 0.0055, 8);
     const trophyItems = results.map((result, i) => {
       const entry = item('awards', `result-${result.id}`, {
         name: `${result.value} · ${result.label}, ${result.company}`,
+        tip: [['b', `${result.value} · ${result.label}`], ['span', result.company]],
         doc: revealDoc(result.reveal, [result.reveal.kicker, result.reveal.meta],
           experience.getElementById(`role-${result.id}`) ? [{ text: LINK_TEXT, href: `experience.html#role-${result.id}` }] : []),
       });
@@ -1089,9 +1113,8 @@ export async function start(section) {
       t.add(cup);
       for (const d of [-1, 1]) {
         const handle = new THREE.Mesh(handleGeometry, metal);
-        handle.position.set(d * 0.052, 0.076 + 0.128, 0);
-        handle.rotation.z = -d * Math.PI / 2;
-        t.add(handle);
+        handle.scale.x = d;   // the left handle mirrors the right one
+        cup.add(handle);
       }
       const plaque = faceMesh(plaqueFace(result), { roughness: 0.4 });
       plaque.material.metalness = 0.3;
@@ -1122,7 +1145,7 @@ export async function start(section) {
     ];
     const certStep = (SHELF.z1 - SHELF.z0 - 0.04) / certSpecs.length;
     const certItems = certSpecs.map((spec, i) => {
-      const entry = item('awards', spec.id, { name: spec.name, doc: spec.doc });
+      const entry = item('awards', spec.id, { name: spec.name, doc: spec.doc, tip: [['b', spec.title], ['span', spec.issuer]] });
       const c = entry.object;
       const frameMaterial = new THREE.MeshStandardMaterial({ color: 0x2a211b, roughness: 0.5 });
       box(CERT.w + 2 * CERT.frame, CERT.h + 2 * CERT.frame, 0.014, frameMaterial, 0, 0, -0.007, c);
@@ -1152,7 +1175,8 @@ export async function start(section) {
       scene.add(hook);
       group.ids.forEach((id, i) => {
         const r = credential(id), label = medalLabel(r.title);
-        const entry = item('awards', id, { name: `${r.title}, ${r.kicker.split(' · ')[0]}`, doc: revealDoc(r, [r.kicker], [...r.links].sort((a, b) => b.external - a.external)) });
+        const issuer = r.kicker.split(' · ')[0];
+        const entry = item('awards', id, { name: `${r.title}, ${issuer}`, doc: revealDoc(r, [r.kicker], [...r.links].sort((a, b) => b.external - a.external)), tip: [['b', r.title], ['span', issuer]] });
         const m = entry.object;
         // Every other medal hangs lower, so neighbours never cover each other.
         const n = group.ids.length, drop = 0.12 + (i % 2) * 0.155;
@@ -1181,7 +1205,7 @@ export async function start(section) {
       const dialog = portfolioPage.getElementById(`project-${spec.id}`);
       if (!dialog) throw new Error(`portfolio.html has no #project-${spec.id}`);
       const r = readReveal(dialog);
-      const entry = item('projects', spec.id, { name: `${r.title}, ${r.kicker}`, doc: revealDoc(r, [r.kicker, r.meta]) });
+      const entry = item('projects', spec.id, { name: `${r.title}, ${r.kicker}`, doc: revealDoc(r, [r.kicker, r.meta]), tip: [['b', r.title], ['span', r.kicker]] });
       const p = entry.object;
       box(POSTER.w + 2 * POSTER.frame, POSTER.h + 2 * POSTER.frame, 0.022, new THREE.MeshStandardMaterial({ color: 0x1c1a19, roughness: 0.5 }), 0, 0, -0.011, p);
       // The left wall gets little light, so a poster glows more than the other faces.
@@ -1217,6 +1241,7 @@ export async function start(section) {
     const cardItems = quotes.map((quote, i) => {
       const entry = item('letters', quote.id, {
         name: `Recommendation from ${quote.name}, ${quote.role}`,
+        tip: [['b', quote.name], ['span', quote.role]],
         doc: { blocks: [{ title: quote.name }, { line: quote.role }, { gap: 1 }, { text: quote.text }], links: [{ text: 'All recommendations on LinkedIn', el: recLink }] },
       });
       const card = entry.object;
@@ -1485,18 +1510,19 @@ export async function start(section) {
     const fadeLog = [];
     const atZ = (eye, p, z) => eye.clone().lerp(p, (z - eye.z) / (p.z - eye.z));
 
-    // What the window shows, measured at the frame as the rest eye sees it: shift is how far a view point moves
-    // over the rest orbit, and need is the part of the view that the eyes of every station see through the sash.
+    // What the window shows, measured at the frame. sights holds the eyes that must see the landmark, at rest and at
+    // a pass's paper, each with how far a view point moves at the frame over its orbit. need is the part of the view
+    // that the eyes of every station see through the sash, as the rest eye sees it.
     function viewBounds() {
       const E = poses.rest.eye, centre = new THREE.Vector3(CX, (SASH_OPEN.y0 + SASH_OPEN.y1) / 2, FRAME_Z);
-      const ref = atZ(E, centre, VIEW_Z);
       const need = { x0: Infinity, x1: -Infinity, y0: Infinity };
-      let shift = 0;
+      const sights = [poses.rest, poses.paper].map((pose) => ({ eye: pose.eye, ref: atZ(pose.eye, centre, VIEW_Z), shift: 0 }));
       for (const pose of [poses.rest, poses.desk, poses.paper]) for (const yaw of [-1, 0, 1]) for (const pitch of [-1, 0, 1]) {
         const eye = orbitEye(pose.eye, pose.target, yaw * MAX_TILT, pitch * MAX_TILT, new THREE.Vector3());
-        if (pose === poses.rest) {
-          const seen = atZ(eye, ref, FRAME_Z);
-          shift = Math.max(shift, Math.abs(seen.x - centre.x), Math.abs(seen.y - centre.y));
+        const sight = sights.find((s) => s.eye === pose.eye);
+        if (sight) {
+          const seen = atZ(eye, sight.ref, FRAME_Z);
+          sight.shift = Math.max(sight.shift, Math.abs(seen.x - centre.x), Math.abs(seen.y - centre.y));
         }
         for (const x of [SASH_OPEN.x0, SASH_OPEN.x1]) for (const y of [SASH_OPEN.y0, SASH_OPEN.y1]) {
           const q = atZ(E, atZ(eye, new THREE.Vector3(x, y, FRAME_Z), VIEW_Z), FRAME_Z);
@@ -1505,34 +1531,46 @@ export async function start(section) {
           need.y0 = Math.min(need.y0, q.y);
         }
       }
-      return { shift, need };
+      return { sights, need };
     }
 
-    // Places a view for the rest eye. Its landmark sits inside one pane, clear of the wood across the orbit, at the
-    // largest scale up to MAX_VIEW_H. The image also covers what the eyes see through the sash; above the image the
-    // blurred top row shows as sky. When both cannot hold, the landmark wins, and covers says so. A night image
-    // takes the place of its day image.
+    // Places a view, in frame coordinates as the rest eye sees them. Its landmark sits inside one pane, clear of the
+    // wood across the orbit, both at rest and at a pass's paper, at the largest scale up to MAX_VIEW_H. The image also
+    // covers what the eyes see through the sash; above the image the blurred top row shows as sky. When both cannot
+    // hold, the landmark wins, and covers says so. A night image takes the place of its day image.
     function placeView(mesh, key, texture) {
       const { u, v } = VIEWS[key];
       const aspect = texture.image.width / texture.image.height;
-      const { shift, need } = viewBounds();
-      const inset = shift + VIEW_MARGIN;
+      const { sights, need } = viewBounds();
       // From the frame to the view plane, along rays from the rest eye.
       const E = poses.rest.eye, k = (E.z - VIEW_Z) / (E.z - FRAME_Z);
+      // A point at the frame seen from another eye, moved to where the rest eye sees the same view point. The two
+      // eyes stand at different distances, so a landmark off the window's centre shows at different places in it.
+      const s = (eye) => (eye.z - FRAME_Z) / (eye.z - VIEW_Z);
+      const toRest = (p, eye, axis) => E[axis] + (eye[axis] + (p - eye[axis]) / s(eye) - E[axis]) * s(E);
       let best = null;
       for (const pane of PANES) {
-        const P = { x0: pane.x0 + inset, x1: pane.x1 - inset, y0: pane.y0 + inset, y1: pane.y1 - inset };
+        const P = { x0: -Infinity, x1: Infinity, y0: -Infinity, y1: Infinity };
+        for (const { eye, shift } of sights) {
+          const inset = shift + VIEW_MARGIN;
+          P.x0 = Math.max(P.x0, toRest(pane.x0 + inset, eye, 'x'));
+          P.x1 = Math.min(P.x1, toRest(pane.x1 - inset, eye, 'x'));
+          P.y0 = Math.max(P.y0, toRest(pane.y0 + inset, eye, 'y'));
+          P.y1 = Math.min(P.y1, toRest(pane.y1 - inset, eye, 'y'));
+        }
         const h = Math.min(MAX_VIEW_H / k, u[1] > u[0] ? (P.x1 - P.x0) / ((u[1] - u[0]) * aspect) : Infinity, (P.y1 - P.y0) / (v[1] - v[0]));
         const least = Math.max((need.x1 - need.x0) / aspect, (need.x1 - P.x1) / ((1 - u[1]) * aspect), (P.x0 - need.x0) / (u[0] * aspect), (P.y0 - need.y0) / (1 - v[1]));
         const covers = least <= h;
-        if (!best || covers > best.covers || (covers === best.covers && h > best.h)) best = { pane, P, h, covers };
+        // On a tie the left pane wins, so a landmark sits nearer the middle of the view when the paper takes the left.
+        if (!best || covers > best.covers || (covers === best.covers && h > best.h + 0.001)) best = { pane, P, h, covers };
       }
       const { pane, P, h, covers } = best, w = aspect * h;
       const lo = Math.max(P.x0 - u[0] * w, need.x1 - w), hi = Math.min(P.x1 - u[1] * w, need.x0);
       const x0 = lo <= hi ? (lo + hi) / 2 : (P.x0 - u[0] * w + P.x1 - u[1] * w) / 2;
       const y1 = Math.max(P.y0 + v[1] * h, Math.min(P.y1 + v[0] * h, need.y0 + h));
       const px0 = E.x + (x0 - E.x) * k, py1 = E.y + (y1 - E.y) * k, pw = w * k, ph = h * k;
-      // The plane reaches VIEW_PAD past the image on every side, where the clamped edge texels show.
+      // The plane reaches VIEW_PAD past the image on every side. Beside the image the image mirrors; above and below
+      // it the clamped edge rows show.
       mesh.material.map = texture;
       mesh.scale.set(pw + 2 * VIEW_PAD, ph + 2 * VIEW_PAD, 1);
       mesh.position.set(px0 + pw / 2, py1 - ph / 2, mesh.position.z);
@@ -1718,8 +1756,9 @@ export async function start(section) {
     // The mouse orbits the eye about the target by up to 3 degrees, so the view behind the window shifts.
     function orbitEye(eye, target, yaw, pitch, out) {
       spherical.setFromVector3(out.copy(eye).sub(target));
-      spherical.phi -= pitch;
-      spherical.theta += yaw;
+      const k = Math.min(1, ORBIT_D / spherical.radius);
+      spherical.phi -= pitch * k;
+      spherical.theta += yaw * k;
       return out.setFromSpherical(spherical).add(target);
     }
 
@@ -1853,41 +1892,52 @@ export async function start(section) {
       }
     }
 
-    // A light tint marks what a click would act on; with the paper open, a click only closes it. The shelf and the
-    // tray share the room's wood, so they take no tint; their items do.
+    // A light tint marks what a click would act on. With a paper open, only the station's other items light up: a
+    // click on one opens its paper, and any other click closes the paper. The shelf and the tray share the room's
+    // wood, so they take no tint; their items do.
     function setHovered(hit) {
       const lit = hit && (hit.kind !== 'item' || hit.id || hit.object === phone);
-      const next = !paper.visible && lit && ['item', 'lamp', 'laptop', 'screen', 'print'].includes(hit.kind) ? hit.object : null;
-      showTip(next);
+      const acts = hit && (paper.visible ? sameStation(hit) : ['item', 'lamp', 'laptop', 'screen', 'print'].includes(hit.kind));
+      const next = acts && lit ? hit.object : null;
+      showTip(acts ? hit : null);
       if (next === hovered) return;
       if (hovered) tint(hovered, false);
       if (next) tint(next, true);
       hovered = next;
     }
 
-    // The pass tooltip: the company, the role and the dates next to the pointer, while the camera rests.
+    // The tooltip, next to the pointer while the camera rests: what an object is, in the page's own words, and what a
+    // click on it does. A pass shows its company, role and dates. The tray and the shelf take the names of their
+    // sections on the page, and the lamp the label of the theme button.
     tip = document.createElement('div');
     tip.className = 'ed-room__tip';
     tip.setAttribute('aria-hidden', 'true');
     tip.hidden = true;
     section.appendChild(tip);
-    let tipFor = null;
-    function showTip(object) {
-      const entry = object?.userData.kind === 'item' && object.userData.station === 'desk' ? items.get(`desk/${object.userData.id}`) : null;
-      if (!entry || camTween || tipHeld) { tip.hidden = true; return; }
-      if (tipFor !== entry) {
-        tipFor = entry;
-        const rows = [];
-        for (const leg of entry.pass.legs) {
-          rows.push(['b', leg.company]);
-          if (leg.degrees) for (const d of leg.degrees) rows.push(['span', d]);
-          else {
-            const role = roleLine(leg);
-            if (role) rows.push(['span', role]);
-            for (const part of leg.dates) rows.push(['span', part]);
-          }
-        }
-        tip.replaceChildren(...rows.map(([tag, text]) => Object.assign(document.createElement(tag), { textContent: text })));
+    const themeButton = document.querySelector('[data-action="toggle-theme"]');
+    const groupNames = {
+      awards: clean(document.querySelector('.ed-topbar__nav a[href="certificates.html"]')),
+      letters: clean(document.getElementById('team-title')),
+    };
+    const CLOSER = 'Click to go closer', READ = 'Click to read', OPEN = 'Click to open';
+    function tipRows(hit) {
+      const at = state.station;
+      if (hit.kind === 'lamp') return [['b', themeButton?.getAttribute('aria-label') || '']];
+      if (hit.kind === 'screen' || hit.kind === 'laptop') return [['b', 'Evaluate role fit'], ['i', at !== 'laptop' ? CLOSER : hit.kind === 'screen' ? OPEN : '']];
+      if (hit.kind === 'print') return [['b', clean(cvLink)], ['i', at === 'desk' ? OPEN : CLOSER]];
+      if (hit.kind !== 'item') return null;
+      if (hit.object === phone) return [['b', clean(talkLink)], ['i', READ]];
+      if (!hit.id) return groupNames[hit.station] && hit.station !== at ? [['b', groupNames[hit.station]], ['i', CLOSER]] : null;
+      return [...items.get(`${hit.station}/${hit.id}`).tip, ['i', hit.station === at ? READ : CLOSER]];
+    }
+    let tipKey = null;
+    function showTip(hit) {
+      const rows = hit && !camTween && !tipHeld ? tipRows(hit) : null;
+      if (!rows) { tip.hidden = true; return; }
+      const key = rows.flat().join('|');
+      if (key !== tipKey) {
+        tipKey = key;
+        tip.replaceChildren(...rows.filter(([, text]) => text).map(([tag, text]) => Object.assign(document.createElement(tag), { textContent: text })));
       }
       tip.hidden = false;
       const box = section.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
@@ -1921,7 +1971,9 @@ export async function start(section) {
     }, { signal });
 
     // Two clicks, always: from rest or another station a click on an object goes to its station, and only there does
-    // an item open its paper. The telephone opens the contact paper at once.
+    // an item open its paper. With a paper open, another item of the station opens its own paper at once. The
+    // telephone opens the contact paper at once.
+    const sameStation = (hit) => hit?.kind === 'item' && !!hit.id && hit.station === state.station;
     canvas.addEventListener('click', (event) => {
       setPointer(event);
       tipHeld = true;
@@ -1929,6 +1981,7 @@ export async function start(section) {
       const hit = pick();
       if (paperState.key) {
         if (hit?.kind === 'paper' && hit.uv) clickPaper(hit.uv);
+        else if (sameStation(hit)) go(`${hit.station}/${hit.id}`);
         else back();
         return;
       }
@@ -2205,6 +2258,7 @@ export async function start(section) {
       textPx,
       items: () => [...items.keys()],
       paperText: () => paperState.notes?.pages.flat().filter(Boolean).map((l) => l.text).join(' ') ?? null,
+      pageText: (i) => paperState.notes?.pages[i]?.filter(Boolean).map((l) => l.text).join(' ') ?? null,
       flips: () => flipLog.map((f) => ({ step: f.step, ms: f.end && Math.round(f.end - f.start) })),
       setFlipMs: (ms) => { flipMs = ms; },
       fades: () => fadeLog.map((f) => ({ file: f.file, ms: f.end && Math.round(f.end - f.start) })),
@@ -2228,14 +2282,15 @@ export async function start(section) {
   }
 }
 
-// The view plane reaches past its image, where the clamped edge texels repeat. A blurred outer row and column
-// make that area a smooth band of sky or ground instead of streaks, such as a TV tower's tip repeated upwards.
+// The view plane reaches past its image. Above and below, the clamped edge rows repeat; a blurred outer row makes
+// that area a smooth band of sky or ground instead of streaks, such as a TV tower's tip repeated upwards. Beside the
+// image the texture mirrors, so the city goes on where a repeated edge column smeared into stripes.
 function softEdges(image) {
   const c = document.createElement('canvas');
   const w = c.width = image.width, h = c.height = image.height;
   const g = c.getContext('2d', { willReadFrequently: true });
   g.drawImage(image, 0, 0);
-  for (const [x, y, n, horizontal] of [[0, 0, w, true], [0, h - 1, w, true], [0, 0, h, false], [w - 1, 0, h, false]]) {
+  for (const [x, y, n, horizontal] of [[0, 0, w, true], [0, h - 1, w, true]]) {
     const pixels = g.getImageData(x, y, horizontal ? n : 1, horizontal ? 1 : n);
     const d = pixels.data, src = Float32Array.from(d), R = 48;
     for (let i = 0; i < n; i++) {
@@ -2257,6 +2312,7 @@ function loadView(file) {
     viewTextures.set(file, new THREE.ImageLoader().loadAsync(new URL(`views/${file}`, import.meta.url).href).then((image) => {
       const texture = new THREE.CanvasTexture(softEdges(image));
       texture.colorSpace = THREE.SRGBColorSpace;
+      texture.wrapS = THREE.MirroredRepeatWrapping;
       return texture;
     }, (error) => { viewTextures.delete(file); throw new Error(`views/${file} did not load`, { cause: error }); }));
   }

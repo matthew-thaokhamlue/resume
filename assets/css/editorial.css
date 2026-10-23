@@ -1026,12 +1026,13 @@
   .ed-room__back[hidden] { display: none; }
   .ed-room__back:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 3px; }
   .ed-room__key { padding: 1px 6px; border: 1px solid var(--ed-hairline); border-radius: 5px; font-family: var(--ed-mono); font-size: 0.72rem; color: var(--ed-ink-soft); }
-  /* the pass tooltip: room.js places it next to the pointer and hides it on a click and during camera moves; screen readers use the hidden pass buttons */
+  /* the room's tooltip: room.js places it next to the pointer and hides it on a click and during camera moves; screen readers use the hidden buttons */
   .ed-room__tip { position: absolute; left: 0; top: 0; z-index: 4; max-width: 340px; padding: 10px 14px; border: 1px solid var(--ed-hairline); border-radius: 10px; background: var(--ed-bg); color: var(--ed-ink); box-shadow: var(--ed-card-shadow); font-size: 0.875rem; line-height: 1.4; pointer-events: none; }
   .ed-room__tip[hidden] { display: none; }
   .ed-room__tip b { display: block; font-weight: 600; }
   .ed-room__tip b:not(:first-child) { margin-top: 8px; }
   .ed-room__tip span { display: block; color: var(--ed-ink-soft); }
+  .ed-room__tip i { display: block; margin-top: 6px; font-style: normal; color: var(--ed-accent-strong); }   /* what a click does */
 
 /* ── editorial-results (home) ── */
   .ed-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 56px; border-top: 1px solid var(--ed-hairline); }
