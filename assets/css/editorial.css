@@ -1003,6 +1003,70 @@
   /* the ring ignores touch drags, so the drag hint shows only with a hover pointer */
   @media (hover: none) { .ed-loop-hint { display: none; } }
 
+/* ── editorial-room (home, behind ?room=1) ── */
+  /* room-boot.js sets html.room-on only when every guard passes. Without it, #room keeps its hidden attribute and takes no space.
+     The intro line and the warm ground show at once; room.js adds is-ready on the first frame, and the canvas fades in. */
+  html.room-on #room { display: block; }
+  .ed-room { position: relative; height: var(--ed-home-screen-h); overflow: hidden; isolation: isolate; background: var(--ed-accent-tint); scroll-snap-align: start; }
+  .ed-room__stage, .ed-room__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ed-room__stage canvas { display: block; opacity: 0; transition: opacity 0.6s var(--ed-ease-soft); }
+  .ed-room.is-ready .ed-room__stage canvas { opacity: 1; }
+  /* The still image of the rest view shows at once, and the canvas fades in over it. To render the stills again after
+     a layout change: serve the repo, open index.html?room=1&force=1 in headless Chrome (SwiftShader) at 1440 x 900 with
+     the cookie banner dismissed and localStorage room.toured set, keep the pointer off the room, hide every element in
+     #room except the stage, and capture #room (1440 x 820) with CDP Page.captureScreenshot as WebP at quality 78. Do
+     it once per theme, and save the files as assets/room/still-day.webp and assets/room/still-night.webp. */
+  html.room-on .ed-room { background-image: url("../room/still-day.webp"); background-size: cover; background-position: center; }
+  html.room-on[data-theme="dark"] .ed-room { background-image: url("../room/still-night.webp"); }
+  /* the intro sits at the lower left on a small blurred block, above the station links; room.js adds is-away at a station */
+  .ed-room__intro { position: absolute; left: var(--ed-gutter-x); bottom: 72px; z-index: 1; max-width: min(44rem, calc(100% - 2 * var(--ed-gutter-x))); padding: 18px 24px 20px; border-radius: 16px; background: rgba(var(--ed-bg-rgb), 0.84); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: var(--ed-card-shadow); pointer-events: none; transition: opacity var(--ed-d-base) var(--ed-ease-soft), visibility var(--ed-d-base); }
+  .ed-room.is-away .ed-room__intro { opacity: 0; visibility: hidden; }
+  .ed-room__name { margin: 0; font-family: var(--ed-display); font-size: clamp(1.4rem, 2vw, 2rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; color: var(--ed-ink); }
+  .ed-room__cue { margin: 10px 0 0; max-width: 44ch; font-size: 1.05rem; line-height: 1.45; color: var(--ed-ink-soft); }
+  .ed-room__passes { margin: 0; padding: 0; list-style: none; }
+  /* The pass buttons stay hidden on screen until one has focus; then it shows at the bottom left with the site focus ring. */
+  .ed-room__pass { position: absolute; left: var(--ed-gutter-x); bottom: 72px; z-index: 2; max-width: calc(100% - 2 * var(--ed-gutter-x)); padding: 10px 16px; border: 0; border-radius: 10px; background: var(--ed-bg); color: var(--ed-ink); font: inherit; font-size: 0.95rem; text-align: left; box-shadow: var(--ed-card-shadow); }
+  .ed-room__pass:not(:focus) { width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .ed-room__pass:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 3px; }
+  /* room.js shows the Back button at every station; it sits above the paper, on a blurred ground that reads on day and night views */
+  .ed-room__back { position: absolute; left: var(--ed-gutter-x); top: 16px; z-index: 3; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 14px; border: 1px solid var(--ed-hairline); border-radius: 999px; background: rgba(var(--ed-bg-rgb), 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--ed-ink); font: inherit; font-size: 0.95rem; line-height: 1.2; box-shadow: var(--ed-card-shadow); }
+  .ed-room__back[hidden] { display: none; }
+  .ed-room__back:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 3px; }
+  /* The sideways arrows at the left and right edges, in the Back button's look. With a paper open, the left arrow
+     stands right of the paper; room.js writes the paper's right edge into --ed-room-paper-right. */
+  .ed-room__side { position: absolute; top: 50%; z-index: 3; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--ed-hairline); border-radius: 999px; background: rgba(var(--ed-bg-rgb), 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--ed-ink); font: inherit; font-size: 0.95rem; line-height: 1.2; box-shadow: var(--ed-card-shadow); transform: translateY(-50%); }
+  .ed-room__side[hidden] { display: none; }
+  .ed-room__side:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 3px; }
+  .ed-room__side--left { left: var(--ed-gutter-x); }
+  .ed-room__side--right { right: var(--ed-gutter-x); }
+  .ed-room.has-paper .ed-room__side--left { left: calc(var(--ed-room-paper-right, 0px) + 28px); }
+  .ed-room__key { padding: 1px 6px; border: 1px solid var(--ed-hairline); border-radius: 5px; font-family: var(--ed-mono); font-size: 0.72rem; color: var(--ed-ink-soft); }
+  /* the music control mirrors the Back button at the top right; room.js shows it with the room and adds is-playing */
+  .ed-room__music { position: absolute; right: var(--ed-gutter-x); top: 16px; z-index: 3; display: inline-flex; align-items: center; gap: 2px; padding: 3px 14px 3px 3px; border: 1px solid var(--ed-hairline); border-radius: 999px; background: rgba(var(--ed-bg-rgb), 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--ed-ink); font-size: 0.95rem; line-height: 1.2; box-shadow: var(--ed-card-shadow); }
+  .ed-room__music[hidden] { display: none; }
+  .ed-room__control { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border: 0; border-radius: 999px; background: none; color: inherit; font: inherit; }
+  .ed-room__control:hover { background: var(--ed-hairline); }
+  .ed-room__control:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 1px; }
+  .ed-room__icon { flex: none; width: 13px; height: 13px; fill: currentColor; }
+  .ed-room__music:not(.is-playing) .ed-room__icon--pause, .ed-room__music.is-playing .ed-room__icon--play { display: none; }
+  /* the sound effects toggle shows a speaker with waves when on, and a crossed speaker when off */
+  .ed-room__control[aria-pressed="true"] .ed-room__icon--muted, .ed-room__control[aria-pressed="false"] .ed-room__icon--sound { display: none; }
+  .ed-room__track { margin-left: 4px; padding-left: 12px; border-left: 1px solid var(--ed-hairline); color: var(--ed-ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  /* the station links along the bottom, over a soft scrim; room.js marks the current station with aria-current */
+  .ed-room__stations { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2px; padding: 26px var(--ed-gutter-x) 10px; background: linear-gradient(to top, rgba(var(--ed-bg-rgb), 0.86), rgba(var(--ed-bg-rgb), 0.6) 50%, rgba(var(--ed-bg-rgb), 0)); color: var(--ed-ink-soft); pointer-events: none; }
+  .ed-room__stations[hidden] { display: none; }
+  .ed-room__stations button { padding: 6px 10px; border: 0; border-radius: 999px; background: none; color: var(--ed-ink); font: inherit; font-size: 0.95rem; line-height: 1.2; pointer-events: auto; }
+  .ed-room__stations button:hover { background: rgba(var(--ed-bg-rgb), 0.9); }
+  .ed-room__stations button:focus-visible { outline: 2px solid var(--ed-accent-strong); outline-offset: 1px; }
+  .ed-room__stations button[aria-current="true"] { color: var(--ed-accent-strong); font-weight: 600; text-decoration: underline; text-underline-offset: 5px; }
+  /* the room's tooltip: room.js places it next to the pointer and hides it on a click and during camera moves; screen readers use the hidden buttons */
+  .ed-room__tip { position: absolute; left: 0; top: 0; z-index: 4; max-width: 340px; padding: 10px 14px; border: 1px solid var(--ed-hairline); border-radius: 10px; background: var(--ed-bg); color: var(--ed-ink); box-shadow: var(--ed-card-shadow); font-size: 0.875rem; line-height: 1.4; pointer-events: none; }
+  .ed-room__tip[hidden] { display: none; }
+  .ed-room__tip b { display: block; font-weight: 600; }
+  .ed-room__tip b:not(:first-child) { margin-top: 8px; }
+  .ed-room__tip span { display: block; color: var(--ed-ink-soft); }
+  .ed-room__tip i { display: block; margin-top: 6px; font-style: normal; color: var(--ed-accent-strong); }   /* what a click does */
+
 /* ── editorial-results (home) ── */
   .ed-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 56px; border-top: 1px solid var(--ed-hairline); }
   .ed-result { position: relative; display: grid; align-content: start; gap: 6px; padding: 28px 20px 8px 0; border: 0; background: none; color: var(--ed-ink); font: inherit; text-align: left; cursor: pointer; }

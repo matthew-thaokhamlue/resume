@@ -1,0 +1,60 @@
+Credits for the 3D room on the home page (assets/room/).
+
+Models from Poly Haven. Licence: CC0 1.0 Universal (public domain), https://polyhaven.com/license
+
+desk_lamp_arm_01 (Desk Lamp Arm 01), authors: Yann Kervran, Kuutti Siitonen
+  page: https://polyhaven.com/a/desk_lamp_arm_01
+  file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/desk_lamp_arm_01/desk_lamp_arm_01_1k.gltf (glTF, 1k textures)
+  licence: CC0 1.0
+
+potted_plant_02 (Potted Plant 02), authors: Rico Cilliers
+  page: https://polyhaven.com/a/potted_plant_02
+  file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/potted_plant_02/potted_plant_02_1k.gltf (glTF, 1k textures)
+  licence: CC0 1.0
+
+classic_laptop (Classic Laptop), author: Arrangemonk
+  page: https://polyhaven.com/a/classic_laptop
+  file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/classic_laptop/classic_laptop_1k.gltf (glTF, 1k textures)
+  licence: CC0 1.0
+
+potted_plant_04 (Potted Plant 04), author: James Ray Cock
+  page: https://polyhaven.com/a/potted_plant_04
+  file: https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/potted_plant_04/potted_plant_04_1k.gltf (glTF, 1k textures)
+  licence: CC0 1.0
+  The two succulents on the window sill.
+
+Music: five instrumental tracks generated for this site with ElevenLabs (Eleven Music)
+  files: music/track-1.mp3, music/track-2.mp3, music/track-4.mp3, music/track-5.mp3 and music/track-6.mp3; the room
+  plays them in the order 5, 1, 2, 6, 4
+  The Eleven Music terms for the Creator plan require no attribution (checked 23 October 2026).
+
+Sound effects: generated for this site with ElevenLabs (sound effects)
+  files: sfx/hover-pass.mp3, sfx/hover-laptop.mp3, sfx/hover-cv.mp3, sfx/hover-radio.mp3, sfx/hover-phone.mp3,
+  sfx/hover-coffee.mp3, sfx/hover-cards.mp3, sfx/hover-poster.mp3, sfx/hover-trophy.mp3, sfx/hover-certificate.mp3,
+  sfx/hover-medal.mp3, sfx/hover-lamp.mp3, sfx/flip.mp3 and sfx/sip.mp3
+
+Font: Patrick Hand, Copyright (c) 2010-2012 Patrick Wagesreiter. Licence: SIL Open Font License 1.1, in
+fonts/OFL-patrick-hand.txt. The paper's handwriting uses fonts/patrick-hand-latin.woff2.
+
+The wood grain is drawn in room.js on a canvas; it uses no texture file. The desk, the trophies, the medals, the
+certificates, the card tray, the business cards, the telephone, the radio, the coffee mug with its steam and the music
+notes are built in room.js; they use no model or image file. So are the decor: the bookshelf with its books, vases and basket, the trailing
+plants, the tall plant with its broad leaves, the skirting boards and the wall clock. The floorboards, the desk's
+mahogany and leather, the rug, the basket weave, the leaves, the clock face and the coffee are drawn in room.js on
+canvases.
+
+Posters (posters/): poster-labforward.webp, poster-labtwin.webp, poster-thryve.webp, poster-dataverse.webp and
+poster-training.webp were generated for this site with Codex image generation. shot-opppaths.webp and
+shot-remarcable.webp are screenshots of Matthew's own sites, Opportunity Paths and Remarcable Living; room.js
+sets each on a poster.
+
+Window views (views/): the twelve day and night city views were generated for this site with Codex image
+generation. Each night view is an edit of its day view.
+
+Still images: still-day.webp and still-night.webp are renders of this room, made with room.js itself.
+
+three.js 0.169.0 (MIT licence, Copyright 2010-2024 Three.js Authors), vendored from
+https://cdn.jsdelivr.net/npm/three@0.169.0/: build/three.module.min.js,
+examples/jsm/loaders/GLTFLoader.js, examples/jsm/utils/BufferGeometryUtils.js and
+examples/jsm/geometries/RoundedBoxGeometry.js. Each bare "three" import points to
+vendor/three.module.min.js instead.

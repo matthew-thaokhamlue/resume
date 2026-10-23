@@ -707,3 +707,332 @@ test('the seven testimonial tiles keep exact excerpts and share the existing dia
   assert.match(html, /<dialog id="testimonial-modal" aria-labelledby="modal-name" class="ed-reveal"/);
   assert.match(html, /class="ed-reveal__close"[^>]*data-action="close-testimonial"/);
 });
+
+// The 3D room (behind ?room=1): the gate, the markup, the module files, the role sections and the hero hooks.
+const ROOM_STATIONS = ['desk', 'laptop', 'awards', 'projects', 'letters', 'contact'];
+
+test('index.html loads the room gate right after theme.js, and #room starts hidden with no inline script', () => {
+  const html = readText('index.html');
+  assert.match(html, /<script src="assets\/js\/theme\.js\?v=[^"]+"><\/script>\r?\n<script src="assets\/js\/room-boot\.js\?v=[^"]+"><\/script>/);
+  assert.match(html, /<main>\r?\n\s*<section class="ed-room" id="room"/, '#room is the first child of <main>');
+  const room = html.match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/);
+  assert.ok(room, '#room exists');
+  assert.match(room[0], /^<section[^>]*\shidden>/, '#room starts hidden');
+  assert.doesNotMatch(room[1], /<script|\son[a-z]+=/i, '#room holds no inline script or handler');
+  assert.doesNotMatch(room[1], /<h1/i, 'the page keeps its one H1 in #top');
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /html\.room-on #room \{ display: block; \}/, 'only html.room-on shows the room');
+  assert.doesNotMatch(css.match(/\n {2}\.ed-room \{[^}]*\}/)[0], /display/, 'a display on .ed-room would override the hidden attribute');
+});
+
+test('room-boot.js returns before any work unless the query has room=1', () => {
+  const js = readText('assets/js/room-boot.js');
+  function run(search) {
+    const touched = [];
+    const trap = (name) => new Proxy({}, { get: (_, key) => { touched.push(`${name}.${String(key)}`); return undefined; } });
+    const window = new Proxy({ location: { search } }, { get: (target, key) => (key === 'location' ? target.location : (touched.push(`window.${String(key)}`), undefined)) });
+    try { vm.runInNewContext(js, { window, document: trap('document'), console: trap('console') }); } catch { /* a guard read undefined */ }
+    return touched;
+  }
+  for (const search of ['', '?room=0', '?room=10', '?force=1', '?x=1&room=12']) {
+    assert.deepEqual(run(search), [], `"${search}" must not reach the guards`);
+  }
+  assert.ok(run('?room=1').length > 0 && run('?x=1&room=1&force=1').length > 0, 'room=1 runs the guards');
+  assert.ok(js.includes('/swiftshader|llvmpipe|softpipe|lavapipe|software|basic render/i'), 'the renderer check');
+  assert.match(js, /getContext\('webgl2', force \? undefined : \{ failIfMajorPerformanceCaveat: true \}\)/, 'force=1 skips the renderer check only');
+  assert.match(js, /matchMedia\('\(pointer: fine\)'\)/);
+  assert.match(js, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+  assert.match(js, /import\(new URL\('assets\/room\/room\.js\?v=[^']+', document\.baseURI\)\.href\)/, 'the module URL resolves against the page');
+});
+
+test('every import under assets/room/ is relative and points at a file that exists', () => {
+  const dir = path.join(repoRoot, 'assets/room');
+  const files = fs.readdirSync(dir, { recursive: true }).filter((name) => name.endsWith('.js'));
+  assert.ok(files.includes('room.js'), 'assets/room/room.js exists');
+  for (const name of files) {
+    const js = fs.readFileSync(path.join(dir, name), 'utf8');
+    // Import and export statements start a line: "import ... from", "} from", "export ... from", or a bare import.
+    const specifiers = [...js.matchAll(/^\s*(?:import\b[^'"\n]*?\bfrom|\}\s*from|export\b[^'"\n]*?\bfrom|import)\s*(['"])([^'"]+)\1/gm)].map((m) => m[2]);
+    assert.ok(name !== 'room.js' || specifiers.length >= 3, 'room.js imports three.js and its addons');
+    for (const spec of specifiers) {
+      assert.ok(spec.startsWith('./') || spec.startsWith('../'), `${name} imports the bare specifier "${spec}"`);
+      assert.ok(fs.existsSync(path.resolve(dir, path.dirname(name), spec)), `${name} imports ${spec}, which does not exist`);
+    }
+  }
+});
+
+test('the boarding passes name role sections that exist, and views that exist with a landmark', () => {
+  const js = readText('assets/room/room.js');
+  const experience = readText('experience.html');
+  const table = js.match(/const PASSES = \[([\s\S]*?)\n\];/);
+  assert.ok(table, 'the PASSES table');
+  const passes = [...table[1].matchAll(/\{ id: '([a-z]+)', roles: \[([^\]]+)\][^}]*view: '([^']+)' \}/g)];
+  assert.deepEqual(passes.map((m) => m[1]), ['sema', 'lab', 'thryve', 'ey', 'education']);
+  for (const [, id, roles, view] of passes) {
+    for (const [, role] of roles.matchAll(/'([^']+)'/g)) {
+      assert.match(experience, new RegExp(`<section class="(?:ed-reveal__inner|ed-role)" id="${role}"`), `${id}: experience.html has no #${role}`);
+    }
+    assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/views', view)), `${id}: views/${view} is missing`);
+    assert.match(js, new RegExp(`'${escapeRegExp(view)}': \\{ u: \\[`), `${id}: VIEWS has no landmark for ${view}`);
+  }
+  assert.match(js, /roles: \['role-labtwin', 'role-labforward'\]/, 'the lab pass flies LabTwin, then Labforward');
+  const views = js.match(/const VIEWS = \{([\s\S]*?)\n\};/)[1];
+  const nights = [...views.matchAll(/'([^']+-day\.webp)': \{[^}]*night: '([^']+-night\.webp)' \}/g)];
+  assert.equal(nights.length, [...views.matchAll(/-day\.webp': \{/g)].length, 'every view has a night image');
+  for (const [, day, night] of nights) {
+    assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/views', night)), `the night view ${night} of ${day} is missing`);
+  }
+});
+
+test('no element in index.html has an id equal to a room station hash', () => {
+  const ids = [...readText('index.html').matchAll(/\bid\s*=\s*(["'])(.*?)\1/g)].map((m) => m[2]);
+  for (const station of ROOM_STATIONS) assert.ok(!ids.includes(station), `id="${station}" would open as a reveal target`);
+  for (const station of ROOM_STATIONS) assert.ok(readText('assets/room/room.js').includes(`#${station}`), `room.js reads the #${station} hash`);
+});
+
+test('assets/room/CREDITS.txt names the CC0 licence and every model', () => {
+  const credits = readText('assets/room/CREDITS.txt');
+  assert.match(credits, /CC0 1\.0/);
+  for (const model of fs.readdirSync(path.join(repoRoot, 'assets/room/models'))) {
+    assert.ok(credits.includes(`${model} (`), `CREDITS.txt does not credit ${model}`);
+  }
+});
+
+test('every model room.js loads has its 1k glTF files, stays under 3 MB and is credited with its Poly Haven page', () => {
+  const js = readText('assets/room/room.js');
+  const credits = readText('assets/room/CREDITS.txt');
+  const ids = [...js.matchAll(/\bmodel\('([a-z0-9_]+)'\)/g)].map((m) => m[1]);
+  assert.ok(ids.includes('potted_plant_04'), 'the window sill succulent is a model');
+  for (const id of ids) {
+    const dir = path.join(repoRoot, 'assets/room/models', id);
+    const gltf = JSON.parse(fs.readFileSync(path.join(dir, `${id}_1k.gltf`), 'utf8'));
+    const files = [`${id}_1k.gltf`, ...gltf.buffers.map((b) => b.uri), ...gltf.images.map((i) => i.uri)];
+    let bytes = 0;
+    for (const file of files) {
+      assert.ok(fs.existsSync(path.join(dir, file)), `models/${id}/${file} is missing`);
+      bytes += fs.statSync(path.join(dir, file)).size;
+    }
+    assert.ok(bytes < 3e6, `models/${id} is ${bytes} bytes`);
+    assert.ok(credits.includes(`${id} (`) && credits.includes(`https://polyhaven.com/a/${id}`), `CREDITS.txt does not credit ${id}`);
+  }
+});
+
+test('the room loads Patrick Hand from its own folder and credits it', () => {
+  const js = readText('assets/room/room.js');
+  assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/fonts/patrick-hand-latin.woff2')), 'the font file');
+  assert.match(readText('assets/room/fonts/OFL-patrick-hand.txt'), /SIL Open Font License, Version 1\.1/);
+  assert.match(js, /new FontFace\('Patrick Hand', `url\("\$\{new URL\('fonts\/patrick-hand-latin\.woff2', import\.meta\.url\)\.href\}"\)/, 'room.js loads the font with the FontFace API');
+  const credits = readText('assets/room/CREDITS.txt');
+  assert.match(credits, /Patrick Hand/);
+  assert.ok(credits.includes('fonts/OFL-patrick-hand.txt') && credits.includes('fonts/patrick-hand-latin.woff2'), 'CREDITS.txt names the font file and its licence');
+  assert.doesNotMatch(readText('index.html'), /Patrick\+Hand|Patrick Hand/, 'no page loads Patrick Hand from Google Fonts');
+});
+
+test('the room finds the hero controls it clicks, and its Back button', () => {
+  const html = readText('index.html');
+  const top = html.match(/<section[^>]*id="top"[\s\S]*?<\/section>/)[0];
+  assert.match(top, /<h1[^>]*id="home-title"[^>]*>[^<]+<\/h1>/, 'the laptop screen reads the H1');
+  assert.match(top, /<p class="ed-home-sub">[^<]+<\/p>/, 'the laptop screen reads the subline');
+  assert.match(top, /<button id="ai-match-trigger"/, 'the laptop clicks the AI Match button');
+  assert.match(top, /<a [^>]*href="cv\.html"[^>]*\s+data-ga-event="resume_downloaded"/, 'the printout clicks the CV link');
+  const room = html.match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  const back = room.match(/<button class="ed-room__back" type="button" data-room-back hidden>([\s\S]*?)<\/button>/);
+  assert.ok(back, '#room holds a hidden Back button');
+  assert.equal(back[1].replace(/<(span|kbd)[^>]*aria-hidden="true"[^>]*>[^<]*<\/\1>/g, '').trim(), 'Back', 'its accessible name is Back');
+  assert.match(readText('assets/css/editorial.css'), /\.ed-room__back\[hidden\] \{ display: none; \}/, 'the hidden attribute wins over its display');
+});
+
+test('the room holds two hidden sideways arrows, named by room.js from the station links', () => {
+  const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  assert.match(room, /<button class="ed-room__side ed-room__side--left" type="button" data-room-side="left" hidden><span aria-hidden="true">←<\/span> <span data-room-side-label><\/span><\/button>/);
+  assert.match(room, /<button class="ed-room__side ed-room__side--right" type="button" data-room-side="right" hidden><span data-room-side-label><\/span> <span aria-hidden="true">→<\/span><\/button>/);
+  assert.match(readText('assets/css/editorial.css'), /\.ed-room__side\[hidden\] \{ display: none; \}/, 'the hidden attribute wins over its display');
+  const js = readText('assets/room/room.js');
+  assert.match(js, /const SIDES = \{ projects: \[null, 'desk'\], desk: \['projects', 'awards'\], awards: \['desk', null\] \};/, 'the walls form one row');
+  assert.match(js, /setAttribute\('aria-label', `Go to \$\{stationName\(to\)\}`\)/, 'each arrow is named after its station');
+});
+
+test('the decor stays out of the click targets', () => {
+  const js = readText('assets/room/room.js');
+  const targets = js.match(/const targets = \[([^\]]+)\];/)[1];
+  for (const name of ['decor', 'bookMesh', 'broadLeaves', 'heartLeaves']) assert.ok(!new RegExp(`\\b${name}\\b`).test(targets), `${name} would take clicks`);
+});
+
+test('every credential the shelf names exists in certificates.html with a verify link', () => {
+  const js = readText('assets/room/room.js');
+  const certificates = readText('certificates.html');
+  const ids = [
+    ...js.match(/const CERTIFICATES = \[([^\]]+)\]/)[1].matchAll(/'(credential-\d+)'/g),
+    ...js.match(/const MEDALS = \[([\s\S]*?)\n\];/)[1].matchAll(/'(credential-\d+)'/g),
+  ].map((m) => m[1]);
+  assert.equal(ids.length, 14, 'five certificates and nine medals');
+  assert.equal(new Set(ids).size, 14, 'no credential shows twice');
+  for (const id of ids) {
+    const dialog = certificates.match(new RegExp(`<dialog class="ed-reveal" id="${id}"[\\s\\S]*?</dialog>`));
+    assert.ok(dialog, `certificates.html has no #${id}`);
+    assert.match(dialog[0], /<a class="ed-reveal__link" href="https:[^"]+" target="_blank"[^>]*data-ga-event="credential_verified" data-ga-params='\{[^']+\}'>/, `#${id} lost its verify link`);
+    assert.match(dialog[0], /<p><a class="ed-reveal__link" href="[^"]+">[^<]+<\/a><\/p>/, `#${id} lost its internal link`);
+  }
+  const education = readText('experience.html').match(/id="role-education">[\s\S]*?<\/section>/)[0];
+  assert.match(education, /class="ed-stage__desc">Master [^<]*\. [^<]*DAAD[^<]*\. Bachelor/, 'the DAAD line sits between the two degrees');
+});
+
+test('every poster names a portfolio reveal with a case page, and its image exists and is credited', () => {
+  const js = readText('assets/room/room.js');
+  const portfolio = readText('portfolio.html');
+  const credits = readText('assets/room/CREDITS.txt');
+  const posters = [...js.match(/const POSTERS = \[([\s\S]*?)\n\];/)[1].matchAll(/\{ id: '([a-z]+)', image: '([^']+)'/g)];
+  assert.equal(posters.length, 7);
+  for (const [, id, image] of posters) {
+    const dialog = portfolio.match(new RegExp(`<dialog class="ed-reveal" id="project-${id}"[\\s\\S]*?</dialog>`));
+    assert.ok(dialog, `portfolio.html has no #project-${id}`);
+    const links = [...dialog[0].matchAll(/<a class="ed-reveal__link" href="([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(links.length, 1, `#project-${id} links one case page`);
+    assert.ok(fs.existsSync(path.join(repoRoot, links[0])), `#project-${id} links ${links[0]}, which does not exist`);
+    assert.ok(fs.existsSync(path.join(repoRoot, 'assets/room/posters', image)), `posters/${image} is missing`);
+    assert.ok(credits.includes(image), `CREDITS.txt does not name ${image}`);
+  }
+  assert.match(credits, /generated for this site with Codex image generation/);
+  assert.match(credits, /screenshots of Matthew's own sites/);
+});
+
+test('the room reads four results and seven testimonials from the home page, and the links it clicks', () => {
+  const html = readText('index.html');
+  const js = readText('assets/room/room.js');
+  const results = [...html.matchAll(/<button class="ed-result" type="button" data-action="open-reveal" data-reveal="(receipt-[a-z]+)"[^>]*><b>[^<]+<\/b><span>[^<]+<\/span><small>[^<]+<\/small>/g)].map((m) => m[1]);
+  assert.equal(results.length, 4, 'four results');
+  for (const id of results) assert.match(html, new RegExp(`<dialog class="ed-reveal" id="${id}"`), `#${id} is missing`);
+  assert.ok(js.includes(`'.ed-result[data-reveal^="receipt-"]'`), 'room.js reads the result buttons');
+  const quotes = [...html.matchAll(/<button type="button" class="ed-tile ed-quote"[^>]*?data-name="[^"]+" data-role="[^"]*"\s+data-image="[^"]*"\s+data-text="[^"]+"/g)];
+  assert.equal(quotes.length, 7, 'seven testimonials');
+  assert.ok(js.includes(`'.ed-quote[data-name][data-text]'`), 'room.js reads the testimonial buttons');
+  assert.match(html, /<header class="ed-topbar">[\s\S]*?<a class="ed-btn ed-btn--accent" href="https:\/\/www\.linkedin\.com\/[^"]+"[^>]*\s+data-ga-event="external_link_clicked"/, 'the telephone clicks the LinkedIn link in the top bar');
+  assert.match(html, /<section class="ed-quotes" id="recommendations">[\s\S]*?<a class="ed-link" href="https:\/\/www\.linkedin\.com\/[^"]*recommendations[^"]*"/, 'the postcards click the recommendations link');
+  assert.ok(js.includes(`'.ed-topbar a[href*="linkedin.com"][data-ga-event]'`) && js.includes(`'#recommendations a[href*="linkedin.com"][href*="recommendations"]'`), 'room.js finds both links');
+});
+
+test('the five tracks exist, are credited and play in the order 5, 1, 2, 6, 4, and nothing autoplays', () => {
+  const credits = readText('assets/room/CREDITS.txt');
+  const js = readText('assets/room/room.js');
+  for (const i of [1, 2, 4, 5, 6]) {
+    assert.ok(fs.statSync(path.join(repoRoot, `assets/room/music/track-${i}.mp3`)).size > 100000, `music/track-${i}.mp3 is missing`);
+    assert.ok(credits.includes(`track-${i}.mp3`), `CREDITS.txt does not name track-${i}.mp3`);
+  }
+  assert.ok(!fs.existsSync(path.join(repoRoot, 'assets/room/music/track-3.mp3')), 'track-3.mp3 left the mixtape');
+  assert.doesNotMatch(credits, /track-3\.mp3/, 'CREDITS.txt no longer names track-3.mp3');
+  assert.ok(credits.includes('Music: five instrumental tracks generated for this site with ElevenLabs (Eleven Music)'), 'CREDITS.txt credits the music');
+  assert.match(js, /const PLAY_ORDER = \[5, 1, 2, 6, 4\];/, 'the ballad, track-5.mp3, plays first');
+  assert.match(js, /localStorage\.setItem\('room\.music', JSON\.stringify\(\{ file: PLAY_ORDER\[music\.track\]/, 'the store keeps the file number');
+  assert.match(js, /music\/track-\$\{PLAY_ORDER\[i\]\}\.mp3/, 'the track URL follows the play order');
+  assert.ok(!fs.existsSync(path.join(repoRoot, 'assets/room/models/cassette_player')), 'the code-built radio replaces the cassette player model');
+  assert.doesNotMatch(credits, /cassette_player/, 'CREDITS.txt no longer names the cassette player');
+  const scripts = ['assets/js', 'assets/room'].flatMap((dir) => fs.readdirSync(path.join(repoRoot, dir)).filter((name) => name.endsWith('.js')).map((name) => `${dir}/${name}`));
+  for (const file of [...listHtmlFiles().map(relative), ...scripts]) {
+    assert.doesNotMatch(readText(file), /autoplay/i, `${file} mentions autoplay`);
+  }
+  const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  assert.match(room, /<div class="ed-room__music" data-room-music hidden>/, 'the music control starts hidden');
+  assert.match(room, /<button class="ed-room__control" type="button" data-room-play>(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+<span data-room-play-label>Play music<\/span><\/button>/, 'the play button is named Play music');
+  assert.match(room, /<button class="ed-room__control" type="button" data-room-next aria-label="Next track">/, 'the next button is named Next track');
+});
+
+test('room.js makes the Audio element only inside a press handler, with preload none, and never at load', () => {
+  const js = readText('assets/room/room.js');
+  const fn = (name) => js.match(new RegExp(`\\n( +)function ${name}\\([^)]*\\) \\{\\n([\\s\\S]*?)\\n\\1\\}\\n`))?.[2] ?? '';
+  const count = (text, re) => (text.match(re) || []).length;
+  assert.equal(count(js, /new Audio\(/g), 1, 'one place makes the Audio element');
+  assert.match(fn('player'), /audio = new Audio\(\);\n\s*audio\.preload = 'none';/, 'player() makes it, with preload none');
+  // player() runs only in toggleMusic() and firstPlay(). toggleMusic() and nextTrack() run only from click listeners,
+  // and firstPlay() only from the room's pointerdown and keydown listeners: a call at load time breaks these counts.
+  assert.equal(count(js, /\bplayer\(\)/g), 1 + count(fn('toggleMusic'), /\bplayer\(\)/g) + count(fn('firstPlay'), /\bplayer\(\)/g), 'only toggleMusic() and firstPlay() call player()');
+  assert.equal(count(fn('firstPlay'), /\bplayer\(\)/g), 1, 'the first press makes the player');
+  const canvasClick = js.match(/\n( +)canvas\.addEventListener\('click', \(event\) => \{\n([\s\S]*?)\n\1\}, \{ signal \}\);/)?.[2] ?? '';
+  for (const name of ['toggleMusic', 'nextTrack']) {
+    const allowed = 1 + count(canvasClick, new RegExp(`\\b${name}\\(\\)`, 'g')) + count(js, new RegExp(`addEventListener\\('click', ${name}, \\{ signal \\}\\)`, 'g'));
+    assert.equal(count(js, new RegExp(`\\b${name}\\b`, 'g')), allowed, `${name} runs only from a click listener`);
+  }
+  const firstListeners = count(js, /section\.addEventListener\('(?:pointerdown|keydown)', firstPlay, \{ signal, capture: true \}\);/g);
+  assert.equal(firstListeners, 2, 'a pointerdown or a key press in the room starts the music');
+  assert.equal(count(js, /\bfirstPlay\b/g), 1 + firstListeners, 'firstPlay runs only from those two listeners');
+  assert.match(fn('firstPlay'), /if \(firstPress \|\| event\.key === 'Escape'\) return;\n\s*firstPress = true;\n\s*if \(music\.paused \|\| event\.target\.closest\?\.\('\[data-room-music\]'\)\) return;/, 'once per load, never after a pause, and never from a control in the music bar');
+  assert.match(canvasClick, /hit\.kind === 'radio'\) toggleMusic\(\);/, 'a click on the radio plays or pauses');
+});
+
+const SOUND_EFFECTS = ['hover-pass', 'hover-laptop', 'hover-cv', 'hover-radio', 'hover-phone', 'hover-coffee', 'hover-cards', 'hover-poster',
+  'hover-trophy', 'hover-certificate', 'hover-medal', 'hover-lamp', 'flip', 'sip'];
+
+test('the fourteen sound effects exist under assets/room/sfx/, room.js names them, and CREDITS.txt credits them', () => {
+  const js = readText('assets/room/room.js');
+  const credits = readText('assets/room/CREDITS.txt');
+  const table = js.match(/const SFX = \[([^\]]+)\];/);
+  assert.ok(table, 'the SFX table');
+  assert.deepEqual([...table[1].matchAll(/'([a-z-]+)'/g)].map((m) => m[1]).sort(), [...SOUND_EFFECTS].sort());
+  assert.deepEqual(fs.readdirSync(path.join(repoRoot, 'assets/room/sfx')).sort(), SOUND_EFFECTS.map((name) => `${name}.mp3`).sort(), 'sfx/ holds the fourteen files only');
+  for (const name of SOUND_EFFECTS) {
+    const size = fs.statSync(path.join(repoRoot, `assets/room/sfx/${name}.mp3`)).size;
+    assert.ok(size > 1000 && size < 16000, `sfx/${name}.mp3 is ${size} bytes`);
+    assert.ok(credits.includes(`sfx/${name}.mp3`), `CREDITS.txt does not name sfx/${name}.mp3`);
+  }
+  assert.ok(credits.includes('Sound effects: generated for this site with ElevenLabs (sound effects)'), 'CREDITS.txt credits the sound effects');
+});
+
+test('room.js makes the AudioContext only inside the first-press handler, and loads no sound before it', () => {
+  const js = readText('assets/room/room.js');
+  const fn = (name) => js.match(new RegExp(`\\n( +)function ${name}\\([^)]*\\) \\{\\n([\\s\\S]*?)\\n\\1\\}\\n`))?.[2] ?? '';
+  const count = (text, re) => (text.match(re) || []).length;
+  assert.equal(count(js, /new AudioContext\(/g), 1, 'one place makes the AudioContext');
+  assert.doesNotMatch(js, /webkitAudioContext|OfflineAudioContext/, 'no other audio context');
+  assert.match(fn('wakeSounds'), /sfx\.ctx = new AudioContext\(\);/, 'wakeSounds() makes it');
+  // wakeSounds() runs only from the first-press handler, which runs only from the room's pointerdown and keydown
+  // listeners (the music test counts those).
+  assert.equal(count(js, /\bwakeSounds\(/g), 1 + count(fn('firstPlay'), /\bwakeSounds\(/g), 'only the first-press handler calls wakeSounds()');
+  assert.match(fn('firstPlay'), /^\s*if \(event\.key !== 'Escape'\) wakeSounds\(event\);/, 'every press but Esc wakes the sounds');
+  // A sound file loads only through loadSound(), which runs only from loadSounds() and playSound(); both stop while
+  // there is no context.
+  assert.equal(count(js, /`sfx\/\$\{name\}\.mp3`/g), 1, 'one place builds a sound URL');
+  assert.match(fn('loadSound'), /fetch\(new URL\(`sfx\/\$\{name\}\.mp3`, import\.meta\.url\)\.href\)/, 'loadSound() fetches it');
+  assert.equal(count(js, /\bloadSound\(/g), 1 + count(fn('loadSounds'), /\bloadSound\(/g) + count(fn('playSound'), /\bloadSound\(/g), 'only loadSounds() and playSound() call loadSound()');
+  assert.match(fn('loadSounds'), /^\s*if \(!sfx\.ctx \|\| !sfx\.on \|\| sfx\.loading\) return;/, 'loadSounds() waits for the context');
+  assert.match(fn('playSound'), /^\s*if \(!name \|\| !sfx\.on \|\| !sfx\.ctx\) return false;/, 'playSound() waits for the context and the toggle');
+});
+
+test('the music bar holds the sound effects toggle after Next, named by its text, with aria-pressed', () => {
+  const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  assert.match(room, /data-room-next aria-label="Next track">(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+Next<\/button>\r?\n\s*<button class="ed-room__control" type="button" data-room-sfx aria-pressed="true">(?:<svg[^>]*aria-hidden="true">[\s\S]*?<\/svg>)+Sounds<\/button>/,
+    'the toggle follows Next, starts pressed, and its visible text "Sounds" is its name');
+  const js = readText('assets/room/room.js');
+  assert.match(js, /sfxButton\.setAttribute\('aria-pressed', String\(sfx\.on\)\);/, 'aria-pressed follows the toggle');
+  assert.doesNotMatch(js, /Sounds on|Sounds off|data-room-sfx-label/, 'the name stays "Sounds"; aria-pressed alone carries the state');
+  assert.match(js, /try \{ sfx\.on = localStorage\.getItem\('room\.sfx'\) !== 'off'; \} catch/, 'on unless stored off, read in try/catch');
+  assert.match(js, /try \{ localStorage\.setItem\('room\.sfx', sfx\.on \? 'on' : 'off'\); \} catch/, 'stored in try/catch');
+  assert.match(readText('assets/css/editorial.css'), /\.ed-room__control\[aria-pressed="true"\] \.ed-room__icon--muted, \.ed-room__control\[aria-pressed="false"\] \.ed-room__icon--sound \{ display: none; \}/, 'the icon follows the toggle');
+});
+
+test('the room shows a still image of the rest view for each theme while it loads', () => {
+  for (const theme of ['day', 'night']) {
+    const head = fs.readFileSync(path.join(repoRoot, `assets/room/still-${theme}.webp`)).subarray(0, 12);
+    assert.equal(`${head.toString('latin1', 0, 4)}${head.toString('latin1', 8, 12)}`, 'RIFFWEBP', `still-${theme}.webp is a WebP file`);
+  }
+  const css = readText('assets/css/editorial.css');
+  assert.match(css, /html\.room-on \.ed-room \{ background-image: url\("\.\.\/room\/still-day\.webp"\); background-size: cover;/);
+  assert.match(css, /html\.room-on\[data-theme="dark"\] \.ed-room \{ background-image: url\("\.\.\/room\/still-night\.webp"\); \}/);
+});
+
+test('every selector in the room block of editorial.css is scoped to the room', () => {
+  const css = readText('assets/css/editorial.css');
+  const block = css.match(/\/\* ── editorial-room [^\n]*\n([\s\S]*?)\n\/\* ── /)[1].replace(/\/\*[\s\S]*?\*\//g, '');
+  const selectors = [...block.matchAll(/([^{}]+)\{[^{}]*\}/g)].flatMap((m) => m[1].split(',').map((s) => s.trim()));
+  assert.ok(selectors.length > 20, `the room block holds ${selectors.length} selectors`);
+  for (const selector of selectors) {
+    assert.ok(selector.startsWith('.ed-room') || selector.startsWith('html.room-on'), `"${selector}" would style the page outside the room`);
+  }
+});
+
+test('the station links name every room station', () => {
+  const room = readText('index.html').match(/<section class="ed-room" id="room"[^>]*>([\s\S]*?)<\/section>/)[1];
+  const nav = room.match(/<nav class="ed-room__stations" aria-label="[^"]+" data-room-stations hidden>([\s\S]*?)<\/nav>/);
+  assert.ok(nav, 'the station links start hidden');
+  const links = [...nav[1].matchAll(/<button type="button" data-room-station="([a-z]+)">([^<]+)<\/button>/g)];
+  assert.deepEqual(links.map((m) => m[2]), ['Passes', 'Laptop', 'Projects', 'Awards', 'Letters', 'Contact']);
+  assert.deepEqual(links.map((m) => m[1]).sort(), [...ROOM_STATIONS].sort());
+});
