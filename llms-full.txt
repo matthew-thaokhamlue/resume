@@ -22,7 +22,7 @@ Product builder with 7+ years of experience building and scaling B2B SaaS produc
 **Mar 2026 - Present | Dresden & Berlin, Germany**
 
 
-Product manager for Liz, Sema’s AI agent connecting company priorities to work and shipped code, and the engine behind Sema’s AI Adoption and AI Defensibility products. Answers cite sources; actions require human approval. Own delivery across two squads: Integrations, then Chat and Agent UX.
+Product builder for Liz, Sema’s AI agent connecting company priorities to work and shipped code, and the engine behind Sema’s AI Adoption and AI Defensibility products. Answers cite sources; actions require human approval. Own delivery across two squads: Integrations, then Chat and Agent UX.
 
 - Designed Liz’s look and feel and its **v2 interface**, now live, and led its delivery with the engineering lead.
 - Designed and helped build the logic behind Sema’s **AI Adoption** reports in Liz, which compare AI-assisted and other engineering work against delivery outcomes.
@@ -64,9 +64,9 @@ Electronic lab notebook and lab-operations software that helps R&D scientists re
 
 The world's first voice-powered AI lab assistant, letting scientists capture data and pull up information hands-free at the bench.
 
-- Led the migration of intent recognition to GPT-3.5 in 2023. Shipped LLM-powered understanding into a production voice pipeline for pharma and biotech customers.
+- Led the migration of intent recognition to GPT-3.5 in 2023. Shipped LLM-powered understanding into a production voice pipeline for pharma and biotech customers through Azure OpenAI, with a fixed intent list and user confirmation before any action.
 - Tripled deployment frequency from 4 to 12 production releases per year by streamlining release coordination with engineering.
-- Drove speech recognition to 95% scientific-term accuracy for key customers. Co-led retraining with Azure custom speech training, using customer-specific glossaries and real voice data. Designed the training strategy to cut its cost.
+- Drove speech recognition to 95% scientific-term accuracy for key customers. Ran the retraining programme in Azure custom speech training and led the data scientists, using customer-specific glossaries, pronunciation files and real voice data. Designed the training strategy to cut its cost.
 - Drove an SAP integration workstream to a customer pilot. The pilot tested transferring LabTwin-captured lab data into the customer's SAP environment via the SAP API.
 - Mentored a junior PM to full independence; they went on to own their own product area.
 - Key skills: Voice AI, LLM in Production, Integrations, Release Coordination
