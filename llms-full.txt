@@ -27,6 +27,7 @@ Product builder for Liz, Sema’s AI agent connecting company priorities to work
 - Designed Liz’s look and feel and its **v2 interface**, now live, and led its delivery with the engineering lead.
 - Designed and helped build the logic behind Sema’s **AI Adoption** reports in Liz, which compare AI-assisted and other engineering work against delivery outcomes.
 - Built and own the daily AI cost dashboard. Its first invoice reconciliation matched provider billing **within 0.26%**.
+- Plan the security roadmap for Liz’s model calls on **AWS Bedrock**, including its sandbox for untrusted code: a prompt-injection guardrail on every call, alerts on security-setting changes, short-lived credentials in place of stored keys, private network access, and a processing-region decision for customer contracts.
 - As Senior AI Product Manager, cut inefficient daily AI spend **~39% (~$3,250/month)** through usage-based auto-scaling, with no loss of customer coverage.
 - Removed a recurring enterprise deal blocker with an AI-assisted release-note process that met **SOC 2** requirements. He approves each note, as the product manager, before manual publication.
 - Led Liz’s expansion from read-only analytics to **governed actions** across Slack, email, Confluence, Jira, and Linear. Led the build of customer-specific approval rules and maintain them.
