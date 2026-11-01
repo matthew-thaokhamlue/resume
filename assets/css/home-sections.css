@@ -20,7 +20,12 @@
 .ed-home-overview::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
 .ed-home-overview::before {
   z-index: -2;
-  background: url('../../images/home-growth-rings.png') center / cover no-repeat;
+  background: url('../../images/home-growth-rings.webp') center / cover no-repeat;
+}
+@media (max-width: 760px) {
+  .ed-home-overview::before {
+    background-image: url('../../images/home-growth-rings-800.webp');
+  }
 }
 .ed-home-overview::after {
   z-index: -1;
