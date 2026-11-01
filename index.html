@@ -2,7 +2,7 @@
 <html class="dark" lang="en">
 
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Matthew Thaokhamlue – Product Builder</title>
@@ -19,13 +19,17 @@
     content="Product Builder at Sema, designing and delivering Liz, Sema’s AI agent. Earlier roles at Labforward, LabTwin, Thryve and EY." />
   <meta property="og:type" content="profile" />
   <meta property="og:url" content="https://matthew-thaokhamlue.github.io/resume/" />
-  <meta property="og:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
+  <meta property="og:image" content="https://matthew-thaokhamlue.github.io/resume/images/og-card.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Matthew Thaokhamlue, Product Builder" />
+  <meta property="og:site_name" content="Matthew Thaokhamlue" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Matthew Thaokhamlue – Product Builder" />
   <meta name="twitter:description" content="Product Builder at Sema, designing and delivering Liz, Sema’s AI agent. Earlier roles at Labforward, LabTwin, Thryve and EY." />
-  <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/MT.jpg" />
+  <meta name="twitter:image" content="https://matthew-thaokhamlue.github.io/resume/images/og-card.jpg" />
   <meta property="profile:first_name" content="Matthew" />
   <meta property="profile:last_name" content="Thaokhamlue" />
 
@@ -85,6 +89,8 @@
   }
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260930-logo" />
+  <link rel="preload" as="image" type="image/webp" href="images/home-growth-rings.webp" fetchpriority="high" media="(min-width: 761px)" />
+  <link rel="preload" as="image" type="image/webp" href="images/home-growth-rings-800.webp" fetchpriority="high" media="(max-width: 760px)" />
 
   <!-- Tailwind CSS (precompiled; regenerate via tailwind.config.js) -->
   <link rel="stylesheet" href="assets/css/tailwind.css?v=20260930-testimonials" />
@@ -92,14 +98,16 @@
   <!-- Fonts: Instrument Sans (display and body), IBM Plex Mono, Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back,close,dark_mode,light_mode,menu,school&display=block"
+    rel="stylesheet" />
+
 
   <!-- Editorial design layer (loaded after Tailwind so @layer takes precedence) -->
   <link rel="stylesheet" href="assets/css/editorial.css?v=20260930-sfx" />
   <link rel="stylesheet" href="assets/css/home-sections.css?v=20260930-play-icon" />
-
+
   <style>
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
@@ -242,7 +250,7 @@
           <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
             aria-haspopup="dialog" aria-controls="testimonial-modal"
             data-name="Robin Genolet" data-role="Director Innovation &amp; AI at Medgate"
-            data-image="images/robin-genolet.png"
+            data-image="images/robin-genolet.webp"
             data-text="At Medgate, we partnered with Berlin-based company mHealth Pioneers GmbH and use their Thryve product since July 2021. We use Thryve&#x27;s standardized API and SDK to allow our patients to securely share with us sensor-generated data from hundreds of health devices via our mobile app. We then make the data available to our Doctors to support their teleconsultations. Their API standardizes the dozens of data formats used by a wide range of brands like Garmin, Fitbit, and Apple Healthkit. Thryve allowed us to minimize the duration of our development phase and takes care of the maintenance necessary when a data provider updates its API. We are both happy with the product and the team behind it: Matthew (Thryve Product Owner) and colleagues not only provided useful guidance during the development phase, but also helped us deal with challenges encountered with the brands we support, and also assisted us on our medical affairs and marketing streams."
             style="--quote-bg:#dce8d5;--quote-ink:#111111;--quote-accent:#e7def0">
             <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0h120v120z"/><circle cx="180" cy="60" r="60" fill="var(--quote-accent)"/><path d="m120 0 120 120m-120-96 96 96m-96-72 72 72m-72-48 48 48m-48-24 24 24" fill="none" stroke="currentColor" opacity=".35"/></svg>
@@ -262,7 +270,7 @@
           <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
             aria-haspopup="dialog" aria-controls="testimonial-modal"
             data-name="Jeroen de Haas" data-role="CPO at Labforward"
-            data-image="images/jeroen-de-haas.png"
+            data-image="images/jeroen-de-haas.webp"
             data-text="I&#x27;ve had the privilege of working closely with Matt as his manager and CPO, and watching his journey has been one of the most rewarding parts of my role. From the moment he joined the team, Matt stood out as a fast learner—someone who not only picks up complex concepts quickly but also asks the right questions to get to the heart of a problem. What I admire most is his genuine can-do attitude. No matter how ambiguous or challenging the situation, Matt dives in with curiosity and focus, turning ideas into tangible outcomes. I&#x27;ve truly seen him grow—from confidently shaping roadmaps to leading cross-functional squads with empathy and clarity. His growth isn&#x27;t just in skills, but in the way he brings people together. Matt is a natural team player who listens, collaborates, and makes everyone around him better. He bridges gaps between engineering, design, and customer teams with ease, always keeping the bigger picture in mind while never losing sight of the details that matter. If you&#x27;re looking for someone who combines sharp product thinking with humility, grit, and genuine care for the team, Matt is that person. I feel lucky to have worked with him and can&#x27;t wait to see where his talents take him next."
             style="--quote-bg:#9c4a2a;--quote-ink:#ffffff;--quote-accent:#dce8d5">
             <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0h120v120H0z" opacity=".16"/><path fill="var(--quote-accent)" d="M120 0h120v120z"/><circle cx="120" cy="60" r="42" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 0v120m12-120v120m12-120v120m12-120v120m12-120v120m12-120v120m12-120v120m12-120v120" fill="none" stroke="currentColor" opacity=".3"/></svg>
@@ -272,7 +280,7 @@
           <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
             aria-haspopup="dialog" aria-controls="testimonial-modal"
             data-name="Ignatius Reza" data-role="CTO at Laboperator"
-            data-image="images/ignatius-reza.png"
+            data-image="images/ignatius-reza.webp"
             data-text="Matthew is a great product manager with technical chops. He is great in digesting the complex area of developing a product which are highly technical, and coming up with product direction that is easy to understand and use. He&#x27;s also a great person to have in the team. Great presence, character, motivation, and always willing to support."
             style="--quote-bg:#e7def0;--quote-ink:#111111;--quote-accent:#9c4a2a">
             <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="var(--quote-accent)" d="M0 0h120v120H0z"/><path fill="currentColor" d="m120 120 120-120v120z"/><path d="M12 12h96v96H12zM24 24h72v72H24zM36 36h48v48H36zM48 48h24v24H48z" fill="none" stroke="currentColor" opacity=".4"/></svg>
@@ -282,7 +290,7 @@
           <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
             aria-haspopup="dialog" aria-controls="testimonial-modal"
             data-name="Mark Dominick Flores" data-role="Senior iOS Engineer at LabTwin"
-            data-image="images/mark-flores.png"
+            data-image="images/mark-flores.webp"
             data-text="I highly recommend Matthew, my former Technical Product Manager. I worked with him on a number of features, and his contributions were critical to getting them shipped. Matthew has a remarkable ability to take nebulous business requirements and translate them into a clear, actionable backlog for the engineering team. He&#x27;s also an incredibly fast learner. He quickly got up to speed on our complex systems and made smart, informed decisions on what to prioritize to maximize impact with minimal overhead. On a personal level, he&#x27;s great to work with. He was always available to unblock us, help us navigate dependencies, and make sure we had the context we needed to build things correctly the first time. Matthew is a top-tier TPM, and I&#x27;d work with him again in a heartbeat. He&#x27;s a huge asset to any product or engineering team."
             style="--quote-bg:#dbe7f2;--quote-ink:#111111;--quote-accent:#9c4a2a">
             <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 120 120 0v120z"/><path fill="var(--quote-accent)" d="M120 0h120v120z"/><path d="m0 0 120 120M0 24l96 96M0 48l72 72M0 72l48 48M0 96l24 24" stroke="currentColor" fill="none" opacity=".35"/></svg>
@@ -292,7 +300,7 @@
           <button type="button" class="ed-tile ed-quote" data-action="open-testimonial"
             aria-haspopup="dialog" aria-controls="testimonial-modal"
             data-name="Sumner Price" data-role="Product Designer"
-            data-image="images/sumner-price.png"
+            data-image="images/sumner-price.webp"
             data-text="I had the pleasure of working with Matt on many projects within our product team. He consistently impressed me with how quickly he picked up new initiatives and guided them through the product development process. As a product manager, Matt communicated clearly and ensured all relevant stakeholders were always aligned. He was my go-to person whenever I felt uncertain about something. On top of that, his organizational skills—especially in creating PRDs and managing tickets—were invaluable. Working with him was truly a joy!"
             style="--quote-bg:#111111;--quote-ink:#f4f4f2;--quote-accent:#dbe7f2">
             <svg class="ed-quote__art" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="60" fill="var(--quote-accent)"/><path fill="currentColor" d="M120 0h120v120z"/><path d="m0 0 120 120M0 24l96 96M0 48l72 72M0 72l48 48M0 96l24 24" fill="none" stroke="var(--quote-bg)" opacity=".55"/></svg>
@@ -334,12 +342,12 @@
         <a href="https://www.linkedin.com/in/matthewthaokhamlue" target="_blank" rel="noopener noreferrer"
           data-ga-event="social_profile_link_clicked" data-ga-params='{"platform":"linkedin","page":"index","link_position":"footer"}'
           aria-label="LinkedIn">
-          <i class="fab fa-linkedin text-2xl"></i>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
         </a>
         <a href="https://github.com/matthew-thaokhamlue" target="_blank" rel="noopener noreferrer"
           data-ga-event="social_profile_link_clicked" data-ga-params='{"platform":"github","page":"index","link_position":"footer"}'
           aria-label="GitHub">
-          <i class="fab fa-github text-2xl"></i>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.11.82-.26.82-.58l-.01-2.04c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 0 0-1.33-1.76c-1.09-.75.08-.73.08-.73a2.52 2.52 0 0 1 1.84 1.24 2.56 2.56 0 0 0 3.5 1 2.56 2.56 0 0 1 .76-1.61c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 0 1 1.24-3.22 4.3 4.3 0 0 1 .12-3.18s1-.32 3.3 1.23a11.38 11.38 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23a4.3 4.3 0 0 1 .12 3.18 4.64 4.64 0 0 1 1.24 3.22c0 4.61-2.81 5.63-5.48 5.93a2.86 2.86 0 0 1 .82 2.22l-.01 3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .3z"/></svg>
         </a>
       </div>
     </div>

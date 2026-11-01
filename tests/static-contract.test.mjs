@@ -40,7 +40,8 @@ const NON_CONTENT = new Set([
   'about.html', 'cv.html',
   'portfolio/mcp-server.html', 'portfolio/automation-tools.html', 'portfolio/interview-prep.html',
 ]);
-const FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap';
+const TEXT_FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap';
+const ICONS_HREF = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back,close,dark_mode,light_mode,menu,school&display=block';
 
 test('content pages share one fonts link with the Instrument Sans width and italic axes', () => {
   const failures = [];
@@ -48,7 +49,7 @@ test('content pages share one fonts link with the Instrument Sans width and ital
     const name = relative(file);
     if (NON_CONTENT.has(name)) continue;
     const links = [...fs.readFileSync(file, 'utf8').matchAll(/href="(https:\/\/fonts\.googleapis\.com\/css2\?[^"]+)"/g)].map((m) => m[1]);
-    if (links.length !== 1 || links[0] !== FONTS_HREF) failures.push(`${name}: ${links.join(' | ') || 'no fonts link'}`);
+    if (links.length !== 2 || links[0] !== TEXT_FONTS_HREF || links[1] !== ICONS_HREF) failures.push(`${name}: ${links.join(' | ') || 'no fonts link'}`);
   }
   assert.deepEqual(failures, []);
 });
